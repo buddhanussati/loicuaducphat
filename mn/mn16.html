@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 16           </title>
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 16<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 16<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Tâm Hoang Vu<br>
+<span lang="pi" class="pali">
+Cetokhilasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn ở Sāvatthī (Xá-vệ), tại Jetavana (Kỳ-đà Lâm), vườn ông Anāthapiṇḍika (Cấp Cô Ðộc).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Thế Tôn gọi các Tỷ-kheo: “Này chư Tỷ-kheo”.<br>
+<span lang="pi" class="pali">
+Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn thuyết giảng như sau:<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Tỷ-kheo, Tỷ-kheo nào chưa diệt trừ năm tâm hoang vu, chưa đoạn tận năm tâm triền phược, vị ấy có thể lớn mạnh, trưởng thành, hưng thịnh trong Pháp và Luật này, sự kiện này không xảy ra.<br>
+<span lang="pi" class="pali">
+“Yassa kassaci, bhikkhave, bhikkhuno pañca cetokhilā appahīnā, pañca cetasovinibandhā asamucchinnā, so vatimasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjissatīti—netaṃ ṭhānaṃ vijjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là năm tâm hoang vu chưa được đoạn trừ?<br>
+<span lang="pi" class="pali">
+Katamāssa pañca cetokhilā appahīnā honti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ở đây, Tỷ-kheo nghi ngờ bậc Ðạo Sư, do dự, không quyết đoán, không có tịnh tín.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu satthari kaṅkhati vicikicchati nādhimuccati na sampasīdati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào nghi ngờ bậc Ðạo Sư, do dự, không quyết đoán, không có tịnh tín, thời tâm vị này không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu satthari kaṅkhati vicikicchati nādhimuccati na sampasīdati tassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tâm của ai không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ nhất chưa được diệt trừ.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ paṭhamo cetokhilo appahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào nghi ngờ Pháp, do dự, không quyết đoán, không có tịnh tín… (như trên)… Nếu tâm của ai không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ hai chưa được diệt trừ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu dhamme kaṅkhati vicikicchati nādhimuccati na sampasīdati ...pe... evamassāyaṃ dutiyo cetokhilo appahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào nghi ngờ Tăng, do dự, không quyết đoán, không có tịnh tín… (như trên)… Nếu tâm của ai không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ ba chưa được diệt trừ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saṅghe kaṅkhati vicikicchati nādhimuccati na sampasīdati ...pe... evamassāyaṃ tatiyo cetokhilo appahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào nghi ngờ các học pháp, do dự, không quyết đoán, không có tịnh tín<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu sikkhāya kaṅkhati vicikicchati nādhimuccati na sampasīdati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào nghi ngờ bậc Ðạo Sư, do dự, không quyết đoán, không có tịnh tín, thời tâm vị này không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu sikkhāya kaṅkhati vicikicchati nādhimuccati na sampasīdati, tassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tâm của ai không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ nhất chưa được diệt trừ.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ catuttho cetokhilo appahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo phẫn nộ đối với các đồng phạm hạnh, không có hoan hỷ, tâm tư chống đối, cứng rắn.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu sabrahmacārīsu kupito hoti anattamano āhatacitto khilajāto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào phẫn nộ đối với các vị đồng phạm hạnh, không có hoan hỷ, tâm tư chống đối, cứng rắn, thời tâm của vị này không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu sabrahmacārīsu kupito hoti anattamano āhatacitto khilajāto, tassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tâm của ai không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ năm chưa được diệt trừ.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ pañcamo cetokhilo appahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là năm tâm hoang vu chưa được diệt trừ.<br>
+<span lang="pi" class="pali">
+Imāssa pañca cetokhilā appahīnā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là năm tâm triền phược chưa được đoạn tận?<br>
+<span lang="pi" class="pali">
+Katamāssa pañca cetasovinibandhā asamucchinnā honti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ở đây, Tỷ-kheo, đối với những dục, không phải không tham ái, không phải không dục cầu, không phải không ái luyến, không phải không khao khát, không phải không nhiệt tình, không phải không khát ái.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu kāme avītarāgo hoti avigatacchando avigatapemo avigatapipāso avigatapariḷāho avigatataṇho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, vị Tỷ-kheo nào đối với những dục, không phải không tham ái… không phải không khát ái, tâm của vị ấy không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu kāme avītarāgo hoti avigatacchando avigatapemo avigatapipāso avigatapariḷāho avigatataṇho, tassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tâm của ai không hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm triền phược thứ nhất chưa được đoạn tận.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ paṭhamo cetasovinibandho asamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào đối với tự thân không phải không tham ái… (như trên)…<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu kāye avītarāgo hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là tâm triền phược thứ hai chưa được đoạn tận.<br>
+<span lang="pi" class="pali">
+evamassāyaṃ dutiyo cetasovinibandho asamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào đối với các sắc pháp không phải không tham ái … (như trên)…<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu rūpe avītarāgo hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là tâm triền phược thứ ba chưa được đoạn tận.<br>
+<span lang="pi" class="pali">
+evamassāyaṃ tatiyo cetasovinibandho asamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào ăn cho đến thỏa thê, cho đến bụng chứa đầy, sống thiên nặng về khoái lạc về sàng tọa, khoái lạc về ngủ nghỉ, khoái lạc về thụy miên.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu yāvadatthaṃ udarāvadehakaṃ bhuñjitvā seyyasukhaṃ passasukhaṃ middhasukhaṃ anuyutto viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào ăn cho đến thỏa thê cho đến bụng chứa đầy… (như trên)…<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu yāvadatthaṃ udarāvadehakaṃ bhuñjitvā seyyasukhaṃ passasukhaṃ middhasukhaṃ anuyutto viharati, tassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là tâm triền phược thứ tư chưa được đoạn tận.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ catuttho cetasovinibandho asamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào sống phạm hạnh với mong cầu được sanh thiên giới với ý nghĩ: “Ta với giới này, với hạnh này, với khổ hạnh này hay với phạm hạnh này sẽ được sanh làm chư Thiên này hay chư Thiên khác”.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu aññataraṃ devanikāyaṃ paṇidhāya brahmacariyaṃ carati: ‘imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā devo vā bhavissāmi devaññataro vā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào sống phạm hạnh… (như trên)…<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu aññataraṃ devanikāyaṃ paṇidhāya brahmacariyaṃ carati: ‘imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā devo vā bhavissāmi devaññataro vā’ti, tassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là tâm triền phược thứ năm chưa được đoạn tận.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ na namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ pañcamo cetasovinibandho asamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là năm tâm triền phược chưa được đoạn tận.<br>
+<span lang="pi" class="pali">
+Imāssa pañca cetasovinibandhā asamucchinnā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào chưa diệt trừ năm tâm hoang vu này, chưa đoạn tận năm tâm triền phược này, vị ấy có thể lớn mạnh trưởng thành, hưng thịnh trong Pháp và Luật này, sự kiện này không xảy ra.<br>
+<span lang="pi" class="pali">
+Yassa kassaci, bhikkhave, bhikkhuno ime pañca cetokhilā appahīnā, ime pañca cetasovinibandhā asamucchinnā, so vatimasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjissatīti—netaṃ ṭhānaṃ vijjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào đã diệt trừ năm tâm hoang vu, đã đoạn tận năm tâm triền phược, vị ấy có thể lớn mạnh, trưởng thành, hưng thịnh trong Pháp và Luật này, sự kiện này có xảy ra.<br>
+<span lang="pi" class="pali">
+Yassa kassaci, bhikkhave, bhikkhuno pañca cetokhilā pahīnā, pañca cetasovinibandhā susamucchinnā, so vatimasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjissatīti—ṭhānametaṃ vijjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là năm tâm hoang vu đã được diệt trừ?<br>
+<span lang="pi" class="pali">
+Katamāssa pañca cetokhilā pahīnā honti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ở đây, Tỷ-kheo không nghi ngờ bậc Ðạo Sư, không do dự, quyết đoán, tịnh tín.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu satthari na kaṅkhati na vicikicchati adhimuccati sampasīdati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào không nghi ngờ bậc Ðạo Sư, không do dự, quyết đoán, tịnh tín, thời tâm vị này hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu satthari na kaṅkhati na vicikicchati adhimuccati sampasīdati, tassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tâm của ai hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ nhất đã được diệt trừ.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ paṭhamo cetokhilo pahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào không nghi ngờ Pháp, không do dự, quyết đoán, tịnh tín… (như trên)… Nếu tâm của ai hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ hai đã được diệt trừ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu dhamme na kaṅkhati na vicikicchati adhimuccati sampasīdati ...pe... evamassāyaṃ dutiyo cetokhilo pahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào không nghi ngờ Tăng, không do dự, quyết đoán, tịnh tín… (như trên)… Nếu tâm của ai hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ ba đã được diệt trừ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saṅghe na kaṅkhati na vicikicchati adhimuccati sampasīdati ...pe... evamassāyaṃ tatiyo cetokhilo pahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào không nghi ngờ học pháp, không do dự, quyết đoán, tịnh tín, thời tâm vị này hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn. Nếu tâm của ai hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm hoang vu thứ tư đã được diệt trừ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu sikkhāya na kaṅkhati na vicikicchati adhimuccati sampasīdati ...pe...evamassāyaṃ catuttho cetokhilo pahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào không phẫn nộ đối với các vị đồng phạm hạnh, hoan hỷ, tâm tư không chống đối, cứng rắn.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu sabrahmacārīsu na kupito hoti na anattamano anāhatacitto akhilajāto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo không phẫn nộ đối với các vị đồng phạm hạnh, hoan hỷ, tâm tư không chống đối, cứng rắn, thời tâm vị này hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn. Nếu tâm của ai hướng về nỗ lực, chuyên cần kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu sabrahmacārīsu na kupito hoti na anattamano anāhatacitto akhilajāto, tassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là tâm hoang vu thứ năm đã được diệt trừ.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ pañcamo cetokhilo pahīno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là năm tâm hoang vu đã được diệt trừ.<br>
+<span lang="pi" class="pali">
+Imāssa pañca cetokhilā pahīnā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là năm tâm triền phược đã được đoạn tận?<br>
+<span lang="pi" class="pali">
+Katamāssa pañca cetasovinibandhā susamucchinnā honti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ở đây, Tỷ-kheo đối với những dục không có tham ái, không có dục cầu, không có ái luyến, không có khao khát, không có nhiệt tình, không có khát ái.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu kāme vītarāgo hoti vigatacchando vigatapemo vigatapipāso vigatapariḷāho vigatataṇho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào đối với những dục không có tham ái, không có dục cầu, không có ái luyến, không có khao khát, không có nhiệt tình, không có khát ái, tâm vị ấy hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu kāme vītarāgo hoti vigatacchando vigatapemo vigatapipāso vigatapariḷāho vigatataṇho, tassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là tâm triền phược thứ nhất đã được đoạn tận.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ paṭhamo cetasovinibandho susamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào đối với tự thân không có tham ái… (như trên)… như vậy là tâm triền phược thứ hai đã được đoạn tận.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu kāye vītarāgo hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào đối với các sắc pháp không có tham ái… (như trên)… như vậy là tâm triền phược thứ ba đã được đoạn tận.<br>
+<span lang="pi" class="pali">
+rūpe vītarāgo hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào không ăn cho đến thỏa thê, cho đến bụng chứa đầy, sống không thiên nặng về khoái lạc sàng tọa, khoái lạc về ngủ nghĩ, khoái lạc về thụy miên… (như trên)… như vậy là tâm triền phược thứ tư đã được đoạn tận.<br>
+<span lang="pi" class="pali">
+na yāvadatthaṃ udarāvadehakaṃ bhuñjitvā seyyasukhaṃ passasukhaṃ middhasukhaṃ anuyutto viharati. Yo so, bhikkhave, bhikkhu na yāvadatthaṃ udarāvadehakaṃ bhuñjitvā seyyasukhaṃ passasukhaṃ middhasukhaṃ anuyutto viharati, tassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya. Yassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ catuttho cetasovinibandho susamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lại nữa, chư Tỷ-kheo, Tỷ-kheo nào sống phạm hạnh, không mong cầu được sanh thiên giới với ý nghĩ: “Ta với giới này, với hạnh này, với khổ hạnh này, hay với phạm hạnh này, sẽ được sanh làm chư Thiên này hay chư Thiên khác”.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu na aññataraṃ devanikāyaṃ paṇidhāya brahmacariyaṃ carati: ‘imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā devo vā bhavissāmi devaññataro vā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào sống phạm hạnh, không mong cầu được sanh thiên giới với ý nghĩ:<br>
+<span lang="pi" class="pali">
+Yo so, bhikkhave, bhikkhu na aññataraṃ devanikāyaṃ paṇidhāya brahmacariyaṃ carati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta với giới này, với hạnh này, với khổ hạnh này, hay với phạm hạnh này, sẽ được sanh làm chư Thiên này hay chư Thiên khác”, tâm vị ấy hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn.<br>
+<span lang="pi" class="pali">
+‘imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā devo vā bhavissāmi devaññataro vā’ti, tassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tâm của ai hướng về nỗ lực, chuyên cần, kiên trì, tinh tấn, như vậy là tâm triền phược thứ năm đã được đoạn tận.<br>
+<span lang="pi" class="pali">
+Yassa cittaṃ namati ātappāya anuyogāya sātaccāya padhānāya, evamassāyaṃ pañcamo cetasovinibandho susamucchinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là năm tâm triền phược đã được đoạn tận.<br>
+<span lang="pi" class="pali">
+Imāssa pañca cetasovinibandhā susamucchinnā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào đã đoạn tận năm tâm triền phược này, thời vị ấy có thể lớn mạnh, trưởng thành, hưng thịnh trong Pháp và Luật này, sự kiện này có xảy ra.<br>
+<span lang="pi" class="pali">
+Yassa kassaci, bhikkhave, bhikkhuno ime pañca cetokhilā pahīnā, ime pañca cetasovinibandhā susamucchinnā, so vatimasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjissatīti—ṭhānametaṃ vijjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị này tu tập như ý túc câu hữu với dục Thiền định, tinh cần hành;<br>
+<span lang="pi" class="pali">
+So chanda-samādhi-padhāna-saṅkhāra-samannāgataṃ iddhipādaṃ bhāveti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tu tập như ý túc câu hữu với tinh tấn Thiền định, tinh cần hành;<br>
+<span lang="pi" class="pali">
+vīriya-samādhi-padhāna-saṅkhāra-samannāgataṃ iddhipādaṃ bhāveti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tu tập như ý túc câu hữu với tâm Thiền định, tinh cần hành;<br>
+<span lang="pi" class="pali">
+citta-samādhi-padhāna-saṅkhāra-samannāgataṃ iddhipādaṃ bhāveti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tu tập như ý túc câu hữu với tư duy Thiền định, tinh cần hành; với nỗ lực là thứ năm.<br>
+<span lang="pi" class="pali">
+vīmaṃsā-samādhi-padhāna-saṅkhāra-samannāgataṃ iddhipādaṃ bhāveti, ussoḷhīyeva pañcamī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo nào đầy đủ mười lăm pháp kể cả nỗ lực, thời có đủ khả năng để phá vỡ, có đủ khả năng để chánh giác, có đủ khả năng để đạt thành vô thượng an ổn khỏi các ách phược.<br>
+<span lang="pi" class="pali">
+Sa kho so, bhikkhave, evaṃ ussoḷhi-pannarasaṅga-samannāgato bhikkhu bhabbo abhinibbidāya, bhabbo sambodhāya, bhabbo anuttarassa yogakkhemassa adhigamāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, như có khoảng tám, mười hay mười hai cái trứng của con gà mái, những trứng này được con gà mái khéo ấp, ngồi lên trên, khéo ấp nóng, khéo ấp dưỡng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, kukkuṭiyā aṇḍāni aṭṭha vā dasa vā dvādasa vā. Tānassu kukkuṭiyā sammā adhisayitāni sammā pariseditāni sammā paribhāvitāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thời dầu cho con gà mái không khởi lên sự mong ước:<br>
+<span lang="pi" class="pali">
+Kiñcāpi tassā kukkuṭiyā na evaṃ icchā uppajjeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng những con gà con của ta, sau khi đâm thủng vỏ trứng với móng chân nhọn của chúng, hay với mỏ của chúng, có thể thoát ra một cách yên ổn!’<br>
+<span lang="pi" class="pali">
+‘aho vatime kukkuṭapotakā pādanakhasikhāya vā mukhatuṇḍakena vā aṇḍakosaṃ padāletvā sotthinā abhinibbhijjeyyun’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những con gà con ấy, sau khi đâm thủng vỏ trứng với móng chân nhọn của chúng hay với mỏ của chúng, có khả năng thoát ra một cách yên ổn.<br>
+<span lang="pi" class="pali">
+Atha kho bhabbāva te kukkuṭapotakā pādanakhasikhāya vā mukhatuṇḍakena vā aṇḍakosaṃ padāletvā sotthinā abhinibbhijjituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, cũng vậy, Tỷ-kheo đầy đủ mười lăm pháp, kể cả nỗ lực, thời có đủ khả năng để phá vỡ, có đủ khả năng để chánh giác, có đủ khả năng để đạt thành vô thượng an ổn khỏi các ách phược.”<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, evaṃ ussoḷhi-pannarasaṅga-samannāgato bhikkhu bhabbo abhinibbidāya, bhabbo sambodhāya, bhabbo anuttarassa yogakkhemassa adhigamāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tỷ-kheo ấy hoan hỷ, tín thọ lời dạy của Thế Tôn.<br>
+<span lang="pi" class="pali">
+Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Cetokhilasuttaṃ niṭṭhitaṃ chaṭṭhaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn15.html#content"></a><a id="next-sutta" href="./mn17.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

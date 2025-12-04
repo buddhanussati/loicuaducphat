@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 22.87 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 22.87<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 22.87<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Phẩm Trưởng Lão<br>
+<span lang="pi" class="pali">
+9. Theravagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Vakkali<br>
+<span lang="pi" class="pali">
+Vakkalisutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Rājagaha (Vương Xá), Veluvana (Trúc Lâm), tại chỗ nuôi dưỡng các con sóc.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Tôn giả Vakkali trú tại nhà một thợ gốm, đang bị bệnh, đau đớn, trầm trọng.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena āyasmā vakkali kumbhakāranivesane viharati ābādhiko dukkhito bāḷhagilāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Vakkali gọi những người thị giả:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā vakkali upaṭṭhāke āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðến đây, các Hiền giả! Hãy đi đến Thế Tôn; sau khi đến, nhân danh ta cúi đầu đảnh lễ chân Thế Tôn và thưa:<br>
+<span lang="pi" class="pali">
+“etha tumhe, āvuso, yena bhagavā tenupasaṅkamatha; upasaṅkamitvā mama vacanena bhagavato pāde sirasā vandatha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, Tỷ-kheo Vakkali bị bệnh, đau đớn, trầm trọng; (Vakkali) cúi đầu đảnh lễ chân Thế Tôn’. Và thưa: ‘Lành thay, bạch Thế Tôn, Thế Tôn vì lòng từ mẫn hãy đi đến Tỷ-kheo Vakkali.’”<br>
+<span lang="pi" class="pali">
+‘vakkali, bhante, bhikkhu ābādhiko dukkhito bāḷhagilāno, so bhagavato pāde sirasā vandatī’ti. Evañca vadetha: ‘sādhu kira, bhante, bhagavā yena vakkali bhikkhu tenupasaṅkamatu anukampaṃ upādāyā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, Hiền giả”. Các Tỷ-kheo ấy vâng đáp Tôn giả Vakkali, đi đến Thế Tôn; sau khi đến đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, các Tỷ-kheo ấy bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+“Evamāvuso”ti kho te bhikkhū āyasmato vakkalissa paṭissutvā yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdiṃsu. Ekamantaṃ nisinnā kho te bhikkhū bhagavantaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tỷ-kheo Vakkali, bạch Thế Tôn, bị bệnh, đau đớn trầm trọng. Vị ấy cúi đầu đảnh lễ chân Thế Tôn và có thưa như sau: ‘Lành thay, bạch Thế Tôn! Thế Tôn vì lòng từ mẫn hãy đi đến Tỷ-kheo Vakkali’.”<br>
+<span lang="pi" class="pali">
+“vakkali, bhante, bhikkhu ābādhiko dukkhito bāḷhagilāno, so bhagavato pāde sirasā vandati; evañca pana vadeti: ‘sādhu kira, bhante, bhagavā yena vakkali bhikkhu tenupasaṅkamatu anukampaṃ upādāyā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn im lặng nhận lời.<br>
+<span lang="pi" class="pali">
+Adhivāsesi bhagavā tuṇhībhāvena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn đắp y, cầm y bát, đi đến Tỷ-kheo Vakkali. Tôn giả Vakkali thấy Thế Tôn từ xa đi đến, thấy vậy liền cố gắng từ giường ngồi dậy.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā nivāsetvā pattacīvaramādāya yenāyasmā vakkali tenupasaṅkami. Addasā kho āyasmā vakkali bhagavantaṃ dūratova āgacchantaṃ. Disvāna mañcake samadhosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn nói với Tôn giả Vakkali: “Thôi Vakkali, Ông chớ có cố gắng từ giường ngồi dậy. Có chỗ ngồi đã soạn sẵn, Ta sẽ ngồi trên chỗ ngồi ấy”.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā āyasmantaṃ vakkaliṃ etadavoca: “alaṃ, vakkali, mā tvaṃ mañcake samadhosi. Santimāni āsanāni paññattāni; tatthāhaṃ nisīdissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn ngồi xuống trên chỗ ngồi đã soạn sẵn. Sau khi ngồi, Thế Tôn nói với Tôn giả Vakkali:<br>
+<span lang="pi" class="pali">
+Nisīdi bhagavā paññatte āsane. Nisajja kho bhagavā āyasmantaṃ vakkaliṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ông có kham nhẫn được không? Ông có chịu đựng được không? Có phải khổ thọ tổn giảm, không tăng trưởng? Có phải có những dấu hiệu tổn giảm, không phải tăng trưởng?”<br>
+<span lang="pi" class="pali">
+“kacci te, vakkali, khamanīyaṃ, kacci yāpanīyaṃ, kacci dukkhā vedanā paṭikkamanti, no abhikkamanti; paṭikkamosānaṃ paññāyati, no abhikkamo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, con không có thể kham nhẫn! Con không có thể chịu đựng! Khổ thọ kịch liệt tăng trưởng nơi con, không có tổn giảm. Có những dấu hiệu tăng trưởng, không có tổn giảm”.<br>
+<span lang="pi" class="pali">
+“Na me, bhante, khamanīyaṃ, na yāpanīyaṃ; bāḷhā me dukkhā vedanā abhikkamanti, no paṭikkamanti; abhikkamosānaṃ paññāyati, no paṭikkamo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Vakkali, Ông có gì phân vân, hối hận không?”<br>
+<span lang="pi" class="pali">
+“Kacci te, vakkali, na kiñci kukkuccaṃ, na koci vippaṭisāro”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, thật sự con có nhiều phân vân, có nhiều hối hận!”<br>
+<span lang="pi" class="pali">
+“Taggha me, bhante, anappakaṃ kukkuccaṃ, anappako vippaṭisāro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Vakkali, Ông có gì tự trách mình về giới không?”<br>
+<span lang="pi" class="pali">
+“Kacci pana taṃ, vakkali, attā sīlato na upavadatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, con không có gì tự trách mình về giới”.<br>
+<span lang="pi" class="pali">
+“Na kho maṃ, bhante, attā sīlato upavadatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Vakkali, nếu Ông không có gì tự trách mình về giới, vậy Ông có gì phân vân, có gì hối hận?”<br>
+<span lang="pi" class="pali">
+“No ce kira taṃ, vakkali, attā sīlato upavadati; atha kiñca te kukkuccaṃ ko ca vippaṭisāro”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðã từ lâu, bạch Thế Tôn, con muốn đến để được thấy Thế Tôn. Nhưng thân con không đủ sức mạnh để được đến thấy Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“Cirapaṭikāhaṃ, bhante, bhagavantaṃ dassanāya upasaṅkamitukāmo, natthi ca me kāyasmiṃ tāvatikā balamattā, yāvatāhaṃ bhagavantaṃ dassanāya upasaṅkameyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi vừa rồi, này Vakkali, có gì đáng thấy đối với cái thân hôi hám này. Này Vakkali, ai thấy Pháp, người ấy thấy Ta. Ai thấy Ta, người ấy thấy Pháp. Này Vakkali, đang thấy Pháp, là thấy Ta. Ðang thấy Ta, là thấy Pháp.<br>
+<span lang="pi" class="pali">
+“Alaṃ, vakkali, kiṃ te iminā pūtikāyena diṭṭhena? Yo kho, vakkali, dhammaṃ passati so maṃ passati; yo maṃ passati so dhammaṃ passati. Dhammañhi, vakkali, passanto maṃ passati; maṃ passanto dhammaṃ passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Vakkali, Ông nghĩ thế nào, sắc là thường hay vô thường?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, vakkali, rūpaṃ niccaṃ vā aniccaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là vô thường, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“Aniccaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cái gì vô thường, là khổ hay là lạc?”<br>
+<span lang="pi" class="pali">
+“Yaṃ panāniccaṃ dukkhaṃ vā taṃ sukhaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là khổ, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“Dukkhaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cái gì vô thường, khổ, chịu sự biến hoại, có hợp lý chăng khi quán cái ấy là: ‘Cái này là của tôi. Cái này là tôi. Cái này là tự ngã của tôi’?”<br>
+<span lang="pi" class="pali">
+“Yaṃ panāniccaṃ dukkhaṃ vipariṇāmadhammaṃ, kallaṃ nu taṃ samanupassituṃ: ‘etaṃ mama, esohamasmi, eso me attā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thọ... Tưởng... Các hành... Thức là thường hay vô thường?”<br>
+<span lang="pi" class="pali">
+“Vedanā ... saññā ... saṅkhārā ... viññāṇaṃ niccaṃ vā aniccaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là vô thường, bạch Thế Tôn”.<br>
+</p>
+
+<p lang="vi" class="vi">
+Cái gì vô thường là khổ hay lạc?<br>
+</p>
+
+<p lang="vi" class="vi">
+Là khổ, bạch Thế Tôn.<br>
+</p>
+
+<p lang="vi" class="vi">
+“Cái gì vô thường, khổ, chịu sự biến hoại, có hợp lý chăng khi quán cái ấy là: ‘Cái này là của tôi. Cái này là tôi. Cái này là tự ngã của tôi’?”<br>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="pali">
+“Aniccaṃ, bhante” ...pe... eso me attāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do vậy, ở đây... thấy vậy...’... không còn trở lui trạng thái này nữa. Vị ấy biết rõ như vậy”.<br>
+<span lang="pi" class="pali">
+“Tasmātiha ...pe... evaṃ passaṃ ...pe... nāparaṃ itthattāyāti pajānātī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn, sau khi giáo giới cho Tôn giả Vakkali với bài giáo giới này, từ chỗ ngồi đứng dậy và đi đến núi Gijjhakuuta (Linh Thứu).<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā āyasmantaṃ vakkaliṃ iminā ovādena ovaditvā uṭṭhāyāsanā yena gijjhakūṭo pabbato tena pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Vakkali, sau khi Thế Tôn đi không bao lâu, liền gọi các thị giả:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā vakkali acirapakkantassa bhagavato upaṭṭhāke āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy đến ta, này chư Hiền, hãy nhắc cái giường ta và đi đến tảng đá đen (kàlasilà), tại sườn núi Isigili (hang của Tiên nhân). Làm sao người như ta, lại nghĩ đến mệnh chung trong một căn nhà?”<br>
+<span lang="pi" class="pali">
+“etha maṃ, āvuso, mañcakaṃ āropetvā yena isigilipassaṃ kāḷasilā tenupasaṅkamatha. Kathañhi nāma mādiso antaraghare kālaṃ kattabbaṃ maññeyyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, Hiền giả.” Các Tỷ-kheo ấy vâng đáp Tôn giả Vakkali, nhắc chiếc giường với Tôn giả Vakkali đi đến tảng đá đen, tại sườn núi Isigili.<br>
+<span lang="pi" class="pali">
+“Evamāvuso”ti kho te bhikkhū āyasmato vakkalissa paṭissutvā āyasmantaṃ vakkaliṃ mañcakaṃ āropetvā yena isigilipassaṃ kāḷasilā tenupasaṅkamiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn, đêm ấy và ngày còn lại, trú tại núi Gijjhakuuta.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tañca rattiṃ tañca divāvasesaṃ gijjhakūṭe pabbate vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi hai vị Thiên, trong khi đêm đã gần tàn, với nhan sắc thù thắng, chói sáng toàn vùng núi Gijjakuuta, đi đến Thế Tôn ... liền đứng một bên.<br>
+<span lang="pi" class="pali">
+Atha kho dve devatāyo abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṃ gijjhakūṭaṃ obhāsetvā yena bhagavā tenupasaṅkamiṃsu ...pe... ekamantaṃ aṭṭhaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðứng một bên, một vị Thiên bạch Thế Tôn: “Tỷ-kheo Vakkali, bạch Thế Tôn, đang có ý nghĩ muốn giải thoát”.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ ṭhitā kho ekā devatā bhagavantaṃ etadavoca: “vakkali, bhante, bhikkhu vimokkhāya cetetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị Thiên khác bạch Thế Tôn: “Vị ấy muốn giải thoát, chắc chắn được khéo giải thoát”.<br>
+<span lang="pi" class="pali">
+Aparā devatā bhagavantaṃ etadavoca: “so hi nūna, bhante, suvimutto vimuccissatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên ấy nói như vậy xong; sau khi nói vậy, liền đảnh lễ Thế Tôn, thân bên hữu hướng về Ngài, rồi biến mất tại chỗ.<br>
+<span lang="pi" class="pali">
+Idamavocuṃ tā devatāyo. Idaṃ vatvā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā tatthevantaradhāyiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn, sau khi đêm ấy đã qua, liền gọi các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tassā rattiyā accayena bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy đến, này các Tỷ-kheo. Hãy đi đến Tỷ-kheo Vakkali; sau khi đến, nói với Tỷ-kheo Vakkali như sau:<br>
+<span lang="pi" class="pali">
+“etha tumhe, bhikkhave, yena vakkali bhikkhu tenupasaṅkamatha; upasaṅkamitvā vakkaliṃ bhikkhuṃ evaṃ vadetha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả Vakkali, hãy nghe lời nói của hai vị Thiên nói với Thế Tôn.<br>
+<span lang="pi" class="pali">
+‘Suṇāvuso tvaṃ, vakkali, bhagavato vacanaṃ dvinnañca devatānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, đêm nay, hai vị Thiên, sau khi đêm đã gần tàn, với nhan sắc thù thắng, chói sáng toàn vùng Gijjhakuuta, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi đứng một bên.<br>
+<span lang="pi" class="pali">
+Imaṃ, āvuso, rattiṃ dve devatāyo abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṃ gijjhakūṭaṃ obhāsetvā yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ aṭṭhaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðứng một bên, này Hiền giả, một vị Thiên bạch Thế Tôn: Bạch Thế Tôn, Tỷ-kheo Vakkali đang có ý nghĩ muốn giải thoát.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ ṭhitā kho, āvuso, ekā devatā bhagavantaṃ etadavoca—vakkali, bhante, bhikkhu vimokkhāya cetetīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị Thiên khác bạch Thế Tôn: Vị ấy muốn giải thoát, chắc chắn được khéo giải thoát.<br>
+<span lang="pi" class="pali">
+Aparā devatā bhagavantaṃ etadavoca—so hi nūna, bhante, suvimutto vimuccissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Hiền giả Vakkali, Thế Tôn nói với Hiền giả như sau: Này Vakkali, chớ có sợ! Này Vakkali, chớ có sợ! Cái chết của Ông sẽ không phải là ác hạnh, sự mệnh chung không phải ác hạnh!”<br>
+<span lang="pi" class="pali">
+Bhagavā ca taṃ, āvuso vakkali, evamāha—mā bhāyi, vakkali; mā bhāyi, vakkali. Apāpakaṃ te maraṇaṃ bhavissati, apāpikā kālakiriyā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Các Tỷ-kheo ấy vâng đáp Thế Tôn, đi đến Tôn giả Vakkali; sau khi đến, thưa với Tôn giả Vakkali:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho te bhikkhū bhagavato paṭissutvā yenāyasmā vakkali tenupasaṅkamiṃsu; upasaṅkamitvā āyasmantaṃ vakkaliṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Vakkali, hãy nghe lời nói của Thế Tôn và hai vị Thiên”.<br>
+<span lang="pi" class="pali">
+“suṇāvuso vakkali, bhagavato vacanaṃ dvinnañca devatānan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Vakkali gọi các vị thị giả: “Hãy đến, này chư Hiền! Hãy nhắc tôi ra khỏi giường. Làm sao một người như tôi, có thể nghĩ ngồi trên chỗ ngồi cao để nghe Thế Tôn giảng dạy”.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā vakkali upaṭṭhāke āmantesi: “etha maṃ, āvuso, mañcakā oropetha. Kathañhi nāma mādiso ucce āsane nisīditvā tassa bhagavato sāsanaṃ sotabbaṃ maññeyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, này Hiền giả”. Các Tỷ-kheo ấy vâng đáp Tôn giả Vakkali, nhắc Tôn giả Vakkali ra khỏi giường.<br>
+<span lang="pi" class="pali">
+“Evamāvuso”ti kho te bhikkhū āyasmato vakkalissa paṭissutvā āyasmantaṃ vakkaliṃ mañcakā oropesuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả, đêm nay, hai vị Thiên, sau khi đêm đã gần tàn ... đứng một bên.<br>
+<span lang="pi" class="pali">
+“Imaṃ, āvuso, rattiṃ dve devatāyo abhikkantāya rattiyā ...pe... ekamantaṃ aṭṭhaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðứng một bên, này Hiền giả, một vị Thiên bạch Thế Tôn: ‘Tỷ-kheo Vakkali, bạch Thế Tôn, đang nghĩ đến tự giải thoát’.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ ṭhitā kho, āvuso, ekā devatā bhagavantaṃ etadavoca: ‘vakkali, bhante, bhikkhu vimokkhāya cetetī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị Thiên kia bạch Thế Tôn: ‘Vị ấy, bạch Thế Tôn, muốn giải thoát sẽ được khéo giải thoát’.<br>
+<span lang="pi" class="pali">
+Aparā devatā bhagavantaṃ etadavoca: ‘so hi nūna, bhante, suvimutto vimuccissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Thế Tôn, này Hiền giả Vakkali, nói với Hiền giả như sau: ‘Chớ có sợ, này Vakkali! Chớ có sợ, này Vakkali! Cái chết của Ông không phải là ác hạnh, sự mệnh chung không phải là ác hạnh’!”<br>
+<span lang="pi" class="pali">
+Bhagavā ca taṃ, āvuso vakkali, evamāha: ‘mā bhāyi, vakkali; mā bhāyi, vakkali. Apāpakaṃ te maraṇaṃ bhavissati, apāpikā kālakiriyā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vậy này chư Hiền, hãy nhân danh ta cúi đầu đảnh lễ chân Thế Tôn và thưa: ‘Tỷ-kheo Vakkali, bạch Thế Tôn, bị bệnh, đau đớn, bệnh trầm trọng! Vị ấy cúi đầu đảnh lễ chân Thế Tôn’.<br>
+<span lang="pi" class="pali">
+“Tena hāvuso, mama vacanena bhagavato pāde sirasā vandatha: ‘vakkali, bhante, bhikkhu ābādhiko dukkhito bāḷhagilāno. So bhagavato pāde sirasā vandatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và nói như sau: ‘Sắc là vô thường, bạch Thế Tôn. Con không có ngờ gì vấn đề này, bạch Thế Tôn! Cái gì vô thường là khổ, con không có nghi ngờ gì vấn đề này. Cái gì vô thường, khổ, chịu sự biến hoại, ở đây con không có lòng dục, lòng tham, lòng ái. Con không có nghi ngờ gì vấn đề này.<br>
+<span lang="pi" class="pali">
+Evañca vadetha: ‘rūpaṃ aniccaṃ. Tāhaṃ, bhante, na kaṅkhāmi. Yadaniccaṃ taṃ dukkhanti na vicikicchāmi. Yadaniccaṃ dukkhaṃ vipariṇāmadhammaṃ, natthi me tattha chando vā rāgo vā pemaṃ vāti na vicikicchāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thọ là vô thường, bạch Thế Tôn, con không có nghi ngờ gì vấn đề này. Cái gì vô thường, khổ, chịu sự biến hoại, ở đây con không có lòng dục, lòng tham, lòng ái. Con không có nghi ngờ gì vấn đề này.<br>
+<span lang="pi" class="pali">
+Vedanā aniccā. Tāhaṃ, bhante, na kaṅkhāmi. Yadaniccaṃ taṃ dukkhanti na vicikicchāmi. Yadaniccaṃ dukkhaṃ vipariṇāmadhammaṃ, natthi me tattha chando vā rāgo vā pemaṃ vāti na vicikicchāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tưởng là vô thường...<br>
+<span lang="pi" class="pali">
+Saññā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các hành là vô thường...<br>
+<span lang="pi" class="pali">
+saṅkhārā aniccā. Tāhaṃ, bhante, na kaṅkhāmi. Yadaniccaṃ taṃ dukkhanti na vicikicchāmi. Yadaniccaṃ dukkhaṃ vipariṇāmadhammaṃ, natthi me tattha chando vā rāgo vā pemaṃ vāti na vicikicchāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thức là vô thường, bạch Thế Tôn, con không có nghi ngờ gì về vấn đề này. Cái gì vô thường là khổ, con không có nghi ngờ gì vấn đề này. Cái gì vô thường, khổ, chịu sự biến hoại, ở đây con không có lòng dục, lòng tham, lòng ái. Con không có nghi ngờ gì về vấn đề này’.”<br>
+<span lang="pi" class="pali">
+Viññāṇaṃ aniccaṃ. Tāhaṃ, bhante, na kaṅkhāmi. Yadaniccaṃ taṃ dukkhanti na vicikicchāmi. Yadaniccaṃ dukkhaṃ vipariṇāmadhammaṃ, natthi me tattha chando vā rāgo vā pemaṃ vāti na vicikicchāmī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, này Hiền giả”. Các Tỷ-kheo ấy vâng đáp Tôn giả Vakkali rồi ra đi. Tôn giả Vakkali, khi các Tỷ-kheo ấy đi không bao lâu liền đem lại con dao.<br>
+<span lang="pi" class="pali">
+“Evamāvuso”ti kho te bhikkhū āyasmato vakkalissa paṭissutvā pakkamiṃsu. Atha kho āyasmā vakkali acirapakkantesu tesu bhikkhūsu satthaṃ āharesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các Tỷ-kheo ấy đi đến Thế Tôn; sau khi đến, liền ngồi xuống một bên. Ngồi xuống một bên, các Tỷ-kheo ấy bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho te bhikkhū yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā ekamantaṃ nisīdiṃsu. Ekamantaṃ nisinnā kho te bhikkhū bhagavantaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tỷ-kheo Vakkali, bạch Thế Tôn, bị bệnh, đau đớn, bị trọng bệnh. Vị ấy cúi đầu đảnh lễ chân Thế Tôn, và nói như sau:<br>
+<span lang="pi" class="pali">
+“vakkali, bhante, bhikkhu ābādhiko dukkhito bāḷhagilāno; so bhagavato pāde sirasā vandati; evañca vadeti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sắc là vô thường, bạch Thế Tôn, con không có nghi ngờ gì về vấn đề này. Cái gì vô thường là khổ, con không có nghi ngờ gì về vấn đề này. Cái gì vô thường, khổ, chịu sự biến hoại, ở đây con không có lòng dục, lòng tham, lòng ái. Con không có nghi ngờ gì về vấn đề này.<br>
+<span lang="pi" class="pali">
+‘rūpaṃ aniccaṃ. Tāhaṃ, bhante, na kaṅkhāmi. Yadaniccaṃ taṃ dukkhanti na vicikicchāmi. Yadaniccaṃ dukkhaṃ vipariṇāmadhammaṃ, natthi me tattha chando vā rāgo vā pemaṃ vāti na vicikicchāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thọ... Tưởng... Các hành... Thức là vô thường, bạch Thế Tôn, con không có nghi ngờ gì về vấn đề này. Cái gì vô thường là khổ, con không có nghi ngờ gì về vấn đề này. Cái gì vô thường, khổ, chịu sự biến hoại, ở đây con không có lòng dục, lòng tham, lòng ái. Con không có nghi ngờ gì về vấn đề này’.”<br>
+<span lang="pi" class="pali">
+Vedanā ... saññā ... saṅkhārā ... viññāṇaṃ aniccaṃ. Tāhaṃ, bhante, na kaṅkhāmi. Yadaniccaṃ taṃ dukkhanti na vicikicchāmi. Yadaniccaṃ dukkhaṃ vipariṇāmadhammaṃ, natthi me tattha chando vā rāgo vā pemaṃ vāti na vicikicchāmī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn gọi các Tỷ-kheo: “Này các Tỷ-kheo, chúng ta hãy đi đến Isigili, chỗ tảng đá đen. Ở đấy, Thiện gia nam tử đem lại con dao”.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā bhikkhū āmantesi: “āyāma, bhikkhave, yena isigilipassaṃ kāḷasilā tenupasaṅkamissāma; yattha vakkalinā kulaputtena satthamāharitan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Các Tỷ-kheo ấy vâng đáp Thế Tôn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho te bhikkhū bhagavato paccassosuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn cùng với số đông Tỷ-kheo đi đến Isigili, chỗ tảng đá đen. Và ở đàng xa, Thế Tôn thấy Tôn giả Vakkali nằm trên giường, với vai co quắp lại.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā sambahulehi bhikkhūhi saddhiṃ yena isigilipassaṃ kāḷasilā tenupasaṅkami. Addasā kho bhagavā āyasmantaṃ vakkaliṃ dūratova mañcake vivattakkhandhaṃ semānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, một đám khói đen, một luồng ám khí đi về phía Ðông, đi về phía Tây, đi về phía Bắc, đi về phía Nam, đi về phía trên, đi về phía dưới, đi về phía bốn góc.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena dhūmāyitattaṃ timirāyitattaṃ gacchateva purimaṃ disaṃ, gacchati pacchimaṃ disaṃ, gacchati uttaraṃ disaṃ, gacchati dakkhiṇaṃ disaṃ, gacchati uddhaṃ disaṃ, gacchati adho disaṃ, gacchati anudisaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn gọi các Tỷ-kheo: “Này các Tỷ-kheo, các Ông có thấy đám khói đen ấy, luồng ám khí ấy đi về phía Ðông ... đi về phía bốn góc không?”<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā bhikkhū āmantesi: “passatha no tumhe, bhikkhave, etaṃ dhūmāyitattaṃ timirāyitattaṃ gacchateva purimaṃ disaṃ ...pe... gacchati anudisan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa có, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðó là Ác ma, này các Tỷ-kheo, đang đi tìm thức của Thiện nam tử Vakkali và nói: ‘thức của Thiện nam tử Vakkali an trú tại chỗ nào?’<br>
+<span lang="pi" class="pali">
+“Eso kho, bhikkhave, māro pāpimā vakkalissa kulaputtassa viññāṇaṃ samanvesati: ‘kattha vakkalissa kulaputtassa viññāṇaṃ patiṭṭhitan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, với thức không an trú tại một chỗ nào, Thiện nam tử Vakkali đã nhập Niết-bàn một cách hoàn toàn!”<br>
+<span lang="pi" class="pali">
+Appatiṭṭhitena ca, bhikkhave, viññāṇena vakkali kulaputto parinibbuto”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn22.86.html#content"></a><a id="next-sutta" href="./sn22.88.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

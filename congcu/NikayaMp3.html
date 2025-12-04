@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nikaya Tuyển Chọn</title>
+  <meta name="description" content="Đại Tạng Kinh Nikaya Phân Đoạn & Tuyển Chọn">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #141210;
+      --card-dark: rgba(28, 25, 23, 0.85);
+      --text-dark: #e6dacc;
+      --accent-dark: #d48c44;
+      --secondary-text: #8c857d;
+      --border-radius: 24px;
+      --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Noto Serif SC', serif;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto; 
+      overflow-x: hidden; 
+      padding: 1px 0;
+    }
+
+    .player-card {
+      position: relative;
+      z-index: 10;
+      background: var(--card-dark);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 3rem 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 20px 50px -10px rgba(0,0,0,0.4);
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255, 0.05);
+      margin: auto;
+    }
+
+    h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2rem;
+      margin: 0;
+      color: var(--accent-dark);
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--secondary-text);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .track-info {
+      margin: 2rem 0 1rem;
+      min-height: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .track-number {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--accent-dark);
+      margin-top: 4px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .status-text.visible { opacity: 1; }
+
+    audio {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 2rem;
+      border-radius: 20px;
+      filter: invert(90%) sepia(20%) hue-rotate(180deg);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-dark);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .btn-small {
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+      opacity: 0.7;
+    }
+    .btn-small:hover { opacity: 1; background: rgba(255,255,255,0.1); }
+
+    .btn-main {
+      width: 72px;
+      height: 72px;
+      font-size: 2rem;
+      color: var(--bg-dark);
+      background: var(--accent-dark);
+      box-shadow: 0 10px 25px rgba(212, 140, 68, 0.2);
+    }
+
+    .btn-main:hover {
+      transform: scale(1.1);
+      box-shadow: 0 15px 35px rgba(212, 140, 68, 0.4);
+    }
+
+    .btn-main:active { transform: scale(0.95); }
+
+    #start-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-dark);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s ease;
+      text-align: center;
+      padding: 20px;
+      color: var(--text-dark);
+    }
+
+    .start-btn {
+      padding: 1rem 3rem;
+      font-size: 1.1rem;
+      margin-top: 2rem;
+      background: transparent;
+      border: 1px solid var(--accent-dark);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 1px;
+      transition: var(--transition);
+    }
+
+    .start-btn:hover {
+      background: var(--accent-dark);
+      color: black;
+    }
+
+    .footer {
+      margin-top: 2.5rem;
+      font-size: 0.75rem;
+      opacity: 0.6;
+      line-height: 1.6;
+    }
+
+    svg { fill: currentColor; width: 1em; height: 1em; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-pattern"></div>
+
+  <div id="start-overlay">
+    <h1 style="margin-bottom: 10px;">ÐĄI TĄNG KINH<br>
+	NIKAYA</h1>
+    <p style="opacity: 0.7;">Tuyển Tập</p>
+    <button class="start-btn" onclick="initializeAudio()">BẮT ĐẦU NGHE</button>
+  </div>
+
+
+
+  <div class="player-card">
+    <h1>ÐĄI TĄNG KINH NIKAYA</h1>
+    <p class="subtitle">Tuyển Tập</p>
+
+    <div class="track-info">
+      <div class="track-number" id="track-display">Sẵn sàng...</div>
+      <div class="status-text" id="status-msg">Đang tải pháp âm...</div>
+    </div>
+
+    <audio id="audio-player" controls ></audio>
+
+    <div class="controls">
+      <button class="btn btn-small" onclick="playPrev()" aria-label="Bài trước">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
+      
+      <button class="btn btn-main" onclick="playRandom()" aria-label="Bài ngẫu nhiên">
+        <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+      </button>
+      
+      <button class="btn btn-small" onclick="playNext()" aria-label="Bài tiếp theo">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+
+    <div class="footer">
+      Sabbe Satta Bhavantu Sukhitatta<br>
+      Nguyện tất cả sanh linh, tràn đầy muôn hạnh phúc.
+    </div>
+  </div>
+
+  <script>
+  
+    const CONFIG = {
+      totalFiles: 1583,
+      baseUrl: "https://archive.org/download/DaiTangKinhNikayaPhanDoanVaTuyenChon/",
+      fileExtension: ".mp3"
+    };
+
+    const state = {
+      history: [],
+      currentIndex: -1,
+      isPlaying: false
+    };
+
+    const els = {
+      audio: document.getElementById("audio-player"),
+      trackDisplay: document.getElementById("track-display"),
+      statusMsg: document.getElementById("status-msg"),
+      themeBtn: document.getElementById("theme-btn"),
+      overlay: document.getElementById("start-overlay")
+    };
+
+    // PADDED: This function is now ONLY used internally to build the correct URL (e.g., 0001.mp3)
+    const formatTrackNum = (num) => String(num).padStart(4, '0');
+
+    const updateDisplay = (num, isLoading = false) => {
+      // UNPADDED: We use the raw number (num) for the display text (e.g., Bài Giảng Số 1)
+      els.trackDisplay.textContent = `Bài Kinh Số ${num}`; 
+      if (isLoading) {
+        els.statusMsg.textContent = "Đang tải...";
+        els.statusMsg.classList.add('visible');
+      } else {
+        els.statusMsg.classList.remove('visible');
+      }
+    };
+
+    const handleError = () => {
+      els.statusMsg.textContent = "Không tải được. Đang chuyển bài...";
+      els.statusMsg.classList.add('visible');
+      setTimeout(playRandom, 2000);
+    };
+
+    const loadTrack = (num) => {
+      updateDisplay(num, true);
+      // CORRECT URL: This uses the padded formatTrackNum()
+      const url = `${CONFIG.baseUrl}${formatTrackNum(num)}${CONFIG.fileExtension}`; 
+      els.audio.src = url;
+      
+      els.audio.play()
+        .then(() => updateDisplay(num, false))
+        .catch(err => {
+          console.warn("Autoplay prevented or load error:", err);
+          updateDisplay(num, false);
+        });
+    };
+
+    const playRandom = () => {
+      let num;
+      do {
+        num = Math.floor(Math.random() * CONFIG.totalFiles) + 1;
+      } while (state.history.length > 0 && num === state.history[state.history.length - 1]);
+
+      state.history.push(num);
+      state.currentIndex = state.history.length - 1;
+      loadTrack(num);
+    };
+
+    const playPrev = () => {
+      if (state.currentIndex > 0) {
+        state.currentIndex--;
+        loadTrack(state.history[state.currentIndex]);
+      }
+    };
+
+    const playNext = () => {
+      if (state.currentIndex < state.history.length - 1) {
+        state.currentIndex++;
+        loadTrack(state.history[state.currentIndex]);
+      } else {
+        playRandom();
+      }
+    };
+
+   
+
+    
+    function initializeAudio() {
+      els.overlay.style.opacity = '0';
+      setTimeout(() => {
+        els.overlay.style.display = 'none';
+        playRandom();
+      }, 500);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if(e.code === 'Space') {
+        e.preventDefault();
+        els.audio.paused ? els.audio.play() : els.audio.pause();
+      }
+      if(e.code === 'ArrowRight') playNext();
+      if(e.code === 'ArrowLeft') playPrev();
+    });
+  </script>
+</body>
+</html>

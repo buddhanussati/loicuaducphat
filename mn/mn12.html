@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 12
+		</title>
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 12<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 12<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Đại Kinh Sư Tử Hống<br>
+<span lang="pi" class="pali">
+Mahāsīhanādasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú tại Vesālī (Tỳ-xá-ly), ở phía ngoài thành, trong một khu rừng phía Tây.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā vesāliyaṃ viharati bahinagare aparapure vanasaṇḍe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Sunakkhatta thuộc bộ lạc Licchavi, vừa mới từ bỏ Pháp và Luật này. Nói lời nói như sau trong Hội chúng ở Vesālī:<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena sunakkhatto licchaviputto acirapakkanto hoti imasmā dhammavinayā. So vesāliyaṃ parisati evaṃ vācaṃ bhāsati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sa-môn Gotama không có pháp thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh;<br>
+<span lang="pi" class="pali">
+“natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuận trắc nghiệm,<br>
+<span lang="pi" class="pali">
+Takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và thuyết cho một mục tiêu đặc biệt, có khả năng hướng thượng, có thể dẫn người thực hành diệt tận khổ đau.”<br>
+<span lang="pi" class="pali">
+Yassa ca khvāssa atthāya dhammo desito so niyyāti takkarassa sammā dukkhakkhayāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc ấy Tôn giả Sāriputta (Xá-lợi-phất) vào buổi sáng, đắp y, cầm bát, vào thành Vesālī để khất thực.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā sāriputto pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya vesāliṃ piṇḍāya pāvisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Sāriputta nghe Sunakkhatta thuộc bộ lạc Licchavi nói như sau trong hội chúng ở Vesālī:<br>
+<span lang="pi" class="pali">
+Assosi kho āyasmā sāriputto sunakkhattassa licchaviputtassa vesāliyaṃ parisati evaṃ vācaṃ bhāsamānassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sa-môn Gotama không có pháp thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh;<br>
+<span lang="pi" class="pali">
+“natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuận trắc nghiệm.<br>
+<span lang="pi" class="pali">
+Takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và thuyết pháp cho một mục tiêu đặc biệt, có khả năng hướng thượng, có thể dẫn người thực hành diệt tận khổ đau.”<br>
+<span lang="pi" class="pali">
+Yassa ca khvāssa atthāya dhammo desito so niyyāti takkarassa sammā dukkhakkhayāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Sāriputta khất thực ở Vesālī xong, sau khi ăn và đi khất thực trở về đến chỗ ở Thế Tôn, sau khi đến đảnh lễ Ngài và ngồi xuống một bên. Sau khi ngồi xuống một bên, Tôn giả Sāriputta bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā sāriputto vesāliyaṃ piṇḍāya caritvā pacchābhattaṃ piṇḍapātapaṭikkanto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho āyasmā sāriputto bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, Sunakkhatta thuộc bộ lạc Licchavi, vừa mới từ bỏ Pháp và Luật này.<br>
+<span lang="pi" class="pali">
+“sunakkhatto, bhante, licchaviputto acirapakkanto imasmā dhammavinayā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nói lời nói như sau trong hội chúng Vesālī: “Sa-môn Gotama không có pháp thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh;<br>
+<span lang="pi" class="pali">
+So vesāliyaṃ parisati evaṃ vācaṃ bhāsati: ‘natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuận trắc nghiệm.<br>
+<span lang="pi" class="pali">
+Takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và thuyết pháp cho một mục tiêu đặc biệt, có khả năng hướng thượng, có thể dẫn người thực hành diệt tận khổ đau.”<br>
+<span lang="pi" class="pali">
+Yassa ca khvāssa atthāya dhammo desito so niyyāti takkarassa sammā dukkhakkhayāyā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Sāriputta, Sunakkhatta phẫn nộ và ngu si.<br>
+<span lang="pi" class="pali">
+“Kodhano heso, sāriputta, sunakkhatto moghapuriso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+do phẫn nộ nên nói lên lời ấy.<br>
+<span lang="pi" class="pali">
+Kodhā ca panassa esā vācā bhāsitā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ông ta nghĩ: “Ta sẽ nói xấu”. Thế mà kẻ ngu Sunakkhatta lại nói lời tán thán Như Lai.<br>
+<span lang="pi" class="pali">
+‘Avaṇṇaṃ bhāsissāmī’ti kho, sāriputta, sunakkhatto moghapuriso vaṇṇaṃyeva tathāgatassa bhāsati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ai nói như sau là tán thán Như Lai:<br>
+<span lang="pi" class="pali">
+Vaṇṇo heso, sāriputta, tathāgatassa yo evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Pháp ấy được thuyết giảng cho một mục tiêu đặc biệt, có khả năng hướng dẫn người thực hành diệt tận khổ đau.’<br>
+<span lang="pi" class="pali">
+‘yassa ca khvāssa atthāya dhammo desito so niyyāti takkarassa sammā dukkhakkhayāyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, đối với Sunakkhatta ngu si kia, sẽ không có tùy pháp nào về Ta như sau:<br>
+<span lang="pi" class="pali">
+Ayampi hi nāma, sāriputta, sunakkhattassa moghapurisassa mayi dhammanvayo na bhavissati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là Như Lai, A-la-hán, Chánh Ðẳng Giác, Minh Hạnh Túc, Thiện Thệ, Thế Gian Giải, Vô Thượng Sĩ, Ðiều Ngự Trượng Phu, Thiên Nhân Sư, Phật, Thế Tôn.’<br>
+<span lang="pi" class="pali">
+‘itipi so bhagavā arahaṃ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi, satthā devamanussānaṃ, buddho bhagavā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, đối với Sunakkhatta ngu si kia, sẽ không có tùy pháp nào về Ta như sau:<br>
+<span lang="pi" class="pali">
+Ayampi hi nāma, sāriputta, sunakkhattassa moghapurisassa mayi dhammanvayo na bhavissati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là Thế Tôn, vị đã chứng được các loại thần thông, một thân hiện ra nhiều thân, nhiều thân hiện ra một thân, hiện hình, biến hình, đi ngang qua vách, qua thành, qua núi, như đi ngang hư không, độn thổ trồi lên ngang qua đất liền như ở trong nước, đi trên nước không chìm như trên đất liền, ngồi kiết-già đi trên hư không như con chim; với bàn tay, chạm và rờ mặt trăng và mặt trời, những vật có đại oai lực, đại oai thần như vậy, có thể tự thân bay đến cõi Phạm Thiên.’<br>
+<span lang="pi" class="pali">
+‘itipi so bhagavā anekavihitaṃ iddhividhaṃ paccanubhoti—ekopi hutvā bahudhā hoti, bahudhāpi hutvā eko hoti; āvibhāvaṃ, tirobhāvaṃ; tirokuṭṭaṃ tiropākāraṃ tiropabbataṃ asajjamāno gacchati, seyyathāpi ākāse; pathaviyāpi ummujjanimujjaṃ karoti, seyyathāpi udake; udakepi abhijjamāne gacchati, seyyathāpi pathaviyaṃ; ākāsepi pallaṅkena kamati, seyyathāpi pakkhī sakuṇo; imepi candimasūriye evaṃmahiddhike evaṃmahānubhāve pāṇinā parimasati parimajjati; yāva brahmalokāpi kāyena vasaṃ vattetī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, đối với Sunakkhatta ngu si kia sẽ không có tùy pháp này về Ta như sau:<br>
+<span lang="pi" class="pali">
+Ayampi hi nāma, sāriputta, sunakkhattassa moghapurisassa mayi dhammanvayo na bhavissati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là Thế Tôn với thiên nhĩ thanh tịnh siêu nhân có thể nghe hai loại tiếng chư Thiên và loài Người, xa và gần.’<br>
+<span lang="pi" class="pali">
+‘itipi so bhagavā dibbāya sotadhātuyā visuddhāya atikkantamānusikāya ubho sadde suṇāti—dibbe ca mānuse ca, ye dūre santike cā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, đối với Sunakkhatta ngu si kia sẽ không có tùy pháp nào về Ta như sau:<br>
+<span lang="pi" class="pali">
+Ayampi hi nāma, sāriputta, sunakkhattassa moghapurisassa mayi dhammanvayo na bhavissati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là Thế Tôn, sau khi đi sâu vào tâm chúng sanh, tâm loài Người với tâm của mình, vị ấy biết được như sau:<br>
+<span lang="pi" class="pali">
+‘itipi so bhagavā parasattānaṃ parapuggalānaṃ cetasā ceto paricca pajānāti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có tham biết là tâm có tham.<br>
+<span lang="pi" class="pali">
+sarāgaṃ vā cittaṃ sarāgaṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay tâm không tham biết là tâm không tham<br>
+<span lang="pi" class="pali">
+vītarāgaṃ vā cittaṃ vītarāgaṃ cittanti pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có sân biết là tâm có sân.<br>
+<span lang="pi" class="pali">
+sadosaṃ vā cittaṃ sadosaṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay tâm không sân biết là tâm không sân.<br>
+<span lang="pi" class="pali">
+vītadosaṃ vā cittaṃ vītadosaṃ cittanti pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có si biết là tâm có si.<br>
+<span lang="pi" class="pali">
+samohaṃ vā cittaṃ samohaṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay tâm không si biết là tâm không si.<br>
+<span lang="pi" class="pali">
+vītamohaṃ vā cittaṃ vītamohaṃ cittanti pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tâm chuyên chú biết là tâm chuyên chú,<br>
+<span lang="pi" class="pali">
+saṅkhittaṃ vā cittaṃ saṅkhittaṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm không tán loạn biết là tâm không tán loạn,<br>
+<span lang="pi" class="pali">
+vikkhittaṃ vā cittaṃ vikkhittaṃ cittanti pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tâm đại hành biết là tâm đại hành,<br>
+<span lang="pi" class="pali">
+mahaggataṃ vā cittaṃ mahaggataṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm không đại hành biết là tâm không đại hành,<br>
+<span lang="pi" class="pali">
+amahaggataṃ vā cittaṃ amahaggataṃ cittanti pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tâm vô thượng biết là tâm vô thượng,<br>
+<span lang="pi" class="pali">
+sauttaraṃ vā cittaṃ sauttaraṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm không Vô thượng biết là tâm không Vô thượng,<br>
+<span lang="pi" class="pali">
+anuttaraṃ vā cittaṃ anuttaraṃ cittanti pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tâm thiền định biết là tâm thiền định,<br>
+<span lang="pi" class="pali">
+samāhitaṃ vā cittaṃ samāhitaṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm không Thiền định biết là tâm không thiền định,<br>
+<span lang="pi" class="pali">
+asamāhitaṃ vā cittaṃ asamāhitaṃ cittanti pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tâm giải thoát biết là tâm giải thoát,<br>
+<span lang="pi" class="pali">
+vimuttaṃ vā cittaṃ vimuttaṃ cittanti pajānāti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tâm không giải thoát biết là tâm không giải thoát.<br>
+<span lang="pi" class="pali">
+avimuttaṃ vā cittaṃ avimuttaṃ cittanti pajānātī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai có đầy đủ mười Như Lai lực, chính nhờ thành tựu mười lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống tiếng rống con sư tử trong các Hội chúng và chuyển Phạm luân. Thế nào là mười?<br>
+<span lang="pi" class="pali">
+Dasa kho panimāni, sāriputta, tathāgatassa tathāgatabalāni yehi balehi samannāgato tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti. Katamāni dasa?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Sāriputta, Như Lai như thật tuệ tri xứ là xứ, phi xứ là phi xứ (Tri thị xứ phi xứ lực).<br>
+<span lang="pi" class="pali">
+Idha, sāriputta, tathāgato ṭhānañca ṭhānato aṭṭhānañca aṭṭhānato yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri xứ là xứ, phi xứ là phi xứ. Như vậy là Như Lai lực của Như Lai. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống lên tiếng rống con sư tử trong các hội chúng, và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato ṭhānañca ṭhānato aṭṭhānañca aṭṭhānato yathābhūtaṃ pajānāti, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai như thật tuệ tri quả báo tùy thuộc sở do, tùy theo sở nhân của các hành nghiệp quá khứ, vị lai, hiện tại (Tri tam thế nghiệp báo lực).<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato atītānāgatapaccuppannānaṃ kammasamādānānaṃ ṭhānaso hetuso vipākaṃ yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri quả báo tùy thuộc sở do, tùy theo sở nhân của các hành nghiệp quá khứ, vị lai, hiện tại. Như vậy là Như Lai lực của Như Lai. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống lên tiếng rống con sư tử trong các hội chúng, và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato atītānāgatapaccuppannānaṃ kammasamādānānaṃ ṭhānaso hetuso vipākaṃ yathābhūtaṃ pajānāti, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai như thật tuệ tri con đường đưa đến tất cả cảnh giới (Tri nhứt thiết đạo trí lực).<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato sabbatthagāminiṃ paṭipadaṃ yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri con đường đưa đến tất cả cảnh giới. Như vậy là Như Lai lực của Như Lai. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống lên tiếng rống con sư tử trong các hội chúng, và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato sabbatthagāminiṃ paṭipadaṃ yathābhūtaṃ pajānāti, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai như thật tuệ tri thế giới với mọi cảnh giới, nhiều chủng loại, nhiều sai biệt (Tri thế gian chủng chủng tánh lực).<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato anekadhātunānādhātulokaṃ yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri thế giới với mọi cảnh giới, nhiều chủng loại, nhiều sai biệt. Như vậy là Như Lai lực của Như Lai. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống lên tiếng rống con sư tử trong các hội chúng, và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato anekadhātunānādhātulokaṃ yathābhūtaṃ pajānāti, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai như thật tuệ tri chí hướng sai biệt của các loại hữu tình (Tri tha chúng sanh chưởng chưởng dục lực).<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato sattānaṃ nānādhimuttikataṃ yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri chí hướng sai biệt của các loại hữu tình. Như vậy là Như Lai lực của Như Lai. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống lên tiếng rống con sư tử trong các hội chúng, và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato sattānaṃ nānādhimuttikataṃ yathābhūtaṃ pajānāti, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai như thật tuệ tri những căn thượng hạ của các loài hữu tình, loài Người (Tri tha chúng sanh chư căn thượng hạ lực).<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato parasattānaṃ parapuggalānaṃ indriyaparopariyattaṃ yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri những căn thượng hạ của các loài hữu tình, loài Người. Như vậy là Như Lai lực của Như Lai. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống lên tiếng rống con sư tử trong các hội chúng, và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato parasattānaṃ parapuggalānaṃ indriyaparopariyattaṃ yathābhūtaṃ pajānāti, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai như thật tuệ tri sự tạp nhiễm, sự thanh tịnh, sự xuất khởi của các Thiền, chứng về Thiền, về giải thoát, về định (Tri chư Thiền tam muội lực).<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato jhānavimokkhasamādhisamāpattīnaṃ saṅkilesaṃ vodānaṃ vuṭṭhānaṃ yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri sự tạp nhiễm, sự thanh tịnh, sự xuất khởi của các Thiền, chứng về Thiền, về giải thoát, về định. Như vậy là Như Lai lực của Như Lai. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống lên tiếng rống con sư tử trong các hội chúng, và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato jhānavimokkhasamādhisamāpattīnaṃ saṅkilesaṃ vodānaṃ vuṭṭhānaṃ yathābhūtaṃ pajānāti, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai nhớ đến các đời sống quá khứ, như một đời, hai đời, ba đời, bốn đời, năm đời, mười đời, hai mươi đời, ba mươi đời, bốn mươi đời, năm mươi đời, một trăm đời, một ngàn đời, một trăm ngàn đời, nhiều hoại kiếp, nhiều thành kiếp, nhiều thành hoại kiếp. Ngài nhớ rằng: “Tại chỗ kia, Ta có tên như thế này, dòng họ như thế này, giai cấp như thế này, thọ khổ lạc như thế này, tuổi thọ đến mức như thế này. Sau khi chết tại chỗ kia, Ta được sanh ra chỗ nọ. Tại chỗ ấy, Ta có tên như thế này, dòng họ như thế này, giai cấp như thế này, thọ khổ lạc như thế này, tuổi thọ đến mức như thế này. Sau khi chết tại chỗ nọ, Ta được sanh ra ở đây”. Như vậy, Như Lai nhớ đến nhiều đời sống quá khứ cùng với các nét đại cương và các chi tiết.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato anekavihitaṃ pubbenivāsaṃ anussarati, seyyathidaṃ—ekampi jātiṃ dvepi jātiyo tissopi jātiyo catassopi jātiyo pañcapi jātiyo dasapi jātiyo vīsampi jātiyo tiṃsampi jātiyo cattālīsampi jātiyo paññāsampi jātiyo jātisatampi jātisahassampi jātisatasahassampi anekepi saṃvaṭṭakappe anekepi vivaṭṭakappe anekepi saṃvaṭṭavivaṭṭakappe: ‘amutrāsiṃ evaṃnāmo evaṅgotto evaṃvaṇṇo evamāhāro evaṃsukhadukkhappaṭisaṃvedī evamāyupariyanto, so tato cuto amutra udapādiṃ; tatrāpāsiṃ evaṃnāmo evaṅgotto evaṃvaṇṇo evamāhāro evaṃsukhadukkhappaṭisaṃvedī evamāyupariyanto, so tato cuto idhūpapanno’ti. Iti sākāraṃ sauddesaṃ anekavihitaṃ pubbenivāsaṃ anussarati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri… (như trên)… và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato anekavihitaṃ pubbenivāsaṃ anussarati, seyyathidaṃ—ekampi jātiṃ dvepi jātiyo ...pe... iti sākāraṃ sauddesaṃ anekavihitaṃ pubbenivāsaṃ anussarati, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai với thiên nhãn thuần tịnh, siêu nhân, thấy sự sống và chết của chúng sanh. Như Lai tuệ tri rõ rằng, chúng sanh người hạ liệt, kẻ cao sang, người đẹp đẽ, kẻ thô xấu, người may mắn, kẻ bất hạnh đều do hạnh nghiệp của họ. Các chúng sanh này làm những ác hạnh về thân, về lời và về ý, phỉ báng các bậc Thánh, theo tà kiến, tạo các nghiệp theo tà kiến. Những người này sau khi thân hoại mạng chung, phải sanh vào cõi dữ, ác thú, đọa xứ, địa ngục. Các chúng sanh này làm những thiện hạnh về thân, về lời và về ý, không phỉ báng các bậc Thánh, theo chánh kiến, tạo các nghiệp theo chánh kiến. Những người này, sau khi thân hoại mạng chung, được sanh lên các thiện thú, cõi Trời, trên đời này. Như vậy, Như Lai với thiên nhãn thuần tịnh, siêu nhân, thấy sự sống chết của chúng sanh. Như Lai tuệ tri rằng, chúng sanh, người hạ liệt, kẻ cao sang, người đẹp đẽ, kẻ thô xấu, người may mắn, kẻ bất hạnh, đều do hạnh nghiệp của họ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato dibbena cakkhunā visuddhena atikkantamānusakena satte passati cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe sugate duggate yathākammūpage satte pajānāti: ‘ime vata bhonto sattā kāyaduccaritena samannāgatā vacīduccaritena samannāgatā manoduccaritena samannāgatā ariyānaṃ upavādakā micchādiṭṭhikā micchādiṭṭhikammasamādānā, te kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannā. Ime vā pana bhonto sattā kāyasucaritena samannāgatā vacīsucaritena samannāgatā manosucaritena samannāgatā ariyānaṃ anupavādakā sammādiṭṭhikā sammādiṭṭhikammasamādānā, te kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannā’ti. Iti dibbena cakkhunā visuddhena atikkantamānusakena satte passati cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe sugate duggate yathākammūpage satte pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai như thật tuệ tri… (như trên)… và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato dibbena cakkhunā visuddhena atikkantamānusakena satte passati cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe sugate duggate yathākammūpage satte pajānāti: ‘ime vata bhonto sattā kāyaduccaritena samannāgatā vacīduccaritena samannāgatā manoduccaritena samannāgatā ariyānaṃ upavādakā micchādiṭṭhikā micchādiṭṭhikammasamādānā, te kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannā. Ime vā pana bhonto sattā kāyasucaritena samannāgatā vacīsucaritena samannāgatā manosucaritena samannāgatā ariyānaṃ anupavādakā sammādiṭṭhikā sammādiṭṭhikammasamādānā, te kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannā’ti. Iti dibbena cakkhunā visuddhena atikkantamānusakena satte passati cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe sugate duggate yathākammūpage satte pajānāti. Idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Sāriputta, Như Lai nhờ đoạn trừ các lậu hoặc tự mình chứng tri, chứng ngộ, thành tựu và an trú ngay trong hiện tại vô lậu tâm giải thoát, tuệ giải thoát.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, sāriputta, tathāgato āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai nhờ đoạn trừ các lậu hoặc, tự mình với thắng trí chứng ngộ, chứng đạt và an trú ngay trong hiện tại vô lậu tâm giải thoát, tuệ giải thoát. Chính nhờ Như Lai lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống tiếng rống con sư tử trong các Hội chúng và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Yampi, sāriputta, tathāgato āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati, idampi, sāriputta, tathāgatassa tathāgatabalaṃ hoti yaṃ balaṃ āgamma tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai có đầy đủ mười Như Lai lực. Chính nhờ thành tựu mười lực này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống tiếng rống sư tử trong các Hội chúng và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Imāni kho, sāriputta, dasa tathāgatassa tathāgatabalāni yehi balehi samannāgato tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu ai biết Ta như vậy, thấy Ta như vậy mà còn nói:<br>
+<span lang="pi" class="pali">
+Yo kho maṃ, sāriputta, evaṃ jānantaṃ evaṃ passantaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sa-môn Gotama không có pháp Thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh.<br>
+<span lang="pi" class="pali">
+‘natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuận trắc nghiệm,’<br>
+<span lang="pi" class="pali">
+takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu người ấy không từ bỏ lời nói ấy; không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+taṃ, sāriputta, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như Tỷ-kheo thành tựu giới hạnh, thành tựu Thiền định, thành tựu trí tuệ có thể chứng được chánh trí ngay trong hiện tại. Này Sāriputta, Ta nói như vậy là sự thành tựu như vậy.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, bhikkhu sīlasampanno samādhisampanno paññāsampanno diṭṭheva dhamme aññaṃ ārādheyya, evaṃ sampadamidaṃ, sāriputta, vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu người ấy không từ bỏ lời nói ấy không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+Taṃ vācaṃ appahāya, taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có bốn pháp vô sở úy chính nhờ thành tựu bốn pháp này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống tiếng rống con sử tử trong các hội chúng và chuyển Phạm luân. Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Cattārimāni, sāriputta, tathāgatassa vesārajjāni yehi vesārajjehi samannāgato tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti. Katamāni cattāri?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta thấy không có lý do gì, một Sa-môn, Bà-la-môn, chư Thiên, Ma vương, Phạm thiên hay một ai ở đời có thể chỉ trích Ta đúng pháp rằng: “Các pháp này chưa được chứng ngộ hoàn toàn, mà quý vị tự xưng đã chứng ngộ hoàn toàn”.<br>
+<span lang="pi" class="pali">
+‘Sammāsambuddhassa te paṭijānato ime dhammā anabhisambuddhā’ti. Tatra vata maṃ samaṇo vā brāhmaṇo vā devo vā māro vā brahmā vā koci vā lokasmiṃ sahadhammena paṭicodessatīti nimittametaṃ, sāriputta, na samanupassāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, vì Ta thấy không có lý do gì như vậy, nên Ta sống đạt được an ổn, đạt được không sợ hãi, đạt được vô úy.<br>
+<span lang="pi" class="pali">
+Etamahaṃ, sāriputta, nimittaṃ asamanupassanto khemappatto abhayappatto vesārajjappatto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta thấy không có lý do gì, một Sa-môn, Bà-la-môn, chư Thiên, Ma vương, Phạm thiên hay một ai ở đời có thể chỉ trích Ta đúng pháp rằng: “Các lậu hoặc này chưa được đoạn trừ mà quý vị tự xưng đã đoạn trừ”.<br>
+<span lang="pi" class="pali">
+‘Khīṇāsavassa te paṭijānato ime āsavā aparikkhīṇā’ti. Tatra vata maṃ samaṇo vā brāhmaṇo vā devo vā māro vā brahmā vā koci vā lokasmiṃ sahadhammena paṭicodessatīti nimittametaṃ, sāriputta, na samanupassāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, vì Ta thấy không có lý do gì như vậy, nên Ta sống đạt được an ổn, đạt được không sợ hãi, đạt được vô úy.<br>
+<span lang="pi" class="pali">
+Etamahaṃ, sāriputta, nimittaṃ asamanupassanto khemappatto abhayappatto vesārajjappatto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta thấy không có lý do gì… có thể chỉ trích Ta đúng pháp rằng: “Những pháp này được gọi là các chướng ngại pháp khi được thực hành thời không có gì gọi là chướng ngại pháp cả”.<br>
+<span lang="pi" class="pali">
+‘Ye kho pana te antarāyikā dhammā vuttā, te paṭisevato nālaṃ antarāyāyā’ti. Tatra vata maṃ samaṇo vā brāhmaṇo vā devo vā māro vā brahmā vā koci vā lokasmiṃ sahadhammena paṭicodessatīti nimittametaṃ, sāriputta, na samanupassāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, vì Ta không thấy… đạt được vô úy.<br>
+<span lang="pi" class="pali">
+Etamahaṃ, sāriputta, nimittaṃ asamanupassanto khemappatto abhayappatto vesārajjappatto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta thấy không có lý do gì một Sa-môn Bà-la-môn, chư Thiên, Ma vương, Phạm thiên hay một ai ở đời có thể chỉ trích Ta đúng pháp rằng: “Pháp do quý vị thuyết giảng không đưa đến mục tiêu đặc biệt, không có khả năng hướng thượng, không có thể dẫn người thực hành đến diệt tận khổ đau”.<br>
+<span lang="pi" class="pali">
+‘Yassa kho pana te atthāya dhammo desito, so na niyyāti takkarassa sammā dukkhakkhayāyā’ti. Tatra vata maṃ samaṇo vā brāhmaṇo vā devo vā māro vā brahmā vā koci vā lokasmiṃ sahadhammena paṭicodessatīti nimittametaṃ, sāriputta, na samanupassāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, vì Ta thấy không có lý do gì như vậy, nên Ta sống đạt được an ổn, đạt được không sợ hãi, đạt được vô úy.<br>
+<span lang="pi" class="pali">
+Etamahaṃ, sāriputta, nimittaṃ asamanupassanto khemappatto abhayappatto vesārajjappatto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có bốn pháp vô sở úy, chính nhờ thành tựu bốn pháp này, Như Lai tự nhận cho mình địa vị Ngưu Vương, rống tiếng rống con sử tử trong các hội chúng và chuyển Phạm luân.<br>
+<span lang="pi" class="pali">
+Imāni kho, sāriputta, cattāri tathāgatassa vesārajjāni yehi vesārajjehi samannāgato tathāgato āsabhaṃ ṭhānaṃ paṭijānāti, parisāsu sīhanādaṃ nadati, brahmacakkaṃ pavatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu ai biết Ta như vậy, thấy Ta như vậy mà còn nói:<br>
+<span lang="pi" class="pali">
+Yo kho maṃ, sāriputta, evaṃ jānantaṃ evaṃ passantaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sa-môn Gotama không có pháp Thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh. Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuận trắc nghiệm.’<br>
+<span lang="pi" class="pali">
+‘natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso, takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu người ấy không từ bỏ lời nói ấy; không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+taṃ, sāriputta, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như Tỷ-kheo thành tựu giới hạnh, thành tựu Thiền định, thành tựu trí tuệ có thể chứng được chánh trí ngay trong hiện tại. Này Sāriputta, Ta nói như vậy là sự thành tựu như vậy.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, bhikkhu sīlasampanno samādhisampanno paññāsampanno diṭṭheva dhamme aññaṃ ārādheyya, evaṃ sampadamidaṃ, sāriputta, vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu người ấy không từ bỏ lời nói ấy không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+Taṃ vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có tám Hội chúng này. Thế nào là tám?<br>
+<span lang="pi" class="pali">
+Aṭṭha kho imā, sāriputta, parisā. Katamā aṭṭha?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hội chúng Sát-đế-lị, Hội chúng Bà-la-môn, Hội chúng Gia chủ, Hội chúng Sa-môn, Hội chúng Tứ thiên vương, Hội chúng Tam thập tam thiên, Hội chúng Māra, Hội chúng Phạm thiên.<br>
+<span lang="pi" class="pali">
+Khattiyaparisā, brāhmaṇaparisā, gahapatiparisā, samaṇaparisā, cātumahārājikaparisā, tāvatiṃsaparisā, māraparisā, brahmaparisā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có tám Hội chúng này.<br>
+<span lang="pi" class="pali">
+imā kho, sāriputta, aṭṭha parisā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Như Lai thành tựu bốn pháp vô sở úy như vậy, đến gần và vào tám Hội chúng này.<br>
+<span lang="pi" class="pali">
+Imehi kho, sāriputta, catūhi vesārajjehi samannāgato tathāgato imā aṭṭha parisā upasaṅkamati ajjhogāhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta nhớ lại Ta đã đến hàng trăm Hội chúng Sát-đế-lị.<br>
+<span lang="pi" class="pali">
+Abhijānāmi kho panāhaṃ, sāriputta, anekasataṃ khattiyaparisaṃ upasaṅkamitā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tuy vậy, trước khi Ta ngồi xuống tại chỗ ấy, trước khi Ta nói chuyện và trước khi Ta đàm luận;<br>
+<span lang="pi" class="pali">
+Tatrapi mayā sannisinnapubbañceva, sallapitapubbañca, sākacchā ca samāpajjitapubbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ta thấy không có lý do gì để nghĩ rằng: “Chắc chắn sự sợ hãi và run sợ sẽ đến ám ảnh Ta”.<br>
+<span lang="pi" class="pali">
+Tatra vata maṃ bhayaṃ vā sārajjaṃ vā okkamissatīti nimittametaṃ, sāriputta, na samanupassāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, vì Ta thấy không có lý do gì như vậy, nên Ta sống đạt được an ổn, đạt được không sợ hãi, đạt được vô úy.<br>
+<span lang="pi" class="pali">
+Etamahaṃ, sāriputta, nimittaṃ asamanupassanto khemappatto abhayappatto vesārajjappatto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta nhớ lại, Ta đã đến hàng trăm Hội chúng Bà-la-môn… (như trên)…<br>
+<span lang="pi" class="pali">
+Abhijānāmi kho panāhaṃ, sāriputta, anekasataṃ brāhmaṇaparisaṃ ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hội chúng Gia chủ…<br>
+<span lang="pi" class="pali">
+gahapatiparisaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hội chúng Sa-môn…<br>
+<span lang="pi" class="pali">
+samaṇaparisaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hội chúng Tứ thiên vương…<br>
+<span lang="pi" class="pali">
+cātumahārājikaparisaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hội chúng Tam thập tam thiên…<br>
+<span lang="pi" class="pali">
+tāvatiṃsaparisaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hội chúng Māra…<br>
+<span lang="pi" class="pali">
+māraparisaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hội chúng Phạm thiên.<br>
+<span lang="pi" class="pali">
+brahmaparisaṃ upasaṅkamitā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tuy vậy, trước khi Ta ngồi xuống tại chỗ ấy, trước khi Ta nói chuyện và trước khi Ta đàm luận,<br>
+<span lang="pi" class="pali">
+Tatrapi mayā sannisinnapubbañceva, sallapitapubbañca, sākacchā ca samāpajjitapubbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này Sāriputta, Ta thấy không có một lý do gì để nghĩ rằng: “Chắc chắn sự sợ hãi và run sợ sẽ đến ám ảnh Ta”.<br>
+<span lang="pi" class="pali">
+Tatra vata maṃ bhayaṃ vā sārajjaṃ vā okkamissatīti nimittametaṃ, sāriputta, na samanupassāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, vì Ta thấy không có lý do gì như vậy, nên Ta sống đạt được an ổn, đạt được không sợ hãi, đạt được vô úy.<br>
+<span lang="pi" class="pali">
+Etamahaṃ, sāriputta, nimittaṃ asamanupassanto khemappatto abhayappatto vesārajjappatto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu ai biết Ta như vậy, thấy Ta như vậy mà còn nói:<br>
+<span lang="pi" class="pali">
+Yo kho maṃ, sāriputta, evaṃ jānantaṃ evaṃ passantaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sa-môn Gotama không có pháp Thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh. Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuận trắc nghiệm.’<br>
+<span lang="pi" class="pali">
+‘natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso, takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu người ấy không từ bỏ lời nói ấy; không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+taṃ, sāriputta, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như Tỷ-kheo thành tựu giới hạnh, thành tựu Thiền định, thành tựu trí tuệ có thể chứng được chánh trí ngay trong hiện tại. Này Sāriputta, Ta nói như vậy là sự thành tựu như vậy.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, bhikkhu sīlasampanno samādhisampanno paññāsampanno diṭṭheva dhamme aññaṃ ārādheyya, evaṃ sampadamidaṃ, sāriputta, vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu người ấy không từ bỏ lời nói ấy không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+Taṃ vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có bốn loại sanh. Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Catasso kho imā, sāriputta, yoniyo. Katamā catasso?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Noãn sanh, thai sanh, thấp sanh, hóa sanh.<br>
+<span lang="pi" class="pali">
+Aṇḍajā yoni, jalābujā yoni, saṃsedajā yoni, opapātikā yoni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, thế nào là noãn sanh?<br>
+<span lang="pi" class="pali">
+Katamā ca, sāriputta, aṇḍajā yoni?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, những loại chúng sanh nào phá vỏ trứng, mà sanh,<br>
+<span lang="pi" class="pali">
+Ye kho te, sāriputta, sattā aṇḍakosaṃ abhinibbhijja jāyanti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này Sāriputta như vậy gọi là noãn sanh.<br>
+<span lang="pi" class="pali">
+ayaṃ vuccati, sāriputta, aṇḍajā yoni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, thế nào là thai sanh?<br>
+<span lang="pi" class="pali">
+Katamā ca, sāriputta, jalābujā yoni?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, những loại chúng sanh nào phá màn da mỏng che chỗ kín mà sanh,<br>
+<span lang="pi" class="pali">
+Ye kho te, sāriputta, sattā vatthikosaṃ abhinibbhijja jāyanti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy gọi là thai sanh.<br>
+<span lang="pi" class="pali">
+ayaṃ vuccati, sāriputta, jalābujā yoni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, thế nào là thấp sanh?<br>
+<span lang="pi" class="pali">
+Katamā ca, sāriputta, saṃsedajā yoni?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, những loại chúng sanh nào sanh ra từ cá thúi, từ xác chết thúi, từ cháo cơm thúi, hay trong hồ nước dơ hay trong ao nước nhớp.<br>
+<span lang="pi" class="pali">
+Ye kho te, sāriputta, sattā pūtimacche vā jāyanti pūtikuṇape vā pūtikummāse vā candanikāye vā oḷigalle vā jāyanti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy gọi là thấp sanh.<br>
+<span lang="pi" class="pali">
+ayaṃ vuccati, sāriputta, saṃsedajā yoni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, thế nào là hóa sanh?<br>
+<span lang="pi" class="pali">
+Katamā ca, sāriputta, opapātikā yoni?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên, các chúng sanh ở địa ngục, một số thuộc loài người và một số thuộc đọa xứ.<br>
+<span lang="pi" class="pali">
+Devā, nerayikā, ekacce ca manussā, ekacce ca vinipātikā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy gọi là hóa sanh.<br>
+<span lang="pi" class="pali">
+ayaṃ vuccati, sāriputta, opapātikā yoni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta có bốn loại sanh như vậy.<br>
+<span lang="pi" class="pali">
+Imā kho, sāriputta, catasso yoniyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu ai biết Ta như vậy, thấy Ta như vậy mà còn nói:<br>
+<span lang="pi" class="pali">
+Yo kho maṃ, sāriputta, evaṃ jānantaṃ evaṃ passantaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sa-môn Gotama không có pháp Thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh. Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuận trắc nghiệm.’<br>
+<span lang="pi" class="pali">
+‘natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso, takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu người ấy không từ bỏ lời nói ấy; không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+taṃ, sāriputta, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như Tỷ-kheo thành tựu giới hạnh, thành tựu Thiền định, thành tựu trí tuệ có thể chứng được chánh trí ngay trong hiện tại. Này Sāriputta, Ta nói như vậy là sự thành tựu như vậy.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, bhikkhu sīlasampanno samādhisampanno paññāsampanno diṭṭheva dhamme aññaṃ ārādheyya, evaṃ sampadamidaṃ, sāriputta, vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu người ấy không từ bỏ lời nói ấy không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy; người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+Taṃ vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có năm loại sanh thú này. Thế nào là năm?<br>
+<span lang="pi" class="pali">
+Pañca kho imā, sāriputta, gatiyo. Katamā pañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðịa ngục, bàng sanh, ngạ quỷ, loài Người, chư Thiên.<br>
+<span lang="pi" class="pali">
+Nirayo, tiracchānayoni, pettivisayo, manussā, devā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta tuệ tri địa ngục, con đường đưa đến địa ngục và hành lộ đưa đến địa ngục.<br>
+<span lang="pi" class="pali">
+Nirayañcāhaṃ, sāriputta, pajānāmi, nirayagāmiñca maggaṃ, nirayagāminiñca paṭipadaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tùy theo hạnh nghiệp, sau khi thân hoại mạng chung, phải sanh vào cõi dữ, ác thú, đọa xứ, địa ngục, sự việc này ta cũng tuệ tri.<br>
+<span lang="pi" class="pali">
+yathā paṭipanno ca kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjati tañca pajānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, Ta tuệ tri bàng sanh, con đường đưa đến bàng sanh và hành lộ đưa đến bàng sanh. Tùy theo hạnh nghiệp, sau khi thân hoại mạng chung, phải sanh vào bàng sanh, sự việc này Ta cũng tuệ tri.<br>
+<span lang="pi" class="pali">
+Tiracchānayoniñcāhaṃ, sāriputta, pajānāmi, tiracchānayonigāmiñca maggaṃ, tiracchānayonigāminiñca paṭipadaṃ; yathā paṭipanno ca kāyassa bhedā paraṃ maraṇā tiracchānayoniṃ upapajjati tañca pajānāmi. Pettivisayañcāhaṃ, sāriputta, pajānāmi, pettivisayagāmiñca maggaṃ, pettivisayagāminiñca paṭipadaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, Ta tuệ tri ngạ quỷ, con đường đưa đến ngạ quỷ và hành lộ đưa đến ngạ quỷ. Tùy theo hành nghiệp, sau khi thân hoại mạng chung, phải sanh vào ngạ quỷ, sự việc này Ta cũng tuệ tri.<br>
+<span lang="pi" class="pali">
+yathā paṭipanno ca kāyassa bhedā paraṃ maraṇā pettivisayaṃ upapajjati tañca pajānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, Ta cũng tuệ tri loài Người, con đường đưa đến thế giới loài Người và hành lộ đưa đến thế giới loài Người. Tùy theo hành nghiệp, sau khi thân hoại mạng chung, sanh vào loài Người, sự việc này Ta cũng tuệ tri.<br>
+<span lang="pi" class="pali">
+Manusse cāhaṃ, sāriputta, pajānāmi, manussalokagāmiñca maggaṃ, manussalokagāminiñca paṭipadaṃ; yathā paṭipanno ca kāyassa bhedā paraṃ maraṇā manussesu upapajjati tañca pajānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, Ta cũng tuệ tri chư Thiên, con đường đưa đến Thiên giới và hành lộ đưa đến Thiên giới.<br>
+<span lang="pi" class="pali">
+Deve cāhaṃ, sāriputta, pajānāmi, devalokagāmiñca maggaṃ, devalokagāminiñca paṭipadaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tùy theo hành nghiệp, sau khi thân hoại mạng chung, sanh vào thiện thú, Thiên giới, thế giới này, sự việc này Ta cũng tuệ tri.<br>
+<span lang="pi" class="pali">
+yathā paṭipanno ca kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjati tañca pajānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Sāriputta, Ta cũng tuệ tri Niết-bàn, con đường đưa đến Niết-bàn và hành lộ đưa đến Niết-bàn.<br>
+<span lang="pi" class="pali">
+Nibbānañcāhaṃ, sāriputta, pajānāmi, nibbānagāmiñca maggaṃ, nibbānagāminiñca paṭipadaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tùy theo hành nghiệp, do đoạn trừ các lậu hoặc, sau khi tự mình với thắng trí, chứng ngộ, chứng đạt và an trú ngay trong hiện tại vô lậu tâm giải thoát, tuệ giải thoát, sự việc này, Ta cũng tuệ tri.<br>
+<span lang="pi" class="pali">
+yathā paṭipanno ca āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati tañca pajānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây, với tâm của Ta, Ta tuệ tri tâm của một số người:<br>
+<span lang="pi" class="pali">
+Idhāhaṃ, sāriputta, ekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sau khi thân hoại mạng chung sẽ sanh vào cõi dữ, ác thú, đọa xứ, địa ngục như vậy. ’<br>
+<span lang="pi" class="pali">
+tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, với thiên nhãn thanh tịnh, siêu nhân, Ta thấy người ấy, sau khi thân hoại mạng chung sanh vào cõi dữ, ác thú, đọa xứ, địa ngục, phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannaṃ, ekantadukkhā tibbā kaṭukā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, cũng như có một hố than sâu hơn thân người, đầy vun than hừng, không có lửa ngọn, không có khói,<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, aṅgārakāsu sādhikaporisā pūrā aṅgārānaṃ vītaccikānaṃ vītadhūmānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và một người đi đến, bị nóng bức áp đảo, bị nóng bức hành hạ, mệt mỏi khô cổ, đắng họng, khát nước, và đi thẳng đến hố than ấy chỉ bằng một con đường.<br>
+<span lang="pi" class="pali">
+Atha puriso āgaccheyya ghammābhitatto ghammapareto kilanto tasito pipāsito ekāyanena maggena tameva aṅgārakāsuṃ paṇidhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy người ấy, có thể nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sẽ đi đến hố than kia.’<br>
+<span lang="pi" class="pali">
+‘tathāyaṃ bhavaṃ puriso paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā imaṃyeva aṅgārakāsuṃ āgamissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, người ấy sẽ thấy người kia rơi vào hố than ấy và phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passeyya aparena samayena tassā aṅgārakāsuyā patitaṃ, ekantadukkhā tibbā kaṭukā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, cũng vậy, ở đây với tâm của Ta, Ta tuệ tri tâm của một số người:<br>
+<span lang="pi" class="pali">
+Evameva kho ahaṃ, sāriputta, idhekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sau khi thân hoại mạng chung sẽ sanh vào cõi dữ, ác thú, đọa xứ, địa ngục như vậy.<br>
+<span lang="pi" class="pali">
+tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho yathā kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, với thiên nhãn thanh tịnh siêu nhân, Ta thấy người ấy sau khi thân hoại mạng chung, sanh vào cõi dữ, ác thú, đọa xứ, địa ngục, phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannaṃ, ekantadukkhā tibbā kaṭukā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta tuệ tri tâm của một số người:<br>
+<span lang="pi" class="pali">
+Idha panāhaṃ, sāriputta, ekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sau khi thân hoại mạng chung, sẽ sanh vào bàng sanh.’<br>
+<span lang="pi" class="pali">
+tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā kāyassa bhedā paraṃ maraṇā tiracchānayoniṃ upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, với thiên nhãn thanh tịnh siêu nhân, Ta thấy kẻ ấy sau khi thân hoại mạng chung, sanh vào bàng sanh, phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā tiracchānayoniṃ upapannaṃ, dukkhā tibbā kaṭukā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, cũng như có một hố phân, sâu hơn thân người, đầy những phẩn uế,<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, gūthakūpo sādhikaporiso, pūro gūthassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và một người đi đến, bị nóng bức áp đảo, bị nóng bức hành hạ, mệt mỏi, khô cổ, đắng họng, khát nước và đi thẳng đến hố phân ấy chỉ bằng một con đường.<br>
+<span lang="pi" class="pali">
+Atha puriso āgaccheyya ghammābhitatto ghammapareto kilanto tasito pipāsito ekāyanena maggena tameva gūthakūpaṃ paṇidhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy người ấy có thể nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hành nghiệp của người này như vậy, cử chỉ như vậy và bước vào đạo lộ như vậy, sẽ đi đến hố phân ấy.’<br>
+<span lang="pi" class="pali">
+‘tathāyaṃ bhavaṃ puriso paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho yathā imaṃyeva gūthakūpaṃ āgamissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, người ấy sẽ thấy người kia rơi vào hố phân ấy và phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passeyya aparena samayena tasmiṃ gūthakūpe patitaṃ, dukkhā tibbā kaṭukā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta tuệ tri tâm của một số người: “Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sau khi thân hoại mạng chung, sẽ sanh vào bàng sanh”.<br>
+<span lang="pi" class="pali">
+Evameva kho ahaṃ, sāriputta, idhekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā kāyassa bhedā paraṃ maraṇā tiracchānayoniṃ upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, với thiên nhãn thanh tịnh siêu nhân, Ta thấy kẻ ấy sau khi thân hoại mạng chung, sanh vào bàng sanh, phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā tiracchānayoniṃ upapannaṃ, dukkhā tibbā kaṭukā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta biết tâm của một số người: “Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sau khi thân hoại mạng chung, sẽ sanh vào ngạ quỷ”.<br>
+<span lang="pi" class="pali">
+Idha panāhaṃ, sāriputta, ekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā kāyassa bhedā paraṃ maraṇā pettivisayaṃ upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, với thiên nhãn thanh tịnh siêu nhân, Ta thấy kẻ ấy sau khi thân hoại mạng chung, sanh vào ngạ quỷ, phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā pettivisayaṃ upapannaṃ, dukkhabahulā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, cũng như có một cây sống trên miếng đất không bằng phẳng, với lá thưa thớt, với bóng che từng đám lưa thưa.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, rukkho visame bhūmibhāge jāto tanupattapalāso kabaracchāyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và một người đi đến bị nóng bức áp đảo, bị nóng bức hành hạ, mệt mỏi, khô cổ, đắng họng, khát nước và đi thẳng đến cây ấy chỉ bằng một con đường.<br>
+<span lang="pi" class="pali">
+Atha puriso āgaccheyya ghammābhitatto ghammapareto kilanto tasito pipāsito ekāyanena maggena tameva rukkhaṃ paṇidhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy người ấy có thể nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hành nghiệp của người này như vậy, cử chỉ như vậy và bước vào đạo lộ như vậy, sẽ đi đến cây ấy.’<br>
+<span lang="pi" class="pali">
+‘tathāyaṃ bhavaṃ puriso paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā imaṃyeva rukkhaṃ āgamissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, người ấy sẽ thấy người kia ngồi hay nằm dưới bóng cây ấy và phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passeyya, aparena samayena tassa rukkhassa chāyāya nisinnaṃ vā nipannaṃ vā dukkhabahulā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta biết tâm của một số người: “Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sau khi thân hoại mạng chung, sẽ sanh vào ngạ quỷ”.<br>
+<span lang="pi" class="pali">
+Evameva kho ahaṃ, sāriputta, idhekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā kāyassa bhedā paraṃ maraṇā pettivisayaṃ upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, với thiên nhãn thanh tịnh siêu nhân, Ta thấy kẻ ấy sau khi thân hoại mạng chung, sanh vào ngạ quỷ, phải cảm thọ những cảm giác cực khổ, thống khổ, khốc liệt.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā pettivisayaṃ upapannaṃ, dukkhabahulā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta biết tâm của một số người:<br>
+<span lang="pi" class="pali">
+Idha panāhaṃ, sāriputta, ekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hành nghiệp của người này như vậy, cử chỉ như vậy… sau khi thân hoại mạng chung, sẽ sanh vào loài người.’<br>
+<span lang="pi" class="pali">
+tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho yathā kāyassa bhedā paraṃ maraṇā manussesu upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian… Ta thấy người ấy sanh vào loài người, và cảm thọ được nhiều cảm giác lạc thọ.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā manussesu upapannaṃ, sukhabahulā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, cũng như có một cây sống trên miếng đất bằng phẳng với lá sum sê, với bóng cây rậm rạp.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, rukkho same bhūmibhāge jāto bahalapattapalāso sandacchāyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và một người đi đến, bị nóng bức áp đảo, bị nóng bức hành hạ, mệt mỏi, khô cổ, đắng họng, khát nước và đi thẳng đến cây ấy chỉ bằng một con đường.<br>
+<span lang="pi" class="pali">
+Atha puriso āgaccheyya ghammābhitatto ghammapareto kilanto tasito pipāsito ekāyanena maggena tameva rukkhaṃ paṇidhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy người ấy có thể nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hành nghiệp của người này như vậy, cử chỉ của người này như vậy và bước vào đạo lộ như vậy, sẽ đi đến cây ấy.’<br>
+<span lang="pi" class="pali">
+‘tathāyaṃ bhavaṃ puriso paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā imameva rukkhaṃ āgamissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, người ấy sẽ thấy người kia, ngồi hay nằm dưới bóng cây ấy và cảm thọ được nhiều cảm giác lạc thọ.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passeyya aparena samayena tassa rukkhassa chāyāya nisinnaṃ vā nipannaṃ vā sukhabahulā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta biết tâm của một số người: “Hành nghiệp của người này như vậy, cử chỉ như vậy … sau khi thân hoại mạng chung, sẽ sanh vào loài người”.<br>
+<span lang="pi" class="pali">
+Evameva kho ahaṃ, sāriputta, idhekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho yathā kāyassa bhedā paraṃ maraṇā manussesu upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian … Ta thấy người ấy sanh vào loài người, và cảm thọ được nhiều cảm giác lạc thọ.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā manussesu upapannaṃ, sukhabahulā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta tuệ tri tâm của một số người:<br>
+<span lang="pi" class="pali">
+Idha panāhaṃ, sāriputta, ekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hành nghiệp của người này như vậy, cử chỉ như vậy… sau khi thân hoại mạng chung sẽ sanh vào thiện thú, Thiên giới, cõi đời này”.<br>
+<span lang="pi" class="pali">
+‘tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian… Ta thấy người ấy sanh vào thiện thú, Thiên giới, cõi đời này và cảm thọ những cảm giác cực lạc.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannaṃ, ekantasukhā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, giống như một ngôi lầu, có gác nhọn, có tô vôi cả trong lẫn ngoài, được che gió, có then chốt đóng lại và có các cửa sổ khép kín.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, pāsādo, tatrāssa kūṭāgāraṃ ullittāvalittaṃ nivātaṃ phusitaggaḷaṃ pihitavātapānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại đây có một sàng tọa, trải nệm lông dài, trải nệm màu trắng, trải nệm bông có thêu hoa, trải nệm bằng da sơn dương gọi là kadali, có nệm với khuôn màu treo phía trên, có gối dài màu đỏ cả hai đầu.<br>
+<span lang="pi" class="pali">
+Tatrāssa pallaṅko gonakatthato paṭikatthato paṭalikatthato kadalimigapavarapaccattharaṇo sauttaracchado ubhatolohitakūpadhāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và một người đi đến, bị nóng bức áp đảo, bị nóng bức hành hạ, mệt mỏi, khô cổ, đắng họng, khát nước và đi thẳng đến ngôi lầu ấy.<br>
+<span lang="pi" class="pali">
+Atha puriso āgaccheyya ghammābhitatto ghammapareto kilanto tasito pipāsito ekāyanena maggena tameva pāsādaṃ paṇidhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy người ấy có thể nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hành nghiệp của người này như vậy, cử chỉ như vậy, và bước vào đạo lộ như vậy, sẽ đi đến ngôi lầu ấy”.<br>
+<span lang="pi" class="pali">
+‘tathāyaṃ bhavaṃ puriso paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā imaṃyeva pāsādaṃ āgamissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, người ấy sẽ thấy người kia ngồi hay nằm trong ngôi lầu ấy, trong gác nhọn ấy, trên sàng tọa ấy và cảm thọ được nhiều cảm thọ cực lạc.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passeyya aparena samayena tasmiṃ pāsāde tasmiṃ kūṭāgāre tasmiṃ pallaṅke nisinnaṃ vā nipannaṃ vā ekantasukhā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Sāriputta, ở đây với tâm của Ta, Ta tuệ tri tâm của một số người: “Hành nghiệp của người này như vậy, cử chỉ như vậy… sau khi thân hoại mạng chung sẽ sanh vào thiện thú, Thiên giới, cõi đời này”.<br>
+<span lang="pi" class="pali">
+Evameva kho ahaṃ, sāriputta, idhekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi—tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho yathā kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian… Ta thấy người ấy sanh vào thiện thú, Thiên giới, cõi đời này và cảm thọ những cảm giác cực lạc.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannaṃ, ekantasukhā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây với tâm của Ta, Ta tuệ tri tâm của một số người:<br>
+<span lang="pi" class="pali">
+Idha panāhaṃ, sāriputta, ekaccaṃ puggalaṃ cetasā ceto paricca pajānāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sẽ đoạn trừ các lậu hoặc, tự mình với thắng trí chứng ngộ, chứng đạt và an trú ngay trong hiện tại vô lậu tâm giải thoát, tuệ giải thoát như vậy”.<br>
+<span lang="pi" class="pali">
+tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, Ta thấy vị ấy đoạn trừ các lậu hoặc, tự mình với thắng trí chứng ngộ, chứng đạt và an trú ngay trong hiện tại vô lậu tâm giải thoát, tuệ giải thoát, cảm thọ những cảm giác cực lạc.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharantaṃ, ekantasukhā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, giống như một hồ sen có nước trong, có nước ngọt, có nước mát, có nước trong sáng, có bờ hồ khéo sắp đặt, đẹp đẽ,<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, pokkharaṇī acchodakā sātodakā sītodakā setakā supatitthā ramaṇīyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và không xa hồ ấy có khu rừng rậm rạp.<br>
+<span lang="pi" class="pali">
+Avidūre cassā tibbo vanasaṇḍo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người đi đến, bị nóng bức áp đảo, bị nóng bức hành hạ, mệt mỏi, khô cổ, đắng họng, khát nước và đi thẳng đến hồ sen ấy.<br>
+<span lang="pi" class="pali">
+Atha puriso āgaccheyya ghammābhitatto ghammapareto kilanto tasito pipāsito ekāyanena maggena tameva pokkharaṇiṃ paṇidhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy người ấy có thể nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hành nghiệp của người này như vậy, cử chỉ như vậy, và bước vào đạo lộ như vậy, sẽ đi đến hồ sen ấy”.<br>
+<span lang="pi" class="pali">
+‘tathā bhavaṃ puriso paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā imaṃyeva pokkharaṇiṃ āgamissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, người ấy sẽ thấy người kia, sau khi tẩm mình vào hồ sen ấy, sau khi tắm rửa, uống nước và làm cho dịu bớt mọi ưu tư, mệt mỏi, phiền não, sau khi ra khỏi hồ liền qua ngồi hay nằm trong rừng cây rậm rạp ấy và cảm thọ những cảm giác cực lạc.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passeyya aparena samayena taṃ pokkharaṇiṃ ogāhetvā nhāyitvā ca pivitvā ca sabbadarathakilamathapariḷāhaṃ paṭippassambhetvā paccuttaritvā tasmiṃ vanasaṇḍe nisinnaṃ vā nipannaṃ vā, ekantasukhā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Sāriputta, ở đây với tâm của Ta, Ta tuệ tri tâm của một số người:<br>
+<span lang="pi" class="pali">
+Evameva kho ahaṃ, sāriputta, idhekaccaṃ puggalaṃ evaṃ cetasā ceto paricca pajānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hành nghiệp của người này như vậy, cử chỉ như vậy, bước vào đạo lộ như vậy, sẽ đoạn trừ các lậu hoặc, tự mình với thắng trí chứng ngộ, chứng đạt và an trú ngay trong hiện tại vô lậu tâm giải thoát, tuệ giải thoát như vậy”.<br>
+<span lang="pi" class="pali">
+‘tathāyaṃ puggalo paṭipanno tathā ca iriyati tañca maggaṃ samārūḷho, yathā āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau một thời gian, Ta thấy vị ấy đoạn trừ các lậu hoặc, tự mình với thắng trí chứng ngộ, chứng đạt và an trú ngay trong hiện tại vô lậu tâm giải thoát, tuệ giải thoát, cảm thọ những cảm giác cực lạc.<br>
+<span lang="pi" class="pali">
+Tamenaṃ passāmi aparena samayena āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharantaṃ, ekantasukhā vedanā vedayamānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, năm loại này là năm sanh thú.<br>
+<span lang="pi" class="pali">
+Imā kho, sāriputta, pañca gatiyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có ai biết Ta như vậy, thấy Ta như vậy, và nói:<br>
+<span lang="pi" class="pali">
+Yo kho maṃ, sāriputta, evaṃ jānantaṃ evaṃ passantaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sa-môn Gotama không có pháp Thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh.<br>
+<span lang="pi" class="pali">
+‘natthi samaṇassa gotamassa uttari manussadhammā alamariyañāṇadassanaviseso;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sa-môn Gotama thuyết pháp, pháp ấy tự mình tạo ra, do suy luận tác thành, tùy thuộc trắc nghiệm.’<br>
+<span lang="pi" class="pali">
+takkapariyāhataṃ samaṇo gotamo dhammaṃ deseti vīmaṃsānucaritaṃ sayampaṭibhānan’ti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu người ấy không từ bỏ lời nói ấy, không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy, thì người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+taṃ, sāriputta, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Tỷ-kheo thành tựu giới hạnh, thành tựu thiền định, thành tựu trí tuệ, có thể chứng được chánh trí ngay trong hiện tại.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, bhikkhu sīlasampanno samādhisampanno paññāsampanno diṭṭheva dhamme aññaṃ ārādheyya; evaṃ sampadamidaṃ, sāriputta, vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta nói như vậy là sự thành tựu như vậy. Nếu người ấy không từ bỏ lời nói ấy, không từ bỏ tâm ấy, không đoạn trừ tà kiến ấy, thì người ấy sẽ bị rơi vào địa ngục như một gánh nặng bị quăng bỏ một bên.<br>
+<span lang="pi" class="pali">
+taṃ vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<div id="001"><p lang="vi" class="vi">
+Này Sāriputta, Ta thắng tri phạm hạnh, đầy đủ bốn hạnh:<br>
+<span lang="pi" class="pali">
+Abhijānāmi kho panāhaṃ, sāriputta, caturaṅgasamannāgataṃ brahmacariyaṃ caritā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+về khổ hạnh, Ta khổ hạnh đệ nhất; về bần uế, Ta bần uế đệ nhất; về yểm ly, Ta yểm ly đệ nhất; về độc cư, Ta độc cư đệ nhất.<br>
+<span lang="pi" class="pali">
+tapassī sudaṃ homi paramatapassī, lūkho sudaṃ homi paramalūkho, jegucchī sudaṃ homi paramajegucchī, pavivitto sudaṃ homi paramapavivitto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây, khổ hạnh của Ta như sau: Ta sống lõa thể, phóng túng, không theo khuôn phép, liếm tay cho sạch, đi khất thực không chịu bước tới, không nhận đồ ăn mang đến, không nhận đồ ăn đặc biệt nấu cho mình, không nhận mời đi ăn.<br>
+<span lang="pi" class="pali">
+Tatrāssu me idaṃ, sāriputta, tapassitāya hoti—acelako homi muttācāro hatthāpalekhano, naehibhaddantiko natiṭṭhabhaddantiko; nābhihaṭaṃ na uddissakataṃ na nimantanaṃ sādiyāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không nhận đồ ăn từ nơi nồi chảo, không nhận đồ ăn tại ngưỡng cửa, không nhận đồ ăn đặt giữa những cây gậy, không nhận đồ ăn đặt giữa những cối giã gạo, không nhận đồ ăn từ hai người đang ăn, không nhận đồ ăn từ người đàn bà có thai, không nhận đồ ăn từ người đàn bà đang cho con bú, không nhận đồ ăn từ người đàn bà đang giao cấu, không nhận đồ ăn đi quyên, không nhận đồ ăn tại chỗ có chó đứng, không nhận đồ ăn tại chỗ có ruồi bu, không ăn cá, ăn thịt, không uống rượu nấu, rượu men.<br>
+<span lang="pi" class="pali">
+So na kumbhimukhā paṭiggaṇhāmi, na kaḷopimukhā paṭiggaṇhāmi, na eḷakamantaraṃ, na daṇḍamantaraṃ, na musalamantaraṃ, na dvinnaṃ bhuñjamānānaṃ, na gabbhiniyā, na pāyamānāya, na purisantaragatāya, na saṅkittīsu, na yattha sā upaṭṭhito hoti, na yattha makkhikā saṇḍasaṇḍacārinī; na macchaṃ na maṃsaṃ na suraṃ na merayaṃ na thusodakaṃ pivāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta chỉ nhận đồ ăn tại một nhà, chỉ nhận ăn một miếng, hay chỉ nhận ăn tại hai nhà, chỉ nhận ăn hai miếng, hay chỉ nhận ăn tại bảy nhà, chỉ nhận ăn bảy miếng.<br>
+<span lang="pi" class="pali">
+so ekāgāriko vā homi ekālopiko, dvāgāriko vā homi dvālopiko ...pe... sattāgāriko vā homi sattālopiko;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nuôi sống chỉ với một chén, nuôi sống chỉ với hai chén, nuôi sống chỉ với bảy chén.<br>
+<span lang="pi" class="pali">
+ekissāpi dattiyā yāpemi, dvīhipi dattīhi yāpemi ...pe... sattahipi dattīhi yāpemi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta chỉ ăn một ngày một bữa, hai ngày một bữa, bảy ngày một bữa. Như vậy Ta sống theo hạnh tiết chế ăn uống cho đến nửa tháng mới ăn một lần.<br>
+<span lang="pi" class="pali">
+ekāhikampi āhāraṃ āhāremi, dvīhikampi āhāraṃ āhāremi ...pe... sattāhikampi āhāraṃ āhāremi; iti evarūpaṃ addhamāsikampi pariyāyabhattabhojanānuyogamanuyutto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta chỉ ăn cỏ lúa để sống, lúa tắc, gạo lức, ăn hột cải nivara, ăn da vụn, ăn trấu, uống nước bột gạo, ăn bột vừng, ăn cỏ, ăn phân bò, ăn trái cây, ăn rễ cây trong rừng, ăn trái cây rụng để sống.<br>
+<span lang="pi" class="pali">
+So sākabhakkho vā homi, sāmākabhakkho vā homi, nīvārabhakkho vā homi, daddulabhakkho vā homi, haṭabhakkho vā homi, kaṇabhakkho vā homi, ācāmabhakkho vā homi, piññākabhakkho vā homi, tiṇabhakkho vā homi, gomayabhakkho vā homi, vanamūlaphalāhāro yāpemi pavattaphalabhojī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta mặc vải gai thô, mặc vải gai thô lẫn với các vải khác, mặc vải tẩm liệm rồi quăng đi, mặc áo phấn tảo y, mặc vỏ cây tititaka làm áo, mặc da con sơn dương đen, mặc áo bện từng mảnh da con sơn dương đen, mặc áo bằng cỏ cát tường, mặc áo vỏ cây, mặc áo bằng tấm gỗ nhỏ, mặc áo bằng tóc bện lại thành mền, mặc áo bằng đuôi ngựa bện lại, mặc áo bằng lông cú.<br>
+<span lang="pi" class="pali">
+So sāṇānipi dhāremi, masāṇānipi dhāremi, chavadussānipi dhāremi, paṃsukūlānipi dhāremi, tirīṭānipi dhāremi, ajinampi dhāremi, ajinakkhipampi dhāremi, kusacīrampi dhāremi, vākacīrampi dhāremi, phalakacīrampi dhāremi, kesakambalampi dhāremi, vāḷakambalampi dhāremi, ulūkapakkhampi dhāremi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta sống nhổ râu tóc, Ta theo tập tục sống nhổ râu tóc.<br>
+<span lang="pi" class="pali">
+kesamassulocakopi homi kesamassulocanānuyogamanuyutto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta theo hạnh thường đứng không dùng chỗ ngồi.<br>
+<span lang="pi" class="pali">
+ubbhaṭṭhakopi homi āsanapaṭikkhitto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta là người ngồi chõ hỏ, sống tinh tấn theo hạnh ngồi chõ hỏ.<br>
+<span lang="pi" class="pali">
+ukkuṭikopi homi ukkuṭikappadhānamanuyutto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta dùng gai làm giường, thường ngủ nằm trên giường gai.<br>
+<span lang="pi" class="pali">
+kaṇṭakāpassayikopi homi kaṇṭakāpassaye seyyaṃ kappemi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sống dùng ván gỗ làm giường, sống nằm trên đất trần, thường nằm ngủ một bên hông, sống để bụi và nhớp che dính thân mình, sống và ngủ ngoài trời, theo hạnh bạ đâu nằm đấy, sống ăn các uế vật, sống không uống nước lạnh, theo hạnh không uống nước lạnh. (đoạn này không thấy trong Pāḷi của Bhikkhu Sujato biên soạn)<br>
+</p>
+
+<p lang="vi" class="vi">
+sống một đêm tắm ba lần, theo hạnh xuống nước tắm.<br>
+<span lang="pi" class="pali">
+sāyatatiyakampi udakorohanānuyogamanuyutto viharāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy Ta sống theo hạnh hành hạ, dày vò thân thể theo nhiều cách.<br>
+<span lang="pi" class="pali">
+iti evarūpaṃ anekavihitaṃ kāyassa ātāpanaparitāpanānuyogamanuyutto viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy là khổ hạnh của Ta.<br>
+<span lang="pi" class="pali">
+Idaṃsu me, sāriputta, tapassitāya hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây hạnh bần uế của Ta như sau: Trên thân Ta, bụi bặm chất đầy trải nhiều năm tháng, đóng thành tấm, thành miếng.<br>
+<span lang="pi" class="pali">
+Tatrāssu me idaṃ, sāriputta, lūkhasmiṃ hoti—nekavassagaṇikaṃ rajojallaṃ kāye sannicitaṃ hoti papaṭikajātaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như gốc cây Gỗ Mun bụi bặm chất đầy trải nhiều năm tháng, đóng thành tấm, thành miếng; cũng vậy, này Sāriputta, trên thân Ta bụi bặm chất đầy trải nhiều năm tháng, đóng thành tấm, thành miếng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, tindukakhāṇu nekavassagaṇiko sannicito hoti papaṭikajāto, evamevāssu me, sāriputta, nekavassagaṇikaṃ rajojallaṃ kāye sannicitaṃ hoti papaṭikajātaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta không nghĩ rằng:<br>
+<span lang="pi" class="pali">
+Tassa mayhaṃ, sāriputta, na evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Với tay của Ta, Ta hãy phủi sạch bụi bặm này đi, hay những người khác với tay của họ hãy phủi sạch bụi bặm này đi cho Ta.’<br>
+<span lang="pi" class="pali">
+‘aho vatāhaṃ imaṃ rajojallaṃ pāṇinā parimajjeyyaṃ, aññe vā pana me imaṃ rajojallaṃ pāṇinā parimajjeyyun’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta không có nghĩ như vậy.<br>
+<span lang="pi" class="pali">
+Evampi me, sāriputta, na hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy là sự bần uế của Ta.<br>
+<span lang="pi" class="pali">
+Idaṃsu me, sāriputta, lūkhasmiṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như thế này là sự yểm ly của Ta.<br>
+<span lang="pi" class="pali">
+Tatrāssu me idaṃ, sāriputta, jegucchismiṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, tỉnh giác, Ta đi tới; tỉnh giác Ta đi lui, Ta an trú lòng từ cho đến trong một giọt nước với tâm tư:<br>
+<span lang="pi" class="pali">
+so kho ahaṃ, sāriputta, satova abhikkamāmi, satova paṭikkamāmi, yāva udakabindumhipi me dayā paccupaṭṭhitā hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng Ta không làm hại một chúng sanh nhỏ nào trong những ác đạo của họ!’<br>
+<span lang="pi" class="pali">
+‘māhaṃ khuddake pāṇe visamagate saṅghātaṃ āpādesin’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy là sự yểm ly của Ta.<br>
+<span lang="pi" class="pali">
+Idaṃsu me, sāriputta, jegucchismiṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như thế này là sự độc cư của Ta.<br>
+<span lang="pi" class="pali">
+Tatrāssu me idaṃ, sāriputta, pavivittasmiṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta đi sâu vào một khu rừng và an trú tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+so kho ahaṃ, sāriputta, aññataraṃ araññāyatanaṃ ajjhogāhetvā viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi Ta thấy người chăn bò, người mục súc, người cắt cỏ, người đốn củi hay người thợ rừng, Ta liền chạy từ rừng này qua rừng khác, từ lùm cây này qua lùm cây khác, từ thung lũng này qua thung lũng khác, từ đồi cao này qua đồi cao khác. Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Yadā passāmi gopālakaṃ vā pasupālakaṃ vā tiṇahārakaṃ vā kaṭṭhahārakaṃ vā vanakammikaṃ vā, vanena vanaṃ gahanena gahanaṃ ninnena ninnaṃ thalena thalaṃ sampatāmi. Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nghĩ rằng: “Mong họ đừng thấy Ta, và mong Ta đừng thấy họ!”<br>
+<span lang="pi" class="pali">
+Mā maṃ te addasaṃsu ahañca mā te addasanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, giống như một con thú rừng thấy người liền chạy từ rừng này qua rừng khác, từ lùm cây này qua lùm cây khác, từ thung lũng này qua thung lũng khác, từ đồi cao này qua đồi cao khác.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, āraññako mago manusse disvā vanena vanaṃ gahanena gahanaṃ ninnena ninnaṃ thalena thalaṃ sampatati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Sāriputta, khi Ta thấy người chăn bò, người mục súc, người cắt cỏ, người đốn củi, hay người tiều phu, Ta liền chạy từ rừng này qua rừng khác, từ lùm cây này qua lùm cây khác, từ thung lũng này qua thung lũng khác, từ đồi cao này qua đồi cao khác. Vì sao vậy?<br>
+<span lang="pi" class="pali">
+evameva kho ahaṃ, sāriputta, yadā passāmi gopālakaṃ vā pasupālakaṃ vā tiṇahārakaṃ vā kaṭṭhahārakaṃ vā vanakammikaṃ vā vanena vanaṃ gahanena gahanaṃ ninnena ninnaṃ thalena thalaṃ sampatāmi. Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nghĩ rằng: “Mong họ đừng thấy Ta, và mong Ta đừng thấy họ!”<br>
+<span lang="pi" class="pali">
+Mā maṃ te addasaṃsu ahañca mā te addasanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy là hạnh độc cư của Ta.<br>
+<span lang="pi" class="pali">
+Idaṃsu me, sāriputta, pavivittasmiṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, rồi Ta bò bốn chân đến các chuồng bò, khi các con bò cái đã bỏ đi, khi các người chăn bò không có mặt, rồi Ta ăn phân các con bò con, các con bò còn trẻ, các con bò còn bú.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, ye te goṭṭhā paṭṭhitagāvo apagatagopālakā, tattha catukkuṇḍiko upasaṅkamitvā yāni tāni vacchakānaṃ taruṇakānaṃ dhenupakānaṃ gomayāni tāni sudaṃ āhāremi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nước tiểu và phân của Ta còn tồn tại, Ta tự nuôi sống với các loại ấy.<br>
+<span lang="pi" class="pali">
+Yāvakīvañca me, sāriputta, sakaṃ muttakarīsaṃ apariyādinnaṃ hoti, sakaṃyeva sudaṃ muttakarīsaṃ āhāremi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy là hạnh đại bất tịnh thực của Ta.<br>
+<span lang="pi" class="pali">
+Idaṃsu me, sāriputta, mahāvikaṭabhojanasmiṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta đi sâu vào một khu rừng rậm rạp kinh hoàng và an trú tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, aññataraṃ bhiṃsanakaṃ vanasaṇḍaṃ ajjhogāhetvā viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, tại khu rừng rậm rạp kinh hoàng này, những ai còn tham ái đi vào khu rừng rậm rạp ấy, thời lông tóc người ấy dựng ngược.<br>
+<span lang="pi" class="pali">
+Tatrāssudaṃ, sāriputta, bhiṃsanakassa vanasaṇḍassa bhiṃsanakatasmiṃ hoti—yo koci avītarāgo taṃ vanasaṇḍaṃ pavisati, yebhuyyena lomāni haṃsanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, rồi Ta trong những đêm đông lạnh lẽo, giữa những ngày mồng tám, khi có tuyết rơi, trong những đêm như vậy, Ta sống giữa trời, và ban ngày sống trong khu rừng rậm rạp.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, yā tā rattiyo sītā hemantikā antaraṭṭhakā himapātasamayā tathārūpāsu rattīsu rattiṃ abbhokāse viharāmi, divā vanasaṇḍe;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta sống trong những ngày cuối tháng hè, ban ngày thì sống giữa trời, còn ban đêm trong khu rừng rậm rạp.<br>
+<span lang="pi" class="pali">
+gimhānaṃ pacchime māse divā abbhokāse viharāmi, rattiṃ vanasaṇḍe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Sāriputta, những bài kệ kỳ diệu từ trước chưa từng được nghe sau đây được khởi lên:<br>
+<span lang="pi" class="pali">
+Apissu maṃ, sāriputta, ayaṃ anacchariyagāthā paṭibhāsi pubbe assutapubbā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay bị thiêu đốt, bị buốt lạnh,<br>
+Cô độc sống trong rừng kinh hoàng,<br>
+Trần truồng, Ta ngồi không lửa ấm,<br>
+Ẩn sĩ, trong lý tưởng đăm chiêu.<br>
+<span lang="pi" class="pali">
+‘Sotatto sosinno ceva,<br>
+eko bhiṃsanake vane;<br>
+Naggo na caggimāsīno,<br>
+esanāpasuto munī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta nằm ngủ trong bãi tha ma, dựa trên một bộ xương.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, susāne seyyaṃ kappemi chavaṭṭhikāni upadhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, những đứa mục đồng đến gần Ta, khạc nhổ trên Ta, tiểu tiện trên Ta, rắc bụi trên Ta và lấy que đâm vào lỗ tai.<br>
+<span lang="pi" class="pali">
+Apissu maṃ, sāriputta, gāmaṇḍalā upasaṅkamitvā oṭṭhubhantipi, omuttentipi, paṃsukenapi okiranti, kaṇṇasotesupi salākaṃ pavesenti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, và Ta biết Ta không khởi ác tâm đối với chúng.<br>
+<span lang="pi" class="pali">
+Na kho panāhaṃ, sāriputta, abhijānāmi tesu pāpakaṃ cittaṃ uppādetā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, như vậy là hạnh trú xả của Ta.<br>
+<span lang="pi" class="pali">
+Idaṃsu me, sāriputta, upekkhāvihārasmiṃ hoti.<br>
+</span>
+</p>
+
+<div id="002"><p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự thanh tịnh đạt được nhờ món ăn”.<br>
+<span lang="pi" class="pali">
+‘āhārena suddhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ nói: “Chúng ta sống nhờ trái táo”.<br>
+<span lang="pi" class="pali">
+Te evamāhaṃsu: ‘kolehi yāpemā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và họ ăn trái táo, họ ăn bột táo, họ uống nước trái táo dưới nhiều hình thức.<br>
+<span lang="pi" class="pali">
+Te kolampi khādanti, kolacuṇṇampi khādanti, kolodakampi pivanti—anekavihitampi kolavikatiṃ paribhuñjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta tự xưng Ta sống chỉ ăn một trái táo.<br>
+<span lang="pi" class="pali">
+Abhijānāmi kho panāhaṃ, sāriputta, ekaṃyeva kolaṃ āhāraṃ āhāritā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có thể các Người nghĩ như sau: “Trái táo thời ấy to lớn”.<br>
+<span lang="pi" class="pali">
+Siyā kho pana te, sāriputta, evamassa: ‘mahā nūna tena samayena kolo ahosī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, chớ có hiểu như vậy.<br>
+<span lang="pi" class="pali">
+Na kho panetaṃ, sāriputta, evaṃ daṭṭhabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì trái táo thời ấy giống với trái táo hiện tại.<br>
+<span lang="pi" class="pali">
+Tadāpi etaparamoyeva kolo ahosi seyyathāpi etarahi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, trong khi Ta sống chỉ ăn một trái táo, thân thể của Ta trở thành hết sức ốm yếu.<br>
+<span lang="pi" class="pali">
+Tassa mayhaṃ, sāriputta, ekaṃyeva kolaṃ āhāraṃ āhārayato adhimattakasimānaṃ patto kāyo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, tay chân Ta trở thành như những cọng cỏ hay những đốt cây leo khô héo.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma āsītikapabbāni vā kāḷapabbāni vā; evamevassu me aṅgapaccaṅgāni bhavanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, bàn chân của Ta trở thành như móng chân con lạc đà.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma oṭṭhapadaṃ; evamevassu me ānisadaṃ hoti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, các xương sống phô bày của Ta giống như một chuỗi banh.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma vaṭṭanāvaḷī; evamevassu me piṭṭhikaṇṭako unnatāvanato hoti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, các xương sườn gầy mòn của Ta giống như rui cột nhà sàn hư nát.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma jarasālāya gopānasiyo oluggaviluggā bhavanti; evamevassu me phāsuḷiyo oluggaviluggā bhavanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì ta ăn quá ít, nên con ngươi của Ta long lanh nằm sâu thẳm trong lỗ con mắt, giống như ánh nước long lanh nằm sâu thẳm trong một giếng nước thâm sâu.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma gambhīre udapāne udakatārakā gambhīragatā okkhāyikā dissanti; evamevassu me akkhikūpesu akkhitārakā gambhīragatā okkhāyikā dissanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, da đầu Ta trở thành nhăn nheo khô cằn như trái bí trắng và đắng bị cắt trước khi chín, bị cơn gió nóng làm cho nhăn nheo khô cằn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma tittakālābu āmakacchinno vātātapena samphuṭito hoti sammilāto; evamevassu me sīsacchavi samphuṭitā hoti sammilātā tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta nghĩ: “Ta hãy sờ da bụng”, chính xương sống bị Ta nắm lấy. Nếu Ta nghĩ: “Ta hãy sờ xương sống”, thì chính da bụng bị Ta nắm lấy. Vì Ta ăn quá ít, nên này Sāriputta, da bụng của Ta bám chặt xương sống.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, ‘udaracchaviṃ parimasissāmī’ti piṭṭhikaṇṭakaṃyeva pariggaṇhāmi, ‘piṭṭhikaṇṭakaṃ parimasissāmī’ti udaracchaviṃyeva pariggaṇhāmi, yāvassu me, sāriputta, udaracchavi piṭṭhikaṇṭakaṃ allīnā hoti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta nghĩ: “Ta đi đại tiện hay đi tiểu tiện”, thì Ta ngã quỵ, úp mặt xuống đất, vì Ta ăn quá ít.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, ‘vaccaṃ vā muttaṃ vā karissāmī’ti tattheva avakujjo papatāmi tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta muốn thoa dịu thân Ta, lấy tay xoa bóp chân tay, thì này Sāriputta, trong khi Ta lấy tay xoa bóp chân tay, các lông tóc hư mục rụng khỏi thân Ta, vì Ta ăn quá ít.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, tameva kāyaṃ assāsento pāṇinā gattāni anomajjāmi. Tassa mayhaṃ, sāriputta, pāṇinā gattāni anomajjato pūtimūlāni lomāni kāyasmā patanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những chủ thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự thanh tịnh đạt được nhờ món ăn”.<br>
+<span lang="pi" class="pali">
+‘āhārena suddhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ nói: “Chúng ta sống nhờ đậu xanh… (như trên)… chúng ta sống nhờ vừng mè… (như trên)… chúng ta sống nhờ hột gạo”,<br>
+<span lang="pi" class="pali">
+Te evamāhaṃsu: ‘muggehi yāpema ...pe... tilehi yāpema ...pe... taṇḍulehi yāpemā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và họ ăn hột gạo, họ ăn hột gạo nghiền thành bột, họ uống nước gạo, và họ ăn hột gạo dưới nhiều hình thức.<br>
+<span lang="pi" class="pali">
+Te taṇḍulampi khādanti, taṇḍulacuṇṇampi khādanti, taṇḍulodakampi pivanti—<br>
+anekavihitampi taṇḍulavikatiṃ paribhuñjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, Ta tự xưng Ta sống chỉ ăn một hột gạo.<br>
+<span lang="pi" class="pali">
+Abhijānāmi kho panāhaṃ, sāriputta, ekaṃyeva taṇḍulaṃ āhāraṃ āhāritā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, có thể các Người nghĩ như sau: “Hột gạo thời ấy to lớn”.<br>
+<span lang="pi" class="pali">
+Siyā kho pana te, sāriputta, evamassa: ‘mahā nūna tena samayena taṇḍulo ahosī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, chớ có hiểu như vậy.<br>
+<span lang="pi" class="pali">
+Na kho panetaṃ, sāriputta, evaṃ daṭṭhabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì hột gạo thời ấy giống với hột gạo hiện tại.<br>
+<span lang="pi" class="pali">
+Tadāpi etaparamoyeva taṇḍulo ahosi, seyyathāpi etarahi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, trong khi Ta chỉ sống ăn một hột gạo, thân thể của Ta trở thành hết sức ốm yếu.<br>
+<span lang="pi" class="pali">
+Tassa mayhaṃ, sāriputta, ekaṃyeva taṇḍulaṃ āhāraṃ āhārayato adhimattakasimānaṃ patto kāyo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, tay chân Ta trở thành như những cọng cỏ hay những đốt cây leo khô héo.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma āsītikapabbāni vā kāḷapabbāni vā; evamevassu me aṅgapaccaṅgāni bhavanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, bàn chân của Ta trở thành như móng chân con lạc đà.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma oṭṭhapadaṃ; evamevassu me ānisadaṃ hoti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, xương sống phô bày của Ta giống như một chuỗi banh.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma vaṭṭanāvaḷī; evamevassu me piṭṭhikaṇṭako unnatāvanato hoti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít các xương sườn gầy mòn của Ta giống như rui cột của một nhà sàn hư nát.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma jarasālāya gopānasiyo oluggaviluggā bhavanti; evamevassu me phāsuḷiyo oluggaviluggā bhavanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, con ngươi long lanh của Ta nằm sâu thẳm trong lỗ con mắt, giống như ánh nước long lanh nằm sâu thẳm trong một giếng nước thâm sâu.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma gambhīre udapāne udakatārakā gambhīragatā okkhāyikā dissanti; evamevassu me akkhikūpesu akkhitārakā gambhīragatā okkhāyikā dissanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Ta ăn quá ít, da đầu Ta trở thành nhăn nheo, khô cằn như trái bí trắng và đắng bị cắt trước khi chín, bị cơn gió nóng làm cho nhăn nheo, khô cằn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma tittakālābu āmakacchinno vātātapena samphuṭito hoti sammilāto; evamevassu me sīsacchavi samphuṭitā hoti sammilātā tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta nghĩ: “Ta hãy sờ da bụng”, thì chính xương sống bị Ta nắm lấy. Nếu Ta nghĩ: “Ta hãy rờ xương sống”, thì chính da bụng bị Ta nắm lấy. Vì Ta ăn quá ít, nên này Sāriputta, da bụng của Ta bám chặt xương sống.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, ‘udaracchaviṃ parimasissāmī’ti piṭṭhikaṇṭakaṃyeva pariggaṇhāmi, ‘piṭṭhikaṇṭakaṃ parimasissāmī’ti udaracchaviṃyeva pariggaṇhāmi. Yāvassu me, sāriputta, udaracchavi piṭṭhikaṇṭakaṃ allīnā hoti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta nghĩ: “Ta đi đại tiện hay đi tiểu tiện”, thì Ta ngã quỵ, úp mặt xuống đất, vì Ta ăn quá ít.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, ‘vaccaṃ vā muttaṃ vā karissāmī’ti tattheva avakujjo papatāmi tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta muốn xoa dịu thân Ta, lấy tay xoa bóp chân tay, thời này Sāriputta, trong khi Ta lấy tay xoa bóp chân tay, các lông tóc hư mục rụng khỏi thân Ta, vì Ta ăn quá ít.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, sāriputta, tameva kāyaṃ assāsento pāṇinā gattāni anomajjāmi. Tassa mayhaṃ, sāriputta, pāṇinā gattāni anomajjato pūtimūlāni lomāni kāyasmā patanti tāyevappāhāratāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, dầu Ta có theo cử chỉ như vậy, theo hành lộ như vậy, theo khổ hạnh như vậy, Ta cũng không chứng được các pháp thượng nhân, không có tri kiến thù thắng xứng đáng bậc Thánh. Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Tāyapi kho ahaṃ, sāriputta, iriyāya tāya paṭipadāya tāya dukkarakārikāya nājjhagamaṃ uttariṃ manussadhammā alamariyañāṇadassanavisesaṃ. Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì với những phương tiện ấy, không chứng được pháp thượng nhân với Thánh trí tuệ. Chính Thánh trí tuệ này chứng được thuộc về bậc Thánh, có khả năng hướng thượng, có thể dẫn người thực hành diệt tận khổ đau.<br>
+<span lang="pi" class="pali">
+Imissāyeva ariyāya paññāya anadhigamā, yāyaṃ ariyā paññā adhigatā ariyā niyyānikā, niyyāti takkarassa sammā dukkhakkhayāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những chủ thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự thanh tịnh chứng đạt được nhờ luân hồi”.<br>
+<span lang="pi" class="pali">
+‘saṃsārena suddhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, thật không dễ gì tìm được sự luân hồi mà xưa kia Ta không trải qua trong một thời gian khá dài, ngoại trừ với các vị Tịnh cư thiên (Suddhavasa).<br>
+<span lang="pi" class="pali">
+Na kho pana so, sāriputta, saṃsāro sulabharūpo yo mayā asaṃsaritapubbo iminā dīghena addhunā, aññatra suddhāvāsehi devehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta luân hồi tại Tịnh cư thiên thì Ta đã không trở lại đời này nữa.<br>
+<span lang="pi" class="pali">
+Suddhāvāse cāhaṃ, sāriputta, deve saṃsareyyaṃ, nayimaṃ lokaṃ punarāgaccheyyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những chủ thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự thanh tịnh chứng đạt được nhờ sanh khởi”.<br>
+<span lang="pi" class="pali">
+‘upapattiyā suddhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, thật không dễ gì tìm được sự sanh khởi mà xưa kia Ta không trải qua trong một thời gian khá dài, ngoại trừ với các vị Tịnh cư thiên.<br>
+<span lang="pi" class="pali">
+Na kho pana sā, sāriputta, upapatti sulabharūpā yā mayā anupapannapubbā iminā dīghena addhunā, aññatra suddhāvāsehi devehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta sanh khởi tại Tịnh cư thiên, thì Ta đã không trở lại đời này nữa.<br>
+<span lang="pi" class="pali">
+Suddhāvāse cāhaṃ, sāriputta, deve upapajjeyyaṃ, nayimaṃ lokaṃ punarāgaccheyyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những chủ thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự thanh tịnh chứng đạt được nhờ an trú”.<br>
+<span lang="pi" class="pali">
+‘āvāsena suddhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, thật không dễ gì tìm được sự an trú mà xưa kia Ta không trải qua trong một thời gian khá dài, ngoại trừ với các vị Tịnh cư thiên.<br>
+<span lang="pi" class="pali">
+Na kho pana so, sāriputta, āvāso sulabharūpo yo mayā anāvuṭṭhapubbo iminā dīghena addhunā, aññatra suddhāvāsehi devehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ta an trú tại Tịnh cư thiên, thì Ta đã không trở lại đời này nữa.<br>
+<span lang="pi" class="pali">
+Suddhāvāse cāhaṃ, sāriputta, deve āvaseyyaṃ, nayimaṃ lokaṃ punarāgaccheyyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những chủ thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sự thanh tịnh chứng đạt được nhờ tế tự.’<br>
+<span lang="pi" class="pali">
+‘yaññena suddhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, thật không dễ gì tìm được sự tế tự mà xưa kia Ta không làm trong một thời gian khá dài, khi Ta là vị vua Sát-đế-lị có làm lễ quán đảnh, hay làm vị Bà-la-môn giàu có.<br>
+<span lang="pi" class="pali">
+Na kho pana so, sāriputta, yañño sulabharūpo yo mayā ayiṭṭhapubbo iminā dīghena addhunā, tañca kho raññā vā satā khattiyena muddhāvasittena brāhmaṇena vā mahāsālena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những chủ thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sự thanh tịnh chứng đạt được nhờ thờ lửa.’<br>
+<span lang="pi" class="pali">
+‘aggiparicariyāya suddhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, thật không dễ gì tìm được sự thờ lửa mà xưa kia Ta không làm trong một thời gian khá dài, khi Ta là vị vua Sát-đế-lị có làm lễ quán đảnh, hay làm vị Bà-la-môn giàu có.<br>
+<span lang="pi" class="pali">
+Na kho pana so, sāriputta, aggi sulabharūpo yo mayā apariciṇṇapubbo iminā dīghena addhunā, tañca kho raññā vā satā khattiyena muddhāvasittena brāhmaṇena vā mahāsālena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, lại có một số Sa-môn, Bà-la-môn có những chủ thuyết như sau, có những kiến giải như sau:<br>
+<span lang="pi" class="pali">
+Santi kho pana, sāriputta, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Khi một thiếu niên còn trẻ tuổi, tóc đen nhánh, huyết khí sung mãn, trong tuổi thanh xuân, người ấy thành tựu trí tuệ biện tài tối thượng.<br>
+<span lang="pi" class="pali">
+‘yāvadevāyaṃ bhavaṃ puriso daharo hoti yuvā susukāḷakeso bhadrena yobbanena samannāgato paṭhamena vayasā tāvadeva paramena paññāveyyattiyena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng khi người ấy già cả, niên cao, lạp lớn, đã đến tuổi trưởng thượng, đã đi đến đoạn cuối cuộc đời, khi đã tám mươi, chín mươi hay một trăm tuổi, khi ấy trí tuệ biện tài tối thượng ấy bị đoạn trừ.’<br>
+<span lang="pi" class="pali">
+Yato ca kho ayaṃ bhavaṃ puriso jiṇṇo hoti vuddho mahallako addhagato vayoanuppatto, āsītiko vā nāvutiko vā vassasatiko vā jātiyā, atha tamhā paññāveyyattiyā, parihāyatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, chớ có quan niệm như vậy.<br>
+<span lang="pi" class="pali">
+Na kho panetaṃ, sāriputta, evaṃ daṭṭhabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nay Ta đã già, niên cao, lạp lớn, đã đến tuổi trưởng thượng, đã đi dến đoạn cuối cuộc đời, tuổi Ta nay đã đến tám mươi.<br>
+<span lang="pi" class="pali">
+Ahaṃ kho pana, sāriputta, etarahi jiṇṇo vuddho mahallako addhagato vayoanuppatto, āsītiko me vayo vattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ở đây Ta có bốn vị đệ tử, tuổi thọ đến một trăm, đã sống một trăm tuổi, thành tựu chánh niệm đệ nhất, thành tựu chuyên tâm đệ nhất, thành tựu tinh cần đệ nhất và đầy đủ trí tuệ biện tài tối thượng.<br>
+<span lang="pi" class="pali">
+Idha me assu, sāriputta, cattāro sāvakā vassasatāyukā vassasatajīvino, paramāya satiyā ca gatiyā ca dhitiyā ca samannāgatā paramena ca paññāveyyattiyena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, ví như một người bắn cung thiện xảo, có huấn luyện, khéo tay, thuần thục, với một mũi tên nhẹ, có thể dễ dàng bắn ngang qua bóng một cây ta-la.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, sāriputta, daḷhadhammā dhanuggaho sikkhito katahattho katūpāsano lahukena asanena appakasireneva tiriyaṃ tālacchāyaṃ atipāteyya,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, những vị này với chánh niệm đệ nhất như vậy, được thành tựu trí tuệ biện tài tối thượng như vậy.<br>
+<span lang="pi" class="pali">
+evaṃ adhimattasatimanto evaṃ adhimattagatimanto evaṃ adhimattadhitimanto evaṃ paramena paññāveyyattiyena samannāgatā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu những vị này hỏi Ta nhiều lần một câu hỏi về Bốn Niệm xứ, và nếu Ta, được hỏi nhiều lần như vậy, phải giải thích cho họ hiểu và nếu họ được Ta giải thích như vậy, có thể hiểu như đã giải thích, và nếu họ không hỏi Ta về những vấn đề phụ thuộc và các vấn đề khác.<br>
+<span lang="pi" class="pali">
+Te maṃ catunnaṃ satipaṭṭhānānaṃ upādāyupādāya pañhaṃ puccheyyuṃ, puṭṭho puṭṭho cāhaṃ tesaṃ byākareyyaṃ, byākatañca me byākatato dhāreyyuṃ, na ca maṃ dutiyakaṃ uttari paṭipuccheyyuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trừ khi ăn, uống, nhai, nếm, trừ khi đi đại tiện, tiểu tiện, trừ khi ngủ để lấy lại sức. Này Sāriputta, dầu vậy, sự thuyết pháp của Như Lai cũng chưa hoàn tất, sự giải thích cú pháp của Như Lai cũng chưa hoàn tất, sự trả lời các câu hỏi của Như Lai cũng chưa hoàn tất.<br>
+<span lang="pi" class="pali">
+Aññatra asitapītakhāyitasāyitā aññatra uccārapassāvakammā, aññatra niddākilamathapaṭivinodanā apariyādinnāyevassa, sāriputta, tathāgatassa dhammadesanā, apariyādinnaṃyevassa tathāgatassa dhammapadabyañjanaṃ, apariyādinnaṃyevassa tathāgatassa pañhapaṭibhānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khi mà bốn đệ tử của Ta, tuổi thọ đến một trăm tuổi, đã sống một trăm tuổi, đã từ trần sau một trăm tuổi.<br>
+<span lang="pi" class="pali">
+Atha me te cattāro sāvakā vassasatāyukā vassasatajīvino vassasatassa accayena kālaṃ kareyyuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, nếu Ông có gánh Ta trên giường đi chỗ này chỗ kia, thật sự trí tuệ biện tài của Như Lai không có gì thay đổi.<br>
+<span lang="pi" class="pali">
+Mañcakena cepi maṃ, sāriputta, pariharissatha, nevatthi tathāgatassa paññāveyyattiyassa aññathattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sāriputta, những ai nói một cách chân chánh sẽ nói như sau:<br>
+<span lang="pi" class="pali">
+Yaṃ kho taṃ, sāriputta, sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Một vị hữu tình không bị si chi phối, đã sanh ra ở đời vì lợi ích, vì hạnh phúc cho chúng sanh, vì lòng thương tưởng cho đời, vì lợi ích, vì hạnh phúc, vì an lạc cho chư Thiên và loài Người”. Vị ấy sẽ nói về Ta một cách chân chánh như sau: “Một vị hữu tình không bị si chi phối, đã sanh ra ở đời vì lợi ích, vì hạnh phúc cho chúng sanh, vì lòng thương tưởng cho đời, vì lợi ích, vì hạnh phúc, vì an lạc cho chư Thiên và loài Người”.<br>
+<span lang="pi" class="pali">
+‘asammohadhammo satto loke uppanno bahujanahitāya bahujanasukhāya lokānukampāya atthāya hitāya sukhāya devamanussānan’ti, mameva taṃ sammā vadamāno vadeyya ‘asammohadhammo satto loke uppanno bahujanahitāya bahujanasukhāya lokānukampāya atthāya hitāya sukhāya devamanussānan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ Tôn giả Nagasamala đứng sau lưng Thế Tôn và quạt cho Ngài!<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena āyasmā nāgasamālo bhagavato piṭṭhito ṭhito hoti bhagavantaṃ bījayamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Nagasamala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā nāgasamālo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, bạch Thế Tôn! Thật hy hữu thay, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">
+“acchariyaṃ, bhante, abbhutaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi nghe pháp môn này, lông tóc con dựng ngược.<br>
+<span lang="pi" class="pali">
+Api hi me, bhante, imaṃ dhammapariyāyaṃ sutvā lomāni haṭṭhāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, pháp môn này tên gọi là gì?”<br>
+<span lang="pi" class="pali">
+Konāmo ayaṃ, bhante, dhammapariyāyo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Nagasamala, do vậy pháp môn này gọi là “Pháp môn Lông tóc dựng ngược”. Ông hãy như vậy thọ trì.”<br>
+<span lang="pi" class="pali">
+“Tasmātiha tvaṃ, nāgasamāla, imaṃ dhammapariyāyaṃ lomahaṃsanapariyāyotveva naṃ dhārehī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Nagasamala hoan hỷ, tín thọ lời dạy của Thế Tôn.<br>
+<span lang="pi" class="pali">
+Attamano āyasmā nāgasamālo bhagavato bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Mahāsīhanādasuttaṃ niṭṭhitaṃ dutiyaṃ.<br>
+</span>
+</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn11.html#content"></a><a id="next-sutta" href="./mn13.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

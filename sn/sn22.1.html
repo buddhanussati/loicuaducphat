@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 22.1 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 22.1<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 22.1<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Phẩm Nakulapitā<br>
+<span lang="pi" class="pali">
+1. Nakulapituvagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Nakulapitā<br>
+<span lang="pi" class="pali">
+Nakulapitusutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe. Một thời Thế Tôn sống giữa dân chúng Bhayga, tại núi Cá Sấu, rừng Bhesaka, vườn Nai.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—ekaṃ samayaṃ bhagavā bhaggesu viharati susumāragire bhesakaḷāvane migadāye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi gia chủ Cha của Nakula đi đến Thế Tôn; sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, gia chủ Cha của Nakula bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho nakulapitā gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho nakulapitā gahapati bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, con đã già, tuổi lớn, trưởng lão, cao niên, đã đạt đến tuổi thọ, thân bịnh hoạn, luôn luôn ốm đau. Bạch Thế Tôn, con không được thường thấy Thế Tôn và các vị Tỷ-kheo đáng kính. Bạch Thế Tôn, mong Thế Tôn hãy giáo giới cho con! Bạch Thế Tôn, mong Thế Tôn hãy giảng dạy cho con! Nhờ vậy, con được hạnh phúc, an lạc lâu dài”.<br>
+<span lang="pi" class="pali">
+“Ahamasmi, bhante, jiṇṇo vuḍḍho mahallako addhagato vayoanuppatto āturakāyo abhikkhaṇātaṅko. Aniccadassāvī kho panāhaṃ, bhante, bhagavato manobhāvanīyānañca bhikkhūnaṃ. Ovadatu maṃ, bhante, bhagavā; anusāsatu maṃ, bhante, bhagavā; yaṃ mamassa dīgharattaṃ hitāya sukhāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật sự là vậy, này Gia chủ. Thật sự là vậy, này Gia chủ. Thân của Gia chủ, này Gia chủ, là bịnh hoạn, ốm đau, bị nhiễm ô che đậy. Ai mang cái thân này, này Gia chủ, lại tự cho là không bịnh, dầu chỉ trong một giây phút; người ấy phải là người ngu!<br>
+<span lang="pi" class="pali">
+“Evametaṃ, gahapati, evametaṃ, gahapati. Āturo hāyaṃ, gahapati, kāyo aṇḍabhūto pariyonaddho. Yo hi, gahapati, imaṃ kāyaṃ pariharanto muhuttampi ārogyaṃ paṭijāneyya, kimaññatra bālyā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Gia chủ, Gia chủ cần phải học tập như sau: ‘Dầu cho thân tôi có bịnh, tâm sẽ không bị bịnh’. Như vậy, này Gia chủ, Gia chủ cần phải học tập”.<br>
+<span lang="pi" class="pali">
+Tasmātiha te, gahapati, evaṃ sikkhitabbaṃ: ‘āturakāyassa me sato cittaṃ anāturaṃ bhavissatī’ti. Evañhi te, gahapati, sikkhitabban”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi gia chủ Cha của Nakula sau khi hoan hỷ, tín thọ lời Thế Tôn dạy, từ chỗ ngồi đứng dậy, đảnh lễ Thế Tôn, thân bên hữu hướng về Ngài, đi đến Tôn giả Sāriputta; sau khi đến, đảnh lễ Tôn giả Sāriputta rồi ngồi xuống một bên. Tôn giả Sāriputta nói với gia chủ Cha của Nakula đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Atha kho nakulapitā gahapati bhagavato bhāsitaṃ abhinanditvā anumoditvā uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmantaṃ sāriputtaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho nakulapitaraṃ gahapatiṃ āyasmā sāriputto etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Gia chủ, tịch tịnh là các căn của Gia chủ; thanh tịnh và trong sáng là sắc diện của Gia chủ. Có phải hôm nay Gia chủ đối diện với Thế Tôn, được nghe pháp thoại?”<br>
+<span lang="pi" class="pali">
+“vippasannāni kho te, gahapati, indriyāni; parisuddho mukhavaṇṇo pariyodāto. Alattha no ajja bhagavato sammukhā dhammiṃ kathaṃ savanāyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Làm sao không thể như vậy được, thưa Tôn giả? Hôm nay, thưa Tôn giả, con được rưới với nước bất tử, nhờ Thế Tôn giảng cho pháp thoại!”<br>
+<span lang="pi" class="pali">
+“Kathañhi no siyā, bhante. Idānāhaṃ, bhante, bhagavatā dhammiyā kathāya amatena abhisitto”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như thế nào, này Gia chủ, Gia chủ được rưới với nước bất tử, nhờ Thế Tôn giảng cho pháp thoại?”<br>
+<span lang="pi" class="pali">
+“Yathā kathaṃ pana tvaṃ, gahapati, bhagavatā dhammiyā kathāya amatena abhisitto”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, thưa Tôn giả, con đi đến Thế Tôn; sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, thưa Tôn giả, con bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+“Idhāhaṃ, bhante, yena bhagavā tenupasaṅkamiṃ; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdiṃ. Ekamantaṃ nisinno khvāhaṃ, bhante, bhagavantaṃ etadavocaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, con đã già, tuổi lớn, trưởng lão, cao niên, đã đạt đến tuổi thọ, thân bịnh hoạn, luôn luôn ốm đau. Bạch Thế Tôn, con không được thường thấy Thế Tôn và các Tỷ-kheo đáng kính. Bạch Thế Tôn, mong Thế Tôn giáo giới cho con! Bạch Thế Tôn, mong Thế Tôn giảng dạy cho con! Nhờ vậy con được hạnh phúc, an lạc lâu dài!’<br>
+<span lang="pi" class="pali">
+‘ahamasmi, bhante, jiṇṇo vuḍḍho mahallako addhagato vayoanuppatto āturakāyo abhikkhaṇātaṅko. Aniccadassāvī kho panāhaṃ, bhante, bhagavato manobhāvanīyānañca bhikkhūnaṃ. Ovadatu maṃ, bhante, bhagavā; anusāsatu maṃ, bhante, bhagavā; yaṃ mamassa dīgharattaṃ hitāya sukhāyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược nghe nói vậy, thưa Tôn giả, Thế Tôn nói với con:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, maṃ, bhante, bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thật sự là vậy, này Gia chủ. Thật sự là vậy, này Gia chủ. Thân của Gia chủ, này Gia chủ, là bịnh hoạn, ốm yếu, bị nhiễm ô che đậy. Ai mang cái thân này, này Gia chủ, lại tự cho là không bịnh, dầu chỉ trong một giây phút; người ấy phải là người ngu! Do vậy, này Gia chủ, Gia chủ cần phải học tập như sau: ‘Dầu thân tôi có bịnh, tâm sẽ không bị bịnh!’<br>
+<span lang="pi" class="pali">
+‘evametaṃ, gahapati, evametaṃ, gahapati. Āturo hāyaṃ, gahapati, kāyo aṇḍabhūto pariyonaddho. Yo hi, gahapati, imaṃ kāyaṃ pariharanto muhuttampi ārogyaṃ paṭijāneyya, kimaññatra bālyā? Tasmātiha te, gahapati, evaṃ sikkhitabbaṃ—āturakāyassa me sato cittaṃ anāturaṃ bhavissatīti. Evañhi te, gahapati, sikkhitabban’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, thưa Tôn giả, con được rưới với nước bất tử, nhờ Thế Tôn giảng cho pháp thoại”.<br>
+<span lang="pi" class="pali">
+Evaṃ khvāhaṃ, bhante, bhagavatā dhammiyā kathāya amatena abhisitto”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nhưng này Gia chủ, Gia chủ có hỏi thêm Thế Tôn như sau: ‘Cho đến như thế nào, bạch Thế Tôn, là thân bị bịnh và tâm cũng bị bịnh? Cho đến như thế nào là thân bị bịnh, nhưng tâm không bị bịnh không’?”<br>
+<span lang="pi" class="pali">
+“Na hi pana taṃ, gahapati, paṭibhāsi bhagavantaṃ uttariṃ paṭipucchituṃ: ‘kittāvatā nu kho, bhante, āturakāyo ceva hoti āturacitto ca, kittāvatā ca pana āturakāyo hi kho hoti no ca āturacitto’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, con có thể đi đến thật xa để nghe tận mặt Tôn giả Sāriputta ý nghĩa của lời nói này. Lành thay, nếu được Tôn giả Sāriputta giải thích ý nghĩa của lời nói này!”<br>
+<span lang="pi" class="pali">
+“Dūratopi kho mayaṃ, bhante, āgaccheyyāma āyasmato sāriputtassa santike etassa bhāsitassa atthamaññātuṃ. Sādhu vatāyasmantaṃyeva sāriputtaṃ paṭibhātu etassa bhāsitassa attho”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vậy này Gia chủ, hãy lắng nghe và khéo suy nghiệm, ta sẽ nói”.<br>
+<span lang="pi" class="pali">
+“Tena hi, gahapati, suṇāhi, sādhukaṃ manasi karohi; bhāsissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, Tôn giả”. Gia chủ Cha của Nakula vâng đáp Tôn giả Sāriputta. Tôn giả Sāriputta nói như sau:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho nakulapitā gahapati āyasmato sāriputtassa paccassosi. Āyasmā sāriputto etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế nào, này Gia chủ, là thân bịnh và tâm bịnh?<br>
+<span lang="pi" class="pali">
+“Kathañca, gahapati, āturakāyo ceva hoti, āturacitto ca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Gia chủ, có kẻ vô văn phàm phu không thấy rõ các bậc Thánh, không thuần thục pháp các bậc Thánh, không tu tập pháp các bậc Thánh, không thấy rõ các bậc Chân nhân, không thuần thục pháp các bậc Chân nhân, không tu tập pháp các bậc Chân nhân, quán sắc như là tự ngã, hay tự ngã như là có sắc, hay sắc ở trong tự ngã, hay tự ngã ở trong sắc. Vị ấy bị ám ảnh: ‘Sắc là ta, sắc là của ta’. Do bị ám ảnh: ‘Sắc là ta, sắc là của ta’. khi sắc biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Idha, gahapati, assutavā puthujjano ariyānaṃ adassāvī ariyadhammassa akovido ariyadhamme avinīto sappurisānaṃ adassāvī sappurisadhammassa akovido sappurisadhamme avinīto rūpaṃ attato samanupassati, rūpavantaṃ vā attānaṃ; attani vā rūpaṃ, rūpasmiṃ vā attānaṃ. ‘Ahaṃ rūpaṃ, mama rūpan’ti pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ rūpaṃ, mama rūpan’ti pariyuṭṭhaṭṭhāyino taṃ rūpaṃ vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+do sắc biến hoại, đổi khác, nên vị ấy khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa rūpavipariṇāmaññathābhāvā uppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy quán thọ như là tự ngã, hay tự ngã như là có thọ, hay thọ ở trong tự ngã, hay tự ngã ở trong thọ. Vị ấy bị ám ảnh: ‘Thọ là ta, thọ là của ta’. Do bị ám ảnh: ‘Thọ là ta, thọ là của ta’. Khi thọ biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Vedanaṃ attato samanupassati, vedanāvantaṃ vā attānaṃ; attani vā vedanaṃ, vedanāya vā attānaṃ. ‘Ahaṃ vedanā, mama vedanā’ti pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ vedanā, mama vedanā’ti pariyuṭṭhaṭṭhāyino, sā vedanā vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên do thọ biến hoại, đổi khác, vị ấy khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa vedanāvipariṇāmaññathābhāvā uppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy quán tưởng như là tự ngã, hay tự ngã như là có tưởng, hay tưởng ở trong tự ngã, hay tự ngã ở trong tưởng. Vị ấy bị ám ảnh: ‘Tưởng là ta, tưởng là của ta’. Do bị ám ảnh: ‘Tưởng là ta, tưởng là của ta’. Khi tưởng biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Saññaṃ attato samanupassati, saññāvantaṃ vā attānaṃ; attani vā saññaṃ, saññāya vā attānaṃ. ‘Ahaṃ saññā, mama saññā’ti pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ saññā, mama saññā’ti pariyuṭṭhaṭṭhāyino, sā saññā vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên do tưởng biến hoại, đổi khác, vị ấy khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa saññāvipariṇāmaññathābhāvā uppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy quán các hành như là tự ngã hay tự ngã như là có các hành, hay các hành ở trong tự ngã, hay tự ngã ở trong các hành. Vị ấy bị ám ảnh: ‘Các hành là ta, các hành là của ta’. Do bị ám ảnh: ‘Các hành là ta, các hành là của ta’. Khi các hành biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Saṅkhāre attato samanupassati, saṅkhāravantaṃ vā attānaṃ; attani vā saṅkhāre, saṅkhāresu vā attānaṃ. ‘Ahaṃ saṅkhārā, mama saṅkhārā’ti pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ saṅkhārā, mama saṅkhārā’ti pariyuṭṭhaṭṭhāyino, te saṅkhārā vipariṇamanti aññathā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+do các hành biến hoại, đổi khác, vị ấy khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa saṅkhāravipariṇāmaññathābhāvā uppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy quán thức như là tự ngã, hay tự ngã như là có thức, hay thức ở trong tự ngã, hay tự ngã ở trong thức. Vị ấy bị ám ảnh: ‘Thức là ta, thức là của ta’, khi thức biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Viññāṇaṃ attato samanupassati, viññāṇavantaṃ vā attānaṃ; attani vā viññāṇaṃ, viññāṇasmiṃ vā attānaṃ. ‘Ahaṃ viññāṇaṃ, mama viññāṇan’ti pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ viññāṇaṃ, mama viññāṇan’ti pariyuṭṭhaṭṭhāyino, taṃ viññāṇaṃ vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên do thức biến hoại, đổi khác, vị ấy khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa viññāṇavipariṇāmaññathābhāvā uppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Gia chủ, là thân có bịnh và tâm có bịnh.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, gahapati, āturakāyo ceva hoti āturacitto ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào, này Gia chủ, là thân có bịnh nhưng tâm không có bịnh?<br>
+<span lang="pi" class="pali">
+Kathañca, gahapati, āturakāyo hi kho hoti no ca āturacitto?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Gia chủ, vị đa văn Thánh đệ tử hiểu rõ các bậc Thánh, thuần thục pháp các bậc Thánh, tu tập pháp các bậc Thánh, hiểu rõ các bậc Chân nhân, thuần thục pháp các bậc Chân nhân, tu tập pháp các bậc Chân nhân, không quán sắc như là tự ngã, hay tự ngã như là có sắc, hay sắc ở trong tự ngã, hay tự ngã ở trong sắc. Vị ấy không bị ám ảnh: ‘Sắc là ta, sắc là của ta’. Do vị ấy không bị ám ảnh: ‘Sắc là ta, sắc là của ta’ khi sắc biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Idha, gahapati, sutavā ariyasāvako ariyānaṃ dassāvī ariyadhammassa kovido ariyadhamme suvinīto sappurisānaṃ dassāvī sappurisadhammassa kovido sappurisadhamme suvinīto na rūpaṃ attato samanupassati, na rūpavantaṃ vā attānaṃ; na attani vā rūpaṃ, na rūpasmiṃ vā attānaṃ. ‘Ahaṃ rūpaṃ, mama rūpan’ti na pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ rūpaṃ, mama rūpan’ti apariyuṭṭhaṭṭhāyino, taṃ rūpaṃ vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên không do sắc biến hoại, đổi khác mà khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa rūpavipariṇāmaññathābhāvā nuppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không quán thọ như là tự ngã, hay tự ngã như là có thọ, hay thọ ở trong tự ngã, hay tự ngã ở trong thọ. Vị ấy không bị ám ảnh: ‘Thọ là ta, thọ là của ta’. Do vị ấy không bị ám ảnh: ‘Thọ là ta, thọ là của ta’ khi thọ biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Na vedanaṃ attato samanupassati, na vedanāvantaṃ vā attānaṃ; na attani vā vedanaṃ, na vedanāya vā attānaṃ. ‘Ahaṃ vedanā, mama vedanā’ti na pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ vedanā, mama vedanā’ti apariyuṭṭhaṭṭhāyino, sā vedanā vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên không do thọ biến hoại, đổi khác, mà khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa vedanāvipariṇāmaññathābhāvā nuppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không quán tưởng như là tự ngã, hay tự ngã như là có tưởng, hay tưởng ở trong tự ngã, hay tự ngã ở trong tưởng. Vị ấy không bị ám ảnh: ‘Tưởng là ta, tưởng là của ta’. Do vị ấy không bị ám ảnh: ‘Tưởng là ta, tưởng là của ta’ khi tưởng biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Na saññaṃ attato samanupassati, na saññāvantaṃ vā attānaṃ; na attani vā saññaṃ, na saññāya vā attānaṃ. ‘Ahaṃ saññā, mama saññā’ti na pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ saññā, mama saññā’ti apariyuṭṭhaṭṭhāyino, sā saññā vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên không do tưởng biến hoại, đổi khác mà khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa saññāvipariṇāmaññathābhāvā nuppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không quán các hành như là tự ngã, hay tự ngã như là có hành, hay các hành ở trong tự ngã, hay tự ngã ở trong các hành. Vị ấy không bị ám ảnh: ‘Các hành là ta, các hành là của ta’. Do vị ấy không bị ám ảnh: ‘Các hành là ta, các hành là của ta’ khi các hành biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Na saṅkhāre attato samanupassati, na saṅkhāravantaṃ vā attānaṃ; na attani vā saṅkhāre, na saṅkhāresu vā attānaṃ. ‘Ahaṃ saṅkhārā, mama saṅkhārā’ti na pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ saṅkhārā, mama saṅkhārā’ti apariyuṭṭhaṭṭhāyino, te saṅkhārā vipariṇamanti aññathā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên không do các hành biến hoại, đổi khác mà khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa saṅkhāravipariṇāmaññathābhāvā nuppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không quán thức như là tự ngã, hay tự ngã như là có thức, hay thức ở trong tự ngã, hay tự ngã ở trong thức. Vị ấy không bị ám ảnh: ‘Thức là ta, thức là của ta’. Do vị ấy không bị ám ảnh: ‘Thức là ta, thức là của ta’ khi thức biến hoại, đổi khác;<br>
+<span lang="pi" class="pali">
+Na viññāṇaṃ attato samanupassati, na viññāṇavantaṃ vā attānaṃ; na attani vā viññāṇaṃ, na viññāṇasmiṃ vā attānaṃ. ‘Ahaṃ viññāṇaṃ, mama viññāṇan’ti na pariyuṭṭhaṭṭhāyī hoti. Tassa ‘ahaṃ viññāṇaṃ, mama viññāṇan’ti apariyuṭṭhaṭṭhāyino, taṃ viññāṇaṃ vipariṇamati aññathā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nên không do thức biến hoại, đổi khác mà khởi lên sầu, bi, khổ, ưu, não!<br>
+<span lang="pi" class="pali">
+Tassa viññāṇavipariṇāmaññathābhāvā nuppajjanti sokaparidevadukkhadomanassupāyāsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Gia chủ, là thân có bịnh, nhưng tâm không có bịnh”.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, gahapati, āturakāyo hoti no ca āturacitto”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Sāriputta thuyết như vậy, gia chủ Cha của Nakula hoan hỷ, tín thọ lời Tôn giả Sāriputta thuyết.<br>
+<span lang="pi" class="pali">
+Idamavoca āyasmā sāriputto. Attamano nakulapitā gahapati āyasmato sāriputtassa bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn22.html#content"></a><a id="next-sutta" href="./sn22.2.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

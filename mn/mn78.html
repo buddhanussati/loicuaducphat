@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 78          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 78<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 78<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Samaṇamaṇḍikā<br>
+<span lang="pi" class="pali">
+Samaṇamuṇḍikasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Sāvatthī (Xá-vệ), Jetavana (Kỳ Viên), tại tinh xá Anāthapiṇḍika (Cấp Cô Ðộc).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ du sĩ Uggāhamāna, con của Samaṇamaṇḍikā, trú ở tinh xá của Mallikā tại Ekasalaka, có hàng cây Tinduka bao quanh, được xây dựng để tranh luận cùng với đại chúng du sĩ khoảng ba trăm vị.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena uggāhamāno paribbājako samaṇamuṇḍikāputto samayappavādake tindukācīre ekasālake mallikāya ārāme paṭivasati mahatiyā paribbājakaparisāya saddhiṃ pañcamattehi paribbājakasatehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi thợ mộc Pañcakaṅga vào buổi sáng sớm, đi ra khỏi Sāvatthī để yết kiến Thế Tôn.<br>
+<span lang="pi" class="pali">
+Atha kho pañcakaṅgo thapati sāvatthiyā nikkhami divā divassa bhagavantaṃ dassanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thợ mộc Pañcakaṅga suy nghĩ:<br>
+<span lang="pi" class="pali">
+Atha kho pañcakaṅgassa thapatissa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nay không phải thời để yết kiến Thế Tôn,<br>
+<span lang="pi" class="pali">
+“akālo kho tāva bhagavantaṃ dassanāya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn đang an tịnh Thiền tọa;<br>
+<span lang="pi" class="pali">
+paṭisallīno bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cũng không phải thời để yết kiến các vị Tỷ-kheo đang tu dưỡng tâm ý,<br>
+<span lang="pi" class="pali">
+Manobhāvaniyānampi bhikkhūnaṃ asamayo dassanāya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các vị Tỷ-kheo đang an tịnh Thiền tọa.<br>
+<span lang="pi" class="pali">
+paṭisallīnā manobhāvaniyā bhikkhū.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta hãy đi đến tinh xá của Mallikā, tại một hội trường, có hàng cây Gỗ Mun bao quanh, được xây dựng để tranh luận, đi đến du sĩ Uggāhamāna, con của Samaṇamaṇḍikā”.<br>
+<span lang="pi" class="pali">
+Yannūnāhaṃ yena samayappavādako tindukācīro ekasālako mallikāya ārāmo yena uggāhamāno paribbājako samaṇamuṇḍikāputto tenupasaṅkameyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi thợ mộc Pañcakaṅga đi đến tinh xá của Mallikā, tại Ekasalaka, có hàng cây tinduka bao quanh, được xây dựng để tranh luận.<br>
+<span lang="pi" class="pali">
+Atha kho pañcakaṅgo thapati yena samayappavādako tindukācīro ekasālako mallikāya ārāmo yena uggāhamāno paribbājako samaṇamuṇḍikāputto tenupasaṅkami.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ du sĩ Uggāhamāna, con của Samaṇamaṇḍikā đang ngồi với đại chúng du sĩ, đang lớn tiếng, cao tiếng, to tiếng, bàn luận nhiều vấn đề phù phiếm như:<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena uggāhamāno paribbājako samaṇamuṇḍikāputto mahatiyā paribbājakaparisāya saddhiṃ nisinno hoti unnādiniyā uccāsaddamahāsaddāya anekavihitaṃ tiracchānakathaṃ kathentiyā, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vương luận, tặc luận, đại thần luận, binh luận, bố uý luận, chiến đấu luận, thực luận, ẩm luận, y luận, sàng luận, hoa man luận, hương liệu luận, thân tộc luận, xa thừa luận, thôn luận, trấn luận, thị luận, quốc độ luận, phụ nữ luận, anh hùng luận, câu chuyện bên lề đường, câu chuyện tại chỗ lấy nước, câu chuyện về người đã chết, tạp thoại luận, thế giới luận, hải dương luận, hiện hữu, vô biên hữu luận.<br>
+<span lang="pi" class="pali">
+rājakathaṃ corakathaṃ mahāmattakathaṃ senākathaṃ bhayakathaṃ yuddhakathaṃ annakathaṃ pānakathaṃ vatthakathaṃ sayanakathaṃ mālākathaṃ gandhakathaṃ ñātikathaṃ yānakathaṃ gāmakathaṃ nigamakathaṃ nagarakathaṃ janapadakathaṃ itthikathaṃ sūrakathaṃ visikhākathaṃ kumbhaṭṭhānakathaṃ pubbapetakathaṃ nānattakathaṃ lokakkhāyikaṃ samuddakkhāyikaṃ itibhavābhavakathaṃ iti vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Du sĩ Uggāhamāna, con của Samaṇamaṇḍikā thấy thợ mộc Pañcakaṅga từ xa đi đến.<br>
+<span lang="pi" class="pali">
+Addasā kho uggāhamāno paribbājako samaṇamuṇḍikāputto pañcakaṅgaṃ thapatiṃ dūratova āgacchantaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy vậy liền khuyến cáo chúng của mình:<br>
+<span lang="pi" class="pali">
+Disvāna sakaṃ parisaṃ saṇṭhāpesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Các Tôn giả hãy nhỏ tiếng! Các Tôn giả hãy lặng tiếng!<br>
+<span lang="pi" class="pali">
+“appasaddā bhonto hontu, mā bhonto saddamakattha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay thợ mộc Pañcakaṅga, đệ tử của Sa-môn Gotama đang đến.<br>
+<span lang="pi" class="pali">
+ayaṃ samaṇassa gotamassa sāvako āgacchati pañcakaṅgo thapati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nào các đệ tử gia chủ mặc áo trắng của Sa-môn Gotama trú ở Sāvatthī, thời thợ mộc Pañcakaṅga là một trong những vị ấy.<br>
+<span lang="pi" class="pali">
+Yāvatā kho pana samaṇassa gotamassa sāvakā gihī odātavasanā sāvatthiyaṃ paṭivasanti ayaṃ tesaṃ aññataro pañcakaṅgo thapati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các vị Tôn giả ấy ưa mến an tịnh, được tu tập về an tịnh, tán thán an tịnh,<br>
+<span lang="pi" class="pali">
+Appasaddakāmā kho pana te āyasmanto appasaddavinītā appasaddassa vaṇṇavādino;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu biết chúng này an tịnh, có thể ghé tại đây.”<br>
+<span lang="pi" class="pali">
+appeva nāma appasaddaṃ parisaṃ viditvā upasaṅkamitabbaṃ maññeyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các du sĩ ấy đều im lặng.<br>
+<span lang="pi" class="pali">
+Atha kho te paribbājakā tuṇhī ahesuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thợ mộc Pañcakaṅga đi đến du sĩ Uggāhamāna, con của Samaṇamaṇḍikā; sau khi đến, nói lên những lời chào đón hỏi thăm với du sĩ Uggāhamāna, con của Samaṇamaṇḍikā;<br>
+<span lang="pi" class="pali">
+Atha kho pañcakaṅgo thapati yena uggāhamāno paribbājako samaṇamuṇḍikāputto tenupasaṅkami; upasaṅkamitvā uggāhamānena paribbājakena samaṇamuṇḍikāputtena saddhiṃ sammodi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi nói lên những lời chào đón hỏi thăm thân hữu, liền ngồi xuống một bên. Du sĩ Uggāhamāna nói với thợ mộc Pañcakaṅga đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho pañcakaṅgaṃ thapatiṃ uggāhamāno paribbājako samaṇamuṇḍikāputto etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Thợ mộc, ta chủ trương rằng một người thành tựu bốn pháp, người ấy sẽ được thiện cụ túc, thiện tối thắng, là bậc Sa-môn thành đạt tối thượng, vô năng thắng.<br>
+<span lang="pi" class="pali">
+“catūhi kho ahaṃ, gahapati, dhammehi samannāgataṃ purisapuggalaṃ paññapemi sampannakusalaṃ paramakusalaṃ uttamapattipattaṃ samaṇaṃ ayojjhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Katamehi catūhi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, không làm ác nghiệp về thân, không nói lời ác, không tư duy ác tư duy, không sinh sống (bằng) nếp sống ác.<br>
+<span lang="pi" class="pali">
+Idha, gahapati, na kāyena pāpakammaṃ karoti, na pāpakaṃ vācaṃ bhāsati, na pāpakaṃ saṅkappaṃ saṅkappeti, na pāpakaṃ ājīvaṃ ājīvati—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, ta chủ trương rằng một người nào thành tựu bốn pháp này, người ấy sẽ được thiện cụ túc, thiện tối thắng, là Sa-môn thành đạt tối thượng, vô năng thắng.”<br>
+<span lang="pi" class="pali">
+imehi kho ahaṃ, gahapati, catūhi dhammehi samannāgataṃ purisapuggalaṃ paññapemi sampannakusalaṃ paramakusalaṃ uttamapattipattaṃ samaṇaṃ ayojjhan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi thợ mộc Pañcakaṅga không hoan hỷ, không kích bác lời nói của du sĩ Uggāhamāna, con của Samaṇamaṇḍikā; không hoan hỷ, không kích bác.<br>
+<span lang="pi" class="pali">
+Atha kho pañcakaṅgo thapati uggāhamānassa paribbājakassa samaṇamuṇḍikāputtassa bhāsitaṃ neva abhinandi nappaṭikkosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ chỗ ngồi đứng dậy ra đi, với ý nghĩ:<br>
+<span lang="pi" class="pali">
+Anabhinanditvā appaṭikkositvā uṭṭhāyāsanā pakkāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Từ Thế Tôn, ta sẽ biết ý nghĩa lời nói này”.<br>
+<span lang="pi" class="pali">
+“bhagavato santike etassa bhāsitassa atthaṃ ājānissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi thợ mộc Pañcakaṅga đến chỗ Thế Tôn, sau khi đến đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, thợ mộc Pañcakaṅga thưa lại với Thế Tôn tất cả câu chuyện giữa mình với du sĩ Uggāhamāna, con của Samaṇamaṇḍikā.<br>
+<span lang="pi" class="pali">
+Atha kho pañcakaṅgo thapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho pañcakaṅgo thapati yāvatako ahosi uggāhamānena paribbājakena samaṇamuṇḍikāputtena saddhiṃ kathāsallāpo taṃ sabbaṃ bhagavato ārocesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, Thế Tôn nói với thợ mộc Pañcakaṅga:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, bhagavā pañcakaṅgaṃ thapatiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nếu sự tình là như vậy thời một đứa con nít còn bé nhỏ, vô trí, nằm ngửa sẽ được thiện cụ túc, thiện tối thắng, là bậc Sa-môn, thành đạt tối thượng, là bậc vô năng thắng đúng như lời du sĩ Uggāhamāna, con của Samaṇamaṇḍikā.<br>
+<span lang="pi" class="pali">
+“evaṃ sante kho, thapati, daharo kumāro mando uttānaseyyako sampannakusalo bhavissati paramakusalo uttamapattipatto samaṇo ayojjho, yathā uggāhamānassa paribbājakassa samaṇamuṇḍikāputtassa vacanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, đối với đứa con nít nhỏ bé, vô trí, nằm ngửa, không có nghĩ: “Ðây là thân”, từ đâu nó có thể làm ác nghiệp về thân, trừ ra chỉ biết quơ tay quơ chân?<br>
+<span lang="pi" class="pali">
+Daharassa hi, thapati, kumārassa mandassa uttānaseyyakassa kāyotipi na hoti, kuto pana kāyena pāpakammaṃ karissati, aññatra phanditamattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, đối với đứa con nít, nhỏ bé, vô trí, nằm ngửa, không có nghĩ: “Ðây là lời nói”, từ đâu nó có thể làm ác nghiệp về lời nói, trừ ra chỉ biết khóc?<br>
+<span lang="pi" class="pali">
+Daharassa hi, thapati, kumārassa mandassa uttānaseyyakassa vācātipi na hoti, kuto pana pāpakaṃ vācaṃ bhāsissati, aññatra roditamattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, đối với đứa con nít, nhỏ bé, vô trí, nằm ngửa, không có nghĩ: “Ðây là tư duy”, từ đâu nó có thể tư duy ác tư duy, trừ ra chỉ biết bập bẹ?<br>
+<span lang="pi" class="pali">
+Daharassa hi, thapati, kumārassa mandassa uttānaseyyakassa saṅkappotipi na hoti, kuto pana pāpakaṃ saṅkappaṃ saṅkappissati, aññatra vikūjitamattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, đối với đứa con nít, nhỏ bé, vô trí, nằm ngửa, không có nghĩ: “Ðây là nghề sinh sống”, từ đâu nó có thể sinh sống bằng nếp sống ác, trừ ra chỉ biết bú sữa mẹ?<br>
+<span lang="pi" class="pali">
+Daharassa hi, thapati, kumārassa mandassa uttānaseyyakassa ājīvotipi na hoti, kuto pana pāpakaṃ ājīvaṃ ājīvissati, aññatra mātuthaññā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự tình là vậy này Thợ mộc, thời một đứa con nít còn bé nhỏ, vô trí, nằm ngửa, sẽ được thiện cụ thúc, thiện tối thắng, là bậc Sa-môn thành đạt tối thượng, vô năng thắng, đúng như lời du sĩ Uggāhamāna, con của Samaṇamaṇḍikā.<br>
+<span lang="pi" class="pali">
+Evaṃ sante kho, thapati, daharo kumāro mando uttānaseyyako sampannakusalo bhavissati paramakusalo uttamapattipatto samaṇo ayojjho, yathā uggāhamānassa paribbājakassa samaṇamuṇḍikāputtassa vacanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, Ta chủ trương rằng một người thành tựu bốn pháp, người ấy sẽ không được thiện cụ túc, thiện tối thắng, không là bậc Sa-môn thành đạt tối thượng, vô năng thắng, và như vậy để xác chứng đứa con nít bé nhỏ, vô trí, nằm ngửa này.<br>
+<span lang="pi" class="pali">
+Catūhi kho ahaṃ, thapati, dhammehi samannāgataṃ purisapuggalaṃ paññapemi na ceva sampannakusalaṃ na paramakusalaṃ na uttamapattipattaṃ samaṇaṃ ayojjhaṃ, api cimaṃ daharaṃ kumāraṃ mandaṃ uttānaseyyakaṃ samadhigayha tiṭṭhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Katamehi catūhi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, không làm ác nghiệp về thân, không nói lời ác ngữ, không tư duy ác tư duy, không sinh sống (bằng) nếp sống ác.<br>
+<span lang="pi" class="pali">
+Idha, thapati, na kāyena pāpakammaṃ karoti, na pāpakaṃ vācaṃ bhāsati, na pāpakaṃ saṅkappaṃ saṅkappeti, na pāpakaṃ ājīvaṃ ājīvati—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, Ta chủ trương rằng một người thành tựu bốn pháp này, người ấy sẽ không được thiện cụ túc, thiện tối thắng, không là bậc Sa-môn thành đạt tối thượng, vô năng thắng.<br>
+<span lang="pi" class="pali">
+imehi kho ahaṃ, thapati, catūhi dhammehi samannāgataṃ purisapuggalaṃ paññapemi na ceva sampannakusalaṃ na paramakusalaṃ na uttamapattipattaṃ samaṇaṃ ayojjhaṃ, api cimaṃ daharaṃ kumāraṃ mandaṃ uttānaseyyakaṃ samadhigayha tiṭṭhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này thợ mộc, Ta chủ trương rằng một người thành tựu mười pháp, người ấy sẽ được thiện cụ túc, thiện tối thắng, là bậc Sa-môn thành đạt tối thượng, vô năng thắng.<br>
+<span lang="pi" class="pali">
+Dasahi kho ahaṃ, thapati, dhammehi samannāgataṃ purisapuggalaṃ paññapemi sampannakusalaṃ paramakusalaṃ uttamapattipattaṃ samaṇaṃ ayojjhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, những pháp này, này Thợ mộc, cần phải được người ấy hiểu là những bất thiện giới,<br>
+<span lang="pi" class="pali">
+Ime akusalā sīlā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, những bất thiện giới cần phải được người ấy hiểu là từ đây sanh (Itosamutthana).<br>
+<span lang="pi" class="pali">
+Itosamuṭṭhānā akusalā sīlā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, ở đây cần phải được người ấy hiểu là những bất thiện giới được diệt trừ không có dư tàn.<br>
+<span lang="pi" class="pali">
+Idha akusalā sīlā aparisesā nirujjhanti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, cần phải được người ấy hiểu là thực hành như vậy là sự thực hành đưa đến diệt trừ các bất thiện giới.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno akusalānaṃ sīlānaṃ nirodhāya paṭipanno hoti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, những pháp này cần phải được người ấy hiểu là những thiện giới.<br>
+<span lang="pi" class="pali">
+Ime kusalā sīlā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, những thiện giới cần phải được người ấy hiểu là từ đây sanh.<br>
+<span lang="pi" class="pali">
+Itosamuṭṭhānā kusalā sīlā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, ở đây, cần phải được người ấy hiểu là những thiện giới được diệt trừ không có dư tàn.<br>
+<span lang="pi" class="pali">
+Idha kusalā sīlā aparisesā nirujjhanti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, cần phải được người ấy hiểu là thực hành như vậy là sự thực hành đưa đến diệt trừ các thiện giới.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno kusalānaṃ sīlānaṃ nirodhāya paṭipanno hoti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, những (pháp) này cần phải được người ấy hiểu là những bất thiện tư duy.<br>
+<span lang="pi" class="pali">
+Ime akusalā saṅkappā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, cần phải được người ấy hiểu là những bất thiện tư duy từ nơi đây sanh.<br>
+<span lang="pi" class="pali">
+Itosamuṭṭhānā akusalā saṅkappā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, ở đây, cần phải được người ấy hiểu các bất thiện tư duy được diệt trừ không có dư tàn.<br>
+<span lang="pi" class="pali">
+Idha akusalā saṅkappā aparisesā nirujjhanti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, cần phải được người ấy hiểu là thực hành như vậy là sự thực hành đưa đến diệt trừ các bất thiện tư duy.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno akusalānaṃ saṅkappānaṃ nirodhāya paṭipanno hoti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, những pháp này cần phải được người ấy hiểu là những thiện tư duy.<br>
+<span lang="pi" class="pali">
+Ime kusalā saṅkappā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, cần phải được người ấy hiểu là những thiện tư duy từ nơi đây sanh.<br>
+<span lang="pi" class="pali">
+Itosamuṭṭhānā kusalā saṅkappā; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, ở đây, cần phải được người ấy hiểu là các thiện tư duy được trừ diệt không có dư tàn.<br>
+<span lang="pi" class="pali">
+Idha kusalā saṅkappā aparisesā nirujjhanti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta nói rằng, này Thợ mộc, cần phải được người ấy hiểu là thực hành như vậy là sự thực hành đưa đến diệt trừ các thiện tư duy.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno kusalānaṃ saṅkappānaṃ nirodhāya paṭipanno hoti; tamahaṃ, thapati, veditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, thế nào là bất thiện giới?<br>
+<span lang="pi" class="pali">
+Katame ca, thapati, akusalā sīlā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thân nghiệp bất thiện, khẩu nghiệp bất thiện, nếp sống ác.<br>
+<span lang="pi" class="pali">
+Akusalaṃ kāyakammaṃ, akusalaṃ vacīkammaṃ, pāpako ājīvo—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những pháp này, này Thợ mộc, được gọi là bất thiện giới.<br>
+<span lang="pi" class="pali">
+ime vuccanti, thapati, akusalā sīlā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những bất thiện giới này sanh khởi như thế nào?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, akusalā sīlā kiṃsamuṭṭhānā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự sanh khởi của chúng cũng được nói đến,<br>
+<span lang="pi" class="pali">
+Samuṭṭhānampi nesaṃ vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cần phải trả lời từ tâm sanh khởi.<br>
+<span lang="pi" class="pali">
+‘Cittasamuṭṭhānā’tissa vacanīyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là tâm?<br>
+<span lang="pi" class="pali">
+Katamaṃ cittaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có nhiều loại, đa chủng, sai biệt.<br>
+<span lang="pi" class="pali">
+Cittampi hi bahuṃ anekavidhaṃ nānappakārakaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có tham, có sân, có si, từ đây những bất thiện giới sanh khởi.<br>
+<span lang="pi" class="pali">
+Yaṃ cittaṃ sarāgaṃ sadosaṃ samohaṃ, itosamuṭṭhānā akusalā sīlā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những bất thiện giới này từ đâu được trừ diệt, không có dư tàn?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, akusalā sīlā kuhiṃ aparisesā nirujjhanti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự trừ diệt của chúng cũng được nói đến.<br>
+<span lang="pi" class="pali">
+Nirodhopi nesaṃ vutto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, một Tỷ-kheo, sau khi đoạn trừ thân ác hạnh, tu tập thân thiện hạnh; sau khi đoạn trừ khẩu ác hạnh, tu tập khẩu thiện hạnh; sau khi đoạn trừ ý ác hạnh, tu tập ý thiện hạnh; sau khi đoạn trừ nếp sống ác sinh sống với nếp sống chánh.<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu kāyaduccaritaṃ pahāya kāyasucaritaṃ bhāveti, vacīduccaritaṃ pahāya vacīsucaritaṃ bhāveti, manoduccaritaṃ pahāya manosucaritaṃ bhāveti, micchājīvaṃ pahāya sammājīvena jīvitaṃ kappeti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, những bất thiện giới ấy được trừ diệt không có tàn dư.<br>
+<span lang="pi" class="pali">
+etthete akusalā sīlā aparisesā nirujjhanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thực hành như thế nào, này Thợ mộc, là sự thực hành đưa đến diệt trừ các bất thiện giới?<br>
+<span lang="pi" class="pali">
+Kathaṃ paṭipanno, thapati, akusalānaṃ sīlānaṃ nirodhāya paṭipanno hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, vị Tỷ-kheo khởi lên ý muốn, nỗ lực, tinh tấn, quyết tâm, sách tấn tâm; khiến cho các ác, bất thiện pháp từ trước chưa sanh không được sanh khởi;<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu anuppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ anuppādāya chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm khiến cho các ác, bất thiện pháp đã sanh được trừ diệt;<br>
+<span lang="pi" class="pali">
+uppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ pahānāya chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm khiến cho các thiện pháp chưa sanh nay được sanh khởi;<br>
+<span lang="pi" class="pali">
+anuppannānaṃ kusalānaṃ dhammānaṃ uppādāya chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm khiến cho các thiện pháp đã sanh có thể duy trì, không có mơ hồ, được tăng trưởng, được quảng đại, được tu tập, được viên mãn.<br>
+<span lang="pi" class="pali">
+uppannānaṃ kusalānaṃ dhammānaṃ ṭhitiyā asammosāya bhiyyobhāvāya vepullāya bhāvanāya pāripūriyā chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự thực hành như vậy, này Thợ mộc, là sự thực hành đưa đến diệt trừ các bất thiện giới.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno kho, thapati, akusalānaṃ sīlānaṃ nirodhāya paṭipanno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, thế nào là thiện giới?<br>
+<span lang="pi" class="pali">
+Katame ca, thapati, kusalā sīlā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thân nghiệp thiện, khẩu nghiệp thiện, nếp sống thanh tịnh mạng; những pháp này.<br>
+<span lang="pi" class="pali">
+Kusalaṃ kāyakammaṃ, kusalaṃ vacīkammaṃ, ājīvaparisuddhampi kho ahaṃ, thapati, sīlasmiṃ vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, được gọi là thiện giới.<br>
+<span lang="pi" class="pali">
+Ime vuccanti, thapati, kusalā sīlā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những thiện giới này sanh khởi như thế nào?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, kusalā sīlā kiṃsamuṭṭhānā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự sanh khởi của chúng cũng được nói đến,<br>
+<span lang="pi" class="pali">
+Samuṭṭhānampi nesaṃ vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cần phải trả lời là tự tâm sinh khởi.<br>
+<span lang="pi" class="pali">
+‘Cittasamuṭṭhānā’tissa vacanīyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là tâm?<br>
+<span lang="pi" class="pali">
+Katamaṃ cittaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có nhiều loại, đa chủng, sai biệt.<br>
+<span lang="pi" class="pali">
+Cittampi hi bahuṃ anekavidhaṃ nānappakārakaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm không tham, không sân, không si, từ đây những thiện giới sanh khởi.<br>
+<span lang="pi" class="pali">
+Yaṃ cittaṃ vītarāgaṃ vītadosaṃ vītamohaṃ, itosamuṭṭhānā kusalā sīlā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những thiện giới này từ đâu được trừ diệt, không có dư tàn?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, kusalā sīlā kuhiṃ aparisesā nirujjhanti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự trừ diệt của chúng cũng được nói đến.<br>
+<span lang="pi" class="pali">
+Nirodhopi nesaṃ vutto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, vị Tỷ-kheo có giới hạnh, và không chấp trước giới (silamayo),<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu sīlavā hoti no ca sīlamayo,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và vị này như thật tuệ tri tâm giải thoát, tuệ giải thoát. Ở đây, những thiện giới ấy được trừ diệt, không có dư tàn.<br>
+<span lang="pi" class="pali">
+tañca cetovimuttiṃ paññāvimuttiṃ yathābhūtaṃ pajānāti; yatthassa te kusalā sīlā aparisesā nirujjhanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thực hành như thế nào, này Thợ mộc, là sự thực hành đưa đến trừ diệt các thiện giới?<br>
+<span lang="pi" class="pali">
+Kathaṃ paṭipanno ca, thapati, kusalānaṃ sīlānaṃ nirodhāya paṭipanno hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, vị Tỷ-kheo khởi lên ý muốn, nỗ lực, tinh tấn, quyết tâm, sách tấn tâm, khiến cho các ác, bất thiện pháp, chưa sanh không được sanh khởi;<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu anuppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ anuppādāya chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khiến cho các ác, bất thiện pháp đã sanh được trừ diệt;<br>
+<span lang="pi" class="pali">
+uppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ pahānāya ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khiến cho các thiện pháp chưa sanh nay được sanh khởi;<br>
+<span lang="pi" class="pali">
+anuppannānaṃ kusalānaṃ dhammānaṃ uppādāya ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm, khiến cho các thiện pháp đã sanh có thể duy trì, không có mơ hồ, được tăng trưởng, được quảng đại, được tu tập, được viên mãn.<br>
+<span lang="pi" class="pali">
+uppannānaṃ kusalānaṃ dhammānaṃ ṭhitiyā asammosāya bhiyyobhāvāya vepullāya bhāvanāya pāripūriyā chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự thực hành như vậy là sự thực hành đưa đến diệt trừ các thiện giới.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno kho, thapati, kusalānaṃ sīlānaṃ nirodhāya paṭipanno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, thế nào là bất thiện tư duy?<br>
+<span lang="pi" class="pali">
+Katame ca, thapati, akusalā saṅkappā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dục tư duy, sân tư duy, hại tư duy. Pháp này,<br>
+<span lang="pi" class="pali">
+Kāmasaṅkappo, byāpādasaṅkappo, vihiṃsāsaṅkappo—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này Thợ mộc, được gọi là bất thiện tư duy.<br>
+<span lang="pi" class="pali">
+ime vuccanti, thapati, akusalā saṅkappā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những bất thiện tư duy này sanh khởi như thế nào?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, akusalā saṅkappā kiṃsamuṭṭhānā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự sanh khởi của chúng cũng được nói đến.<br>
+<span lang="pi" class="pali">
+Samuṭṭhānampi nesaṃ vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cần phải trả lời là từ tưởng sanh khởi.<br>
+<span lang="pi" class="pali">
+‘Saññāsamuṭṭhānā’tissa vacanīyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là tưởng?<br>
+<span lang="pi" class="pali">
+Katamā saññā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tưởng có nhiều loại, đa chủng, sai biệt:<br>
+<span lang="pi" class="pali">
+Saññāpi hi bahū anekavidhā nānappakārakā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+dục tưởng, sân tưởng, hại tưởng,<br>
+<span lang="pi" class="pali">
+Kāmasaññā, byāpādasaññā, vihiṃsāsaññā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ đấy những bất thiện tư duy sanh khởi.<br>
+<span lang="pi" class="pali">
+itosamuṭṭhānā akusalā saṅkappā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những bất thiện tư duy này từ đâu được trừ diệt, không có dư tàn?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, akusalā saṅkappā kuhiṃ aparisesā nirujjhanti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự trừ diệt của chúng cũng được nói đến.<br>
+<span lang="pi" class="pali">
+Nirodhopi nesaṃ vutto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, vị Tỷ-kheo ly dục, ly bất thiện pháp chứng và trú Thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, với tầm, với tứ.<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu vivicceva kāmehi ...pe... paṭhamaṃ jhānaṃ upasampajja viharati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, những bất thiện tư duy được trừ diệt, không có dư tàn.<br>
+<span lang="pi" class="pali">
+etthete akusalā saṅkappā aparisesā nirujjhanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và sự thực hành như thế nào, này Thợ mộc, là sự thực hành đưa đến diệt trừ các bất thiện tư duy?<br>
+<span lang="pi" class="pali">
+Kathaṃ paṭipanno ca, thapati, akusalānaṃ saṅkappānaṃ nirodhāya paṭipanno hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, vị Tỷ-kheo khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm khiến cho các ác, bất thiện pháp chưa sanh không được sanh khởi.<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu anuppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ anuppādāya chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khiến cho các ác, bất thiện pháp đã sanh được trừ diệt;<br>
+<span lang="pi" class="pali">
+uppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ pahānāya ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khiến cho các thiện pháp chưa sanh nay được sanh khởi;<br>
+<span lang="pi" class="pali">
+anuppannānaṃ kusalānaṃ dhammānaṃ uppādāya ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm; khiến cho các thiện pháp đã sanh có thể duy trì, không có mơ hồ, được tăng trưởng, được quảng đại, được tu tập, được viên mãn.<br>
+<span lang="pi" class="pali">
+uppannānaṃ kusalānaṃ dhammānaṃ ṭhitiyā asammosāya bhiyyobhāvāya vepullāya bhāvanāya pāripūriyā chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự thực hành như vậy là sự thực hành đưa đến diệt trừ các bất thiện tư duy.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno kho, thapati, akusalānaṃ saṅkappānaṃ nirodhāya paṭipanno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, thế nào là thiện tư duy?<br>
+<span lang="pi" class="pali">
+Katame ca, thapati, kusalā saṅkappā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ly dục tư duy, vô sân tư duy, bất hại tư duy; những pháp này,<br>
+<span lang="pi" class="pali">
+Nekkhammasaṅkappo, abyāpādasaṅkappo, avihiṃsāsaṅkappo—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này Thợ mộc, được gọi là thiện tư duy.<br>
+<span lang="pi" class="pali">
+ime vuccanti, thapati, kusalā saṅkappā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những thiện tư duy này sanh khởi như thế nào?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, kusalā saṅkappā kiṃsamuṭṭhānā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự sanh khởi của chúng cũng được nói đến.<br>
+<span lang="pi" class="pali">
+Samuṭṭhānampi nesaṃ vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cần phải trả lời là từ tưởng sanh khởi.<br>
+<span lang="pi" class="pali">
+‘Saññāsamuṭṭhānā’tissa vacanīyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là tưởng?<br>
+<span lang="pi" class="pali">
+Katamā saññā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tưởng có nhiều loại, đa chủng, sai biệt:<br>
+<span lang="pi" class="pali">
+Saññāpi hi bahū anekavidhā nānappakārakā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ly dục tưởng, vô sân tưởng, bất hại tưởng,<br>
+<span lang="pi" class="pali">
+Nekkhammasaññā, abyāpādasaññā, avihiṃsāsaññā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ đấy sanh khởi là những thiện tư duy.<br>
+<span lang="pi" class="pali">
+itosamuṭṭhānā kusalā saṅkappā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, những thiện tư duy này từ đâu được diệt, không có dư tàn?<br>
+<span lang="pi" class="pali">
+Ime ca, thapati, kusalā saṅkappā kuhiṃ aparisesā nirujjhanti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự trừ diệt của chúng cũng được nói đến.<br>
+<span lang="pi" class="pali">
+Nirodhopi nesaṃ vutto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, vị Tỷ-kheo diệt tầm và tứ, chứng và trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm, không tứ, nội tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu vitakkavicārānaṃ vūpasamā ...pe... dutiyaṃ jhānaṃ upasampajja viharati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, những thiện tư duy ấy được trừ diệt không có dư tàn.<br>
+<span lang="pi" class="pali">
+etthete kusalā saṅkappā aparisesā nirujjhanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và sự thực hành như thế nào, này Thợ mộc, là sự thực hành đưa đến diệt trừ các thiện tư duy?<br>
+<span lang="pi" class="pali">
+Kathaṃ paṭipanno ca, thapati, kusalānaṃ saṅkappānaṃ nirodhāya paṭipanno hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Tỷ-kheo khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm khiến cho các ác, bất thiện pháp chưa sanh không có sanh khởi.<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu anuppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ anuppādāya chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khiến cho các ác, bất thiện pháp đã sanh được trừ diệt …<br>
+<span lang="pi" class="pali">
+uppannānaṃ pāpakānaṃ akusalānaṃ dhammānaṃ pahānāya ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khiến cho các thiện pháp chưa sanh nay được sanh khởi; …<br>
+<span lang="pi" class="pali">
+anuppannānaṃ kusalānaṃ dhammānaṃ uppādāya ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khởi lên ý muốn nỗ lực, tinh tấn, quyết tâm, sách tấn tâm, khiến cho các thiện pháp đã sanh, có thể duy trì, không có mơ hồ, được tăng trưởng, được quảng đại, được tu tập, được viên mãn.<br>
+<span lang="pi" class="pali">
+uppannānaṃ kusalānaṃ dhammānaṃ ṭhitiyā asammosāya bhiyyobhāvāya vepullāya bhāvanāya pāripūriyā chandaṃ janeti vāyamati vīriyaṃ ārabhati cittaṃ paggaṇhāti padahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự thực hành như vậy là sự thực hành đưa đến diệt trừ các thiện tư duy.<br>
+<span lang="pi" class="pali">
+Evaṃ paṭipanno kho, thapati, kusalānaṃ saṅkappānaṃ nirodhāya paṭipanno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Thợ mộc, Ta chủ trương rằng một người thành tựu mười pháp này, người ấy được thiện cụ túc, thiện tối thắng, là bậc Sa-môn thành đạt tối thượng, vô năng thắng?<br>
+<span lang="pi" class="pali">
+Katamehi cāhaṃ, thapati, dasahi dhammehi samannāgataṃ purisapuggalaṃ paññapemi sampannakusalaṃ paramakusalaṃ uttamapattipattaṃ samaṇaṃ ayojjhaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thợ mộc, vị Tỷ-kheo thành tựu vô học chánh tri kiến, thành tựu vô học chánh tư duy, thành tựu vô học chánh ngữ, thành tựu vô học chánh mạng, thành tựu vô học chánh tinh tấn, thành tựu vô học chánh niệm, thành tựu vô học chánh định, thành tựu vô học chánh trí, thành tựu vô học chánh giải thoát.<br>
+<span lang="pi" class="pali">
+Idha, thapati, bhikkhu asekhāya sammādiṭṭhiyā samannāgato hoti, asekhena sammāsaṅkappena samannāgato hoti, asekhāya sammāvācāya samannāgato hoti, asekhena sammākammantena samannāgato hoti, asekhena sammāājīvena samannāgato hoti, asekhena sammāvāyāmena samannāgato hoti, asekhāya sammāsatiyā samannāgato hoti, asekhena sammāsamādhinā samannāgato hoti, asekhena sammāñāṇena samannāgato hoti, asekhāya sammāvimuttiyā samannāgato hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thợ mộc, Ta chủ trương rằng một người thành tựu mười pháp này sẽ được thiện cụ túc, thiện tối thắng, là bậc Sa-môn thành đạt tối thượng, vô năng thắng.”<br>
+<span lang="pi" class="pali">
+imehi kho ahaṃ, thapati, dasahi dhammehi samannāgataṃ purisapuggalaṃ paññapemi sampannakusalaṃ paramakusalaṃ uttamapattipattaṃ samaṇaṃ ayojjhan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thợ mộc Pañcakaṅga hoan hỷ tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Attamano pañcakaṅgo thapati bhagavato bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Samaṇamuṇḍikasuttaṃ niṭṭhitaṃ aṭṭhamaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn77.html#content"></a><a id="next-sutta" href="./mn79.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

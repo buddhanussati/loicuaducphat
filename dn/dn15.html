@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="pressed w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Dīgha Nikāya – Trường Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+ 	<title>    Trường Bộ 15     </title>
+
+</div>
+
+<br>
+
+
+<p lang="vi" class="vi"; style="text-align: center">Trường Bộ 15<br>
+<span lang="pi" class="pali">Dīgha Nikāya 15</span></p>
+
+<p lang="vi" class="vi"; style="text-align: center">Kinh Đại Duyên<br>
+<span lang="pi" class="pali">Mahānidānasutta</span></p>
+
+
+<p lang="vi" class="vi">Như vậy tôi nghe—Một thời, Thế Tôn trụ tại bộ lạc Kuru (Câu-lâu), ở ấp Kuru tên là Kammassadhamma (Kiếm-ma-sắt-đàm). Tôn giả Ānanda (A Nan) đến tại chỗ Thế Tôn ở, sau khi đến, đảnh lễ Thế Tôn và ngồi xuống một bên. Sau khi ngồi xuống một bên, Tôn giả Ānanda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ me sutaṃ—Ekaṃ samayaṃ bhagavā kurūsu viharati kammāsadhammaṃ nāma kurūnaṃ nigamo. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami, upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho āyasmā ānando bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Hy hữu thay, bạch Thế Tôn! Kỳ diệu thay, bạch Thế Tôn! Bạch Thế Tôn, giáo pháp Duyên khởi này thâm thúy, thật sự thâm thúy, và giáo pháp này đối với con hết sức minh bạch rõ ràng.<br>
+<span lang="pi" class="pali">Acchariyaṃ, bhante! abbhutaṃ, bhante! Yāva gambhīro cāyaṃ, bhante, paṭiccasamuppādo gambhīrāvabhāso ca, atha ca pana me uttānakuttānako viya khāyatī”ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, chớ có nói vậy! Này Ānanda chớ có nói vậy! Này Ānanda, giáo pháp Duyên khởi này thâm thúy, thật sự thâm thúy. Này Ānanda, chính vì không giác ngộ, không thâm hiểu giáo pháp này mà chúng sanh hiện tại bị rối loạn như một ổ kén, rối ren như một ống chỉ, giống như cỏ muñja và lau sậy pabbaja (ba-ba-la) không thể nào ra khỏi khổ xứ, ác thú, đọa xứ, sanh tử.<br>
+<span lang="pi" class="pali">Mā hevaṃ, ānanda, avaca! mā hevaṃ, ānanda, avaca! Gambhīro cāyaṃ, ānanda, paṭiccasamuppādo gambhīrāvabhāso ca. Etassa, ānanda, dhammassa ananubodhā appaṭivedhā evamayaṃ pajā tantākulakajātā kulagaṇṭhikajātā muñjapabbajabhūtā apāyaṃ duggatiṃ vinipātaṃ saṃsāraṃ nātivattati.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Già và chết do duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā jarāmaraṇan’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Già và chết do duyên gì?” Hãy đáp: “Già và chết do duyên sanh”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā jarāmaraṇan’ti iti ce vadeyya, ‘jātipaccayā jarāmaraṇan’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Sanh có duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā jātī’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Sanh do duyên gì?” Hãy đáp: “Sanh do duyên hữu”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā jātī’ti iti ce vadeyya, ‘bhavapaccayā jātī’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Hữu có do duyên nào không? Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā bhavo’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Hữu do duyên gì?” Hãy đáp: “Hữu do duyên thủ”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā bhavo’ti iti ce vadeyya, ‘upādānapaccayā bhavo’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi. “Thủ có do duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā upādānan’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Thủ do duyên gì?” Hãy đáp: “Thủ do duyên ái”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā upādānan’ti iti ce vadeyya, ‘taṇhāpaccayā upādānan’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Ái có duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā taṇhā’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Ái do duyên gì?” Hãy đáp: “Ái do duyên thọ.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā taṇhā’ti iti ce vadeyya, ‘vedanāpaccayā taṇhā’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Thọ có do duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā vedanā’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Thọ do duyên gì?” Hãy đáp: “Thọ do duyên xúc”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā vedanā’ti iti ce vadeyya, ‘phassapaccayā vedanā’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Xúc có do duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā phasso’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Xúc do duyên gì?” Hãy đáp: “Xúc do duyên danh sắc”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā phasso’ti iti ce vadeyya, ‘nāmarūpapaccayā phasso’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Danh sắc có duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā nāmarūpan’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Danh sắc do duyên gì? Hãy đáp: “Danh sắc do duyên thức”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā nāmarūpan’ti iti ce vadeyya, ‘viññāṇapaccayā nāmarūpan’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu có ai hỏi: “Thức có do duyên nào không?” Hãy đáp: “Có”.<br>
+<span lang="pi" class="pali">‘Atthi idappaccayā viññāṇan’ti iti puṭṭhena satā, ānanda, atthītissa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Nếu có hỏi: “Thức do duyên gì?” Hãy đáp: “Thức do duyên danh sắc”.<br>
+<span lang="pi" class="pali">‘Kiṃpaccayā viññāṇan’ti iti ce vadeyya, ‘nāmarūpapaccayā viññāṇan’ti iccassa vacanīyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy do duyên danh sắc, thức sanh; do duyên thức, danh sắc sanh; do duyên danh sắc, xúc sanh; do duyên xúc, thọ sanh; do duyên thọ; ái sanh; do duyên ái, thủ sanh; do duyên thủ, hữu sanh; do duyên hữu, sanh sanh; do duyên sanh, lão tử sanh, do duyên lão tử, sầu, bi, khổ, ưu não sanh.<br>
+<span lang="pi" class="pali">Iti kho, ānanda, nāmarūpapaccayā viññāṇaṃ, viññāṇapaccayā nāmarūpaṃ, nāmarūpapaccayā phasso, phassapaccayā vedanā, vedanāpaccayā taṇhā, taṇhāpaccayā upādānaṃ, upādānapaccayā bhavo, bhavapaccayā jāti, jātipaccayā jarāmaraṇaṃ sokaparidevadukkhadomanassupāyāsā sambhavanti.</span></p>
+
+<p lang="vi" class="vi">Như vậy là toàn bộ khổ uẩn tập khởi.<br>
+<span lang="pi" class="pali">Evametassa kevalassa dukkhakkhandhassa samudayo hoti.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên sanh; lão tử sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên sanh; lão tử sanh”?<br>
+<span lang="pi" class="pali">‘Jātipaccayā jarāmaraṇan’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā jātipaccayā jarāmaraṇaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu sanh không có bất cứ loại nào, bất cứ chỗ nào, như: chư Thiên hay Thiên giới, Càn-thát-bà hay Càn-thát-bà-giới, Dạ-xoa hay Dạ Xoa giới. Quỷ thần hay Quỷ thần giới, loài Người hay Nhân giới, loại bốn chân hay tứ túc giới, loài chim hay điểu giới, loài trùng xà hay trùng xà giới. Này Ānanda, nếu không có sanh cho tất cả, do sanh diệt thời lão tử có thể hiện hữu không?<br>
+<span lang="pi" class="pali">Jāti ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, seyyathidaṃ: devānaṃ vā devattāya, gandhabbānaṃ vā gandhabbattāya, yakkhānaṃ vā yakkhattāya, bhūtānaṃ vā bhūtattāya, manussānaṃ vā manussattāya, catuppadānaṃ vā catuppadattāya, pakkhīnaṃ vā pakkhittāya, sarīsapānaṃ vā sarīsapattāya, tesaṃ tesañca hi, ānanda, sattānaṃ tadattāya jāti nābhavissa. Sabbaso jātiyā asati jātinirodhā api nu kho jarāmaraṇaṃ paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante !</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của lão tử, tức là sanh.<br>
+<span lang="pi" class="pali">“Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo jarāmaraṇassa, yadidaṃ jāti.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên hữu, sanh sanh ra”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên hữu, sanh sanh ra”?. Này Ānanda, nếu hữu không có bất cứ loại nào giới nào, bất cứ chỗ nào xứ nào – như dục hữu, sắc hữu hay vô sắc hữu. Nếu không có hữu cho tất cả, do hữu diệt thời sanh có thể hiện hữu không?<br>
+<span lang="pi" class="pali">‘Bhavapaccayā jātī’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā bhavapaccayā jāti? Bhavo ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, seyyathidaṃ — kāmabhavo vā rūpabhavo vā arūpabhavo vā, sabbaso bhave asati bhavanirodhā api nu kho jāti paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của sanh, tức là hữu.<br>
+<span lang="pi" class="pali">“Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo jātiyā, yadidaṃ bhavo.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên thủ, hữu sanh”. Này Ānanda, phải hiểu như thế nào câu hỏi: “Do duyên thủ, hữu sanh”? Này Ānanda, nếu thủ không có bất cứ loại nào, bất cứ chỗ nào – như dục thủ, kiến thủ, giới cấm thủ hay ngã chấp thủ. Nếu không có thủ cho tất cả, do thủ diệt thời hữu có thể hiện hữu không?<br>
+<span lang="pi" class="pali">Upādānapaccayā bhavo’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā upādānapaccayā bhavo. Upādānañca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, seyyathidaṃ — kāmupādānaṃ vā diṭṭhupādānaṃ vā sīlabbatupādānaṃ vā attavādupādānaṃ vā, sabbaso upādāne asati upādānanirodhā api nu kho bhavo paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của hữu, tức là thủ.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo bhavassa, yadidaṃ upādānaṃ.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên ái, thủ sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên ái, thủ sanh”? Này Ānanda, nếu ái không có bất cứ loại nào, bất cứ chỗ nào – như sắc ái, thanh ái, hương ái, vị ái, xúc ái hay pháp ái. Nếu không có ái cho tất cả, do ái diệt thời thủ có thể hiện hữu không?<br>
+<span lang="pi" class="pali">‘Taṇhāpaccayā upādānan’ti iti kho panetaṃ vuttaṃ tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā taṇhāpaccayā upādānaṃ?. Taṇhā ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, seyyathidaṃ — rūpataṇhā saddataṇhā gandhataṇhā rasataṇhā phoṭṭhabbataṇhā dhammataṇhā, sabbaso taṇhāya asati taṇhānirodhā api nu kho upādānaṃ paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của thủ, tức là ái.<br>
+<span lang="pi" class="pali">“Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo upādānassa, yadidaṃ taṇhā.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên thọ, ái sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên thọ, ái sanh”?<br>
+<span lang="pi" class="pali">‘Vedanāpaccayā taṇhā’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā vedanāpaccayā taṇhā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu thọ không có bất cứ loại nào, bất cứ chỗ nào — như nhãn xúc sở sanh thọ, nhĩ xúc sở sanh thọ, tỷ xúc sở sanh thọ, thiệt xúc sở sanh thọ, tỷ xúc sở sanh thọ, ý xúc sở sanh thọ. Nếu không có thọ cho tất cả, nếu thọ diệt thời ái có thể hiện hữu không?<br>
+<span lang="pi" class="pali">Vedanā ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, seyyathidaṃ—cakkhusamphassajā vedanā sotasamphassajā vedanā ghānasamphassajā vedanā jivhāsamphassajā vedanā kāyasamphassajā vedanā manosamphassajā vedanā, sabbaso vedanāya asati vedanānirodhā api nu kho taṇhā paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">“No hetaṃ, bhante”.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của ái, tức là thọ.<br>
+<span lang="pi" class="pali">“Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo taṇhāya, yadidaṃ vedanā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy do duyên thọ, ái sanh; do duyên ái, tìm cầu sanh; do duyên tìm cầu, lợi sanh; do duyên lợi, quyết định (sở dụng của lợi) sanh; do duyên quyết định, tham dục sanh; do duyên tham dục, đam trước sanh; do duyên đam trước, chấp thủ sanh; do duyên chấp thủ — hà tiện sanh; do duyên hà tiện, thủ hộ sanh; do duyên thủ hộ, phát sanh một số ác, bất thiện pháp như chấp trượng, chấp kiếm, tranh đấu, tranh luận, đấu khẩu, khẩu chiến, ác khẩu, vọng ngữ.<br>
+<span lang="pi" class="pali">Iti kho panetaṃ, ānanda, vedanaṃ paṭicca taṇhā, taṇhaṃ paṭicca pariyesanā, pariyesanaṃ paṭicca lābho, lābhaṃ paṭicca vinicchayo, vinicchayaṃ paṭicca chandarāgo, chandarāgaṃ paṭicca ajjhosānaṃ, ajjhosānaṃ paṭicca pariggaho, pariggahaṃ paṭicca macchariyaṃ, macchariyaṃ paṭicca ārakkho — Ārakkhādhikaraṇaṃ daṇḍādānasatthādānakalahaviggahavivādatuvaṃtuvaṃpesuññamusāvādā aneke pāpakā akusalā dhammā sambhavanti.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên thủ hộ, phát sanh một số ác, bất thiện pháp, như chấp trượng, chấp kiếm, tranh đấu, tranh luận, đấu khẩu, khẩu chiến, ác khẩu, vọng ngữ” — Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên thủ hộ, phát sanh một số ác, bất thiện pháp, như chấp trượng, chấp kiếm, tranh đấu, tranh luận, đấu khẩu, khẩu chiến, ác khẩu, vọng ngữ”? —Này Ānanda, nếu thủ hộ không có bất cứ loại nào, bất cứ chỗ nào, nếu không có thủ hộ cho tất cả, nếu thủ hộ diệt thời một số ác, bất thiện pháp như chấp trượng, chấp kiếm, tranh đấu, tranh luận, đấu khẩu, khẩu chiến, ác khẩu, vọng ngữ có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Ārakkhādhikaraṇaṃ daṇḍādānasatthādānakalahaviggahavivādatuvaṃtuvaṃpesuññamusāvādā aneke pāpakā akusalā dhammā sambhavantī’ti — iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā ārakkhādhikaraṇaṃ daṇḍādānasatthādānakalahaviggahavivādatuvaṃtuvaṃpesuññamusāvādā aneke pāpakā akusalā dhammā sambhavanti. — Ārakkho ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso ārakkhe asati ārakkhanirodhā api nu kho daṇḍādānasatthādānakalahaviggahavivādatuvaṃtuvaṃpesuññamusāvādā aneke pāpakā akusalā dhammā sambhaveyyun”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante !</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của một số ác, bất thiện pháp như chấp trượng, chấp kiếm, tranh đấu, tranh luận, đấu khẩu, khẩu chiến, ác khẩu, vọng ngữ, tức là thủ hộ.<br>
+<span lang="pi" class="pali">“Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo daṇḍādānasatthādānakalahaviggahavivādatuvaṃtuvaṃpesuññamusāvādānaṃ anekesaṃ pāpakānaṃ akusalānaṃ dhammānaṃ sambhavāya yadidaṃ ārakkho.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên hà tiện, thủ hộ sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên hà tiện thủ hộ sanh”? — Này Ānanda, nếu hà tiện không có bất cứ loại nào, bất cứ chỗ nào, nếu không có hà tiện, cho tất cả, nếu hà tiện diệt thời thủ hộ có thể hiện hữu không?<br>
+<span lang="pi" class="pali">Macchariyaṃ paṭicca ārakkho’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā macchariyaṃ paṭicca ārakkho? — Macchariyañca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso macchariye asati macchariyanirodhā api nu kho ārakkho paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante !</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của thủ hộ, tức là hà tiện.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo ārakkhassa, yadidaṃ macchariyaṃ.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên chấp thủ, hà tiện sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên chấp thủ, hà tiện sanh”? — Này Ānanda, nếu chấp thủ không có bất cứ loại nào, bất cứ chỗ nào, nếu không chấp thủ cho tất cả, nếu chấp thủ diệt thời hà tiện có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">‘Pariggahaṃ paṭicca macchariyan’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā pariggahaṃ paṭicca macchariyaṃ? — Pariggaho ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso pariggahe asati pariggahanirodhā api nu kho macchariyaṃ paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của hà tiện, tức là chấp thủ.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo macchariyassa, yadidaṃ pariggaho.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên đam trước, chấp thủ sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên đam trước, chấp thủ sanh”? — Này Ānanda, nếu đam trước không có bất cứ loại nào, bất cứ chỗ nào, nếu không có đam trước cho tất cả, nếu đam trước diệt thời chấp thủ có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Ajjhosānaṃ paṭicca pariggaho’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā ajjhosānaṃ paṭicca pariggaho? — Ajjhosānañca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso ajjhosāne asati ajjhosānanirodhā api nu kho pariggaho paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của chấp thủ, tức là đam mê.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo pariggahassa—yadidaṃ ajjhosānaṃ.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên tham dục, đam trước sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên tham dục, đam trước sanh”? — Này Ānanda, nếu tham dục không có bất cứ loại nào, bất cứ chỗ nào, nếu không có tham dục cho tất cả, nếu tham dục diệt thời đam trước có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Chandarāgaṃ paṭicca ajjhosānan’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā chandarāgaṃ paṭicca ajjhosānaṃ? — Chandarāgo ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso chandarāge asati chandarāganirodhā api nu kho ajjhosānaṃ paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của đam trước, tức là tham dục.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo ajjhosānassa, yadidaṃ chandarāgo.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên quyết định, tham dục sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên quyết định tham dục sanh”? — Này Ānanda, nếu quyết định không có bất cứ loại nào, bất cứ chỗ nào, nếu không có quyết định cho tất cả, nếu quyết định diệt thời tham dục có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Vinicchayaṃ paṭicca chandarāgo’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā vinicchayaṃ paṭicca chandarāgo? — Vinicchayo ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso vinicchaye asati vinicchayanirodhā api nu kho chandarāgo paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của tham dục tức là quyết định.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo chandarāgassa, yadidaṃ vinicchayo.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên lợi, quyết định sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên lợi quyết định sanh”? — Này Ānanda, nếu lợi không có không có bất cứ loại nào, bất cứ chỗ nào, nếu lợi không có cho tất cả, nếu lợi diệt thời quyết định có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Lābhaṃ paṭicca vinicchayo’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā lābhaṃ paṭicca vinicchayo? — Lābho ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso lābhe asati lābhanirodhā api nu kho vinicchayo paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của quyết định, tức là lợi.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo vinicchayassa, yadidaṃ lābho.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên tầm cầu, lợi sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên tầm cầu, lợi sanh”? — Này Ānanda, nếu tầm cầu không có bất cứ loại nào, bất cứ chỗ nào, nếu tầm cầu không có cho tất cả, nếu tầm cầu diệt thời lợi có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Pariyesanaṃ paṭicca lābho’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā pariyesanaṃ paṭicca lābho? — Pariyesanā ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, sabbaso pariyesanāya asati pariyesanānirodhā api nu kho lābho paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của lợi, tức là tầm cầu.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo lābhassa, yadidaṃ pariyesanā.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên ái, tầm cầu sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên ái, tầm cầu sanh”? — Này Ānanda, nếu không có bất cứ loại nào, bất cứ chỗ nào, nếu ái không có cho tất cả, nếu ái diệt thời tầm cầu có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Taṇhaṃ paṭicca pariyesanā’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā taṇhaṃ paṭicca pariyesanā? — Taṇhā ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, seyyathidaṃ kāmataṇhā bhavataṇhā vibhavataṇhā, sabbaso taṇhāya asati taṇhānirodhā api nu kho pariyesanā paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của tầm cầu, tức là ái.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo pariyesanāya, yadidaṃ taṇhā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy hai phương diện (của ái) tuy hai nhưng hòa hợp thành một, nhờ thọ (làm duyên sanh).<br>
+<span lang="pi" class="pali">Iti kho, ānanda, ime dve dhammā dvayena vedanāya ekasamosaraṇā bhavanti.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên xúc, thọ sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên xúc, thọ sanh”? — Này Ānanda, nếu xúc không có bất cứ loại nào, bất cứ chỗ nào, như — nhãn xúc, nhĩ xúc, tỷ xúc, thiệt xúc, thân xúc, ý xúc, nếu xúc không có cho tất cả, nếu xúc diệt thời thọ có thể hiện hữu không?<br>
+<span lang="pi" class="pali">Phassapaccayā vedanā’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā phassapaccayā vedanā? — Phasso ca hi, ānanda, nābhavissa sabbena sabbaṃ sabbathā sabbaṃ kassaci kimhici, seyyathidaṃ — cakkhusamphasso sotasamphasso ghānasamphasso jivhāsamphasso kāyasamphasso manosamphasso, sabbaso phasse asati phassanirodhā api nu kho vedanā paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của thọ, tức là xúc.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo vedanāya, yadidaṃ phasso.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên danh sắc, xúc sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên danh sắc, xúc sanh”? Này Ānanda, nếu những hình, những sắc, những tướng, những mạo, nhờ đó mà danh thân và sắc thân thi thiết; nếu những hình, những sắc, những tướng, những mạo ấy không có, thời danh mục xúc trong sắc thân có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Nāmarūpapaccayā phasso’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā nāmarūpapaccayā phasso? — Yehi, ānanda, ākārehi yehi liṅgehi yehi nimittehi yehi uddesehi nāmakāyassa paññatti hoti, tesu ākāresu tesu liṅgesu tesu nimittesu tesu uddesesu asati api nu kho rūpakāye adhivacanasamphasso paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, những hình, những sắc, những tướng, những mạo ấy nhờ đó mà sắc thân được thi thiết, nếu những hình, những sắc, những tướng, những mạo ấy không có, thời hữu đối xúc trong danh thân có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">“Yehi, ānanda, ākārehi yehi liṅgehi yehi nimittehi yehi uddesehi rūpakāyassa paññatti hoti, tesu ākāresu tesu liṅgesu tesu nimittesu tesu uddesesu asati api nu kho nāmakāye paṭighasamphasso paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, những hình, những sắc, những tướng, những mạo nhờ đó mà danh thân và sắc thân được thi thiết, nếu những hình, những sắc, những tướng, những mạo ấy không có, thời danh mục xúc hay hữu đối xúc có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Yehi, ānanda, ākārehi yehi liṅgehi yehi nimittehi yehi uddesehi nāmakāyassa ca rūpakāyassa ca paññatti hoti, tesu ākāresu tesu liṅgesu tesu nimittesu tesu uddesesu asati api nu kho adhivacanasamphasso vā paṭighasamphasso vā paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, những hình, những sắc, những tướng, những mạo nhờ đó mà danh sắc được thi thiết, nếu những hình, những sắc, những tướng, những mạo ấy không có thì xúc có thể hiện hữu được không?<br>
+<span lang="pi" class="pali">Yehi, ānanda, ākārehi yehi liṅgehi yehi nimittehi yehi uddesehi nāmarūpassa paññatti hoti, tesu ākāresu tesu liṅgesu tesu nimittesu tesu uddesesu asati api nu kho phasso paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Do vậy, này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của xúc, tức là danh sắc.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo phassassa, yadidaṃ nāmarūpaṃ.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên thức, danh sắc sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên thức, danh sắc sanh”? Này Ānanda, nếu thức không đi vào trong bụng của người mẹ, thời danh sắc có thể hình thành trong bụng bà mẹ không?<br>
+<span lang="pi" class="pali">Viññāṇapaccayā nāmarūpan’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā viññāṇapaccayā nāmarūpaṃ? Viññāṇañca hi, ānanda, mātukucchismiṃ na okkamissatha, api nu kho nāmarūpaṃ mātukucchismiṃ samuccissathā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu thức đi vào trong bụng bà mẹ rồi bị tiêu diệt, thời danh sắc có thể hình thành trạng thái này, trạng thái khác không?<br>
+<span lang="pi" class="pali">“Viññāṇañca hi, ānanda, mātukucchismiṃ okkamitvā vokkamissatha, api nu kho nāmarūpaṃ itthattāya abhinibbattissathā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nếu thức bị đoạn trừ trong đứa con nít, hoặc là đồng nam hay đồng nữ, thời danh sắc có thể lớn hơn, trưởng thành và thành mãn được không?<br>
+<span lang="pi" class="pali">“Viññāṇañca hi, ānanda, daharasseva sato vocchijjissatha kumārakassa vā kumārikāya vā, api nu kho nāmarūpaṃ vuddhiṃ virūḷhiṃ vepullaṃ āpajjissathā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Do vậy, này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của danh sắc, tức là thức.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo nāmarūpassa—yadidaṃ viññāṇaṃ.</span></p>
+
+<p lang="vi" class="vi">Trước đã nói: “Do duyên danh sắc, thức sanh”. Này Ānanda, phải hiểu như thế nào câu nói: “Do duyên sanh sắc thức sanh”? Này Ānanda, nếu thức không an trú được trong danh sắc, thời trong tương lai, có thể hiện hữu sự hình thành của sanh, lão, tử, khổ, tập không?<br>
+<span lang="pi" class="pali">Nāmarūpapaccayā viññāṇan’ti iti kho panetaṃ vuttaṃ, tadānanda, imināpetaṃ pariyāyena veditabbaṃ, yathā nāmarūpapaccayā viññāṇaṃ? Viññāṇañca hi, ānanda, nāmarūpe patiṭṭhaṃ na labhissatha, api nu kho āyatiṃ jātijarāmaraṇaṃ dukkhasamudayasambhavo paññāyethā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Do vậy, này Ānanda, như vậy là nhân, như vậy là duyên, như vậy là tập khởi, như vậy là nhân duyên của thức, tức là danh sắc.<br>
+<span lang="pi" class="pali">Tasmātihānanda, eseva hetu etaṃ nidānaṃ esa samudayo esa paccayo viññāṇassa yadidaṃ nāmarūpaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong giới hạn con người được sanh, con người được già, con người được chết, con người được diệt, hay con người được tái sanh.<br>
+<span lang="pi" class="pali">Ettāvatā kho, ānanda, jāyetha vā jīyetha vā mīyetha vā cavetha vā upapajjetha vā.</span></p>
+
+<p lang="vi" class="vi">Trong giới hạn ấy là danh mục đạo, trong giới hạn ấy là ngôn ngữ đạo, trong giới hạn ấy là thi thiết đạo, trong giới hạn ấy là tuệ giới, trong giới hạn ấy là lưu chuyển luân hồi hiện hữu trạng thái này trạng thái khác nghĩa là danh sắc và thức.<br>
+<span lang="pi" class="pali">Ettāvatā adhivacanapatho, ettāvatā niruttipatho, ettāvatā paññattipatho, ettāvatā paññāvacaraṃ, ettāvatā vaṭṭaṃ vattati itthattaṃ paññāpanāya yadidaṃ nāmarūpaṃ saha viññāṇena aññamaññapaccayatā pavattati.</span></p>
+
+
+<p lang="vi" class="vi">Này Ānanda, có bao nhiêu lời tuyên bố về ngã?<br>
+<span lang="pi" class="pali">Kittāvatā ca, ānanda, attānaṃ paññapento paññapeti?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoặc ngã được tuyên bố là có sắc và hạn lượng trong câu: “Ngã của tôi có sắc và hạn lượng”.<br>
+<span lang="pi" class="pali">Rūpiṃ vā hi, ānanda, parittaṃ attānaṃ paññapento paññapeti: ‘rūpī me paritto attā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoặc ngã được tuyên bố là có sắc và vô lượng trong câu: “Ngã của tôi có sắc và vô lượng”.<br>
+<span lang="pi" class="pali">Rūpiṃ vā hi, ānanda, anantaṃ attānaṃ paññapento paññapeti: ‘rūpī me ananto attā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoặc ngã được tuyên bố là không có sắc và có hạn lượng trong câu: “Ngã của tôi không có sắc và có hạn lượng”.<br>
+<span lang="pi" class="pali">Arūpiṃ vā hi, ānanda, parittaṃ attānaṃ paññapento paññapeti: ‘arūpī me paritto attā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoặc ngã được tuyên bố là không có sắc và vô lượng trong câu: “Ngã của tôi không có sắc và vô lượng”.<br>
+<span lang="pi" class="pali">Arūpiṃ vā hi, ānanda, anantaṃ attānaṃ paññapento paññapeti: ‘arūpī me ananto attā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người tuyên bố ngã có sắc và có hạn lượng. Người này tuyên bố ngã có sắc và có hạn lượng trong hiện tại hoặc trong tương lai, hoặc như thế này: “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so rūpiṃ parittaṃ attānaṃ paññapento paññapeti. Etarahi vā so rūpiṃ parittaṃ attānaṃ paññapento paññapeti, tattha bhāviṃ vā so rūpiṃ parittaṃ attānaṃ paññapento paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời tuyên bố về tà kiến ngã có sắc và có hạn lượng như vậy là quá đủ rồi.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, rūpiṃ parittattānudiṭṭhi anusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người tuyên bố ngã có sắc và vô lượng. Người này tuyên bố hoặc ngã có sắc và vô lượng trong hiện tại, hoặc ngã có sắc và vô lượng trong tương lai, hoặc như thế này: “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so rūpiṃ anantaṃ attānaṃ paññapento paññapeti. Etarahi vā so rūpiṃ anantaṃ attānaṃ paññapento paññapeti, tattha bhāviṃ vā so rūpiṃ anantaṃ attānaṃ paññapento paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời tuyên bố về tà kiến ngã có sắc và vô lượng như vậy là quá đủ rồi.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, rūpiṃ anantattānudiṭṭhi anusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người tuyên bố ngã không có sắc và có hạn lượng. Người này tuyên bố hoặc ngã không có sắc và có hạn lượng trong hiện tại hoặc ngã không có sắc và có hạn lượng trong tương lai, hoặc như thế này: “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so arūpiṃ parittaṃ attānaṃ paññapento paññapeti. Etarahi vā so arūpiṃ parittaṃ attānaṃ paññapento paññapeti, tattha bhāviṃ vā so arūpiṃ parittaṃ attānaṃ paññapento paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời tuyên bố về tà kiến ngã có sắc và vô lượng như vậy là quá đủ rồi. Này Ānanda, như vậy, là có bấy nhiêu lời tuyên bố về ngã.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, arūpiṃ parittattānudiṭṭhi anusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người tuyên bố ngã không có sắc và vô lượng. Người này tuyên bố hoặc ngã không có sắc và vô lượng trong hiện tại hoặc ngã không có sắc và vô lượng trong tương lai, hoặc như thế này: “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so arūpiṃ anantaṃ attānaṃ paññapento paññapeti. Etarahi vā so arūpiṃ anantaṃ attānaṃ paññapento paññapeti, tattha bhāviṃ vā so arūpiṃ anantaṃ attānaṃ paññapento paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời tuyên bố về tà kiến ngã có sắc và vô lượng như vậy là quá đủ rồi. Này Ānanda, như vậy, là có bấy nhiêu lời tuyên bố về ngã.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, arūpiṃ anantattānudiṭṭhi anusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là có bấy nhiêu lời tuyên bố về ngã.<br>
+<span lang="pi" class="pali">Ettāvatā kho, ānanda, attānaṃ paññapento paññapeti.</span></p>
+
+
+<p lang="vi" class="vi">Này Ānanda, có bao nhiêu lời không tuyên bố về ngã?<br>
+<span lang="pi" class="pali">Kittāvatā ca, ānanda, attānaṃ na paññapento na paññapeti?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoặc ngã không được tuyên bố là có sắc và có hạn lượng trong câu: “Ngã của tôi có sắc và có hạn lượng”. Này Ānanda, hoặc ngã không được tuyên bố là có sắc và vô lượng trong câu: “Ngã của tôi có sắc và vô lượng”. Này Ānanda, hoặc ngã không được tuyên bố là không có sắc và có hạn lượng trong câu: “Ngã của tôi không có sắc và có hạn lượng”. Này Ānanda, hoặc ngã không được tuyên bố là không có sắc và vô lượng trong câu: “Ngã của tôi không có sắc và vô lượng”.<br>
+<span lang="pi" class="pali">Rūpiṃ vā hi, ānanda, parittaṃ attānaṃ na paññapento na paññapeti:‘rūpī me paritto attā’ti. Rūpiṃ vā hi, ānanda, anantaṃ attānaṃ na paññapento na paññapeti:‘rūpī me ananto attā’ti. Arūpiṃ vā hi, ānanda, parittaṃ attānaṃ na paññapento na paññapeti:‘arūpī me paritto attā’ti. Arūpiṃ vā hi, ānanda, anantaṃ attānaṃ na paññapento na paññapeti: ‘arūpī me ananto attā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người không tuyên bố ngã có sắc và có hạn lượng. Người này không tuyên bố, hoặc ngã có sắc và có hạn lượng trong hiện tại, hoặc ngã có sắc và có hạn lượng trong tương lai. Hoặc không như thế này: “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so rūpiṃ parittaṃ attānaṃ na paññapento na paññapeti. Etarahi vā so rūpiṃ parittaṃ attānaṃ na paññapento na paññapeti, tattha bhāviṃ vā so rūpiṃ parittaṃ attānaṃ na paññapento na paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa na hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời không tuyên bố về tà kiến ngã có sắc và có hạn lượng như vậy là quá đủ rồi.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, rūpiṃ parittattānudiṭṭhi nānusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người không tuyên bố ngã có sắc và vô lượng. Người này không tuyên bố hoặc ngã có sắc và vô lượng trong hiện tại, hoặc ngã có sắc và vô lượng trong tương lai. Hoặc không như thế này. “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so rūpiṃ anantaṃ attānaṃ na paññapento na paññapeti. Etarahi vā so rūpiṃ anantaṃ attānaṃ na paññapento na paññapeti, tattha bhāviṃ vā so rūpiṃ anantaṃ attānaṃ na paññapento na paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa na hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời không tuyên bố về tà kiến ngã có sắc và vô lượng như vậy là quá đủ rồi.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, rūpiṃ anantattānudiṭṭhi nānusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người không tuyên bố ngã không có sắc và có hạn lượng. Người này tuyên bố, hoặc ngã không có sắc và có hạn lượng trong hiện tại, hoặc ngã không có sắc và có hạn lượng trong tương lai. Hoặc không như thế này: “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so arūpiṃ parittaṃ attānaṃ na paññapento na paññapeti. Etarahi vā so arūpiṃ parittaṃ attānaṃ na paññapento na paññapeti, tattha bhāviṃ vā so arūpiṃ parittaṃ attānaṃ na paññapento na paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa na hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời không tuyên bố về tà kiến ngã không có sắc và có hạn lượng như vậy là quá đủ rồi.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, arūpiṃ parittattānudiṭṭhi nānusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có người không tuyên bố ngã không có sắc và vô lượng. Người này không tuyên bố ngã không có sắc và vô lượng trong hiện tại, hoặc ngã không có sắc và vô lượng trong tương lai. Hoặc không như thế này: “Ngã của tôi không phải như vậy, tôi sẽ uốn nắn cho như vậy”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so arūpiṃ anantaṃ attānaṃ na paññapento na paññapeti. Etarahi vā so arūpiṃ anantaṃ attānaṃ na paññapento na paññapeti, tattha bhāviṃ vā so arūpiṃ anantaṃ attānaṃ na paññapento na paññapeti, ‘atathaṃ vā pana santaṃ tathattāya upakappessāmī’ti iti vā panassa na hoti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sự việc là như vậy thời lời không tuyên bố về tà kiến ngã có sắc và vô lượng như vậy là quá đủ rồi.<br>
+<span lang="pi" class="pali">Evaṃ santaṃ kho, ānanda, arūpiṃ anantattānudiṭṭhi nānusetīti iccālaṃ vacanāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là có bấy nhiêu lời không tuyên bố về ngã.<br>
+<span lang="pi" class="pali">Ettāvatā kho, ānanda, attānaṃ na paññapento na paññapeti.</span></p>
+
+
+
+<p lang="vi" class="vi">Này Ānanda, dưới bao nhiêu hình thức, ngã được quan niệm?<br>
+<span lang="pi" class="pali">Kittāvatā ca, ānanda, attānaṃ samanupassamāno samanupassati?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, ngã được quan niệm như thọ trong câu: “Ngã của tôi là thọ”<br>
+<span lang="pi" class="pali">Vedanaṃ vā hi, ānanda, attānaṃ samanupassamāno samanupassati: ‘vedanā me attā’ti.</span></p>
+
+<p lang="vi" class="vi">Hay trái lại: “Ngã của tôi không phải là thọ, ngã của tôi không có cảm thọ”.<br>
+<span lang="pi" class="pali">‘Na heva kho me vedanā attā, appaṭisaṃvedano me attā’ti iti vā hi, ānanda, attānaṃ samanupassamāno samanupassati.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoặc ngã được quan niệm như trong câu: “Ngã của tôi không phải là thọ, cũng không phải là không có cảm thọ; ngã của tôi có cảm thọ, ngã của tôi có khả năng cảm thọ”.<br>
+<span lang="pi" class="pali">‘Na heva kho me vedanā attā, nopi appaṭisaṃvedano me attā, attā me vediyati, vedanādhammo hi me attā’ti</span></p>
+
+<p lang="vi" class="vi">Như vậy, này Ānanda, ngã được quan niệm.<br>
+<span lang="pi" class="pali">iti vā hi, ānanda, attānaṃ samanupassamāno samanupassati.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, ai nói: “ngã của tôi là thọ”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so evamāha: ‘vedanā me attā’ti,</span></p>
+
+<p lang="vi" class="vi">Người ấy cần được trả lời: “Này Hiền giả, có ba loại cảm thọ: lạc thọ, khổ thọ, bất khổ bất lạc thọ. Trong ba loại thọ này, loại nào ông xem là ngã?”<br>
+<span lang="pi" class="pali">so evamassa vacanīyo: ‘tisso kho imā, āvuso, vedanā: sukhā vedanā dukkhā vedanā adukkhamasukhā vedanā. Imāsaṃ kho tvaṃ tissannaṃ vedanānaṃ katamaṃ attato samanupassasī’ti?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi cảm giác một lạc thọ, chúng ta không cảm giác một khổ thọ, không cảm giác một bất khổ bất lạc thọ; Khi ấy chỉ cảm giác một lạc thọ thôi.<br>
+<span lang="pi" class="pali">Yasmiṃ, ānanda, samaye sukhaṃ vedanaṃ vedeti, neva tasmiṃ samaye dukkhaṃ vedanaṃ vedeti, na adukkhamasukhaṃ vedanaṃ vedeti; sukhaṃyeva tasmiṃ samaye vedanaṃ vedeti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi cảm giác một khổ thọ, chúng ta không cảm giác một lạc thọ, không cảm giác một bất khổ bất lạc thọ; Khi ấy chỉ cảm giác một khổ thọ thôi.<br>
+<span lang="pi" class="pali">Yasmiṃ, ānanda, samaye dukkhaṃ vedanaṃ vedeti, neva tasmiṃ samaye sukhaṃ vedanaṃ vedeti, na adukkhamasukhaṃ vedanaṃ vedeti; dukkhaṃyeva tasmiṃ samaye vedanaṃ vedeti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi cảm giác một bất khổ bất lạc thọ, chúng ta không cảm giác một lạc thọ, không cảm giác một khổ thọ; — Khi ấy chỉ cảm giác một bất khổ bất lạc thọ thôi.<br>
+<span lang="pi" class="pali">Yasmiṃ, ānanda, samaye adukkhamasukhaṃ vedanaṃ vedeti, neva tasmiṃ samaye sukhaṃ vedanaṃ vedeti, na dukkhaṃ vedanaṃ vedeti; adukkhamasukhaṃyeva tasmiṃ samaye vedanaṃ vedeti.</span></p>
+
+<p lang="vi" class="vi">Lại nữa, này Ānanda, lạc thọ là vô thường, hữu vi, là pháp duyên khởi, là pháp đoạn hoại, là pháp đoạn diệt, là pháp ly dục, là pháp diệt tận.<br>
+<span lang="pi" class="pali">Sukhāpi kho, ānanda, vedanā aniccā saṅkhatā paṭiccasamuppannā khayadhammā vayadhammā virāgadhammā nirodhadhammā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khổ thọ là vô thường, hữu vi, là pháp duyên khởi, là pháp đoạn hoại, là pháp đoạn diệt, là pháp ly dục, là pháp diệt tận.<br>
+<span lang="pi" class="pali">Dukkhāpi kho, ānanda, vedanā aniccā saṅkhatā paṭiccasamuppannā khayadhammā vayadhammā virāgadhammā nirodhadhammā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, bất khổ bất lạc thọ là vô thường, hữu vi, là pháp duyên khởi, là pháp đoạn hoại, là pháp đoạn diệt, là pháp ly dục, là pháp diệt tận.<br>
+<span lang="pi" class="pali">Adukkhamasukhāpi kho, ānanda, vedanā aniccā saṅkhatā paṭiccasamuppannā khayadhammā vayadhammā virāgadhammā nirodhadhammā.</span></p>
+
+<p lang="vi" class="vi">Khi cảm giác một lạc thọ mà nói rằng: “Ðó là ngã của tôi”; Thời khi lạc thọ ấy diệt mất người ấy cũng nghĩ rằng: “Ngã của tôi cũng diệt”.<br>
+<span lang="pi" class="pali">Tassa sukhaṃ vedanaṃ vediyamānassa ‘eso me attā’ti hoti; Tassāyeva sukhāya vedanāya nirodhā ‘byagā me attā’ti hoti.</span></p>
+
+<p lang="vi" class="vi">Khi cảm giác một khổ thọ mà nói rằng: “Ðó là ngã của tôi”; thời khi khổ thọ ấy diệt mất người ấy cũng nghĩ rằng: “Ngã của tôi cũng diệt”.<br>
+<span lang="pi" class="pali">Dukkhaṃ vedanaṃ vediyamānassa ‘eso me attā’ti hoti; Tassāyeva dukkhāya vedanāya nirodhā ‘byagā me attā’ti hoti.</span></p>
+
+<p lang="vi" class="vi">Khi cảm giác một bất khổ bất lạc thọ mà nói rằng: “Ðó là ngã của tôi”; Thời khi bất khổ bất lạc thọ ấy diệt mất, người ấy cũng nghĩ rằng: “Ngã của tôi cũng diệt”.<br>
+<span lang="pi" class="pali">Adukkhamasukhaṃ vedanaṃ vediyamānassa ‘eso me attā’ti hoti; Tassāyeva adukkhamasukhāya vedanāya nirodhā ‘byagā me attā’ti hoti.</span></p>
+
+<p lang="vi" class="vi">Vậy những ai nói rằng: “Ngã của tôi là thọ”, người ấy sẽ xem ngã của mình như một cái gì trong hiện tại, cái gì ấy là vô thường, lạc khổ xen lẫn, là pháp sanh diệt.<br>
+<span lang="pi" class="pali">Iti so diṭṭheva dhamme aniccasukhadukkhavokiṇṇaṃ uppādavayadhammaṃ attānaṃ samanupassamāno samanupassati, yo so evamāha: ‘vedanā me attā’ti.</span></p>
+
+<p lang="vi" class="vi">Do vậy, này Ānanda, không thể chấp nhận quan niệm “Ngã của tôi là thọ”.<br>
+<span lang="pi" class="pali">Tasmātihānanda, etena petaṃ nakkhamati: ‘vedanā me attā’ti samanupassituṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, ai nói như sau: “Ngã của tôi không phải là thọ, ngã của tôi không có cảm thọ?”.<br>
+<span lang="pi" class="pali">Tatrānanda, yo so evamāha: ‘na heva kho me vedanā attā, appaṭisaṃvedano me attā’ti.</span></p>
+
+<p lang="vi" class="vi">Người ấy cần được trả lời: “Này Hiền giả, chỗ nào không có một cảm thọ gì cả, chỗ ấy có thể xem là “Tôi có” được không?<br>
+<span lang="pi" class="pali">so evamassa vacanīyo: ‘yattha panāvuso, sabbaso vedayitaṃ natthi api nu kho, tattha “ayamahamasmī”ti siyā’”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Do vậy, này Ānanda, không thể chấp nhận quan niệm “Ngã của tôi không phải là thọ, ngã của tôi không có cảm thọ”.<br>
+<span lang="pi" class="pali">Tasmātihānanda, etena petaṃ nakkhamati: ‘na heva kho me vedanā attā, appaṭisaṃvedano me attā’ti samanupassituṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, ai nói như sau: “Ngã của tôi không phải là thọ, ngã của tôi không phải không có cảm thọ; ngã của tôi có cảm thọ, ngã của tôi có khả năng cảm thọ?”<br>
+<span lang="pi" class="pali">Tatrānanda, yo so evamāha: ‘na heva kho me vedanā attā, nopi appaṭisaṃvedano me attā, attā me vediyati, vedanādhammo hi me attā’ti.</span></p>
+
+<p lang="vi" class="vi">Người ấy cần được trả lời: “Này Hiền giả nếu tất cả mọi loại cảm thọ đều đoạn diệt hoàn toàn. Khi không còn một loại cảm thọ nào cả, khi thọ đã tận diệt, thời ở tại chỗ ấy, có thể nói: “Tôi là như vậy” chăng?”<br>
+<span lang="pi" class="pali">So evamassa vacanīyo: vedanā ca hi, āvuso, sabbena sabbaṃ sabbathā sabbaṃ aparisesā nirujjheyyuṃ. Sabbaso vedanāya asati vedanānirodhā api nu kho tattha ‘ayamahamasmī’ti siyā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Do vậy, này Ānanda, không thể chấp nhận quan niệm “Ngã của tôi không phải là thọ, ngã của tôi không phải không có cảm thọ; ngã của tôi có cảm thọ, ngã của tôi có khả năng cảm thọ”.<br>
+<span lang="pi" class="pali">Tasmātihānanda, etena petaṃ nakkhamati: ‘na heva kho me vedanā attā, nopi appaṭisaṃvedano me attā, attā me vediyati, vedanādhammo hi me attā’ti samanupassituṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi có một vị Tỷ-kheo không quan niệm ngã là thọ, không quan niệm ngã không phải thọ, không quan niệm: “Ngã của tôi là thọ, ngã của tôi có khả năng cảm thọ”.<br>
+<span lang="pi" class="pali">Yato kho, ānanda, bhikkhu neva vedanaṃ attānaṃ samanupassati, nopi appaṭisaṃvedanaṃ attānaṃ samanupassati, nopi ‘attā me vediyati, vedanādhammo hi me attā’ti samanupassati.</span></p>
+
+<p lang="vi" class="vi">Khi ấy vị này sẽ không chấp trước một điều gì ở trên đời; vì không chấp trước nên không sợ hãi; vì không sợ hãi nên hoàn toàn tự mình tịch diệt.<br>
+<span lang="pi" class="pali">So evaṃ na samanupassanto na ca kiñci loke upādiyati; anupādiyaṃ na paritassati, aparitassaṃ paccattaññeva parinibbāyati,</span></p>
+
+<p lang="vi" class="vi">Vị ấy biết: sanh đã tận, phạm hạnh đã thành, những việc cần làm đã làm, sau đời này không còn đời nào khác nữa.<br>
+<span lang="pi" class="pali">‘khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā’ti pajānāti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, với vị Tỷ-kheo có tâm giải thoát như vậy, nếu có ai nói vị Tỷ-kheo ấy có tà kiến như sau: “Như Lai có tồn tại sau khi chết” thời thật hoàn toàn phi lý.<br>
+<span lang="pi" class="pali">Evaṃ vimuttacittaṃ kho, ānanda, bhikkhuṃ yo evaṃ vadeyya: ‘hoti tathāgato paraṃ maraṇā itissa diṭṭhī’ti, tadakallaṃ.</span></p>
+
+<p lang="vi" class="vi">Hoặc có tà kiến như sau: “Như Lai không có tồn tại sau khi chết”, thời thật hoàn toàn phi lý.<br>
+<span lang="pi" class="pali">‘Na hoti tathāgato paraṃ maraṇā itissa diṭṭhī’ti, tadakallaṃ.</span></p>
+
+<p lang="vi" class="vi">Hoặc có tà kiến như sau: “Như Lai có tồn tại và không có tồn tại sau khi chết”, thời thật hoàn toàn phi lý.<br>
+<span lang="pi" class="pali">‘Hoti ca na ca hoti tathāgato paraṃ maraṇā itissa diṭṭhī’ti, tadakallaṃ.</span></p>
+
+<p lang="vi" class="vi">Hoặc có tà kiến như sau: “Như Lai không có tồn tại và không không có tồn tại sau khi chết”, thời thật hoàn toàn phi lý.<br>
+<span lang="pi" class="pali">‘Neva hoti na na hoti tathāgato paraṃ maraṇā itissa diṭṭhī’ti, tadakallaṃ.</span></p>
+
+<p lang="vi" class="vi">Tại sao vậy?<br>
+<span lang="pi" class="pali">Taṃ kissa hetu?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, ví dầu có bao nhiêu danh mục, bao nhiêu danh mục đạo, dầu có bao nhiêu ngôn ngữ, bao nhiêu ngôn ngữ đạo, dầu có bao nhiêu thi thiết, bao nhiêu thi thiết đạo, dầu có bao nhiêu trí tuệ, bao nhiêu trí tuệ giới, dầu có bao nhiêu luân chuyển, bao nhiêu vận hành, với thắng trí hiểu biết tất cả, vị Tỷ-kheo được giải thoát. Với vị Tỷ-kheo thắng trí giải thoát như vậy mà nói rằng vị Tỷ-kheo ấy không biết, không thấy, thời thật là một sự phi lý.<br>
+<span lang="pi" class="pali">Yāvatā, ānanda, adhivacanaṃ yāvatā adhivacanapatho, yāvatā nirutti yāvatā niruttipatho, yāvatā paññatti yāvatā paññattipatho, yāvatā paññā yāvatā paññāvacaraṃ, yāvatā vaṭṭaṃ, yāvatā vaṭṭati, tadabhiññāvimutto bhikkhu, tadabhiññāvimuttaṃ bhikkhuṃ ‘na jānāti na passati itissa diṭṭhī’ti, tadakallaṃ.</span></p>
+
+
+<p lang="vi" class="vi">Này Ānanda, có bảy trú xứ của thức và hai xứ.<br>
+<span lang="pi" class="pali">Satta kho, ānanda, viññāṇaṭṭhitiyo, dve āyatanāni.</span></p>
+
+<p lang="vi" class="vi">Thế nào là bảy?<br>
+<span lang="pi" class="pali">Katamā satta?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có những loại hữu tình, thân dị loại và tưởng dị loại, như loài Người, một số chư Thiên và một số trong địa ngục.<br>
+<span lang="pi" class="pali">Santānanda, sattā nānattakāyā nānattasaññino, seyyathāpi manussā, ekacce ca devā, ekacce ca vinipātikā.</span></p>
+
+<p lang="vi" class="vi">Ðó là trú xứ thứ nhất của thức.<br>
+<span lang="pi" class="pali">Ayaṃ paṭhamā viññāṇaṭṭhiti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có những loại hữu tình, thân dị loại nhưng tưởng nhất loại, như các vị Phạm Chúng thiên được sanh vào cõi ấy, nhờ sơ Thiền.<br>
+<span lang="pi" class="pali">Santānanda, sattā nānattakāyā ekattasaññino, seyyathāpi devā brahmakāyikā paṭhamābhinibbattā.</span></p>
+
+<p lang="vi" class="vi">Ðó là trú xứ thứ hai của thức.<br>
+<span lang="pi" class="pali">Ayaṃ dutiyā viññāṇaṭṭhiti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có những loại hữu tình, thân nhất loại nhưng tưởng dị loại, như các vị Quang Âm thiên (Abhassarā).<br>
+<span lang="pi" class="pali">Santānanda, sattā ekattakāyā nānattasaññino, seyyathāpi devā ābhassarā.</span></p>
+
+<p lang="vi" class="vi">Ðó là trú xứ thứ ba của thức.<br>
+<span lang="pi" class="pali">Ayaṃ tatiyā viññāṇaṭṭhiti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có những loại hữu tình, thân nhất loại và tưởng cũng nhất loại, như các vị Biến Tịnh thiên (Subhakinna).<br>
+<span lang="pi" class="pali">Santānanda, sattā ekattakāyā ekattasaññino, seyyathāpi devā subhakiṇhā.</span></p>
+
+<p lang="vi" class="vi">Ðó là trú xứ thứ tư của thức.<br>
+<span lang="pi" class="pali">Ayaṃ catutthī viññāṇaṭṭhiti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có những loại hữu tình, vượt ra khỏi tất cả sắc tưởng, đoạn trừ tất cả hữu đối tưởng, không suy tư đến mọi dị loại tưởng, chỉ có tưởng “Hư không là vô biên”, được sanh vào cõi Hư không vô biên xứ.<br>
+<span lang="pi" class="pali">Santānanda, sattā sabbaso rūpasaññānaṃ samatikkamā paṭighasaññānaṃ atthaṅgamā nānattasaññānaṃ amanasikārā ‘ananto ākāso’ti ākāsānañcāyatanūpagā.</span></p>
+
+<p lang="vi" class="vi">Ðó là trú xứ thứ năm của thức.<br>
+<span lang="pi" class="pali">Ayaṃ pañcamī viññāṇaṭṭhiti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có những loại hữu tình hoàn toàn vượt ra khỏi Không vô biên xứ, chỉ có tưởng “Thức là vô biên”, được sanh vào cõi Thức vô biên xứ.<br>
+<span lang="pi" class="pali">Santānanda, sattā sabbaso ākāsānañcāyatanaṃ samatikkamma ‘anantaṃ viññāṇan’ti viññāṇañcāyatanūpagā</span></p>
+
+<p lang="vi" class="vi">Ðó là trú xứ thứ sáu của thức.<br>
+<span lang="pi" class="pali">Ayaṃ chaṭṭhī viññāṇaṭṭhiti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, có những loại hữu tình, hoàn toàn vượt ra khỏi Thức vô biên xứ, chỉ có tưởng “Vô sở hữu”, được sanh vào cõi Vô sở hữu xứ.<br>
+<span lang="pi" class="pali">Santānanda, sattā sabbaso viññāṇañcāyatanaṃ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanūpagā.</span></p>
+
+<p lang="vi" class="vi">Ðó là trú xứ thứ bảy của thức.<br>
+<span lang="pi" class="pali">Ayaṃ sattamī viññāṇaṭṭhiti.</span></p>
+
+<p lang="vi" class="vi">Hai xứ là Vô tưởng hữu tình xứ và Phi tưởng phi phi tưởng xứ.<br>
+<span lang="pi" class="pali">Asaññasattāyatanaṃ nevasaññānāsaññāyatanameva dutiyaṃ</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong thức trú xứ thứ nhất có thân dị loại và tưởng dị loại này, như loài Người, một số chư Thiên và một số hữu tình trong địa ngục.<br>
+<span lang="pi" class="pali">Tatrānanda, yāyaṃ paṭhamā viññāṇaṭṭhiti nānattakāyā nānattasaññino, seyyathāpi manussā, ekacce ca devā, ekacce ca vinipātikā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda nếu có ai hiểu được trú xứ này, hiểu được sự tập khởi, hiểu được sự đoạn diệt, hiểu được vị ngọt, hiểu được sự nguy hiểm và hiểu được sự xuất ly của trú xứ này, một vị như vậy có thể còn hoan hỷ ưa thích trú xứ này không?<br>
+<span lang="pi" class="pali">Yo nu kho, ānanda, tañca pajānāti, tassā ca samudayaṃ pajānāti, tassā ca atthaṅgamaṃ pajānāti, tassā ca assādaṃ pajānāti, tassā ca ādīnavaṃ pajānāti, tassā ca nissaraṇaṃ pajānāti, kallaṃ nu tena tadabhinanditun”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante!</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong thức trú xứ thứ bảy, hoàn toàn vượt ra khỏi Thức vô biên xứ, chỉ có tưởng “Vô sở hữu”, được sanh vào cõi Vô sở hữu xứ.<br>
+<span lang="pi" class="pali">Tatrānanda, yāyaṃ paṭhamā viññāṇaṭṭhiti nānattakāyā nānattasaññino, seyyathāpi manussā, ekacce ca devā, ekacce ca vinipātikā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda nếu có ai hiểu được trú xứ này, hiểu được sự tập khởi, hiểu được sự đoạn diệt, hiểu được sự tập khởi, hiểu được sự đoạn diệt, hiểu được vị ngọt, hiểu được sự nguy hiểm và hiểu được sự xuất ly của trú xứ này, một vị như vậy có thể còn hoan hỷ ưa thích trú xứ này không?<br>
+<span lang="pi" class="pali">Yo nu kho, ānanda, tañca pajānāti, tassā ca samudayaṃ pajānāti, tassā ca atthaṅgamaṃ pajānāti, tassā ca assādaṃ pajānāti, tassā ca ādīnavaṃ pajānāti, tassā ca nissaraṇaṃ pajānāti, kallaṃ nu tena tadabhinanditun”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, với Vô tưởng hữu tình xứ này, này Ānanda, nếu có ai hiểu được trú xứ này, hiểu được sự tập khởi, hiểu được sự đoạn diệt, hiểu được vị ngọt, hiểu được sự nguy hiểm và hiểu được sự xuất ly của trú xứ này, một vị như vậy có thể còn hoan hỷ ưa thích trú xứ này không?<br>
+<span lang="pi" class="pali">Tatrānanda, yamidaṃ asaññasattāyatanaṃ. Yo nu kho, ānanda, tañca pajānāti, tassa ca samudayaṃ pajānāti, tassa ca atthaṅgamaṃ pajānāti, tassa ca assādaṃ pajānāti, tassa ca ādīnavaṃ pajānāti, tassa ca nissaraṇaṃ pajānāti, kallaṃ nu tena tadabhinanditun”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante !</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, với Phi tưởng phi phi tưởng xứ này, này Ānanda nếu có ai hiểu được trú xứ này, hiểu được sự tập khởi, hiểu được sự đoạn diệt, hiểu được vị ngọt, hiểu được sự nguy hiểm và hiểu được sự xuất ly của trú xứ này, một vị như vậy có thể còn hoan hỷ ưa thích trú xứ này không?<br>
+<span lang="pi" class="pali">“Tatrānanda, yamidaṃ nevasaññānāsaññāyatanaṃ. Yo nu kho, ānanda, tañca pajānāti, tassa ca samudayaṃ pajānāti, tassa ca atthaṅgamaṃ pajānāti, tassa ca assādaṃ pajānāti, tassa ca ādīnavaṃ pajānāti, tassa ca nissaraṇaṃ pajānāti, kallaṃ nu tena tadabhinanditun”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, không!<br>
+<span lang="pi" class="pali">No hetaṃ, bhante !</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, bởi bảy thức trú xứ và hai xứ này, nếu có vị Tỷ-kheo đã như chơn hiểu được tập khởi, đoạn trừ, vị ngọt, sự nguy hiểm, xuất ly của chúng, nhờ không còn chấp thủ, vị này được giải thoát. Này Ānanda, vị Tỷ-kheo như vậy được gọi là Tuệ giải thoát.<br>
+<span lang="pi" class="pali">“Yato kho, ānanda, bhikkhu imāsañca sattannaṃ viññāṇaṭṭhitīnaṃ imesañca dvinnaṃ āyatanānaṃ samudayañca atthaṅgamañca assādañca ādīnavañca nissaraṇañca yathābhūtaṃ viditvā anupādā vimutto hoti, ayaṃ vuccatānanda, bhikkhu paññāvimutto.</span></p>
+
+
+
+<p lang="vi" class="vi">Này Ānanda, có tám giải thoát. Thế nào là tám?<br>
+<span lang="pi" class="pali">Aṭṭha kho ime, ānanda, vimokkhā. Katame aṭṭha?</span></p>
+
+<p lang="vi" class="vi">Tự mình có sắc, thấy các sắc; đó là sự giải thoát thứ nhất.<br>
+<span lang="pi" class="pali">Rūpī rūpāni passati; ayaṃ paṭhamo vimokkho.</span></p>
+
+<p lang="vi" class="vi">Quán tưởng nội sắc là vô sắc, thấy các ngoại sắc; đó là sự giải thoát thứ hai.<br>
+<span lang="pi" class="pali">Ajjhattaṃ arūpasaññī bahiddhā rūpāni passati; ayaṃ dutiyo vimokkho.</span></p>
+
+<p lang="vi" class="vi">Chú tâm hướng đến thanh tịnh; đó là sự giải thoát thứ ba.<br>
+<span lang="pi" class="pali">Subhanteva adhimutto hoti; ayaṃ tatiyo vimokkho.</span></p>
+
+<p lang="vi" class="vi">Vượt khỏi hoàn toàn sắc tưởng, diệt trừ các tưởng hữu đối, không tác ý đến những tưởng khác biệt, với suy tư “hư không là vô biên”, chứng và trú Không vô biên xứ; đó là sự giải thoát thứ tư.<br>
+<span lang="pi" class="pali">Sabbaso rūpasaññānaṃ samatikkamā paṭighasaññānaṃ atthaṅgamā nānattasaññānaṃ amanasikārā ‘ananto ākāso’ti ākāsānañcāyatanaṃ upasampajja viharati; ayaṃ catuttho vimokkho.</span></p>
+
+<p lang="vi" class="vi">Vượt khỏi hoàn toàn Không vô biên xứ, với suy tư “thức là vô biên”, chứng và trú Thức vô biên xứ; đó là giải thoát thứ năm.<br>
+<span lang="pi" class="pali">Sabbaso ākāsānañcāyatanaṃ samatikkamma ‘anantaṃ viññāṇan’ti viññāṇañcāyatanaṃ upasampajja viharati; ayaṃ pañcamo vimokkho.</span></p>
+
+<p lang="vi" class="vi">Vượt khỏi hoàn toàn Thức vô biên xứ, với suy tư “không có vật gì”, chứng và trú Vô sở hữu xứ; đó là sự giải thoát thứ sáu.<br>
+<span lang="pi" class="pali">Sabbaso viññāṇañcāyatanaṃ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanaṃ upasampajja viharati; ayaṃ chaṭṭho vimokkho.</span></p>
+
+<p lang="vi" class="vi">Vượt khỏi hoàn toàn Vô sở hữu xứ, chứng và trú Phi tưởng phi phi tưởng xứ; đó là sự giải thoát thứ bảy.<br>
+<span lang="pi" class="pali">Sabbaso ākiñcaññāyatanaṃ samatikkamma nevasaññānāsaññāyatanaṃ upasampajja viharati; ayaṃ sattamo vimokkho.</span></p>
+
+<p lang="vi" class="vi">Vượt khỏi hoàn toàn Phi tưởng phi phi tưởng xứ, chứng và trú Diệt thọ tưởng; đó là sự giải thoát thứ tám.<br>
+<span lang="pi" class="pali">Sabbaso nevasaññānāsaññāyatanaṃ samatikkamma saññāvedayitanirodhaṃ upasampajja viharati; ayaṃ aṭṭhamo vimokkho.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là tám giải thoát.<br>
+<span lang="pi" class="pali">Ime kho, ānanda, aṭṭha vimokkhā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi một vị Tỷ-kheo thuận thứ thể nhập tám giải thoát này, có thể nhập và có thể xuất khỏi bất cứ giải thoát nào khi nào mình muốn, chỗ nào mình muốn và dài bao lâu mình muốn.<br>
+<span lang="pi" class="pali">Yato kho, ānanda, bhikkhu ime aṭṭha vimokkhe anulomampi samāpajjati, paṭilomampi samāpajjati, anulomapaṭilomampi samāpajjati, yatthicchakaṃ yadicchakaṃ yāvaticchakaṃ samāpajjatipi vuṭṭhātipi.</span></p>
+
+<p lang="vi" class="vi">Và với các lậu hoặc được đoạn trừ, vị Tỷ-kheo chứng và an trú trong tám giải thoát và tuệ giải thoát, không còn lậu hoặc ngay trong thời hiện tại, tự mình thấu đạt và chứng ngộ.<br>
+<span lang="pi" class="pali">Āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati, ayaṃ vuccatānanda, bhikkhu ubhatobhāgavimutto.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, không còn có một Câu giải thoát nào khác cao hơn và thù thắng hơn Câu giải thoát này.<br>
+<span lang="pi" class="pali">Imāya ca, ānanda, ubhatobhāgavimuttiyā aññā ubhatobhāgavimutti uttaritarā vā paṇītatarā vā natthī”ti.</span></p>
+
+<p lang="vi" class="vi">Thế Tôn thuyết giảng như vậy. Tôn giả Ānanda hoan hỷ tín thọ lời dạy của Thế Tôn.<br>
+<span lang="pi" class="pali">Idamavoca bhagavā. Attamano āyasmā ānando bhagavato bhāsitaṃ abhinandīti.</span></p>
+
+<span lang="pi" class="vi">Mahānidānasuttaṃ niṭṭhitaṃ dutiyaṃ.</p>
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./dn14.html#content"></a><a id="next-sutta" href="./dn16.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

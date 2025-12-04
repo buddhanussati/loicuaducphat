@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Khuddaka Nikāya - Tiểu Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Udāna 8.5 </title>
+
+<p lang="vi" class="vi" style="text-align: center">
+Tiểu Bộ Kinh<br>
+<span lang="pi" class="pali">
+Khuddaka Nikāya<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Kinh Phật Tự Thuyết<br>
+<span lang="pi" class="pali">
+Udāna<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Ud 8.5<br>
+<span lang="pi" class="pali">
+Cundasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe. Một thời Thế Tôn đang bộ hành đi giữa dân chúng Mallà, cùng với đại chúng Tỷ-kheo, và đã đến Pàvà. Rồi Thế Tôn trú ở Pàvà, tại rừng xoài của thợ rèn Cunda.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ - ekaṃ samayaṃ bhagavā mallesu cārikaṃ caramāno mahatā bhikkhusaṃghena saddhiṃ yena pāvā tadavasari. Tatra sudaṃ bhagavā pāvāyaṃ viharati cundassa kammāraputtassa ambavane.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thợ rèn Cunda được nghe: "Thế Tôn đang bộ hành giữa dân chúng Mallà, đã đến Pàvà cùng với đại chúng Tỷ-kheo, và trú ở Pàvà, trong rừng xoài của ta".<br>
+<span lang="pi" class="pali">
+Assosi kho cundo kammāraputto: “bhagavā kira mallesu cārikaṃ caramāno mahatā bhikkhusaṅghena saddhiṃ pāvaṃ anuppatto pāvāyaṃ viharati mayhaṃ ambavane”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thợ rèn Cunda đi đến Thế Tôn, sau khi đến đảnh lễ Thế Tôn rồi ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho cundo kammāraputto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết pháp thoại cho thợ rèn Cunda đang ngồi một bên, khích lệ, làm cho phấn khởi, làm cho hoan hỷ.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinnaṃ kho cundaṃ kammāraputtaṃ bhagavā dhammiyā kathāya sandassesi samādapesi samuttejesi sampahaṃsesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thợ rèn Cunda sau khi được Thế Tôn thuyết pháp, khích lệ, làm cho phấn khởi, làm cho hoan hỷ, liền bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho cundo kammāraputto bhagavatā dhammiyā kathāya sandassito samādapito samuttejito sampahaṃsito bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn, mong Thế Tôn nhận lời mời của con ngày mai đến dùng cơm với chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">
+“adhivāsetu me, bhante, bhagavā svātanāya bhattaṃ saddhiṃ bhikkhusaṅghenā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn im lặng nhận lời. Thợ rèn Cunda, sau khi biết Thế Tôn đã nhận lời, từ chỗ ngồi đứng dậy, đảnh lễ Thế Tôn, thân phía hữu hướng về Ngài rồi ra đi.<br>
+<span lang="pi" class="pali">
+Adhivāsesi bhagavā tuṇhībhāvena. Atha kho cundo kammāraputto bhagavato adhivāsanaṃ viditvā uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thợ rèn Cunda, sau khi đêm đã mãn, liền cho sửa soạn tại nhà của mình các món ăn thượng vị, loại cứng, loại mềm và nhiều thứ mộc nhĩ và báo tin cho Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho cundo kammāraputto tassā rattiyā accayena sake nivesane paṇītaṃ khādanīyaṃ bhojanīyaṃ paṭiyādāpetvā pahūtañca sūkaramaddavaṃ bhagavato kālaṃ ārocāpesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn, giờ đã đến, cơm đã sẵn sàng.<br>
+<span lang="pi" class="pali">
+“kālo, bhante, niṭṭhitaṃ bhattan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn buổi sáng đắp y, mang theo y bát, cùng với chúng Tỷ-kheo đến nhà thợ rèn Cunda, khi đến liền ngồi trên chỗ đã soạn sẵn. Sau khi ngồi, Thế Tôn nói với thợ rèn Cunda:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya saddhiṃ bhikkhusaṅghena yena cundassa kammāraputtassa nivesanaṃ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi. Nisajja kho bhagavā cundaṃ kammāraputtaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Cunda, loại mộc nhĩ đã soạn sẵn, hãy dọn cho Ta. Còn các món ăn khác đã soạn sẵn, loại cứng và loại mềm, hãy dọn cho chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">
+“yaṃ te, cunda, sūkaramaddavaṃ paṭiyattaṃ tena maṃ parivisa, yaṃ panaññaṃ khādanīyaṃ bhojanīyaṃ paṭiyattaṃ tena bhikkhusaṅghaṃ parivisā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"- Xin vâng, bạch Thế Tôn." Thợ rèn Cunda vâng lời Thế Tôn, dọn cho Thế Tôn các món mộc nhĩ đã soạn sẵn, và dọn cho chúng Tỷ-kheo các món ăn khác, loại cứng và loại mềm.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho cundo kammāraputto bhagavato paṭissutvā yaṃ ahosi sūkaramaddavaṃ paṭiyattaṃ tena bhagavantaṃ parivisi; yaṃ panaññaṃ khādanīyaṃ bhojanīyaṃ paṭiyattaṃ tena bhikkhusaṅghaṃ parivisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn nói với thợ rèn Cunda:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā cundaṃ kammāraputtaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Cunda, món ăn mộc nhĩ còn lại, hãy đem chôn. Này Cunda, Ta không thấy một ai, ở cõi trời, cõi Người, ở Ma giới, ở Phạm thiên giới, không một người nào trong chúng Sa-môn và chúng Bà-la-môn, giữa những Thiên nhân, ăn món mộc nhĩ này mà có thể tiêu hóa được, trừ Như Lai.<br>
+<span lang="pi" class="pali">
+“yaṃ te, cunda, sūkaramaddavaṃ avasiṭṭhaṃ taṃ sobbhe nikhaṇāhi. Nāhaṃ taṃ, cunda, passāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya yassa taṃ paribhuttaṃ sammā pariṇāmaṃ gaccheyya aññatra tathāgatassā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"- Xin vâng, bạch Thế Tôn." Thợ rèn Cunda vâng đáp Thế Tôn, đem chôn món ăn mộc nhĩ còn lại vào một lỗ, đi đến chỗ Thế Tôn, đảnh lễ Ngài và ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho cundo kammāraputto bhagavato paṭissutvā yaṃ ahosi sūkaramaddavaṃ avasiṭṭhaṃ taṃ sobbhe nikhaṇitvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn thuyết pháp cho thợ rèn Cunda đang ngồi xuống một bên, khích lệ, làm cho phấn khởi, làm cho hoan hỷ rồi từ chỗ đứng dậy và ra đi.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinnaṃ kho cundaṃ kammāraputtaṃ bhagavā dhammiyā kathāya sandassetvā samādapetvā samuttejetvā sampahaṃsetvā uṭṭhāyāsanā pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi dùng cơm của thợ rèn Cunda. Thế Tôn bị nhiễm bệnh nặng, bệnh lỵ huyết, đau đớn gần như đến chết, và Thế Tôn chánh niệm tỉnh giác, nhẫn nại chịu đựng cơn bệnh.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavato cundassa kammāraputtassa bhattaṃ bhuttāvissa kharo ābādho uppajji. Lohitapakkhandikā pabāḷhā vedanā vattanti māraṇantikā. Tatra sudaṃ bhagavā sato sampajāno adhivāsesi avihaññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn nói với Tôn giả Ananda:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā āyasmantaṃ ānandaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Ananda, chúng ta hãy đi đến Kusinàra. "Xin vâng, bạch Thế Tôn," Tôn giả Ananda vâng đáp Thế Tôn.<br>
+<span lang="pi" class="pali">
+“āyāmānanda, yena kusinārā tenupasaṅkamissāmā”ti. “Evaṃ, bhante”ti kho āyasmā ānando bhagavato paccassosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Dùng cơm Cunda xong,<br>
+Như vậy tôi được nghe,<br>
+Bậc trí cảm bệnh nặng,<br>
+Bạo bệnh, gần như chết,<br>
+<span lang="pi" class="pali">
+Cundassa bhattaṃ bhuñjitvā,<br>
+kammārassāti me sutaṃ;<br>
+Ābādhaṃ samphusī dhīro,<br>
+pabāḷhaṃ māraṇantikaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi ăn loại mộc nhĩ<br>
+Ðạo Sư bị bệnh nặng,<br>
+Khi bệnh được lắng dịu,<br>
+Thế Tôn nói như sau:<br>
+"Ta nay sẽ đi đến,<br>
+Ðến Kusinàra".<br>
+<span lang="pi" class="pali">
+Bhuttassa ca sūkaramaddavena,<br>
+Byādhippabāḷho udapādi satthuno;<br>
+Viriccamāno bhagavā avoca,<br>
+“ Gacchāmahaṃ kusināraṃ nagaran”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn bước xuống đường, đến một góc cây và nói với Tôn giả Ananda:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā maggā okkamma yena aññataraṃ rukkhamūlaṃ tenupasaṅkami; upasaṅkamitvā āyasmantaṃ ānandaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Ananda, hãy xếp tư áo Sanghàti. Ta cảm thấy mệt mỏi và muốn ngồi nghỉ, này Ananda.<br>
+<span lang="pi" class="pali">
+“iṅgha me tvaṃ, ānanda, catugguṇaṃ saṅghāṭiṃ paññāpehi; kilantosmi, ānanda, nisīdissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"- Thưa vâng, bạch Thế Tôn." Tôn giả Ananda vâng đáp Thế Tôn và xếp áo Sanghàti lại. Thế Tôn ngồi trên chỗ đã soạn sẵn, và nói với Tôn giả Ananda:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho āyasmā ānando bhagavato paṭissutvā catugguṇaṃ saṅghāṭiṃ paññāpesi. Nisīdi bhagavā paññatte āsane. Nisajja kho bhagavā āyasmantaṃ ānandaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Ananda, hãy đem nước cho Ta. Này Ananda. Ta nay đang khát và muốn uống nước.<br>
+<span lang="pi" class="pali">
+“iṅgha me tvaṃ, ānanda, pānīyaṃ āhara; pipāsitosmi, ānanda, pivissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, Tôn giả Ananda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, āyasmā ānando bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn vừa mới có khoảng năm trăm cỗ xe chạy qua. Do bánh xe khấy lên nước trở thành nông cạn, khuấy động và vẫn đục. Bạch Thế Tôn, sông Kakutthà không xa ở đây, nước thuần tịnh, dễ chịu, mát mẻ, trong sáng, dễ đến và khả ái. Tại đó, Thế Tôn có thể uống nước và làm mát dịu chân tay.<br>
+<span lang="pi" class="pali">
+“idāni, bhante, pañcamattāni sakaṭasatāni atikkantāni. Taṃ cakkacchinnaṃ udakaṃ parittaṃ luḷitaṃ āvilaṃ sandati. Ayaṃ, bhante, kukudhā nadī avidūre acchodakā sātodakā sītodakā setodakā supatitthā ramaṇīyā. Ettha bhagavā pānīyañca pivissati gattāni ca sītīkarissatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai...., Lần thứ ba, Thế Tôn nói với Tôn giả Ananda:<br>
+<span lang="pi" class="pali">
+Dutiyampi kho … pe … tatiyampi kho bhagavā āyasmantaṃ ānandaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Ananda, hãy đem nước uống cho Ta. Này Ananda, Ta nay đang khát và muốn uống nước.<br>
+<span lang="pi" class="pali">
+“iṅgha me tvaṃ, ānanda, pānīyaṃ āhara; pipāsitosmi, ānanda, pivissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"- Xin vâng, bạch Thế Tôn." Tôn giả Ananda vâng đáp Thế Tôn, lấy bát và đi đến con sông nhỏ. Con sông đang chảy nông cạn, khuấy động và vẫn đục, khi Tôn giả Ananda đến, liền chảy trong trẻo, sáng lặng và không vẩn đục.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho āyasmā ānando bhagavato paṭissutvā pattaṃ gahetvā yena sā nadī tenupasaṅkami. Atha kho sā nadī cakkacchinnā parittā luḷitā āvilā sandamānā āyasmante ānande upasaṅkamante acchā vippasannā anāvilā sandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Ananda tự nghĩ: "Thật kỳ diệu thay! Thật hi hữu thay! Thần lực và uy lực của Như Lai. Con sông nhỏ đang chảy nông cạn, khuấy động và vẫn đục này, khi ta đến, liền trở thành trong trẻo, sáng lặng và không vẩn đục".<br>
+<span lang="pi" class="pali">
+Atha kho āyasmato ānandassa etadahosi: “acchariyaṃ vata bho, abbhutaṃ vata bho, tathāgatassa mahiddhikatā mahānubhāvatā. Ayañhi sā nadī cakkacchinnā parittā luḷitā āvilā sandamānā mayi upasaṅkamante acchā vippasannā anāvilā sandatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi dùng bát lấy nước, Ananda đến chỗ Thế Tôn và bạch với Ngài:<br>
+<span lang="pi" class="pali">
+Pattena pānīyaṃ ādāya yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn, thật là kỳ diệu! Bạch Thế Tôn, thật là hy hữu! Bạch Thế Tôn, con sông nhỏ đang chảy nông cạn, khuấy động và vẫn đục này, khi con đến, liền trở thành trong trẻo, sáng lặng và không vẩn đục. Xin thỉnh Thế Tôn dùng nước, xin thỉnh Thiện Thệ dùng nước và Thế Tôn uống nước.<br>
+<span lang="pi" class="pali">
+“acchariyaṃ, bhante, abbhutaṃ, bhante, tathāgatassa mahiddhikatā mahānubhāvatā. Ayañhi sā, bhante, nadī cakkacchinnā parittā luḷitā āvilā sandamānā mayi upasaṅkamante acchā vippasannā anāvilā sandati. Pivatu bhagavā pānīyaṃ, pivatu sugato pānīyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn cùng với đại chúng Tỷ-kheo đi đến con sông Kakutthà, xuống sông tắm và uống nước, rồi lội qua bờ bên kia, đi đến rừng xoài và tại đây, nói với Tôn giả Cundaka:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā pānīyaṃ apāyi. Atha kho bhagavā mahatā bhikkhusaṃghena saddhiṃ yena kukudhā nadī tenupasaṅkami; upasaṅkamitvā kukudhaṃ nadiṃ ajjhogāhetvā nhatvā ca pivitvā ca paccuttaritvā yena ambavanaṃ tenupasaṅkami; upasaṅkamitvā āyasmantaṃ cundakaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Cundaka, hãy xếp áo Sanghati làm bốn cho Ta, này Cundaka, Ta nay mệt mỏi, muốn nằm nghỉ.<br>
+<span lang="pi" class="pali">
+“iṅgha me tvaṃ, cundaka, catugguṇaṃ saṅghāṭiṃ paññāpehi; kilantosmi, cundaka, nipajjissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"- Xin vâng, bạch Thế Tôn." Tôn giả Cundaka vâng lời Thế Tôn và xếp áo Sanghati làm bốn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho āyasmā cundako bhagavato paṭissutvā catugguṇaṃ saṅghāṭiṃ paññāpesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn nằm xuống phía hông bên mặt như dáng điệu con sư tử, hai chân để trên nhau, chánh niệm, tỉnh giác, tác ý đến tưởng ngồi dậy, Tôn giả Cundaka ngồi phía trước Thế Tôn.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā dakkhiṇena passena sīhaseyyaṃ kappesi pāde pādaṃ accādhāya sato sampajāno uṭṭhānasaññaṃ manasi karitvā. Āyasmā pana cundako tattheva bhagavato purato nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Ðức Phật tự đi đến,<br>
+Con sông Kakutthà,<br>
+Con sông chảy trong sáng,<br>
+Mát lạnh và thanh tịnh,<br>
+<span lang="pi" class="pali">
+Gantvāna buddho nadikaṃ kukudhaṃ,<br>
+Acchodakaṃ sātudakaṃ vippasannaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị Ðạo Sư mỏi mệt,<br>
+Ði dần xuống mé sông,<br>
+Như Lai đấng vô thượng<br>
+Ngự trị ở trên đời.<br>
+<span lang="pi" class="pali">
+Ogāhi satthā sukilantarūpo,<br>
+Tathāgato appaṭimodha loke.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tắm xong uống nước xong,<br>
+Lội qua bên kia sông,<br>
+Bậc Ðạo sư đi trước,<br>
+Giữa Tăng chúng Tỷ-kheo,<br>
+<span lang="pi" class="pali">
+Nhatvā ca pivitvā cudatāri satthā,<br>
+Purakkhato bhikkhugaṇassa majjhe;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vừa đi vừa diễn giảng,<br>
+Chánh pháp thật vi diệu,<br>
+Rồi bậc Ðại Sĩ đến,<br>
+Tại khu vực rừng xoài,<br>
+<span lang="pi" class="pali">
+Satthā pavattā bhagavā idha dhamme,<br>
+Upāgami ambavanaṃ mahesi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cho gọi vị Tỷ-kheo,<br>
+Tên họ Cundaka;<br>
+"Hãy gấp tư áo lại,<br>
+Trải áo cho Ta nằm."<br>
+<span lang="pi" class="pali">
+Āmantayi cundakaṃ nāma bhikkhuṃ,<br>
+“ Catugguṇaṃ santhara me nipajjaṃ”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nghe dạy, Cundaka,<br>
+Lập tức vâng lời dạy,<br>
+Gấp tư và trải áo,<br>
+Một cách thật mau lẹ,<br>
+<span lang="pi" class="pali">
+So codito bhāvitattena cundo,<br>
+Catugguṇaṃ santhari khippameva;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bậc Ðạo Sư nằm xuống,<br>
+Thân mình thật mệt mỏi.<br>
+Tại đây Cundaka,<br>
+Ngồi ngay ngắn trước mặt.<br>
+<span lang="pi" class="pali">
+Nipajji satthā sukilantarūpo,<br>
+Cundopi tattha pamukhe nisīdīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn nói với Tôn giả Ananda:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā āyasmantaṃ ānandaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Ananda, rất có thể có người làm cho thợ rèn Cunda hối hận: "Này Hiền giả Cunda, thật không lợi ích gì cho Ông, thật là tai hại cho Ông, vì Như Lai dùng bữa ăn cuối cùng từ Ông cúng dường, và nhập diệt".<br>
+<span lang="pi" class="pali">
+“siyā kho panānanda, cundassa kammāraputtassa koci vippaṭisāraṃ upadaheyya: ‘tassa te, āvuso cunda, alābhā, tassa te dulladdhaṃ yassa te tathāgato pacchimaṃ piṇḍapātaṃ bhuñjitvā parinibbuto’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ananda, cần phải làm tiêu tan sự hối hận ấy của thợ rèn Cunda:<br>
+<span lang="pi" class="pali">
+Cundassānanda, kammāraputtassa evaṃ vippaṭisāro paṭivinodetabbo—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"Này Hiền giả, thật lợi ích cho bạn, thật là công đức cho bạn, vì được Như Lai dùng bữa ăn cuối cùng từ bạn cúng dường, và nhập diệt. Nay Hiền giả Cunda, tôi tự thân nghe, tôi tự thân lãnh thọ lời nói này của Thế Tôn:<br>
+<span lang="pi" class="pali">
+Tassa te, āvuso cunda, lābhā, tassa te suladdhaṃ yassa te tathāgato pacchimaṃ piṇḍapātaṃ paribhuñjitvā parinibbuto. Sammukhā metaṃ, āvuso cunda, bhagavato sutaṃ, sammukhā paṭiggahitaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"Có hai sự cúng dường ăn uống đồng một quả báo, đồng một di thục quả, quả báo lớn hơn, lợi ích hơn các sự cúng dường ăn uống khác. Thế nào là hai?<br>
+<span lang="pi" class="pali">
+dveme piṇḍapātā samasamaphalā samasamavipākā ativiya aññehi piṇḍapātehi mahapphalatarā ca mahānisaṃsatarā ca. Katame dve?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một là, bữa ăn trước khi Như Lai chứng Vô thượng Chánh Ðẳng Giác; hai là, bữa ăn trước khi Như Lai diệt độ Niết-bàn giới, không còn dư y".<br>
+<span lang="pi" class="pali">
+Yañca piṇḍapātaṃ paribhuñjitvā tathāgato anuttaraṃ sammāsambodhiṃ abhisambujjhati, yañca piṇḍapātaṃ paribhuñjitvā anupādisesāya nibbānadhātuyā parinibbāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hai bữa ăn này đồng một quả báo, đồng một dị thục quả, quả báo lớn hơn, lợi ích hơn các sự cúng dường ăn uống khác.<br>
+<span lang="pi" class="pali">
+Ime dve piṇḍapātā samasamaphalā samasamavipākā ativiya aññehi piṇḍapātehi mahapphalatarā ca mahānisaṃsatarā ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhờ hành động này, Tôn giả Cunda sẽ được hưỏng tuổi thọ; nhờ hành động này, Tôn giả Cunda sẽ được hưởng sắc đẹp; nhờ hành động này, Tôn giả Cunda sẽ được hưởng an lạc;<br>
+<span lang="pi" class="pali">
+‘Āyusaṃvattanikaṃ āyasmatā cundena kammāraputtena kammaṃ upacitaṃ, vaṇṇasaṃvattanikaṃ āyasmatā cundena kammāraputtena kammaṃ upacitaṃ, sukhasaṃvattanikaṃ āyasmatā cundena kammāraputtena kammaṃ upacitaṃ,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nhờ hành động này, Tôn giả Cunda sẽ được hưởng danh tiếng; nhờ hành động này, Tôn giả Cunda sẽ được hưởng cõi Trời; nhờ hành động này, Tôn giả Cunda sẽ được hưởng uy quyền".<br>
+<span lang="pi" class="pali">
+saggasaṃvattanikaṃ āyasmatā cundena kammāraputtena kammaṃ upacitaṃ, yasasaṃvattanikaṃ āyasmatā cundena kammāraputtena kammaṃ upacitaṃ, ādhipateyyasaṃvattanikaṃ āyasmatā cundena kammāraputtena kammaṃ upacitan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ananda, cần phải làm cho thợ rèn tiêu tan hối hận.<br>
+<span lang="pi" class="pali">
+Cundassānanda, kammāraputtassa evaṃ vippaṭisāro paṭivinodetabbo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn, sau khi hiểu ý nghĩa này, liền thốt lời cảm khái như sau:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā etamatthaṃ viditvā tāyaṃ velāyaṃ imaṃ udānaṃ udānesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Công đức người bố thí,<br>
+Luôn luôn được tăng trưởng,<br>
+Trừ được tâm hận thù,<br>
+Không chất chứa chế ngự,<br>
+<span lang="pi" class="pali">
+“Dadato puññaṃ pavaḍḍhati,<br>
+Saṃyamato veraṃ na cīyati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Kẻ chí thiện từ bỏ,<br>
+Mọi ác hạnh bất thiện,<br>
+Diệt trừ tham, sân, si.<br>
+Tâm giải thoát thanh tịnh.<br>
+<span lang="pi" class="pali">
+Kusalo ca jahāti pāpakaṃ,<br>
+Rāgadosamohakkhayā sanibbuto”ti.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./ud8.4.html#content"></a><a id="next-sutta" href="./ud8.6.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

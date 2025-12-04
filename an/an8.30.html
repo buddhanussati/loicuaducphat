@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 8.30 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 8.30<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 8.30<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+3. Phẩm Gia Chủ<br>
+<span lang="pi" class="pali">
+3. Gahapativagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Tôn Giả Anuruddha<br>
+<span lang="pi" class="pali">
+Anuruddhamahāvitakkasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Một thời, Thế Tôn trú ở giữa dân chúng Bhagga, tại núi Cá Sấu (Suṃsumāra), rừng Bhesakaḷā, vườn Lộc Uyển.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā bhaggesu viharati suṃsumāragire bhesakaḷāvane migadāye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Tôn giả Anuruddha (A-nậu-lâu-đà) sống giữa dân chúng Cetī, tại Vườn Trúc Phía Đông, Rồi Tôn giả Anuruddha, trong khi sống độc cư … Thiền tịnh, tâm tư khởi lên như sau:<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena āyasmā anuruddho cetīsu viharati pācīnavaṃsadāye. Atha kho āyasmato anuruddhassa rahogatassa paṭisallīnassa evaṃ cetaso parivitakko udapādi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Pháp này để cho người ít dục, pháp này không phải để cho người nhiều dục;<br>
+<span lang="pi" class="pali">
+“appicchassāyaṃ dhammo, nāyaṃ dhammo mahicchassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người biết đủ, pháp này không phải để cho người không biết đủ;<br>
+<span lang="pi" class="pali">
+santuṭṭhassāyaṃ dhammo, nāyaṃ dhammo asantuṭṭhassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người sống thanh vắng, pháp này không phải để cho người ưa hội chúng;<br>
+<span lang="pi" class="pali">
+pavivittassāyaṃ dhammo, nāyaṃ dhammo saṅgaṇikārāmassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người tinh cần tinh tấn, pháp này không phải để cho người biếng nhác;<br>
+<span lang="pi" class="pali">
+āraddhavīriyassāyaṃ dhammo, nāyaṃ dhammo kusītassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người trú niệm, pháp này không phải để cho người thất niệm;<br>
+<span lang="pi" class="pali">
+upaṭṭhitassatissāyaṃ dhammo, nāyaṃ dhammo muṭṭhassatissa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người Thiền định, pháp này không phải để cho người không Thiền định;<br>
+<span lang="pi" class="pali">
+samāhitassāyaṃ dhammo, nāyaṃ dhammo asamāhitassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người có trí tuệ, pháp này không phải để cho người ác tuệ.”<br>
+<span lang="pi" class="pali">
+paññavato ayaṃ dhammo, nāyaṃ dhammo duppaññassā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Rồi Thế Tôn với tâm của mình rõ biết tâm tư của Tôn giả Anuruddha, ví như người lực sĩ duỗi bàn tay đang co lại; hay co lại bàn tay đang duỗi ra; cũng vậy, Thế Tôn biến mất ở giữa dân chúng Bhagga, tại núi Suṃsumāra, rừng Bhesakaḷā, vườn Lộc Uyển, và hiện ra giữa dân chúng Cetī, tại Vườn Trúc Phía Đông, trước mặt Tôn giả Anuruddha.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā āyasmato anuruddhassa cetasā cetoparivitakkamaññāya—seyyathāpi nāma balavā puriso samiñjitaṃ vā bāhaṃ pasāreyya, pasāritaṃ vā bāhaṃ samiñjeyya; evamevaṃ—bhaggesu susumāragire bhesakaḷāvane migadāye antarahito cetīsu pācīnavaṃsadāye āyasmato anuruddhassa sammukhe pāturahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn ngồi xuống trên chỗ đã soạn sẵn.<br>
+<span lang="pi" class="pali">
+Nisīdi bhagavā paññatte āsane.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn nói với Tôn giả Anuruddha đang ngồi một bên.<br>
+<span lang="pi" class="pali">
+Āyasmāpi kho anuruddho bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho āyasmantaṃ anuruddhaṃ bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“3. Lành thay, lành thay, này Anuruddha!<br>
+<span lang="pi" class="pali">
+“Sādhu sādhu, anuruddha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lành thay, này Anuruddha, Thầy đã suy nghĩ đến bảy niệm của bậc Ðại nhân:<br>
+<span lang="pi" class="pali">
+Sādhu kho tvaṃ, anuruddha, yaṃ taṃ mahāpurisavitakkaṃ vitakkesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Pháp này để cho người ít dục, pháp này không phải để cho người nhiều dục;<br>
+<span lang="pi" class="pali">
+‘appicchassāyaṃ dhammo, nāyaṃ dhammo mahicchassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người biết đủ, pháp này không phải để cho người không biết đủ;<br>
+<span lang="pi" class="pali">
+santuṭṭhassāyaṃ dhammo, nāyaṃ dhammo asantuṭṭhassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người sống thanh vắng, pháp này không phải để cho người ưa hội chúng;<br>
+<span lang="pi" class="pali">
+pavivittassāyaṃ dhammo, nāyaṃ dhammo saṅgaṇikārāmassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người tinh cần tinh tấn, pháp này không phải để cho người biếng nhác;<br>
+<span lang="pi" class="pali">
+āraddhavīriyassāyaṃ dhammo, nāyaṃ dhammo kusītassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người trú niệm, pháp này không phải để cho người thất niệm;<br>
+<span lang="pi" class="pali">
+upaṭṭhitassatissāyaṃ dhammo, nāyaṃ dhammo muṭṭhassatissa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người Thiền định, pháp này không phải để cho người không Thiền định;<br>
+<span lang="pi" class="pali">
+samāhitassāyaṃ dhammo, nāyaṃ dhammo asamāhitassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp này để cho người có trí tuệ, pháp này không phải để cho người ác tuệ.’<br>
+<span lang="pi" class="pali">
+paññavato ayaṃ dhammo, nāyaṃ dhammo duppaññassā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Anuruddha, hãy suy nghĩ đến niệm thứ tám này của bậc Ðại nhân:<br>
+<span lang="pi" class="pali">
+Tena hi tvaṃ, anuruddha, imampi aṭṭhamaṃ mahāpurisavitakkaṃ vitakkehi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Pháp này để cho người không ưa hý luận, không thích hý luận, Pháp này không phải để cho người ưa hý luận, thích hý luận.’<br>
+<span lang="pi" class="pali">
+‘nippapañcārāmassāyaṃ dhammo nippapañcaratino, nāyaṃ dhammo papañcārāmassa papañcaratino’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, thời nếu Thầy muốn, Thầy sẽ chứng đạt và an trú Thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, có tầm có tứ.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime aṭṭha mahāpurisavitakke vitakkessasi, tato tvaṃ, anuruddha, yāvadeva ākaṅkhissasi, vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṃ savicāraṃ vivekajaṃ pītisukhaṃ paṭhamaṃ jhānaṃ upasampajja viharissasi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, thời nếu Thầy muốn, diệt tầm diệt tứ, Thầy sẽ chứng đạt và an trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm không tứ, nội tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime aṭṭha mahāpurisavitakke vitakkessasi, tato tvaṃ, anuruddha, yāvadeva ākaṅkhissasi, vitakkavicārānaṃ vūpasamā ajjhattaṃ sampasādanaṃ cetaso ekodibhāvaṃ avitakkaṃ avicāraṃ samādhijaṃ pītisukhaṃ dutiyaṃ jhānaṃ upasampajja viharissasi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Khi nào, này Anuruddha, khi nào Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, thời nếu Thầy muốn, Thầy sẽ ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là “xả niệm lạc trú”, chứng và an trú Thiền thứ ba.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime aṭṭha mahāpurisavitakke vitakkessasi, tato tvaṃ, anuruddha, yāvadeva ākaṅkhissasi, pītiyā ca virāgā upekkhako ca viharissasi sato ca sampajāno sukhañca kāyena paṭisaṃvedissasi yaṃ taṃ ariyā ācikkhanti: ‘upekkhako satimā sukhavihārī’ti tatiyaṃ jhānaṃ upasampajja viharissasi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, thời nếu Thầy muốn, Thầy sẽ xả lạc xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và an trú Thiền thứ tư, không khổ, không lạc, xả niệm thanh tịnh.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime aṭṭha mahāpurisavitakke vitakkessasi, tato tvaṃ, anuruddha, yāvadeva ākaṅkhissasi, sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṃ atthaṅgamā adukkhamasukhaṃ upekkhāsatipārisuddhiṃ catutthaṃ jhānaṃ upasampajja viharissasi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, khi nào bốn Thiền này thuộc tăng thượng tâm, hiện tại lạc trú, chứng được không khó khăn, chứng được không mệt nhọc, chứng được không phí sức, thời này Anuruddha, tấm y lượm từ đống rác lên của Thầy sẽ giống như tủ áo đầy những vải có nhiều màu sắc của người gia chủ hay con người gia chủ, để được sống biết đủ, ưa thích, không có lo âu, được lạc trú, được bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime ca aṭṭha mahāpurisavitakke vitakkessasi, imesañca catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī bhavissasi akicchalābhī akasiralābhī, tato tuyhaṃ, anuruddha, seyyathāpi nāma gahapatissa vā gahapatiputtassa vā nānārattānaṃ dussānaṃ dussakaraṇḍako pūro; evamevaṃ te paṃsukūlacīvaraṃ khāyissati santuṭṭhassa viharato ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+9. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, thời nếu Thầy muốn, khi nào bốn Thiền này thuộc tăng thượng tâm, hiện tại lạc trú, chứng được không khó khăn, chứng được không mệt nhọc, chứng được không phí sức, thời này Anuruddha, các món ăn từng miếng Thầy khất thực được sẽ giống như món cơm bằng gạo trắng, các hạt đen đã được lượm sạch, với nhiều loại súp, với nhiều loại đồ ăn của người gia chủ, hay của con người gia chủ, để được sống biết đủ, ưa thích, không có lo âu, được lạc trú, được bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime ca aṭṭha mahāpurisavitakke vitakkessasi, imesañca catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī bhavissasi akicchalābhī akasiralābhī, tato tuyhaṃ, anuruddha, seyyathāpi nāma gahapatissa vā gahapatiputtassa vā sālīnaṃ odano vicitakāḷako anekasūpo anekabyañjano; evamevaṃ te piṇḍiyālopabhojanaṃ khāyissati santuṭṭhassa viharato ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+10. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, khi nào bốn Thiền này thuộc tăng thượng tâm, hiện tại lạc trú, chứng được không khó khăn, chứng được không mệt nhọc, chứng được không phí sức, thời này Anuruddha, chỗ nằm dưới gốc cây thầy sẽ giống như nhà có nóc nhọn, có trét hồ trong ngoài, cửa được cài then, cửa sổ được đóng lại ngăn chặn gió của người gia chủ, hay của con người gia chủ, để được sống biết đủ, ưa thích, không có lo âu, được lạc trú, được bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime ca aṭṭha mahāpurisavitakke vitakkessasi, imesañca catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī bhavissasi akicchalābhī akasiralābhī, tato tuyhaṃ, anuruddha, seyyathāpi nāma gahapatissa vā gahapatiputtassa vā kūṭāgāraṃ ullittāvalittaṃ nivātaṃ phusitaggaḷaṃ pihitavātapānaṃ; evamevaṃ te rukkhamūlasenāsanaṃ khāyissati santuṭṭhassa viharato ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+11. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, khi nào bốn Thiền này thuộc tăng thượng tâm, hiện tại lạc trú, chứng được không khó khăn, chứng được không mệt nhọc, chứng được không phí sức, thời này Anuruddha, giường nằm và chỗ ngồi trải với đệm cỏ của Thầy sẽ giống như ghế dài, nệm trải giường nằm bằng len, chăn len trắng, chăn len thêu bông, nệm bằng da con sơn dương gọi là kadali, tấm thảm với đầu che phía trên, ghế dài có đầu gối chân màu đỏ của các người gia chủ, hay của con người gia chủ, để được sống biết đủ, ưa thích, không có lo âu, được lạc trú, được bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime ca aṭṭha mahāpurisavitakke vitakkessasi, imesañca catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī bhavissasi akicchalābhī akasiralābhī, tato tuyhaṃ, anuruddha, seyyathāpi nāma gahapatissa vā gahapatiputtassa vā pallaṅko gonakatthato paṭikatthato paṭalikatthato kadalimigapavarapaccattharaṇo sauttaracchado ubhatolohitakūpadhāno; evamevaṃ te tiṇasanthārakasayanāsanaṃ khāyissati santuṭṭhassa viharato ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+12. Khi nào, này Anuruddha, Thầy sẽ suy nghĩ đến tám tư niệm này của bậc Ðại nhân, khi nào bốn Thiền này thuộc tăng thượng tâm, hiện tại lạc trú, chứng được không khó khăn, chứng được không mệt nhọc, chứng được không phí sức, thời này Anuruddha, dược phẩm nước tiểu hôi của Thầy sẽ giống như các loại dược phẩm của các người gia chủ, hay của con người gia chủ, như thục tô, sanh tô, dầu, mật, đường bánh, để được sống biết đủ, ưa thích, không có lo âu, được lạc trú, được bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Yato kho tvaṃ, anuruddha, ime ca aṭṭha mahāpurisavitakke vitakkessasi, imesañca catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī bhavissasi akicchalābhī akasiralābhī, tato tuyhaṃ, anuruddha, seyyathāpi nāma gahapatissa vā gahapatiputtassa vā nānābhesajjāni, seyyathidaṃ—sappi navanītaṃ telaṃ madhu phāṇitaṃ; evamevaṃ te pūtimuttabhesajjaṃ khāyissati santuṭṭhassa viharato ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+13. Vậy này Anuruddha, nhân kỳ an cư mùa mưa sắp đến, hãy trú giữa dân chúng Cetì ở Vườn Trúc Phía Đông.”<br>
+<span lang="pi" class="pali">
+Tena hi tvaṃ, anuruddha, āyatikampi vassāvāsaṃ idheva cetīsu pācīnavaṃsadāye vihareyyāsī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” Tôn giả Anuruddha vâng đáp Thế Tôn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho āyasmā anuruddho bhagavato paccassosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn sau khi khuyến giáo Tôn giả Anuruddha với lời khuyến giáo này, như người lực sĩ duỗi cánh tay đang co lại, hay co lại cánh tay đang duỗi ra; cũng vậy, Ngài biến mất giữa dân chúng Cetì ở Vườn Trúc Phía Đông và hiện ra giữa dân chúng Bhagga, trên núi Suṃsumāra trong rừng Bhesakaḷā, vườn Lộc Uyển.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā āyasmantaṃ anuruddhaṃ iminā ovādena ovaditvā—seyyathāpi nāma balavā puriso samiñjitaṃ vā bāhaṃ pasāreyya, pasāritaṃ vā bāhaṃ samiñjeyya; evamevaṃ—cetīsu pācīnavaṃsadāye antarahito bhaggesu susumāragire bhesakaḷāvane migadāye pāturahosīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn ngồi xuống trên chỗ đã soạn sẵn, sau khi ngồi xuống, Thế Tôn bảo các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Nisīdi bhagavā paññatte āsane. Nisajja kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“14. Này các Tỷ-kheo, Ta sẽ thuyết tám tư niệm của bậc Ðại nhân cho các Thầy. Hãy lắng nghe và khéo tư niệm, Ta sẽ giảng: Thưa vâng, bạch Thế Tôn. Các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+“aṭṭha kho, bhikkhave, mahāpurisavitakke desessāmi, taṃ suṇātha ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, thế nào là tám tư niệm của bậc Ðại nhân?<br>
+<span lang="pi" class="pali">
+katame ca, bhikkhave, aṭṭha mahāpurisavitakkā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+15. Này các Tỷ-kheo, Pháp này để cho người ít dục, Pháp này không phải để cho người nhiều dục;<br>
+<span lang="pi" class="pali">
+Appicchassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo mahicchassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ kheo,Pháp này để cho người biết đủ, pháp này không phải để cho người không biết đủ;<br>
+<span lang="pi" class="pali">
+santuṭṭhassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo asantuṭṭhassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ kheo, Pháp này để cho người sống thanh vắng, pháp này không phải để cho người ưa hội chúng;<br>
+<span lang="pi" class="pali">
+pavivittassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo saṅgaṇikārāmassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ kheo, Pháp này để cho người tinh cần tinh tấn, pháp này không phải để cho người biếng nhác;<br>
+<span lang="pi" class="pali">
+āraddhavīriyassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo kusītassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ kheo,Pháp này để cho người trú niệm, pháp này không phải để cho người thất niệm;<br>
+<span lang="pi" class="pali">
+upaṭṭhitassatissāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo muṭṭhassatissa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ kheo, Pháp này để cho người Thiền định, pháp này không phải để cho người không Thiền định;<br>
+<span lang="pi" class="pali">
+samāhitassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo asamāhitassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ kheo, Pháp này để cho người có trí tuệ, Pháp này không phải để cho người ác tuệ;<br>
+<span lang="pi" class="pali">
+paññavato ayaṃ, bhikkhave, dhammo, nāyaṃ dhammo duppaññassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Pháp này để cho người không ưa hý luận, không thích hý luận, Pháp này không phải để cho người ưa hý luận, thích hý luận.<br>
+<span lang="pi" class="pali">
+nippapañcārāmassāyaṃ, bhikkhave, dhammo nippapañcaratino, nāyaṃ dhammo papañcārāmassa papañcaratino.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘16. Này các Tỷ-kheo, Pháp này để cho người ít dục, Pháp này không để cho người có dục lớn, ’<br>
+<span lang="pi" class="pali">
+‘Appicchassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo mahicchassā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+17. Này các Tỷ-kheo, ở đây, Tỷ-kheo ít dục không muốn: “Mong người ta biết tôi là ít dục”; biết đủ, không muốn: “Mong người ta biết tôi là biết đủ”; sống viễn ly, không muốn: “Mong người ta biết tôi sống viễn ly”; tinh cần tinh tấn, không muốn: “Mong người ta biết tôi sống tinh cần tinh tấn”; trú niệm, không muốn: “Mong người ta biết tôi trú niệm”; có định, không muốn: “Mong người ta biết tôi có định”; có tuệ, không muốn: “Mong người ta biết tôi là người có tuệ “; không thích hý luận, không muốn: “Mong người ta biết tôi không thích hý luận”.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu appiccho samāno ‘appicchoti maṃ jāneyyun’ti na icchati, santuṭṭho samāno ‘santuṭṭhoti maṃ jāneyyun’ti na icchati, pavivitto samāno ‘pavivittoti maṃ jāneyyun’ti na icchati, āraddhavīriyo samāno ‘āraddhavīriyoti maṃ jāneyyun’ti na icchati, upaṭṭhitassati samāno ‘upaṭṭhitassatīti maṃ jāneyyun’ti na icchati, samāhito samāno ‘samāhitoti maṃ jāneyyun’ti na icchati, paññavā samāno ‘paññavāti maṃ jāneyyun’ti na icchati, nippapañcārāmo samāno ‘nippapañcārāmoti maṃ jāneyyun’ti na icchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này các Tỷ-kheo, Pháp này để cho người ít dục, Pháp này không để cho người có dục lớn’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Appicchassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo mahicchassā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+18. Này các Tỷ-kheo, ‘Pháp này để cho người biết đủ, Pháp này không để cho người không biết đủ’, như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+‘Santuṭṭhassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo asantuṭṭhassā’ti, iti kho panetaṃ vuttaṃ, kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+19. Ở đây, này các Tỷ-kheo, Tỷ-kheo biết đủ với bất cứ vật dụng gì như y áo, đồ ăn khất thực, sàng tọa, dược phẩm trị bệnh.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu santuṭṭho hoti itarītara-cīvara-piṇḍapāta-senāsana-gilānapaccaya-bhesajjaparikkhārena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, ‘Pháp này để cho người biết đủ, Pháp này không phải để cho người không biết đủ’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Santuṭṭhassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo asantuṭṭhassā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+20. Này các Tỷ-kheo, Pháp này để cho người sống viễn ly, ‘Pháp này không phải để cho người ưa thích hội chúng’, như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+‘Pavivittassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo saṅgaṇikārāmassā’ti, iti kho panetaṃ vuttaṃ, kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+21. Ở đây, này các Tỷ-kheo, Với Tỷ-kheo sống viễn ly, có nhiều người đến thăm như Tỷ-kheo, Tỷ-kheo-Ni, nam cư sĩ, nữ cư sĩ, vua chúa, đại thần, các ngoại đạo sư, đệ tử của các ngoại đạo sư.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhuno pavivittassa viharato bhavanti upasaṅkamitāro bhikkhū bhikkhuniyo upāsakā upāsikāyo rājāno rājamahāmattā titthiyā titthiyasāvakā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Tỷ-kheo với tâm thuận về viễn ly, hướng về viễn ly, nhập vào viễn ly, trú vào viễn ly, thích thú xuất ly, nói lời hoàn toàn liên hệ đến lánh xa.<br>
+<span lang="pi" class="pali">
+Tatra bhikkhu vivekaninnena cittena vivekapoṇena vivekapabbhārena vivekaṭṭhena nekkhammābhiratena aññadatthu uyyojanikapaṭisaṃyuttaṃyeva kathaṃ kattā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Pháp này để cho người viễn ly, ‘Pháp này không phải để cho người không ưa hội chúng’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Pavivittassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo saṅgaṇikārāmassā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+22. Này các Tỷ-kheo, Pháp này để cho người tinh cần tinh tấn, ‘Pháp này không phải để cho người biếng nhác’, như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+‘Āraddhavīriyassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo kusītassā’ti, iti kho panetaṃ vuttaṃ, kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+23. Ở đây, này các Tỷ-kheo, Tỷ-kheo sống tinh cần tinh tấn, đoạn tận các pháp bất thiện, thành tựu các Pháp thiện, nỗ lực kiên trì, không từ bỏ gánh nặng đối với các thiện pháp.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu āraddhavīriyo viharati akusalānaṃ dhammānaṃ pahānāya kusalānaṃ dhammānaṃ upasampadāya thāmavā daḷhaparakkamo anikkhittadhuro kusalesu dhammesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Pháp này để cho người tinh cần tinh tấn, ‘Pháp này không phải để cho người biếng nhác’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Āraddhavīriyassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo kusītassā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+24. Này các Tỷ-kheo, Pháp này để cho người trú niệm, ‘Pháp này không phải để cho người thất niệm’, như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+‘Upaṭṭhitassatissāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo muṭṭhassatissā’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+25. Ở đây, này các Tỷ-kheo, Tỷ-kheo đầy đủ niệm, thành tựu niệm tuệ tối thắng, ức nhớ tùy niệm những điều đã làm, nói đã lâu.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu satimā hoti paramena satinepakkena samannāgato, cirakatampi cirabhāsitampi saritā anussaritā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, ‘Pháp này để cho người trú niệm, Pháp này không phải để cho người thất niệm’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Upaṭṭhitassatissāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo, muṭṭhassatissā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+26. Này các Tỷ-kheo, Pháp này để cho người thiền định, ‘Pháp này không phải để cho người không thiền định’, như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+‘Samāhitassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo asamāhitassā’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+27. Ở đây, này các Tỷ-kheo, Tỷ-kheo ly dục, ly ác pháp … chứng đạt và an trú sơ thiền … chứng đạt và an trú nhị thiền … chứng đạt và an trú tứ thiền … chứng đạt và an trú tứ thiền.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu vivicceva kāmehi ...pe... catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Pháp này để cho người thiền định, ‘Pháp này không phải để cho người không thiền định’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Samāhitassāyaṃ, bhikkhave, dhammo, nāyaṃ dhammo asamāhitassā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+28. Này các Tỷ-kheo, Pháp này để cho người có trí tuệ, ‘Pháp này không phải để cho người không trí tuệ’, như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+‘Paññavato ayaṃ, bhikkhave, dhammo, nāyaṃ dhammo duppaññassā’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+29. Ở đây, này các Tỷ-kheo, Tỷ-kheo có trí tuệ, có trí tuệ về sanh diệt, thành tựu Thánh thể nhập (quyết trạch), đưa đến chơn chánh đoạn diệt khổ đau.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu paññavā hoti udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammā dukkhakkhayagāminiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, ‘Pháp này để cho người có trí tuệ, Pháp này không phải để cho người không trí tuệ’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Paññavato ayaṃ, bhikkhave, dhammo, nāyaṃ dhammo duppaññassā’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+30. Này các Tỷ-kheo, Pháp này để cho người không ưa hý luận, không thích hý luận, ‘Pháp này không phải để cho người ưa hý luận, thích hý luận’, như vậy đã được nói đến. Do duyên gì được nói như vậy?<br>
+<span lang="pi" class="pali">
+‘Nippapañcārāmassāyaṃ, bhikkhave, dhammo nippapañcaratino, nāyaṃ dhammo papañcārāmassa papañcaratino’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+31. Này các Tỷ-kheo, ở đây, Tỷ-kheo đối với đoạn diệt hý luận, tâm được phấn chấn, tịnh tín, an trú, hướng đến.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhuno papañcanirodhe cittaṃ pakkhandati pasīdati santiṭṭhati vimuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Pháp này để cho người không ưa hý luận, không thích hý luận, ‘Pháp này không phải để cho người ưa hý luận, thích hý luận’, đã được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Nippapañcārāmassāyaṃ, bhikkhave, dhammo, nippapañcaratino, nāyaṃ dhammo papañcārāmassa papañcaratino’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên này được nói như vậy.”<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+32. Rồi Tôn giả Anuruddha, mùa mưa an cư đến, đến trú ở giữa dân chúng Cetì, tại Pacìnavamsadàya.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā anuruddho āyatikampi vassāvāsaṃ tattheva cetīsu pācīnavaṃsadāye vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Anuruddha sống một mình, an tịnh, không phóng dật, nhiệt tâm, tinh cần, không bao lâu, do mục đích gì, các Thiện nam tử chơn chánh xuất gia, từ bỏ gia đình, sống không gia đình, tức là vô thượng cứu cánh Phạm hạnh ngay trong hiện tại, vị ấy tự mình với thắng trí, chứng ngộ, chứng nhập và an trú.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā anuruddho eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto nacirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, tadanuttaraṃ—brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chứng rõ: “Sanh đã tận, Phạm hạnh đã thành, những gì nên làm đã làm, không còn trở lui lại trạng thái này nữa”.<br>
+<span lang="pi" class="pali">
+“Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā”ti abbhaññāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Tôn giả Anuruddha trở thành một vị A-la-hán nữa.<br>
+<span lang="pi" class="pali">
+Aññataro ca panāyasmā anuruddho arahataṃ ahosīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn Giả Anuruddha chứng được A-la-hán ngay trong thời gian ấy, nói lên những bài kệ này:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā anuruddho arahattappatto tāyaṃ velāyaṃ imā gāthāyo abhāsi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế gian vô thượng sư,<br>
+Rõ biết tư tưởng ta,<br>
+Với thân do ý tạo,<br>
+Thần thông đến với ta.<br>
+<span lang="pi" class="pali">
+“Mama saṅkappamaññāya,<br>
+satthā loke anuttaro;<br>
+Manomayena kāyena,<br>
+iddhiyā upasaṅkami.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tùy theo ta nghĩ gì,<br>
+Ngài thuyết rõ tất cả,<br>
+Phật không ưa hý luận,<br>
+Ngài thuyết, không hý luận.<br>
+<span lang="pi" class="pali">
+Yathā me ahu saṅkappo,<br>
+tato uttari desayi;<br>
+Nippapañcarato buddho,<br>
+nippapañcaṃ adesayi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngộ pháp, ta hoan hỷ,<br>
+Trú trong giáo pháp ngài,<br>
+Ba minh đã đạt được,<br>
+Giáo pháp Phật làm xong.<br>
+<span lang="pi" class="pali">
+Tassāhaṃ dhammamaññāya,<br>
+vihāsiṃ sāsane rato;<br>
+Tisso vijjā anuppattā,<br>
+kataṃ buddhassa sāsanan”ti.<br>
+</span>
+</p>
+
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an8.29.html#content"></a><a id="next-sutta" href="./an8.31.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

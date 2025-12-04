@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 6.57 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 6.57<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 6.57<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+6. Đại Phẩm<br>
+<span lang="pi" class="pali">
+6. Mahāvagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Sáu Sanh Loại<br>
+<span lang="pi" class="pali">
+Chaḷabhijātisutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Một thời, Thế Tôn trú ở Rājagaha (Vương Xá), tại núi Linh Thứu (Kền Kền). Rồi Tôn giả Ānanda đi đến Thế Tôn; sau khi đến đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, Tôn giả Ānanda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā rājagahe viharati gijjhakūṭe pabbate. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho āyasmā ānando bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“2. Bạch Thế Tôn, Tôn giả Pūraṇa Kassapa trình bày sáu sanh loại:<br>
+<span lang="pi" class="pali">
+“pūraṇena, bhante, kassapena chaḷabhijātiyo paññattā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sanh loại đen, sanh loại xanh, sanh loại đỏ, sanh loại vàng, sanh loại trắng, sanh loại hết sức trắng.<br>
+<span lang="pi" class="pali">
+kaṇhābhijāti paññattā, nīlābhijāti paññattā, lohitābhijāti paññattā, haliddābhijāti paññattā, sukkābhijāti paññattā, paramasukkābhijāti paññattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, bạch Thế Tôn, đây là loại sanh đen do Pūraṇa Kassapa trình bày: “Kẻ giết cừu, kẻ giết heo, kẻ giết chim, kẻ săn thú, kẻ hung bạo, người đánh cá, kẻ ăn trộm, kẻ ăn trộm giết người, kẻ ngục tốt và những người khác theo nghề tàn ác”.<br>
+<span lang="pi" class="pali">
+Tatridaṃ, bhante, pūraṇena kassapena kaṇhābhijāti paññattā, orabbhikā sūkarikā sākuṇikā māgavikā luddā macchaghātakā corā coraghātakā bandhanāgārikā ye vā panaññepi keci kurūrakammantā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, bạch Thế Tôn, đây là các sanh loại xanh do Pūraṇa Kassapa trình bày: “Các Tỷ-kheo sống như cỏ gai đâm bên hông, và tất cả những ai khác chủ trương nghiệp nhân luận, nghiệp quả luận”.<br>
+<span lang="pi" class="pali">
+Tatridaṃ, bhante, pūraṇena kassapena nīlābhijāti paññattā, bhikkhū kaṇṭakavuttikā ye vā panaññepi keci kammavādā kriyavādā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, bạch Thế Tôn, đây là các sanh loại đỏ do Pūraṇa Kassapa trình bày: “Các Ni-kiền-tử và những kẻ mặc một tấm vải”.<br>
+<span lang="pi" class="pali">
+Tatridaṃ, bhante, pūraṇena kassapena lohitābhijāti paññattā, nigaṇṭhā ekasāṭakā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, bạch Thế Tôn, là các sanh loại vàng do Pūraṇa Kassapa trình bày: “Các gia chủ và đệ tử những người ở trần truồng”.<br>
+<span lang="pi" class="pali">
+Tatridaṃ, bhante, pūraṇena kassapena haliddābhijāti paññattā, gihī odātavasanā acelakasāvakā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, bạch Thế Tôn, đây là các sanh loại trắng do Pūraṇa Kassapa trình bày: “Các tà mạng ngoại đạo và đệ tử của họ”.<br>
+<span lang="pi" class="pali">
+Tatridaṃ, bhante, pūraṇena kassapena sukkābhijāti paññattā, ājīvakā ājīvakiniyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, bạch Thế Tôn, đây là các sanh loại hết sức trắng do Pūraṇa Kassapa trình bày: “Nanda Vaccha, Kisa Sankicca và Makkhali Gosàla”.<br>
+<span lang="pi" class="pali">
+Tatridaṃ, bhante, pūraṇena kassapena paramasukkābhijāti paññattā, nando vaccho kiso saṅkicco makkhali gosālo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, sáu sanh loại này do Pūraṇa Kassapa trình bày.”<br>
+<span lang="pi" class="pali">
+Pūraṇena, bhante, kassapena imā chaḷabhijātiyo paññattā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“3. Này Ānanda, có phải toàn thế giới đều đồng ý chấp nhận sự trình bày thành sáu sanh loại này của Pūraṇa Kassapa không?”<br>
+<span lang="pi" class="pali">
+“Kiṃ panānanda, pūraṇassa kassapassa sabbo loko etadabbhanujānāti imā chaḷabhijātiyo paññāpetun”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn.”<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ví như này Ānanda, một người nghèo khổ, không có sở hữu, sống túng thiếu, dầu miễn cưỡng, không muốn, người ta quăng cho người ấy một miếng thịt và nói: ‘Hãy ăn miếng thịt này, này Người kia, và trả tiền luôn’.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, ānanda, puriso daliddo assako anāḷhiko, tassa akāmakassa bilaṃ olaggeyyuṃ: ‘idaṃ te, ambho purisa, maṃsañca khāditabbaṃ, mūlañca anuppadātabban’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Ānanda là lời tuyên bố của Pūraṇa Kassapa về sáu sanh loại này cho những Sa-môn, Bà-la-môn ấy, không được họ đồng ý, như bởi một kẻ ngu si, không thông minh, không biết thích ứng, bất thiện.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, ānanda, pūraṇena kassapena appaṭiññāya etesaṃ samaṇabrāhmaṇānaṃ imā chaḷabhijātiyo paññattā, yathā taṃ bālena abyattena akhettaññunā akusalena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, Ta tuyên bố có sáu sanh loại.<br>
+<span lang="pi" class="pali">
+Ahaṃ kho panānanda, chaḷabhijātiyo paññāpemi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hãy nghe và khéo tác ý, Ta sẽ nói.”<br>
+<span lang="pi" class="pali">
+Taṃ suṇāhi, sādhukaṃ manasi karohi; bhāsissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” tôn giả Ānanda vâng đáp Thế Tôn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho āyasmā ānando bhagavato paccassosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Ānanda, thế nào là sáu sanh loại?<br>
+<span lang="pi" class="pali">
+“katamā cānanda, chaḷabhijātiyo?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Ở đây, này Ānanda, có một số sanh loại đen, sanh ra các pháp đen.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco kaṇhābhijātiyo samāno kaṇhaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng ở đây, này Ānanda, có một số sanh loại đen sanh ra pháp trắng.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekacco kaṇhābhijātiyo samāno sukkaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, có một số sanh loại đen sanh ra Niết-bàn, không đen không trắng.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekacco kaṇhābhijātiyo samāno akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, có một số sanh loại trắng sanh ra pháp đen.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekacco sukkābhijātiyo samāno kaṇhaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, có một số sanh loại trắng sanh ra pháp trắng.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekacco sukkābhijātiyo samāno sukkaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, có một số sanh loại trắng sanh ra Niết-bàn, không đen không trắng.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekacco sukkābhijātiyo samāno akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này, Ānanda, thế nào là một số sanh loại đen sanh ra pháp đen?<br>
+<span lang="pi" class="pali">
+Kathañcānanda, kaṇhābhijātiyo samāno kaṇhaṃ dhammaṃ abhijāyati?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Ở đây, này Ānanda, có một số người sanh ra trong gia đình thấp kém, gia đình người đổ phân hay gia đình người thợ săn, hay gia đình người đan tre, hay gia đình người đóng xe, hay gia đình người quét rác, hay trong gia đình một người nghèo khổ, khó tìm được đồ ăn uống để sống, khó tìm cho được đồ ăn đồ mặc.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco nīce kule paccājāto hoti—caṇḍālakule vā nesādakule vā venakule vā rathakārakule vā pukkusakule vā, dalidde appannapānabhojane kasiravuttike, yattha kasirena ghāsacchādo labbhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người ấy xấu xí, khó nhìn, lùn thấp, nhiều bệnh hoạn, đui một mắt, tàn tật, còm, què, hay đi khấp khểnh, không có được đồ ăn, đồ uống, đồ mặc, xe cộ, vòng hoa, hương, phấn sáp, chỗ nằm, chỗ ở và đèn.<br>
+<span lang="pi" class="pali">
+So ca hoti dubbaṇṇo duddasiko okoṭimako bavhābādho kāṇo vā kuṇī vā khañjo vā pakkhahato vā, na lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy làm ác hạnh về thân, làm ác hạnh về lời, làm ác hạnh về ý.<br>
+<span lang="pi" class="pali">
+So kāyena duccaritaṃ carati, vācāya duccaritaṃ carati, manasā duccaritaṃ carati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy do làm ác hạnh về thân, về lời, về ý, sau khi thân hoại mạng chung sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+So kāyena duccaritaṃ caritvā, vācāya duccaritaṃ caritvā, manasā duccaritaṃ caritvā kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda, là hạng sanh loại đen sanh ra pháp đen.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, ānanda, kaṇhābhijātiyo samāno kaṇhaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, thế nào là hạng sanh loại đen sanh ra pháp trắng?<br>
+<span lang="pi" class="pali">
+Kathañcānanda, kaṇhābhijātiyo samāno sukkaṃ dhammaṃ abhijāyati?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Ở đây, này Ānanda, có hạng người sanh ra trong gia đình thấp kém… chỗ nằm, chỗ ở và đèn.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco nīce kule paccājāto hoti—caṇḍālakule vā ...pe... seyyāvasathapadīpeyyassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy làm thiện hạnh về thân, làm thiện hạnh về lời, làm thiện hạnh về ý.<br>
+<span lang="pi" class="pali">
+So kāyena sucaritaṃ carati, vācāya sucaritaṃ carati, manasā sucaritaṃ carati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy do làm thiện hạnh về thân, về lời, về ý, sau khi thân hoại mạng chung sanh vào cõi lành, Thiên giới, thế giới này.<br>
+<span lang="pi" class="pali">
+So kāyena sucaritaṃ caritvā, vācāya sucaritaṃ caritvā, manasā sucaritaṃ caritvā kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda, là hạng sanh loại đen sanh ra pháp trắng.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, ānanda, kaṇhābhijātiyo samāno sukkaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, thế nào là hạng sanh loại đen sanh ra Niết-bàn, không đen không trắng?<br>
+<span lang="pi" class="pali">
+Kathañcānanda, kaṇhābhijātiyo samāno akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Ở đây, này Ānanda, có hạng người sanh ra trong gia đình thấp kém… và người ấy xấu xí, khó nhìn, lùn thấp.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco nīce kule paccājāto hoti—caṇḍālakule vā ...pe... so ca hoti dubbaṇṇo duddasiko okoṭimako.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy, sau khi cạo bỏ râu tóc, đắp áo cà sa, xuất gia từ bỏ gia đình, sống không gia đình.<br>
+<span lang="pi" class="pali">
+So kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xuất gia như vậy, sau khi đoạn tận năm triền cái, làm cho muội lược các kiết sử về tâm với trí tuệ, trú tâm trên Bốn niệm xứ, như thật tu tập Bảy giác chi, sanh ra Niết-bàn, không đen không trắng.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno pañca nīvaraṇe pahāya cetaso upakkilese paññāya dubbalīkaraṇe, catūsu satipaṭṭhānesu suppatiṭṭhitacitto, satta bojjhaṅge yathābhūtaṃ bhāvetvā akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda là hạng sanh loại đen sanh ra Niết-bàn, không đen không trắng.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, ānanda, kaṇhābhijātiyo samāno akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, thế nào là sanh loại trắng sanh ra pháp đen?<br>
+<span lang="pi" class="pali">
+Kathañcānanda, sukkābhijātiyo samāno kaṇhaṃ dhammaṃ abhijāyati?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Ở đây, này Ānanda, có hạng người sanh ra trong gia đình cao quý, trong gia đình Sát-đế-lỵ đại phú, hay trong gia đình Bà-la-môn đại phú, hay trong gia đình gia chủ đại phú, phú hào, có tiền của lớn, tài sản lớn, có nhiều vàng bạc, có nhiều tài sản, vật dụng, nhiều tiền của, ngũ cốc.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco ucce kule paccājāto hoti—khattiyamahāsālakule vā brāhmaṇamahāsālakule vā gahapatimahāsālakule vā, aḍḍhe mahaddhane mahābhoge pahūtajātarūparajate pahūtavittūpakaraṇe pahūtadhanadhaññe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy lại đẹp trai, dễ nhìn, dễ thương, với màu da tuyệt đẹp, mỹ miều. Người ấy lại được ăn đồ ăn, đồ uống, áo mặc, xe cộ, vòng hoa, hương liệu, phấn sáp, chỗ nằm, chỗ trú, đèn đuốc.<br>
+<span lang="pi" class="pali">
+So ca hoti abhirūpo dassanīyo pāsādiko paramāya vaṇṇapokkharatāya samannāgato, lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy làm ác hạnh về thân, làm ác hạnh về lời, làm ác hạnh về ý.<br>
+<span lang="pi" class="pali">
+So kāyena duccaritaṃ carati, vācāya duccaritaṃ carati, manasā duccaritaṃ carati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy do làm ác hạnh về thân, do làm ác hạnh về lời, do làm ác hạnh về ý, sau khi thân hoại mạng chung, sanh vào cõi dữ, ác thú, đạo xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+So kāyena duccaritaṃ caritvā, vācāya duccaritaṃ caritvā, manasā duccaritaṃ caritvā kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda, là hạng sanh loại trắng sanh ra pháp đen.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, ānanda, sukkābhijātiyo samāno kaṇhaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, thế nào là hạng sanh loại trắng sanh ra pháp trắng?<br>
+<span lang="pi" class="pali">
+Kathañcānanda, sukkābhijātiyo samāno sukkaṃ dhammaṃ abhijāyati?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+9. Ở đây, này Ānanda, có hạng người sanh ra trong gia đình cao quý, trong gia đình Sát-đế-lỵ đại phú… chỗ trú, đèn đuốc.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco ucce kule paccājāto hoti—khattiyamahāsālakule vā ...pe... seyyāvasathapadīpeyyassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy làm thiện hạnh về thân, làm thiện hạnh về lời, làm thiện hạnh về ý.<br>
+<span lang="pi" class="pali">
+So kāyena sucaritaṃ carati, vācāya sucaritaṃ carati, manasā sucaritaṃ carati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy do làm thiện hạnh về thân, do làm thiện hạnh về lời, do làm thiện hạnh về ý, sau khi thân hoại mạng chung, sanh lên thiện thú, Thiên giới, cõi đời này.<br>
+<span lang="pi" class="pali">
+So kāyena sucaritaṃ caritvā, vācāya sucaritaṃ caritvā, manasā sucaritaṃ caritvā kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda, là hạng sanh loại trắng sanh ra pháp trắng.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, ānanda, sukkābhijātiyo samāno sukkaṃ dhammaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, thế nào là hạng sanh loại trắng sanh ra Niết-bàn, không đen không trắng?<br>
+<span lang="pi" class="pali">
+Kathañcānanda, sukkābhijātiyo samāno akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+10. Ở đây, này Ānanda, có hạng người sanh ra trong gia đình cao quý, trong gia đình Sát-đế-lỵ đại phú … chỗ trú, đèn đuốc.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco ucce kule paccājāto hoti—khattiyamahāsālakule vā brāhmaṇamahāsālakule vā gahapatimahāsālakule vā, aḍḍhe mahaddhane mahābhoge pahūtajātarūparajate pahūtavittūpakaraṇe pahūtadhanadhaññe. So ca hoti abhirūpo dassanīyo pāsādiko paramāya vaṇṇapokkharatāya samannāgato, lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, sau khi cạo bỏ râu tóc, đắp áo cà sa, xuất gia, từ bỏ gia đình, sống không gia đình.<br>
+<span lang="pi" class="pali">
+So kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xuất gia như vậy, sau khi đoạn tận năm triền cái, làm cho muội lược các kiết sử về tâm với trí tuệ, trú tâm trên Bốn niệm xứ, như thật tu tập Bảy giác chi, sanh ra Niết-bàn, không đen không trắng.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno pañca nīvaraṇe pahāya cetaso upakkilese paññāya dubbalīkaraṇe, catūsu satipaṭṭhānesu suppatiṭṭhitacitto, satta bojjhaṅge yathābhūtaṃ bhāvetvā akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda là hạng sanh loại trắng sanh ra Niết-bàn, không đen không trắng.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, ānanda, sukkābhijātiyo samāno akaṇhaṃ asukkaṃ nibbānaṃ abhijāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, đây là sáu sanh loại.”<br>
+<span lang="pi" class="pali">
+Imā kho, ānanda, chaḷabhijātiyo”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an6.56.html#content"></a><a id="next-sutta" href="./an6.58.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 34          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 34<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 34<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Tiểu Kinh Người Chăn Bò<br>
+<span lang="pi" class="pali">
+Cūḷagopālakasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở giữa các bộ lạc Vajji (Bạt-kỳ) tại Ukkacela, trên bờ sông Hằng.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā vajjīsu viharati ukkacelāyaṃ gaṅgāya nadiyā tīre.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại đây Thế Tôn gọi các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Tatra kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo.”<br>
+<span lang="pi" class="pali">
+“bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” Những Tỷ-kheo ấy vâng đáp Thế Tôn.<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như sau:<br>
+<span lang="pi" class="pali">
+Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ngày xưa, này các Tỷ-kheo, tại Magadha có người chăn bò vô trí, vào cuối tháng mùa mưa, trong mùa gặt hái, không quan sát bờ bên này sông Hằng, không quan sát bờ bên kia sông Hằng, đuổi đàn bò qua bờ bên kia tại Suvideha, tại chỗ không có thể lội qua được.<br>
+<span lang="pi" class="pali">
+“Bhūtapubbaṃ, bhikkhave, māgadhako gopālako duppaññajātiko, vassānaṃ pacchime māse saradasamaye, asamavekkhitvā gaṅgāya nadiyā orimaṃ tīraṃ, asamavekkhitvā pārimaṃ tīraṃ, atittheneva gāvo patāresi uttaraṃ tīraṃ suvidehānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, những con bò xô nhau tụ lại giữa dòng sông Hằng và gặp tai nạn tại nơi đây.<br>
+<span lang="pi" class="pali">
+Atha kho, bhikkhave, gāvo majjhegaṅgāya nadiyā sote āmaṇḍaliyaṃ karitvā tattheva anayabyasanaṃ āpajjiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, vì người chăn bò ở Magadha là vô trí, vào cuối tháng mùa mưa, trong mùa gặt hái, không quán sát bờ bên này sông Hằng, không quán sát bờ bên kia sông Hằng, đuổi đàn bò qua bờ bên kia tại Suvideha, tại chỗ không thể lội qua được.<br>
+<span lang="pi" class="pali">
+Tathā hi so, bhikkhave, māgadhako gopālako duppaññajātiko, vassānaṃ pacchime māse saradasamaye, asamavekkhitvā gaṅgāya nadiyā orimaṃ tīraṃ, asamavekkhitvā pārimaṃ tīraṃ, atittheneva gāvo patāresi uttaraṃ tīraṃ suvidehānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, có những Sa-môn hay Bà-la-môn không khéo biết đời này, không khéo biết đời sau, không khéo biết ma giới, không khéo biết phi ma giới, không khéo biết tử thần giới, không khéo biết phi tử thần giới, những ai nghĩ rằng cần phải nghe, cần phải tin những vị này, thì họ sẽ gặp bất hạnh đau khổ lâu dài.<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, ye hi keci samaṇā vā brāhmaṇā vā akusalā imassa lokassa akusalā parassa lokassa, akusalā māradheyyassa akusalā amāradheyyassa, akusalā maccudheyyassa akusalā amaccudheyyassa, tesaṃ ye sotabbaṃ saddahātabbaṃ maññissanti, tesaṃ taṃ bhavissati dīgharattaṃ ahitāya dukkhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngày xưa, này các Tỷ-kheo, tại Magadha có người chăn bò có trí, vào cuối tháng mùa mưa, trong mùa gặt hái, sau khi quán sát bờ bên này sông Hằng, sau khi quán sát bờ bên kia sông Hằng, đuổi đàn bò qua bờ bên kia tại Suvideha, tại chỗ có thể lội qua được.<br>
+<span lang="pi" class="pali">
+Bhūtapubbaṃ, bhikkhave, māgadhako gopālako sappaññajātiko, vassānaṃ pacchime māse saradasamaye, samavekkhitvā gaṅgāya nadiyā orimaṃ tīraṃ, samavekkhitvā pārimaṃ tīraṃ, tittheneva gāvo patāresi uttaraṃ tīraṃ suvidehānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người đó đuổi đi đầu những con bò đực già, những con đầu đàn.<br>
+<span lang="pi" class="pali">
+So paṭhamaṃ patāresi ye te usabhā gopitaro gopariṇāyakā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những con này sau khi lội cắt ngang dòng sông Hằng, qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Te tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người đó đưa qua những con bò đực lớn mạnh, những con bò đực có được huấn luyện.<br>
+<span lang="pi" class="pali">
+Athāpare patāresi balavagāvo dammagāvo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những con này sau khi lội cắt ngang dòng sông Hằng, qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Tepi tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người đó đuổi qua những con bò đực con, lớn, những con bò cái con, lớn.<br>
+<span lang="pi" class="pali">
+Athāpare patāresi vacchatare vacchatariyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những con này sau khi lội cắt ngang dòng sông Hằng, qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Tepi tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người đó đuổi qua những con bò con nhỏ, những con bò con còn bú.<br>
+<span lang="pi" class="pali">
+Athāpare patāresi vacchake kisābalake.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những con này sau khi lội cắt ngang dòng sông Hằng, qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Tepi tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo thời xưa ấy có con bò còn nhỏ mới sanh, con bò này nhờ chạy theo con bò mẹ, vừa chạy, vừa kêu, sau khi lội cắt ngang dòng sông Hằng, cũng qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Bhūtapubbaṃ, bhikkhave, vacchako taruṇako tāvadeva jātako mātugoravakena vuyhamāno, sopi tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, vì người chăn bò ở Magadha là người có trí, vào cuối tháng mùa mưa, trong mùa gặt hái, sau khi quán sát bờ bên này sông Hằng, sau khi quán sát bờ bên kia sông Hằng, đuổi đàn bò qua bờ bên kia tại Suvideha, tại chỗ có thể lội qua được.<br>
+<span lang="pi" class="pali">
+Tathā hi so, bhikkhave, māgadhako gopālako sappaññajātiko, vassānaṃ pacchime māse saradasamaye, samavekkhitvā gaṅgāya nadiyā orimaṃ tīraṃ, samavekkhitvā pārimaṃ tīraṃ, tittheneva gāvo patāresi uttaraṃ tīraṃ suvidehānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, có những Sa-môn hay Bà-la-môn khéo biết đối với đời này, khéo biết đối với đời sau, khéo biết ma giới, khéo biết phi ma giới, khéo biết tử thần giới, khéo biết phi tử thần giới. Những ai nghĩ rằng, cần phải nghe, cần phải tin những vị này, thì họ sẽ được hạnh phúc, an lạc lâu dài.<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, ye hi keci samaṇā vā brāhmaṇā vā kusalā imassa lokassa kusalā parassa lokassa, kusalā māradheyyassa kusalā amāradheyyassa, kusalā maccudheyyassa kusalā amaccudheyyassa, tesaṃ ye sotabbaṃ saddahātabbaṃ maññissanti, tesaṃ taṃ bhavissati dīgharattaṃ hitāya sukhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, ví như những con bò đực già, đầu đàn, chúng đã lội cắt ngang dòng sông Hằng và qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, ye te usabhā gopitaro gopariṇāyakā te tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, các Tỷ-kheo là những bậc A-la-hán, đã đoạn trừ các lậu hoặc, tu hành thành mãn, các việc nên làm đã làm, đã đặt gánh nặng xuống, đã đạt được mục đích, các hữu kiết sử đã hoàn toàn bị đoạn diệt, đã được giải thoát nhờ chánh trí. Những vị này, sau khi lội cắt ngang dòng sông của Ma vương, đã qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, ye te bhikkhū arahanto khīṇāsavā vusitavanto katakaraṇīyā ohitabhārā anuppattasadatthā parikkhīṇabhavasaṃyojanā sammadaññāvimuttā, te tiriyaṃ mārassa sotaṃ chetvā sotthinā pāraṅgatā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, ví như những con bò đực lớn mạnh, những con bò đực có huấn luyện, sau khi lội cắt ngang dòng sông Hằng, qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi te, bhikkhave, balavagāvo dammagāvo tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, những Tỷ-kheo sau khi đoạn trừ năm hạ phần kiết sử, được hóa sanh, ở tại đấy nhập Niết-bàn, không còn phải trở lại thế giới này nữa. Những vị ấy, sau khi lội cắt ngang dòng sông Ma vương sẽ qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, ye te bhikkhū pañcannaṃ orambhāgiyānaṃ saṃyojanānaṃ parikkhayā opapātikā tattha parinibbāyino anāvattidhammā tasmā lokā, tepi tiriyaṃ mārassa sotaṃ chetvā sotthinā pāraṃ gamissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Tỷ-kheo, những con bò đực con, lớn, những con bò cái con, lớn, những con này sau khi lội cắt ngang dòng sông Hằng, đã qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi te, bhikkhave, vacchatarā vacchatariyo tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, những Tỷ-kheo đã diệt trừ ba kiết sử, làm giảm thiểu tham, sân, si, chứng quả Nhất lai, sau khi trở lại đời này một lần nữa, sẽ diệt tận khổ đau. Những vị ấy, sau khi lội cắt ngang dòng sông Ma vương sẽ qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, ye te bhikkhū tiṇṇaṃ saṃyojanānaṃ parikkhayā rāgadosamohānaṃ tanuttā sakadāgāmino sakideva imaṃ lokaṃ āgantvā dukkhassantaṃ karissanti, tepi tiriyaṃ mārassa sotaṃ chetvā sotthinā pāraṃ gamissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Tỷ-kheo, những con bò con, nhỏ, những con bò con còn bú, những con này sau khi lội cắt ngang dòng sông Hằng, đã qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi te, bhikkhave, vacchakā kisābalakā tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamaṃsu;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, những Tỷ-kheo diệt trừ ba kiết sử, chứng quả Dự lưu, nhất định không còn đọa vào ác đạo, đạt đến chánh giác. Những vị này lội cắt ngang dòng sông Ma vương và sẽ qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, ye te bhikkhū tiṇṇaṃ saṃyojanānaṃ parikkhayā sotāpannā avinipātadhammā niyatā sambodhiparāyanā, tepi tiriyaṃ mārassa sotaṃ chetvā sotthinā pāraṃ gamissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Tỷ-kheo, con bò con còn nhỏ, mới sanh, con bò này nhờ chạy theo con bò mẹ, vừa chạy, vừa kêu, sau khi lội cắt ngang dòng sông Hằng, đã qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi so, bhikkhave, vacchako taruṇako tāvadeva jātako mātugoravakena vuyhamāno tiriyaṃ gaṅgāya sotaṃ chetvā sotthinā pāraṃ agamāsi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, những Tỷ-kheo tùy pháp hành, tùy tín hành, những vị này sau khi lội cắt ngang dòng sông của Ma vương sẽ qua bờ bên kia một cách an toàn.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, ye te bhikkhū dhammānusārino saddhānusārino, tepi tiriyaṃ mārassa sotaṃ chetvā sotthinā pāraṃ gamissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nay Ta khéo biết đối với đời này, khéo biết đối với đời sau, khéo biết đối với ma giới, khéo biết đối với phi ma giới, khéo biết đối với tử thần giới, khéo biết đối với phi tử thần giới. Những ai nghĩ rằng, cần phải nghe, cần phải tin nơi Ta, thì họ sẽ được hạnh phúc, an lạc lâu dài.”<br>
+<span lang="pi" class="pali">
+Ahaṃ kho pana, bhikkhave, kusalo imassa lokassa kusalo parassa lokassa, kusalo māradheyyassa kusalo amāradheyyassa, kusalo maccudheyyassa kusalo amaccudheyyassa. Tassa mayhaṃ, bhikkhave, ye sotabbaṃ saddahātabbaṃ maññissanti, tesaṃ taṃ bhavissati dīgharattaṃ hitāya sukhāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi Thiện Thệ nói vậy, bậc Ðạo Sư lại nói thêm bài kệ như sau:<br>
+<span lang="pi" class="pali">
+Idaṃ vatvā sugato athāparaṃ etadavoca satthā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðời này và đời sau,<br>
+Bậc Trí khéo trình bày,<br>
+Biết rõ Ma-Vương giới,<br>
+Vượt ngoài tầm Thần Chết.”<br>
+<span lang="pi" class="pali">
+“Ayaṃ loko paro loko,<br>
+jānatā suppakāsito;<br>
+Yañca mārena sampattaṃ,<br>
+appattaṃ yañca maccunā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bậc Chánh Giác, Toàn Tri,<br>
+Biết rõ mọi thế giới,<br>
+Cửa bất tử rộng mở,<br>
+Ðạt an ổn Niết-bàn.<br>
+<span lang="pi" class="pali">
+Sabbaṃ lokaṃ abhiññāya,<br>
+sambuddhena pajānatā;<br>
+Vivaṭaṃ amatadvāraṃ,<br>
+khemaṃ nibbānapattiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Suối Ác-Ma bị cắt,<br>
+Nát tan và hư hoại,<br>
+Hơi, này các Tỷ-kheo,<br>
+Hãy sống sung mãn hỷ,<br>
+Ðạt an ổn Niết-bàn.”<br>
+<span lang="pi" class="pali">
+Chinnaṃ pāpimato sotaṃ,<br>
+Viddhastaṃ vinaḷīkataṃ;<br>
+Pāmojjabahulā hotha,<br>
+Khemaṃ pattattha bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Cūḷagopālakasuttaṃ niṭṭhitaṃ catutthaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn33.html#content"></a><a id="next-sutta" href="./mn35.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

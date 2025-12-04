@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 33          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 33<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 33<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Đại Kinh Người Chăn Bò<br>
+<span lang="pi" class="pali">
+Mahāgopālakasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở tại Sāvatthī (Xá-vệ), Jetavana (Kỳ-đà Lâm), vườn ông Anāthapiṇḍika (Cấp Cô Ðộc). Ở tại đây, Thế Tôn gọi các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo!”<br>
+<span lang="pi" class="pali">
+“bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn thuyết giảng như sau:<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo, nếu không đầy đủ mười một đức tánh này, một người chăn bò không thể chăn giữ đàn bò, không thể khiến đàn bò được hưng thịnh.<br>
+<span lang="pi" class="pali">
+“Ekādasahi, bhikkhave, aṅgehi samannāgato gopālako abhabbo gogaṇaṃ pariharituṃ phātiṃ kātuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là mười một?<br>
+<span lang="pi" class="pali">
+Katamehi ekādasahi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, một người chăn bò không biết rõ sắc, không khéo (phân biệt) các tướng, không từ bỏ trứng con bò chét, không băng bó vết thương, không có xông khói, không biết chỗ nước có thể lội qua, không biết chỗ nước uống, không biết con đường, không khéo léo đối với các chỗ đàn bò có thể ăn cỏ, là người vắt sữa cho đến khô kiệt, là người không chú ý, không săn sóc đặc biệt những con bò đực già và đầu đàn.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, gopālako na rūpaññū hoti, na lakkhaṇakusalo hoti, na āsāṭikaṃ hāretā hoti, na vaṇaṃ paṭicchādetā hoti, na dhūmaṃ kattā hoti, na titthaṃ jānāti, na pītaṃ jānāti, na vīthiṃ jānāti, na gocarakusalo hoti anavasesadohī ca hoti. Ye te usabhā gopitaro gopariṇāyakā te na atirekapūjāya pūjetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người chăn bò nào không đầy đủ mười một đức tánh như vậy, không thể chăn giữ đàn bò, không thể khiến đàn bò được hưng thịnh.<br>
+<span lang="pi" class="pali">
+Imehi kho, bhikkhave, ekādasahi aṅgehi samannāgato gopālako abhabbo gogaṇaṃ pariharituṃ phātiṃ kātuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Tỷ-kheo nào không đầy đủ mười một pháp, không thể lớn mạnh, tăng thịnh, thành mãn trong Pháp và Luật này.<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, ekādasahi dhammehi samannāgato bhikkhu abhabbo imasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là mười một?<br>
+<span lang="pi" class="pali">
+Katamehi ekādasahi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo không biết sắc, không khéo (phân biệt) các tướng, không từ bỏ trứng con bò chét, không băng bó vết thương, không có xông khói, không biết chỗ nước có thể lội qua, không biết chỗ nước uống, không biết con đường, không khéo léo đối với các chỗ đàn bò có thể ăn cỏ, là người vắt sữa cho đến khô kiệt, đối với những Thượng Tọa trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, không có sự tôn kính, tôn trọng đặc biệt.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu na rūpaññū hoti, na lakkhaṇakusalo hoti, na āsāṭikaṃ hāretā hoti, na vaṇaṃ paṭicchādetā hoti, na dhūmaṃ kattā hoti, na titthaṃ jānāti, na pītaṃ jānāti, na vīthiṃ jānāti, na gocarakusalo hoti, anavasesadohī ca hoti. Ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā te na atirekapūjāya pūjetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, thế nào là Tỷ-kheo không biết rõ các sắc?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na rūpaññū hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo đối với sắc pháp không như thật biết tất cả loại sắc thuộc bốn đại và sắc do bốn đại hợp thành.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu yaṃ kiñci rūpaṃ sabbaṃ rūpaṃ ‘cattāri mahābhūtāni, catunnañca mahābhūtānaṃ upādāyarūpan’ti yathābhūtaṃ nappajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, Tỷ-kheo không biết rõ các sắc.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na rūpaññū hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, thế nào là Tỷ-kheo không khéo (phân biệt) các tướng?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na lakkhaṇakusalo hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo không như thật biết kẻ ngu và nghiệp tướng của người đó, kẻ trí và nghiệp tướng của người đó.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu ‘kammalakkhaṇo bālo, kammalakkhaṇo paṇḍito’ti yathābhūtaṃ nappajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, Tỷ-kheo không khéo (phân biệt) các tướng.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na lakkhaṇakusalo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, thế nào là Tỷ-kheo không trừ bỏ trứng con bò chét?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na āsāṭikaṃ hāretā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo thọ dụng dục tầm khởi lên, không từ bỏ, không tránh né, không chấm dứt, không làm cho không tồn tại,. Tỷ kheo thọ dụng sân tầm khởi lên … thọ dụng hại tầm khởi lên … thọ dụng các ác, bất thiện pháp khởi lên, không từ bỏ, không tránh né, không chấm dứt, không làm cho không tồn tại.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu uppannaṃ kāmavitakkaṃ adhivāseti, nappajahati na vinodeti na byantī karoti na anabhāvaṃ gameti. Uppannaṃ byāpādavitakkaṃ ...pe... uppannaṃ vihiṃsāvitakkaṃ ...pe... uppannuppanne pāpake akusale dhamme adhivāseti, nappajahati na vinodeti na byantī karoti na anabhāvaṃ gameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo không trừ bỏ trứng con bò chét.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na āsāṭikaṃ hāretā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo không băng bó vết thương?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na vaṇaṃ paṭicchādetā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo, khi mắt thấy sắc, nắm giữ tướng chung, nắm giữ tướng riêng.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu cakkhunā rūpaṃ disvā nimittaggāhī hoti anubyañjanaggāhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những nguyên nhân gì làm con mắt không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên; Tỷ-kheo không tự chế ngự nguyên nhân ấy, không hộ trì con mắt, không thực hành sự hộ trì con mắt.<br>
+<span lang="pi" class="pali">
+Yatvādhikaraṇamenaṃ cakkhundriyaṃ asaṃvutaṃ viharantaṃ abhijjhādomanassā pāpakā akusalā dhammā anvāssaveyyuṃ, tassa saṃvarāya na paṭipajjati, na rakkhati cakkhundriyaṃ, cakkhundriye na saṃvaraṃ āpajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi tai nghe tiếng…<br>
+<span lang="pi" class="pali">
+Sotena saddaṃ sutvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+mũi ngửi hương…<br>
+<span lang="pi" class="pali">
+ghānena gandhaṃ ghāyitvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lưỡi nếm vị…<br>
+<span lang="pi" class="pali">
+jivhāya rasaṃ sāyitvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thân cảm xúc…<br>
+<span lang="pi" class="pali">
+kāyena phoṭṭhabbaṃ phusitvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ý nhận thức các pháp, vị ấy nắm giữ tướng chung, nắm giữ tướng riêng.<br>
+<span lang="pi" class="pali">
+manasā dhammaṃ viññāya nimittaggāhī hoti anubyañjanaggāhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những nguyên nhân gì khiến ý căn không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên; Tỷ-kheo không chế ngự nguyên nhân ấy, không hộ trì ý căn, không thực hành sự hộ trì ý căn.<br>
+<span lang="pi" class="pali">
+Yatvādhikaraṇamenaṃ manindriyaṃ asaṃvutaṃ viharantaṃ abhijjhādomanassā pāpakā akusalā dhammā anvāssaveyyuṃ, tassa saṃvarāya na paṭipajjati, na rakkhati manindriyaṃ, manindriye na saṃvaraṃ āpajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo không băng bó vết thương.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na vaṇaṃ paṭicchādetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo không xông khói?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na dhūmaṃ kattā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo không có thuyết giảng rộng rãi cho các người khác biết Chánh pháp mình được nghe, được thọ trì.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu yathāsutaṃ yathāpariyattaṃ dhammaṃ na vitthārena paresaṃ desetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo không xông khói.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na dhūmaṃ kattā hoti.<br>
+</span>
+</p>
+
+<div id="001"><p lang="vi" class="vi">
+Và này, các Tỷ-kheo, như thế nào là Tỷ-kheo không biết chỗ nước có thể lội qua?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na titthaṃ jānāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo thỉnh thoảng có đến gặp những Tỷ-kheo đa văn được trao cho truyền thống giáo điển, những bậc trì Pháp, trì Luật, trì matika (các bản tóm tắt) nhưng không hỏi, không trả lời các vị ấy:<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu ye te bhikkhū bahussutā āgatāgamā dhammadharā vinayadharā mātikādharā, te kālena kālaṃ upasaṅkamitvā na paripucchati, na paripañhati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, điểm này là thế nào?<br>
+<span lang="pi" class="pali">
+‘idaṃ, bhante, kathaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ý nghĩa này là gì?”<br>
+<span lang="pi" class="pali">
+Imassa ko attho’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những bậc Tôn giả ấy không làm cho hiển lộ những điều chưa hiển lộ, không làm cho rõ ràng những điều chưa được rõ ràng, và đối với những nghi vấn về Chánh pháp, các vị ấy không đoạn trừ nghi hoặc.<br>
+<span lang="pi" class="pali">
+Tassa te āyasmanto avivaṭañceva na vivaranti, anuttānīkatañca na uttānīkaronti, anekavihitesu ca kaṅkhāṭhānīyesu dhammesu kaṅkhaṃ na paṭivinodenti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo không biết chỗ nước có thể lội qua.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na titthaṃ jānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và chư Tỷ-kheo, thế nào là Tỷ-kheo không biết rõ chỗ nước uống?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na pītaṃ jānāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo, trong khi Pháp và Luật do Như Lai tuyên thuyết được giảng dạy, không chứng đạt nghĩa tín thọ, pháp tín thọ, không chứng đạt sự hân hoan liên hệ đến Pháp.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu tathāgatappavedite dhammavinaye desiyamāne na labhati atthavedaṃ, na labhati dhammavedaṃ, na labhati dhammūpasaṃhitaṃ pāmojjaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo không biết chỗ nước uống.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na pītaṃ jānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo không biết về con đường?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na vīthiṃ jānāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo không như thật biết con đường Thánh đạo Tám ngành.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu ariyaṃ aṭṭhaṅgikaṃ maggaṃ yathābhūtaṃ nappajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo không biết đến con đường.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na vīthiṃ jānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo không khéo léo với các chỗ đàn bò có thể ăn cỏ?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu na gocarakusalo hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo không như thật biết về Bốn Niệm xứ.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu cattāro satipaṭṭhāne yathābhūtaṃ nappajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy này các Tỷ-kheo, là Tỷ-kheo không khéo léo với các chỗ đàn bò có thể ăn cỏ.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu na gocarakusalo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo vắt sữa cho đến khô kiệt?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu anavasesadohī hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, khi các vị tại gia vì lòng tin cúng dường các vật dụng, như y áo, đồ ăn khất thực, sàng tọa, dược phẩm trị bệnh, Tỷ-kheo không biết nhận lãnh cho được vừa đủ.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhuṃ saddhā gahapatikā abhihaṭṭhuṃ pavārenti cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārehi, tatra bhikkhu mattaṃ na jānāti paṭiggahaṇāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo vắt sữa cho đến khô kiệt.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu anavasesadohī hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo, đối với những Thượng tọa trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, không có sự tôn kính, sự tôn trọng đặc biệt?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā te na atirekapūjāya pūjetā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, đối với Thượng tọa, trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, không có thân nghiệp đầy lòng từ đối với các vị ấy, trước mặt và sau lưng, không có khẩu nghiệp đầy lòng từ đối với các vị ấy, trước mặt và sau lưng, không có ý nghiệp đầy lòng từ đối với các vị ấy, trước mặt và sau lưng.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā, tesu na mettaṃ kāyakammaṃ paccupaṭṭhāpeti āvi ceva raho ca; na mettaṃ vacīkammaṃ paccupaṭṭhāpeti āvi ceva raho ca; na mettaṃ manokammaṃ paccupaṭṭhāpeti āvi ceva raho ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo đối với những Thượng tọa, trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, không có sự tôn kính, sự tôn trọng đặc biệt.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā te na atirekapūjāya pūjetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Tỷ-kheo nào không đầy đủ mười một pháp này, thì không thể lớn mạnh, tăng thịnh, thành mãn trong Pháp và Luật này.<br>
+<span lang="pi" class="pali">
+Imehi kho, bhikkhave, ekādasahi dhammehi samannāgato bhikkhu abhabbo imasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người chăn bò đầy đủ mười một đức tánh này có thể chăn giữ đàn bò, khiến đàn bò trở thành hưng thịnh.<br>
+<span lang="pi" class="pali">
+Ekādasahi, bhikkhave, aṅgehi samannāgato gopālako bhabbo gogaṇaṃ pariharituṃ phātiṃ kātuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là mười một?<br>
+<span lang="pi" class="pali">
+Katamehi ekādasahi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, người chăn bò biết rõ sắc, khéo (phân biệt) các tướng, trừ bỏ trứng con bò chét, băng bó vết thương, có xông khói, biết chỗ nước có thể lội qua, biết chỗ nước uống, biết con đường, khéo léo đối với các chỗ đàn bò có thể ăn cỏ, không vắt sữa cho đến khô kiệt, là người chú ý săn sóc đặc biệt, những con bò đực già và đầu đàn.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, gopālako rūpaññū hoti, lakkhaṇakusalo hoti, āsāṭikaṃ hāretā hoti, vaṇaṃ paṭicchādetā hoti, dhūmaṃ kattā hoti, titthaṃ jānāti, pītaṃ jānāti, vīthiṃ jānāti, gocarakusalo hoti, sāvasesadohī ca hoti. Ye te usabhā gopitaro gopariṇāyakā te atirekapūjāya pūjetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người chăn bò đầy đủ mười một đức tánh này có thể chăn giữ đàn bò và làm cho đàn bò trở thành hưng thịnh.<br>
+<span lang="pi" class="pali">
+Imehi kho, bhikkhave, ekādasahi aṅgehi samannāgato gopālako bhabbo gogaṇaṃ pariharituṃ phātiṃ kātuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Tỷ-kheo đầy đủ mười một pháp này có thể lớn mạnh, tăng thịnh, thành mãn trong Pháp và Luật này.<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, ekādasahi dhammehi samannāgato bhikkhu bhabbo imasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là mười một?<br>
+<span lang="pi" class="pali">
+Katamehi ekādasahi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo, biết rõ sắc, khéo (phân biệt) các tướng, trừ bỏ trứng con bò chét, băng bó vết thương, có xông khói, biết chỗ nước có thể lội qua, biết chỗ nước uống, biết con đường khéo léo đối với các chỗ đàn bò có thể ăn cỏ, không phải là người vắt sữa cho đến khô kiệt, đối với những Thượng tọa, trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, có sự tôn kính, tôn trọng đặc biệt.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu rūpaññū hoti, lakkhaṇakusalo hoti, āsāṭikaṃ hāretā hoti, vaṇaṃ paṭicchādetā hoti, dhūmaṃ kattā hoti, titthaṃ jānāti, pītaṃ jānāti, vīthiṃ jānāti, gocarakusalo hoti, sāvasesadohī ca hoti. Ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā te atirekapūjāya pūjetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo biết rõ các sắc?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu rūpaññū hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, đối với sắc pháp như thật biết tất cả loại sắc thuộc bốn đại và sắc do bốn đại hợp thành.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu yaṃ kiñci rūpaṃ sabbaṃ rūpaṃ ‘cattāri mahābhūtāni, catunnañca mahābhūtānaṃ upādāyarūpan’ti yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, Tỷ-kheo biết rõ các sắc.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu rūpaññū hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo thế nào là Tỷ-kheo khéo (phân biệt) các tướng?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu lakkhaṇakusalo hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo như thật biết kẻ ngu và nghiệp tướng kẻ ngu, kẻ trí và nghiệp tướng kẻ trí.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu kammalakkhaṇo bālo, kammalakkhaṇo paṇḍitoti yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, Tỷ-kheo khéo (phân biệt) các tướng.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu lakkhaṇakusalo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, thế nào là Tỷ-kheo trừ bỏ trứng con bò chét?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu āsāṭikaṃ hāretā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo không thọ dụng dục tầm khởi lên, từ bỏ, tránh né, chấm dứt, làm cho không tồn tại. Tỷ kheo không thọ dụng sân tầm khởi lên … không thọ dụng hại tầm khởi lên … không thọ dụng các ác, bất thiện pháp khởi lên, từ bỏ, tránh né, chấm dứt, làm cho không tồn tại.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu uppannaṃ kāmavitakkaṃ nādhivāseti, pajahati vinodeti byantī karoti anabhāvaṃ gameti. Uppannaṃ byāpādavitakkaṃ ...pe... uppannaṃ vihiṃsāvitakkaṃ ...pe... uppannuppanne pāpake akusale dhamme nādhivāseti, pajahati vinodeti byantī karoti anabhāvaṃ gameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo trừ bỏ trứng con bò chét.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu āsāṭikaṃ hāretā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo băng bó vết thương?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu vaṇaṃ paṭicchādetā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, khi mắt thấy sắc, không nắm giữ tướng chung, không nắm giữ tướng riêng.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu cakkhunā rūpaṃ disvā na nimittaggāhī hoti nānubyañjanaggāhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những nguyên nhân gì khiến con mắt không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên; Tỷ-kheo chế ngự nguyên nhân ấy, hộ trì con mắt, thực hành sự hộ trì con mắt.<br>
+<span lang="pi" class="pali">
+Yatvādhikaraṇamenaṃ cakkhundriyaṃ asaṃvutaṃ viharantaṃ abhijjhādomanassā pāpakā akusalā dhammā anvāssaveyyuṃ tassa saṃvarāya paṭipajjati, rakkhati cakkhundriyaṃ, cakkhundriye saṃvaraṃ āpajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi tai nghe tiếng…<br>
+<span lang="pi" class="pali">
+Sotena saddaṃ sutvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+mũi ngửi hương…<br>
+<span lang="pi" class="pali">
+ghānena gandhaṃ ghāyitvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lưỡi nếm vị…<br>
+<span lang="pi" class="pali">
+jivhāya rasaṃ sāyitvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thân cảm xúc…<br>
+<span lang="pi" class="pali">
+kāyena phoṭṭhabbaṃ phusitvā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ý nhận thức các pháp, vị ấy không nắm giữ tướng chung, không nắm giữ tướng riêng.<br>
+<span lang="pi" class="pali">
+manasā dhammaṃ viññāya na nimittaggāhī hoti nānubyañjanaggāhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những nguyên nhân gì khiến ý căn không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên; Tỷ-kheo chế ngự nguyên nhân ấy, hộ trì ý căn, thực hành sự hộ trì ý căn.<br>
+<span lang="pi" class="pali">
+Yatvādhikaraṇamenaṃ manindriyaṃ asaṃvutaṃ viharantaṃ abhijjhādomanassā pāpakā akusalā dhammā anvāssaveyyuṃ tassa saṃvarāya paṭipajjati, rakkhati manindriyaṃ, manindriye saṃvaraṃ āpajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo băng bó vết thương.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu vaṇaṃ paṭicchādetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo có xông khói?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu dhūmaṃ kattā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo có thuyết giảng rộng rãi cho các người khác biết Chánh pháp mình được nghe, được thọ trì.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu yathāsutaṃ yathāpariyattaṃ dhammaṃ vitthārena paresaṃ desetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo có xông khói.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu dhūmaṃ kattā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo biết chỗ nước có thể lội qua?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu titthaṃ jānāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo thỉnh thoảng có đến gặp những Tỷ-kheo đa văn, được trao cho truyền thống giáo điển, những bậc trì Pháp, trì Luật, trì matika (các bản tóm tắt) có hỏi, có trả lời các vị ấy:<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu ye te bhikkhū bahussutā āgatāgamā dhammadharā vinayadharā mātikādharā te kālena kālaṃ upasaṅkamitvā paripucchati, paripañhati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, điểm này là thế nào?<br>
+<span lang="pi" class="pali">
+‘idaṃ, bhante, kathaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ý nghĩa này là gì?”<br>
+<span lang="pi" class="pali">
+Imassa ko attho’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những bậc Tôn giả ấy làm cho hiển lộ những điều chưa được hiển lộ, làm cho rõ ràng những điều chưa được rõ ràng, và đối với những nghi vấn về Chánh pháp, các vị đoạn trừ nghi hoặc.<br>
+<span lang="pi" class="pali">
+Tassa te āyasmanto avivaṭañceva vivaranti, anuttānīkatañca uttānīkaronti, anekavihitesu ca kaṅkhāṭhānīyesu dhammesu kaṅkhaṃ paṭivinodenti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo biết rõ chỗ nước có thể lội qua.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu titthaṃ jānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và chư Tỷ-kheo, thế nào là Tỷ-kheo biết rõ chỗ nước uống?<br>
+<span lang="pi" class="pali">
+Kathañca bhikkhave, bhikkhu pītaṃ jānāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo trong khi Pháp và Luật do Như Lai tuyên thuyết, giảng dạy, chứng đạt nghĩa tín thọ, chứng đạt pháp tín thọ, chứng đạt sự hân hoan liên hệ đến Pháp.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu tathāgatappavedite dhammavinaye desiyamāne labhati atthavedaṃ, labhati dhammavedaṃ, labhati dhammūpasaṃhitaṃ pāmojjaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo biết chỗ nước uống.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu pītaṃ jānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và các Tỷ-kheo, thế nào là Tỷ-kheo biết rõ về con đường?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu vīthiṃ jānāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo như thật biết con đường Thánh đạo Tám ngành.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu ariyaṃ aṭṭhaṅgikaṃ maggaṃ yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo biết rõ con đường.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu vīthiṃ jānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này, các Tỷ-kheo, thế nào là Tỷ-kheo khéo léo đối với các chỗ đàn bò có thể ăn cỏ?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu gocarakusalo hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo như thật biết về Bốn Niệm xứ.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu cattāro satipaṭṭhāne yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo khéo léo đối với các chỗ đàn bò có thể ăn cỏ.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu gocarakusalo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo không vắt sữa cho đến khô kiệt?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu sāvasesadohī hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, khi các vị tại gia vì lòng tin cúng dường các vật dụng như y áo, đồ ăn khất thực, sàng tọa, dược phẩm trị bệnh,<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhuṃ saddhā gahapatikā abhihaṭṭhuṃ pavārenti cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tỷ-kheo biết nhận lãnh cho được vừa đủ.<br>
+<span lang="pi" class="pali">
+Tatra bhikkhu mattaṃ jānāti paṭiggahaṇāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo không vắt sữa cho đến khô kiệt.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu sāvasesadohī hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là Tỷ-kheo, đối với những Thượng tọa trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, có sự tôn kính, sự tôn trọng đặc biệt?<br>
+<span lang="pi" class="pali">
+Kathañca, bhikkhave, bhikkhu ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā, te atirekapūjāya pūjetā hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, đối với các Thượng tọa trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, có thân nghiệp đầy lòng từ đối với các vị ấy, trước mặt và sau lưng, có khẩu nghiệp, đầy lòng từ đối với các vị ấy, trước mặt và sau lưng, có ý nghiệp đầy lòng từ đối với các vị ấy, trước mặt và sau lưng.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā tesu mettaṃ kāyakammaṃ paccupaṭṭhāpeti āvi ceva raho ca; mettaṃ vacīkammaṃ paccupaṭṭhāpeti āvi ceva raho ca; mettaṃ manokammaṃ paccupaṭṭhāpeti āvi ceva raho ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, là Tỷ-kheo đối với những Thượng tọa trưởng lão, xuất gia đã lâu ngày, bậc tôn túc trong Tăng giới, bậc lãnh đạo trong Tăng giới, có sự tôn kính, có sự tôn trọng đặc biệt.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhave, bhikkhu ye te bhikkhū therā rattaññū cirapabbajitā saṅghapitaro saṅghapariṇāyakā te atirekapūjāya pūjetā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Tỷ-kheo nào đầy đủ mười một pháp này, thì có thể lớn mạnh, tăng thịnh, thành mãn trong Pháp và Luật này.”<br>
+<span lang="pi" class="pali">
+Imehi kho, bhikkhave, ekādasahi dhammehi samannāgato bhikkhu bhabbo imasmiṃ dhammavinaye vuddhiṃ virūḷhiṃ vepullaṃ āpajjitun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy,<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các Tỷ-kheo ấy hoan hỷ, tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Mahāgopālakasuttaṃ niṭṭhitaṃ tatiyaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn32.html#content"></a><a id="next-sutta" href="./mn34.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

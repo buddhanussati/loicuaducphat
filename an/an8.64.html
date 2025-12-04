@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 8.64 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 8.64<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 8.64<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+7. Phẩm Đất Rung Động<br>
+<span lang="pi" class="pali">
+7. Bhūmicālavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Tại Gayà<br>
+<span lang="pi" class="pali">
+Gayāsīsasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Một thời, Thế Tôn trú ở Gayasisa. Ở đây, Thế Tôn gọi các Tỷ-kheo: “Này các Tỷ-kheo” – “Thưa vâng, bạch Thế Tôn”. Các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā gayāyaṃ viharati gayāsīse. Tatra kho bhagavā bhikkhū āmantesi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“2. Này các Tỷ-kheo, trước khi Ta giác ngộ, chưa thành Chánh Ðẳng Giác, Ta còn làm Bồ Tát, Ta tưởng tri ánh sáng, Ta không thấy sắc.<br>
+<span lang="pi" class="pali">
+“pubbāhaṃ, bhikkhave, sambodhā anabhisambuddho bodhisattova samāno obhāsaññeva kho sañjānāmi, no ca rūpāni passāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, rồi Ta suy nghĩ:<br>
+<span lang="pi" class="pali">
+Tassa mayhaṃ, bhikkhave, etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nếu Ta có thể tưởng tri ánh sáng và Ta có thể thấy được màu sắc;<br>
+<span lang="pi" class="pali">
+‘sace kho ahaṃ obhāsañceva sañjāneyyaṃ rūpāni ca passeyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy tri kiến của Ta được thanh tịnh hơn lên.’<br>
+<span lang="pi" class="pali">
+evaṃ me idaṃ ñāṇadassanaṃ parisuddhataraṃ assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, sau một thời gian Ta sống không phóng dật, nhiệt tâm, tinh cần, Ta tưởng tri ánh sáng và thấy được các sắc.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, bhikkhave, aparena samayena appamatto ātāpī pahitatto viharanto obhāsañceva sañjānāmi, rūpāni ca passāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng Ta không giao thiệp với chư Thiên ấy, không nói chuyện, không thảo luận.<br>
+<span lang="pi" class="pali">
+no ca kho tāhi devatāhi saddhiṃ santiṭṭhāmi sallapāmi sākacchaṃ samāpajjāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Rồi này các Tỷ-kheo, Ta suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Tassa mayhaṃ, bhikkhave, etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nếu Ta có thể tưởng tri ánh sáng có thể thấy được các sắc, có thể giao thiệp với chư Thiên ấy, có thể nói chuyện, có thể thảo luận;<br>
+<span lang="pi" class="pali">
+‘sace kho ahaṃ obhāsañceva sañjāneyyaṃ, rūpāni ca passeyyaṃ, tāhi ca devatāhi saddhiṃ santiṭṭheyyaṃ sallapeyyaṃ sākacchaṃ samāpajjeyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy, tri kiến này của Ta được thanh tịnh hơn lên.’<br>
+<span lang="pi" class="pali">
+evaṃ me idaṃ ñāṇadassanaṃ parisuddhataraṃ assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, sau một thời gian Ta sống không phóng dật, nhiệt tâm, tinh cần, tưởng tri ánh sáng và thấy được các sắc, và cùng chư Thiên ấy giao thiệp, nói chuyện và thảo luận.<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, bhikkhave, aparena samayena appamatto ātāpī pahitatto viharanto obhāsañceva sañjānāmi, rūpāni ca passāmi, tāhi ca devatāhi saddhiṃ santiṭṭhāmi sallapāmi sākacchaṃ samāpajjāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng Ta không biết về các chư Thiên ấy: “Chư Thiên này thuộc về Thiên chúng này, thuộc về Thiên chúng này”.<br>
+<span lang="pi" class="pali">
+no ca kho tā devatā jānāmi— imā devatā amukamhā vā amukamhā vā devanikāyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Rồi này các Tỷ-kheo, Ta suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Tassa mayhaṃ, bhikkhave, etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nếu Ta tưởng tri ánh sáng, thấy được các sắc, giao thiệp với chư Thiên ấy, nói chuyện, thảo luận với chư Thiên ấy và biết được về chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+‘sace kho ahaṃ obhāsañceva sañjāneyyaṃ, rūpāni ca passeyyaṃ, tāhi ca devatāhi saddhiṃ santiṭṭheyyaṃ sallapeyyaṃ sākacchaṃ samāpajjeyyaṃ, tā ca devatā jāneyyaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này thuộc về Thiên chúng này, thuộc về Thiên chúng này.<br>
+<span lang="pi" class="pali">
+“imā devatā amukamhā vā amukamhā vā devanikāyā”ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy, tri kiến này của Ta được thanh tịnh hơn.’<br>
+<span lang="pi" class="pali">
+evaṃ me idaṃ ñāṇadassanaṃ parisuddhataraṃ assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, sau một thời gian Ta sống không phóng dật, nhiệt tâm, tinh cần, tưởng tri ánh sáng và thấy được các sắc, và cùng chư Thiên ấy giao thiệp, nói chuyện, thảo luận với chư Thiên ấy, biết được:<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, bhikkhave, aparena samayena appamatto ātāpī pahitatto viharanto obhāsañceva sañjānāmi, rūpāni ca passāmi, tāhi ca devatāhi saddhiṃ santiṭṭhāmi sallapāmi sākacchaṃ samāpajjāmi, tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này thuộc về Thiên chúng này, Thiên chúng này<br>
+<span lang="pi" class="pali">
+‘imā devatā amukamhā vā amukamhā vā devanikāyā’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nhưng Ta không biết được:<br>
+<span lang="pi" class="pali">
+no ca kho tā devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này do quả dị thục của nghiệp này, chết từ đây sanh ra tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+‘imā devatā imassa kammassa vipākena ito cutā tattha upapannā’ti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này do quả dị thục của nghiệp này, chết từ đây sanh ra tại chỗ ấy<br>
+<span lang="pi" class="pali">
+‘imā devatā imassa kammassa vipākena ito cutā tattha upapannā’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nhưng Ta không biết được:<br>
+<span lang="pi" class="pali">
+no ca kho tā devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này, do đồ ăn như thế này, cảm thọ khổ lạc như thế này.<br>
+<span lang="pi" class="pali">
+‘imā devatā imassa kammassa vipākena evamāhārā evaṃsukhadukkhappaṭisaṃvediniyo’ti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta biết được:<br>
+<span lang="pi" class="pali">
+tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này, do đồ ăn như thế này, cảm thọ khổ lạc như thế này.<br>
+<span lang="pi" class="pali">
+‘imā devatā imassa kammassa vipākena evamāhārā evaṃsukhadukkhappaṭisaṃvediniyo’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nhưng Ta không biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+no ca kho tā devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này, tuổi thọ dài như thế này, tồn tại lâu dài như thế này.<br>
+<span lang="pi" class="pali">
+‘imā devatā evaṃdīghāyukā evaṃciraṭṭhitikā’ti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta biết được:<br>
+<span lang="pi" class="pali">
+tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên này, tuổi thọ dài như thế này, tồn tại lâu dài như thế này.<br>
+<span lang="pi" class="pali">
+‘imā devatā evaṃdīghāyukā evaṃciraṭṭhitikā’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nhưng Ta không biết chư Thiên ấy: “Trước đây Ta có cùng ở với chư Thiên này, hay trước đây Ta không cùng ở với chư Thiên này”.<br>
+<span lang="pi" class="pali">
+no ca kho tā devatā jānāmi yadi vā me imāhi devatāhi saddhiṃ sannivutthapubbaṃ yadi vā na sannivutthapubbanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Rồi này các Tỷ-kheo, Ta suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Tassa mayhaṃ, bhikkhave, etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nếu Ta nhận thức được ánh sáng, thấy được các sắc, cùng với chư Thiên ấy giao thiệp, nói chuyện, thảo luận, Ta có thể biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+‘sace kho ahaṃ obhāsañceva sañjāneyyaṃ, rūpāni ca passeyyaṃ, tāhi ca devatāhi saddhiṃ santiṭṭheyyaṃ sallapeyyaṃ sākacchaṃ samāpajjeyyaṃ, tā ca devatā jāneyyaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này thuộc Thiên chúng này, thuộc Thiên chúng này”. Ta có thể biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+“imā devatā amukamhā vā amukamhā vā devanikāyā”ti, tā ca devatā jāneyyaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này, do quả dị thục của nghiệp này, chết tại chỗ này, sanh tại chỗ ấy”. Ta có thể biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+“imā devatā imassa kammassa vipākena ito cutā tattha upapannā”ti, tā ca devatā jāneyyaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này, do ăn đồ ăn như thế này, cảm thọ khổ lạc như thế này”; Ta có thể biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+“imā devatā evamāhārā evaṃsukhadukkhappaṭisaṃvediniyo”ti, tā ca devatā jāneyyaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này, tuổi thọ dài như thế này, tồn tại lâu dài như thế này”; Ta có thể biết được chư Thiên ấy: “Chư Thiên này, trước đây Ta có cùng ở với chư Thiên này, hay trước đây Ta không cùng ở với chư Thiên này”<br>
+<span lang="pi" class="pali">
+“imā devatā evaṃdīghāyukā evaṃciraṭṭhitikā”ti, tā ca devatā jāneyyaṃ yadi vā me imāhi devatāhi saddhiṃ sannivutthapubbaṃ yadi vā na sannivutthapubbanti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy, tri kiến của Ta được thanh tịnh hơn trước.’<br>
+<span lang="pi" class="pali">
+evaṃ me idaṃ ñāṇadassanaṃ parisuddhataraṃ assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, sau một thời gian sống không phóng dật, nhiệt tâm, tinh cần, Ta tưởng tri ánh sáng, thấy được các sắc, Ta giao thiệp, nói chuyện, thảo luận với các chư Thiên ấy, Ta biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+So kho ahaṃ, bhikkhave, aparena samayena appamatto ātāpī pahitatto viharanto obhāsañceva sañjānāmi, rūpāni ca passāmi, tāhi ca devatāhi saddhiṃ santiṭṭhāmi sallapāmi sākacchaṃ samāpajjāmi, tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này thuộc Thiên chúng này, thuộc Thiên chúng này”. Ta biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+‘imā devatā amukamhā vā amukamhā vā devanikāyā’ti, tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này, do quả dị thục của nghiệp này, chết tại chỗ này, sanh tại chỗ ấy”. Ta biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+‘imā devatā imassa kammassa vipākena ito cutā tattha upapannā’ti, tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này, do ăn đồ ăn như thế này, cảm thọ khổ lạc như thế này”; Ta biết được chư Thiên ấy:<br>
+<span lang="pi" class="pali">
+‘imā devatā evamāhārā evaṃsukhadukkhappaṭisaṃvediniyo’ti, tā ca devatā jānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên này, tuổi thọ dài như thế này, tồn tại lâu dài như thế này”; Ta biết được chư Thiên ấy: “Chư Thiên này, trước đây Ta có cùng ở với chư Thiên này, hay trước đây Ta không có ở cùng với chư Thiên này”.<br>
+<span lang="pi" class="pali">
+‘imā devatā evaṃdīghāyukā evaṃciraṭṭhitikā’ti, tā ca devatā jānāmi yadi vā me devatāhi saddhiṃ sannivutthapubbaṃ yadi vā na sannivutthapubbanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Này các Tỷ-kheo, cho đến khi nào tri kiến gồm có tám diễn tiến và thuộc thượng giới Thiên này không được khéo thanh tịnh nơi Ta, thời Ta không có xác chứng trong thế giới chư Thiên với Ma giới, Phạm Thiên giới, với quần chúng Sa-môn, Bà-la-môn, chư Thiên và loài Người, rằng Ta đã chứng ngộ Vô Thượng Chánh Ðẳng Giác.<br>
+<span lang="pi" class="pali">
+Yāvakīvañca me, bhikkhave, evaṃ aṭṭhaparivaṭṭaṃ adhidevañāṇadassanaṃ na suvisuddhaṃ ahosi, neva tāvāhaṃ, bhikkhave, ‘sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya anuttaraṃ sammāsambodhiṃ abhisambuddho’ti paccaññāsiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, cho đến khi nào tri kiến gồm có tám diễn tiến và thuộc thượng giới Thiên này được khéo thanh tịnh nơi ta, thời Ta có xác chứng trong thế giới chư Thiên với Ma giới, Phạm Thiên giới, với quần chúng Sa-môn, Bà-la-môn, chư Thiên và loài Người, rằng Ta đã chứng ngộ Vô Thượng Chánh Ðẳng Giác.<br>
+<span lang="pi" class="pali">
+Yato ca kho me, bhikkhave, evaṃ aṭṭhaparivaṭṭaṃ adhidevañāṇadassanaṃ suvisuddhaṃ ahosi, athāhaṃ, bhikkhave, ‘sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya anuttaraṃ sammāsambodhiṃ abhisambuddho’ti paccaññāsiṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tri kiến khởi lên nơi Ta:<br>
+<span lang="pi" class="pali">
+ñāṇañca pana me dassanaṃ udapādi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bất động là tâm giải thoát của Ta. Ðây là đời sống cuối cùng, không còn tái sanh nữa.’”<br>
+<span lang="pi" class="pali">
+akuppā me cetovimutti; ayamantimā jāti natthi dāni punabbhavo”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an8.63.html#content"></a><a id="next-sutta" href="./an8.65.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 130          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 130<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 130<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Thiên Sứ<br>
+<span lang="pi" class="pali">
+Devadūtasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn ở Sāvatthī (Xá-vệ), Jetavana (Kỳ-đà-viên), tại tinh xá ông Anāthapiṇḍika (Cấp-Cô-Ðộc).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đấy, Thế Tôn gọi các Tỷ-kheo: “Này các Tỷ-kheo”.<br>
+<span lang="pi" class="pali">
+Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Các vị Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ví như, này các Tỷ-kheo, có hai nhà có cửa; ở đây, một người có mắt đứng chính giữa có thể thấy những người đi vào nhà, đi ra khỏi nhà, đi qua, đi lại.<br>
+<span lang="pi" class="pali">
+“Seyyathāpi, bhikkhave, dve agārā sadvārā, tattha cakkhumā puriso majjhe ṭhito passeyya manusse gehaṃ pavisantepi nikkhamantepi anucaṅkamantepi anuvicarantepi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Ta với thiên nhãn thanh tịnh, siêu nhân, thấy các chúng hữu tình chết đi sanh lại, hạ liệt, cao sang, đẹp trai, xấu hình, thiện thú, ác thú, tùy theo hạnh nghiệp của họ, và Ta nghĩ:<br>
+<span lang="pi" class="pali">
+evameva kho ahaṃ, bhikkhave, dibbena cakkhunā visuddhena atikkantamānusakena satte passāmi cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe, sugate duggate yathākammūpage satte pajānāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Các bậc hữu tình này do thành tựu thân thiện hành, khẩu thiện hành, ý thiện hành, không công kích các bậc Thánh, có chánh kiến, thọ trì nghiệp phù hợp chánh kiến, các vị ấy sau khi thân hoại mạng chung, được sanh vào thiện thú, Thiên giới, ở đời này. Hay các vị hữu tình này, do thành tựu thân thiện hành, khẩu thiện hành, ý thiện hành, không công kích các bậc Thánh, có chánh kiến, thọ trì nghiệp phù hợp với chánh kiến, các vị ấy sau khi thân hoại mạng chung, được sanh ra giữa loài Người. Còn các hữu tình, do thành tựu thân ác hành, khẩu ác hành, ý ác hành, công kích các bậc Thánh, có tà kiến, thọ trì nghiệp phù hợp với tà kiến, các vị ấy sau khi thân hoại mạng chung, bị sanh vào cõi ngạ quỹ (pettivisaya). Hay các hữu tình này, do thành tựu thân ác hành, khẩu ác hành, ý ác hành, công kích các bậc Thánh, có tà kiến, thọ trì nghiệp phù hợp tà kiến, các hữu tình ấy sau khi thân hoại mạng chung, bị sanh vào các loại bàng sanh. Hay các hữu tình này, do thành tựu thân ác hành … Sau khi thân hoại mạng chung, bị sanh vào cõi dữ, ác thú, đọa xứ, Ðịa ngục’.<br>
+<span lang="pi" class="pali">
+‘ime vata bhonto sattā kāyasucaritena samannāgatā vacīsucaritena samannāgatā manosucaritena samannāgatā ariyānaṃ anupavādakā sammādiṭṭhikā sammādiṭṭhikammasamādānā; te kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannā. Ime vā pana bhonto sattā kāyasucaritena samannāgatā vacīsucaritena samannāgatā manosucaritena samannāgatā ariyānaṃ anupavādakā sammādiṭṭhikā sammādiṭṭhikammasamādānā; te kāyassa bhedā paraṃ maraṇā manussesu upapannā. Ime vata bhonto sattā kāyaduccaritena samannāgatā vacīduccaritena samannāgatā manoduccaritena samannāgatā ariyānaṃ upavādakā micchādiṭṭhikā micchādiṭṭhikammasamādānā; te kāyassa bhedā paraṃ maraṇā pettivisayaṃ upapannā. Ime vā pana bhonto sattā kāyaduccaritena samannāgatā vacīduccaritena samannāgatā manoduccaritena samannāgatā ariyānaṃ upavādakā micchādiṭṭhikā micchādiṭṭhikammasamādānā; te kāyassa bhedā paraṃ maraṇā tiracchānayoniṃ upapannā. Ime vā pana bhonto sattā kāyaduccaritena samannāgatā vacīduccaritena samannāgatā manoduccaritena samannāgatā ariyānaṃ upavādakā micchādiṭṭhikā micchādiṭṭhikammasamādānā; te kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các người coi giữ Ðịa ngục, sau khi bắt giữ người ấy với nhiều cánh tay, dẫn người ấy đến trước vua Yama và thưa:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā nānābāhāsu gahetvā yamassa rañño dassenti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, người này không có từ tâm, không xứng là Sa-môn, không xứng là Bà-la-môn, không kính trọng các vị lớn tuổi trong gia đình. Ðại vương hãy trừng phạt nó !’<br>
+<span lang="pi" class="pali">
+‘ayaṃ, deva, puriso amatteyyo apetteyyo asāmañño abrāhmañño, na kule jeṭṭhāpacāyī. Imassa devo daṇḍaṃ paṇetū’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, vua Yama, chất vấn người ấy, cật vấn, thẩm vấn người ấy về Thiên sứ thứ nhất: ‘Này người kia, Ngươi có thấy Thiên sứ thứ nhất đã hiện ra giữa loài Người không?’<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā paṭhamaṃ devadūtaṃ samanuyuñjati samanugāhati samanubhāsati: ‘ambho purisa, na tvaṃ addasa manussesu paṭhamaṃ devadūtaṃ pātubhūtan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy nói: ‘Thưa Ngài, không thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāddasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy: ‘Này Người kia, Ngươi có thấy giữa loài Người có đứa con nít nhỏ, yếu ớt, nằm ngửa, nằm rơi vào giữa phân và nước tiểu của nó hay không?’<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha: ‘ambho purisa, na tvaṃ addasa manussesu daharaṃ kumāraṃ mandaṃ uttānaseyyakaṃ sake muttakarīse palipannaṃ semānan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, có thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘addasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy: ‘Này người kia, tuy Ngươi là người có ý thức và lớn tuổi, nhưng Ngươi không có nghĩ:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha: ‘ambho purisa, tassa te viññussa sato mahallakassa na etadahosi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta bị sanh chi phối, ta không thoát khỏi sanh; ta hãy làm điều thiện về thân, khẩu và ý’.<br>
+<span lang="pi" class="pali">
+ahampi khomhi jātidhammo, jātiṃ anatīto. Handāhaṃ kalyāṇaṃ karomi kāyena vācāya manasā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, tôi không có thể làm, vì tôi phóng dật’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāsakkhissaṃ, bhante, pamādassaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này người kia, nếu vì phóng dật nên Ngươi không làm điều thiện về thân, khẩu, ý; chắc chắn chúng sẽ làm cho Ngươi, này Người kia, tùy theo sự phóng dật ấy của Ngươi.<br>
+<span lang="pi" class="pali">
+‘ambho purisa, pamādavatāya na kalyāṇamakāsi kāyena vācāya manasā. Taggha tvaṃ, ambho purisa, tathā karissanti yathā taṃ pamattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng đây là một ác nghiệp của Ngươi, không phải do mẹ làm, không phải do cha làm, không phải do anh làm, không phải do chị làm, không phải do bạn và thân hữu làm, không phải do bà con huyết thống làm, không phải do Sa-môn, Bà-la-môn làm, không phải do chư Thiên làm. Ác nghiệp ấy chính do Ngươi làm, chính Người phải cảm thọ quả báo việc làm ấy’.<br>
+<span lang="pi" class="pali">
+Taṃ kho pana te etaṃ pāpakammaṃ neva mātarā kataṃ na pitarā kataṃ na bhātarā kataṃ na bhaginiyā kataṃ na mittāmaccehi kataṃ na ñātisālohitehi kataṃ na samaṇabrāhmaṇehi kataṃ na devatāhi kataṃ, tayāvetaṃ pāpakammaṃ kataṃ, tvaññevetassa vipākaṃ paṭisaṃvedissasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, sau khi chất vấn, cật vấn và thẩm vấn người kia về Thiên sứ thứ nhất, vua Yama mới chất vấn, cật vấn, thẩm vấn về Thiên sứ thứ hai:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā paṭhamaṃ devadūtaṃ samanuyuñjitvā samanugāhitvā samanubhāsitvā dutiyaṃ devadūtaṃ samanuyuñjati samanugāhati samanubhāsati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này người kia, Ngươi có thấy giữa loài Người, Thiên sứ thứ hai hiện ra không?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu dutiyaṃ devadūtaṃ pātubhūtan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, không thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāddasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người kia:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, Ngươi có thấy người đàn bà hay người đàn ông tám mươi tuổi, hay chín mươi tuổi, hay một trăm tuổi, già yếu, cong như nóc nhà, lưng còm, chống gậy, vừa đi vừa run, bệnh hoạn, tuổi trẻ đã qua mất, răng rụng, tóc sói, da nhăn, run rẩy, với tay chân bạc màu?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu itthiṃ vā purisaṃ vā (…) jiṇṇaṃ gopānasivaṅkaṃ bhoggaṃ daṇḍaparāyanaṃ pavedhamānaṃ gacchantaṃ āturaṃ gatayobbanaṃ khaṇḍadantaṃ palitakesaṃ vilūnaṃ khalitasiraṃ valinaṃ tilakāhatagattan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, có thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘addasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy: ‘Này Người kia, tuy Ngươi là người có ý thức và lớn tuổi, nhưng Ngươi không có nghĩ:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha: ‘ambho purisa, tassa te viññussa sato mahallakassa na etadahosi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta bị già chi phối, ta không thoát khỏi già; ta hãy làm điều thiện về thân, khẩu và ý’.<br>
+<span lang="pi" class="pali">
+ahampi khomhi jarādhammo, jaraṃ anatīto. Handāhaṃ kalyāṇaṃ karomi kāyena vācāya manasā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, tôi không có thể làm, vì tôi phóng dật, thưa Ngài’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāsakkhissaṃ, bhante, pamādassaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, nếu vì phóng dật nên Ngươi không làm điều thiện về thân, khẩu, ý; chắc chắn chúng sẽ làm cho Ngươi, này Người kia, tùy theo sự phóng dật của Ngươi.<br>
+<span lang="pi" class="pali">
+‘ambho purisa, pamādavatāya na kalyāṇamakāsi kāyena vācāya manasā. Taggha tvaṃ, ambho purisa, tathā karissanti yathā taṃ pamattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng đây là một ác nghiệp của Ngươi, không phải do mẹ làm, không phải do cha làm, không phải do anh làm, không phải do chị làm, không phải do bạn và thân hữu làm, không phải do bà con huyết thống làm, không phải do Sa-môn, Bà-la-môn làm, không phải do chư Thiên làm. Ác nghiệp ấy chính do Ngươi làm, chính Ngươi phải cảm thọ quả báo sự làm ấy’.<br>
+<span lang="pi" class="pali">
+Taṃ kho pana te etaṃ pāpakammaṃ neva mātarā kataṃ na pitarā kataṃ na bhātarā kataṃ na bhaginiyā kataṃ na mittāmaccehi kataṃ na ñātisālohitehi kataṃ na samaṇabrāhmaṇehi kataṃ na devatāhi kataṃ, tayāvetaṃ pāpakammaṃ kataṃ, tvaññevetassa vipākaṃ paṭisaṃvedissasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, sau khi chất vấn, cật vấn, thẩm vấn người kia về Thiên sứ thứ hai, vua Yama mới chất vấn, cật vấn, thẩm vấn về Thiên sứ thứ ba:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā dutiyaṃ devadūtaṃ samanuyuñjitvā samanugāhitvā samanubhāsitvā tatiyaṃ devadūtaṃ samanuyuñjati samanugāhati samanubhāsati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, Ngươi có thấy giữa loài Người, Thiên sứ thứ ba hiện ra không?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu tatiyaṃ devadūtaṃ pātubhūtan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài không thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāddasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người kia:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, Người có thấy người đàn bà hay người đàn ông bị bệnh hoạn, khổ não, bị bệnh trầm trọng nằm rơi vào trong nước tiểu và phân của mình, cần người khác nâng dậy, cần người khác dìu nằm xuống?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu itthiṃ vā purisaṃ vā ābādhikaṃ dukkhitaṃ bāḷhagilānaṃ sake muttakarīse palipannaṃ semānaṃ aññehi vuṭṭhāpiyamānaṃ aññehi saṃvesiyamānan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, có thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘addasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với nó: ‘Này Người kia, tuy Ngươi là người có ý thức và lớn tuổi, nhưng Ngươi không có nghĩ:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha: ‘ambho purisa, tassa te viññussa sato mahallakassa na etadahosi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta bị bệnh chi phối, ta không thoát khỏi bệnh; ta hãy làm điều thiện về thân, khẩu và ý’.<br>
+<span lang="pi" class="pali">
+ahampi khomhi byādhidhammo, byādhiṃ anatīto. Handāhaṃ kalyāṇaṃ karomi kāyena vācāya manasā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, tôi không có thể làm, vì tôi phóng dật’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāsakkhissaṃ, bhante, pamādassaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, nếu vì phóng dật nên Ngươi không làm điều thiện, về thân, khẩu, ý; chắc chắn chúng sẽ làm cho Ngươi, này Người kia, tùy theo sự phóng dật của Ngươi.<br>
+<span lang="pi" class="pali">
+‘ambho purisa, pamādavatāya na kalyāṇamakāsi kāyena vācāya manasā. Taggha tvaṃ, ambho purisa, tathā karissanti yathā taṃ pamattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng đây là một ác nghiệp của Ngươi, không phải do mẹ làm, không phải do cha làm, không phải do anh làm, không phải do chị làm, không phải do bạn bè thân hữu làm, không phải do bà con huyết thống làm, không phải do Sa-môn, Bà-la-môn làm, không phải do chư Thiên làm. Ác nghiệp ấy chính do Ngươi làm, chính Ngươi phải cảm thọ quả báo việc làm ấy’.<br>
+<span lang="pi" class="pali">
+Taṃ kho pana te etaṃ pāpakammaṃ neva mātarā kataṃ na pitarā kataṃ na bhātarā kataṃ na bhaginiyā kataṃ na mittāmaccehi kataṃ na ñātisālohitehi kataṃ na samaṇabrāhmaṇehi kataṃ na devatāhi kataṃ, tayāvetaṃ pāpakammaṃ kataṃ, tvaññevetassa vipākaṃ paṭisaṃvedissasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, sau khi chất vấn, cật vấn thẩm vấn người kia về Thiên sứ thứ ba, vua Yama mới chất vấn, cật vấn, thẩm vấn về Thiên sứ thứ tư:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā tatiyaṃ devadūtaṃ samanuyuñjitvā samanugāhitvā samanubhāsitvā catutthaṃ devadūtaṃ samanuyuñjati samanugāhati samanubhāsati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này người kia, Ngươi có thấy giữa loài Người, Thiên sứ thứ tư hiện ra không?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu catutthaṃ devadūtaṃ pātubhūtan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, không thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāddasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người kia:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này người kia, Ngươi có thấy giữa loài Người, các vua chúa sau khi bắt được tên trộm cướp có phạm tội, liền áp dụng nhiều hình phạt sai khác. Họ đánh bằng roi, họ đánh bằng gậy… họ lấy gươm chặt đầu?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu rājāno coraṃ āgucāriṃ gahetvā vividhā kammakāraṇā kārente—kasāhipi tāḷente vettehipi tāḷente addhadaṇḍakehipi tāḷente hatthampi chindante pādampi chindante hatthapādampi chindante kaṇṇampi chindante nāsampi chindante kaṇṇanāsampi chindante bilaṅgathālikampi karonte saṅkhamuṇḍikampi karonte rāhumukhampi karonte jotimālikampi karonte hatthapajjotikampi karonte erakavattikampi karonte cīrakavāsikampi karonte eṇeyyakampi karonte baḷisamaṃsikampi karonte kahāpaṇikampi karonte khārāpatacchikampi karonte palighaparivattikampi karonte palālapīṭhakampi karonte tattenapi telena osiñcante sunakhehipi khādāpente jīvantampi sūle uttāsente asināpi sīsaṃ chindante’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy nói: ‘Thưa Ngài, có thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘addasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy: ‘Này Người kia, tuy Ngươi là người có ý thức và lớn tuổi, nhưng Ngươi không có nghĩ:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha: ‘ambho purisa, tassa te viññussa sato mahallakassa na etadahosi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thật sự những ai làm các ác nghiệp, họ phải chịu những hình phạt sai khác, ngay trong hiện tại như vậy, huống nữa là về đời sau! Ta hãy làm điều thiện về thân, khẩu, ý’.<br>
+<span lang="pi" class="pali">
+ye kira, bho, pāpakāni kammāni karonti te diṭṭheva dhamme evarūpā vividhā kammakāraṇā karīyanti, kimaṅgaṃ pana parattha. Handāhaṃ kalyāṇaṃ karomi kāyena vācāya manasā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, tôi không có thể làm, vì tôi phóng dật, thưa Ngài’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāsakkhissaṃ, bhante, pamādassaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với nó:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, nếu vì phóng dật nên Ngươi không làm điều thiện về thân, khẩu, ý; chắc chắn chúng sẽ làm cho Ngươi, này người kia, tùy theo sự phóng dật của Ngươi.<br>
+<span lang="pi" class="pali">
+‘ambho purisa, pamādavatāya na kalyāṇamakāsi kāyena vācāya manasā. Taggha tvaṃ, ambho purisa, tathā karissanti yathā taṃ pamattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng đây là một ác nghiệp của Ngươi, không phải do mẹ làm, không phải do cha làm, không phải do anh làm, không phải do chị làm, không phải do bạn bè thân hữu làm, không phải do bà con huyết thống làm, không phải do Sa-môn, Bà-la-môn làm, không phải do chư Thiên làm. Ác nghiệp ấy chính do Ngươi làm, chính Ngươi phải cảm thọ quả báo việc làm ấy’.<br>
+<span lang="pi" class="pali">
+Taṃ kho pana te etaṃ pāpakammaṃ neva mātarā kataṃ na pitarā kataṃ na bhātarā kataṃ na bhaginiyā kataṃ na mittāmaccehi kataṃ na ñātisālohitehi kataṃ na samaṇabrāhmaṇehi kataṃ na devatāhi kataṃ, tayāvetaṃ pāpakammaṃ kataṃ, tvaññevetassa vipākaṃ paṭisaṃvedissasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, sau khi chất vấn, cật vấn, thẩm vấn người kia về Thiên sứ thứ tư, vua Yama mới chất vấn, cật vấn, thẩm vấn về Thiên sứ thứ năm:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā catutthaṃ devadūtaṃ samanuyuñjitvā samanugāhitvā samanubhāsitvā pañcamaṃ devadūtaṃ samanuyuñjati samanugāhati samanubhāsati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, Ngươi có thấy giữa loài Người, Thiên sứ thứ năm hiện ra không?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu pañcamaṃ devadūtaṃ pātubhūtan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, không thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāddasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, Ngươi có thấy giữa loài Người, người đàn bà hay người đàn ông chết đã được một ngày, hai ngày hay ba ngày, sưng phồng lên, xanh xám lại, rữa nát ra?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, na tvaṃ addasa manussesu itthiṃ vā purisaṃ vā ekāhamataṃ vā dvīhamataṃ vā tīhamataṃ vā uddhumātakaṃ vinīlakaṃ vipubbakajātan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy nói: ‘Thưa Ngài, có thấy’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘addasaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy: ‘Này Người kia, tuy Ngươi là người có ý thức và lớn tuổi, nhưng Ngươi không có nghĩ:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha: ‘ambho purisa, tassa te viññussa sato mahallakassa na etadahosi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta bị chết chi phối, ta không thoát khỏi chết; ta hãy làm điều thiện về thân, khẩu và ý’.<br>
+<span lang="pi" class="pali">
+ahampi khomhi maraṇadhammo, maraṇaṃ anatīto. Handāhaṃ kalyāṇaṃ karomi kāyena vācāya manasā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đáp: ‘Thưa Ngài, tôi không có thể làm, vì tôi phóng dật, thưa Ngài’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘nāsakkhissaṃ, bhante, pamādassaṃ, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, vua Yama nói với người ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, nếu vì phóng dật nên Ngươi không làm điều thiện về thân, khẩu ý; chắc chắn chúng sẽ làm cho Ngươi, này Người kia, tùy theo sự phóng dật của Ngươi.<br>
+<span lang="pi" class="pali">
+‘ambho purisa, pamādavatāya na kalyāṇamakāsi kāyena vācāya manasā. Taggha tvaṃ, ambho purisa, tathā karissanti yathā taṃ pamattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng đây là một ác nghiệp của Ngươi, không phải do mẹ làm, không phải do cha làm, không phải do anh làm, không phải do chị làm, không phải do bạn bè thân hữu làm, không phải do bà con huyết thống làm, không phải do Sa-môn, Bà-la-môn làm, không phải do chư Thiên làm. Ác nghiệp ấy chính là Ngươi làm, chính Ngươi phải cảm thọ quả báo việc làm ấy’.<br>
+<span lang="pi" class="pali">
+Taṃ kho pana te etaṃ pāpakammaṃ neva mātarā kataṃ na pitarā kataṃ na bhātarā kataṃ na bhaginiyā kataṃ na mittāmaccehi kataṃ na ñātisālohitehi kataṃ na samaṇabrāhmaṇehi kataṃ na devatāhi kataṃ, tayāvetaṃ pāpakammaṃ kataṃ, tvaññevetassa vipākaṃ paṭisaṃvedissasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, sau khi chất vấn, cật vấn, thẩm vấn, người ấy về Thiên sứ thứ năm, vua Yama giữ im lặng.<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, yamo rājā pañcamaṃ devadūtaṃ samanuyuñjitvā samanugāhitvā samanubhāsitvā tuṇhī hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, các người coi giữ Ðịa ngục bắt người ấy chịu hình phạt gọi là năm cọc (Pancavidhabandhanam):<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā pañcavidhabandhanaṃ nāma kammakāraṇaṃ karonti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+họ lấy cọc sắt nung đỏ đóng vào một bàn tay, họ lấy cọc sắt nung đỏ đóng vào bàn tay thứ hai, họ lấy cọc sắt nung đỏ đóng vào bàn chân, họ lấy cọc sắt nung đỏ đóng vào bàn chân thứ hai, họ lấy cọc sắt nung đỏ đóng vào giữa ngực, Người ấy ở đây thọ lãnh các cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+tattaṃ ayokhilaṃ hatthe gamenti, tattaṃ ayokhilaṃ dutiye hatthe gamenti, tattaṃ ayokhilaṃ pāde gamenti, tattaṃ ayokhilaṃ dutiye pāde gamenti, tattaṃ ayokhilaṃ majjheurasmiṃ gamenti. So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các người coi giữ Ðịa ngục bắt người ấy nằm xuống và lấy búa chặt người ấy. Người ấy ở đây thọ lãnh các cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā saṃvesetvā kuṭhārīhi tacchanti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các người coi giữ Ðịa ngục dựng ngược người ấy chân phía trên, đầu phía dưới và lấy búa chặt người ấy. Người ấy ở đây cảm thọ … chưa tiêu trừ.<br>
+<span lang="pi" class="pali">
+tamenaṃ, bhikkhave, nirayapālā uddhampādaṃ adhosiraṃ gahetvā vāsīhi tacchanti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các người coi giữ Ðịa ngục cột người ấy vào một chiếc xe, kéo người ấy chạy tới chạy lui trên đất được đốt cháy đỏ, cháy thành ngọn, cháy đỏ rực. Người ấy ở đây cảm thọ … chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+tamenaṃ, bhikkhave, nirayapālā rathe yojetvā ādittāya pathaviyā sampajjalitāya sajotibhūtāya sārentipi, paccāsārentipi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, các người coi giữ Ðịa ngục đẩy người ấy lên, kéo người ấy xuống một sườn núi đầy than hừng, cháy đỏ, cháy thành ngọn, cháy đỏ rực. Người ấy ở đây cảm thọ … chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+tamenaṃ, bhikkhave, nirayapālā mahantaṃ aṅgārapabbataṃ ādittaṃ sampajjalitaṃ sajotibhūtaṃ āropentipi oropentipi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, các người coi giữ Ðịa ngục dựng ngược người ấy chân phía trên, đầu phía dưới và quăng người ấy vào một vạc dầu bằng đồng nung đỏ, cháy đỏ, cháy thành ngọn, cháy đỏ rực.<br>
+<span lang="pi" class="pali">
+tamenaṃ, bhikkhave, nirayapālā uddhampādaṃ adhosiraṃ gahetvā tattāya lohakumbhiyā pakkhipanti ādittāya sampajjalitāya sajotibhūtāya. So tattha pheṇuddehakaṃ paccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy ở đây bị nấu với bọt nước sôi sùng sục, khi thì trôi nổi lên trên, khi thì chìm xuống đáy, khi thì trôi dạt ngang.<br>
+<span lang="pi" class="pali">
+So tattha pheṇuddehakaṃ paccamāno sakimpi uddhaṃ gacchati, sakimpi adho gacchati, sakimpi tiriyaṃ gacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy ở đây thọ lãnh các cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, những người coi giữ Ðịa ngục quăng người ấy vào Ðại địa ngục.<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā mahāniraye pakkhipanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Ðại địa ngục ấy có bốn góc, bốn cửa, chia thành phần bằng nhau, xung quanh có tường sắt, mái sắt lợp lên trên.<br>
+<span lang="pi" class="pali">
+So kho pana, bhikkhave, mahānirayo—Catukkaṇṇo catudvāro, vibhatto bhāgaso mito; Ayopākārapariyanto, ayasā paṭikujjito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nền Ðịa ngục bằng sắt, nung đỏ, chảy đỏ rực, đứng thẳng, luôn có mặt, rộng một trăm do tuần.<br>
+<span lang="pi" class="pali">
+Tassa ayomayā bhūmi, jalitā tejasāyutā; Samantā yojanasataṃ, pharitvā tiṭṭhati sabbadā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, từ tường phía Ðông của Ðại địa ngục ấy, những ngọn lửa bừng cháy lên được thổi tạt đến tường phía Tây. Những ngọn lửa bừng cháy lên từ tường phía Tây được thổi tạt đến tường phía Ðông. Những ngọn lửa bừng cháy lên từ tường phía Bắc được thổi tạt đến tường phía Nam. Những ngọn lửa bừng cháy lên từ tường phía Nam được thổi tạt đến tường phía Bắc. Những ngọn lửa bừng cháy lên từ phía Dưới, được thổi tạt lên phía Trên. Những ngọn lửa bừng cháy lên từ phía Trên, được thổi tạt xuống phía Dưới.<br>
+<span lang="pi" class="pali">
+Tassa kho pana, bhikkhave, mahānirayassa puratthimāya bhittiyā acci uṭṭhahitvā pacchimāya bhittiyā paṭihaññati, pacchimāya bhittiyā acci uṭṭhahitvā puratthimāya bhittiyā paṭihaññati, uttarāya bhittiyā acci uṭṭhahitvā dakkhiṇāya bhittiyā paṭihaññati, dakkhiṇāya bhittiyā acci uṭṭhahitvā uttarāya bhittiyā paṭihaññati, heṭṭhā acci uṭṭhahitvā upari paṭihaññati, uparito acci uṭṭhahitvā heṭṭhā paṭihaññati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy ở đây cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, rồi có một thời rất lâu dài, khi cửa phía Ðông của Ðại địa ngục được mở ra.<br>
+<span lang="pi" class="pali">
+Hoti kho so, bhikkhave, samayo yaṃ kadāci karahaci dīghassa addhuno accayena tassa mahānirayassa puratthimaṃ dvāraṃ apāpurīyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy chạy vào đấy rất nhanh và mau lẹ.<br>
+<span lang="pi" class="pali">
+So tattha sīghena javena dhāvati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi người ấy chạy rất nhanh và mau lẹ, da ngoài bị cháy, da trong bị cháy, thịt bị cháy, dây gân bị cháy, xương bị khói xông đen. Sự trốn thoát của người ấy là như vậy.<br>
+<span lang="pi" class="pali">
+Tassa sīghena javena dhāvato chavimpi ḍayhati, cammampi ḍayhati, maṃsampi ḍayhati, nhārumpi ḍayhati, aṭṭhīnipi sampadhūpāyanti, ubbhataṃ tādisameva hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, dù cho người ấy có cố gắng rất nhiều, cửa vẫn đóng chống lại người ấy.<br>
+<span lang="pi" class="pali">
+Yato ca kho so, bhikkhave, bahusampatto hoti, atha taṃ dvāraṃ pidhīyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại đây người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, có một thời rất lâu dài, khi cửa phía Tây được mở ra …<br>
+<span lang="pi" class="pali">
+Hoti kho so, bhikkhave, samayo yaṃ kadāci karahaci dīghassa addhuno accayena tassa mahānirayassa pacchimaṃ dvāraṃ apāpurīyati ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cửa phía Bắc được mở ra …<br>
+<span lang="pi" class="pali">
+uttaraṃ dvāraṃ apāpurīyati ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cửa phía Nam được mở ra.<br>
+<span lang="pi" class="pali">
+dakkhiṇaṃ dvāraṃ apāpurīyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy liền chạy vào đấy rất nhanh và mau lẹ.<br>
+<span lang="pi" class="pali">
+So tattha sīghena javena dhāvati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi người ấy chạy rất nhanh và mau lẹ, da ngoài bị cháy, da trong bị cháy, thịt bị cháy, dây gân bị cháy, xương bị khói xông đen. Sự trốn thoát của người ấy là như vậy.<br>
+<span lang="pi" class="pali">
+Tassa sīghena javena dhāvato chavimpi ḍayhati, cammampi ḍayhati, maṃsampi ḍayhati, nhārumpi ḍayhati, aṭṭhīnipi sampadhūpāyanti, ubbhataṃ tādisameva hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, dầu cho người ấy có cố gắng rất nhiều, cửa vẫn đóng chống lại người ấy.<br>
+<span lang="pi" class="pali">
+Yato ca kho so, bhikkhave, bahusampatto hoti, atha taṃ dvāraṃ pidhīyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại đây người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi các ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, có một thời rất lâu dài, khi cửa phía Ðông được mở ra, người ấy liền chạy vào đấy rất nhanh và mau lẹ … sự trốn thoát của người ấy là như vậy.<br>
+<span lang="pi" class="pali">
+Hoti kho so, bhikkhave, samayo yaṃ kadāci karahaci dīghassa addhuno accayena tassa mahānirayassa puratthimaṃ dvāraṃ apāpurīyati. So tattha sīghena javena dhāvati. Tassa sīghena javena dhāvato chavimpi ḍayhati, cammampi ḍayhati, maṃsampi ḍayhati, nhārumpi ḍayhati, aṭṭhīnipi sampadhūpāyanti, ubbhataṃ tādisameva hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy đi ra khỏi cửa Ðịa ngục ấy.<br>
+<span lang="pi" class="pali">
+So tena dvārena nikkhamati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, cận sát Ðại địa ngục là Đại Địa Ngục Phấn Nị.<br>
+<span lang="pi" class="pali">
+Tassa kho pana, bhikkhave, mahānirayassa samanantarā sahitameva mahanto gūthanirayo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy rơi vào Ðịa ngục này.<br>
+<span lang="pi" class="pali">
+So tattha patati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, tại Phấn nị Ðịa ngục ấy, các chúng sanh với miệng như mũi kim cắt đứt da ngoài; sau khi cắt đứt da ngoài, chúng cắt đứt da trong; sau khi cắt dứt da trong, chúng cắt đứt thịt; sau khi cắt đứt thịt, chúng cắt đứt dây gân; sau khi cắt đứt dây gân, chúng cắt đứt xương; sau khi cắt đứt xương, chúng cắt đứt xương tủy. Ở đây, người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+Tasmiṃ kho pana, bhikkhave, gūthaniraye sūcimukhā pāṇā chaviṃ chindanti, chaviṃ chetvā cammaṃ chindanti, cammaṃ chetvā maṃsaṃ chindanti, maṃsaṃ chetvā nhāruṃ chindanti, nhāruṃ chetvā aṭṭhiṃ chindanti, aṭṭhiṃ chetvā aṭṭhimiñjaṃ khādanti. So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, cận sát Đại Địa Ngục Phấn Nị ấy là Đại Địa Ngục Than Hừng.<br>
+<span lang="pi" class="pali">
+Tassa kho pana, bhikkhave, gūthanirayassa samanantarā sahitameva mahanto kukkulanirayo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy rơi vào ở đấy.<br>
+<span lang="pi" class="pali">
+So tattha patati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đấy, người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, cận sát Đại Địa Ngục Than Hừng là Đại Địa Ngục Rừng Gai Châm cao một do tuần, với những gai nhọn dài mười sáu ngón tay, cháy đỏ, cháy thành ngọn, cháy đỏ rực.<br>
+<span lang="pi" class="pali">
+Tassa kho pana, bhikkhave, kukkulanirayassa samanantarā sahitameva mahantaṃ simbalivanaṃ uddhaṃ yojanamuggataṃ soḷasaṅgulakaṇṭakaṃ ādittaṃ sampajjalitaṃ sajotibhūtaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ bắt người ấy leo lên, leo xuống.<br>
+<span lang="pi" class="pali">
+Tattha āropentipi oropentipi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đấy, người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, cận sát Đại Địa Ngục Rừng Gai Châm là Đại Địa Ngục Rừng Lá Gươm.<br>
+<span lang="pi" class="pali">
+Tassa kho pana, bhikkhave, simbalivanassa samanantarā sahitameva mahantaṃ asipattavanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy vào trong ấy.<br>
+<span lang="pi" class="pali">
+So tattha pavisati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đấy, các lá cây, do gió lay động, cắt đứt tay của người ấy, cắt đứt chân, cắt đứt tay chân, cắt đứt tai, cắt đứt mũi, cắt đứt tai mũi. Ở đây, người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mạng chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+Tassa vāteritāni pattāni patitāni hatthampi chindanti, pādampi chindanti, hatthapādampi chindanti, kaṇṇampi chindanti, nāsampi chindanti, kaṇṇanāsampi chindanti. So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, cận sát Đại Địa Ngục Rừng Lá Gươm là Đại Địa Ngục Sông vôi .<br>
+<span lang="pi" class="pali">
+Tassa kho pana, bhikkhave, asipattavanassa samanantarā sahitameva mahatī khārodakā nadī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy rơi vào trong ấy.<br>
+<span lang="pi" class="pali">
+So tattha patati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại đấy, người ấy bị trôi thuận theo dòng nước, người ấy bị trôi ngược lại dòng nước, người ấy trôi thuận theo, ngược lại dòng nước. Tại đấy, người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mệnh chung, cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha anusotampi vuyhati, paṭisotampi vuyhati, anusotapaṭisotampi vuyhati. So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, những người coi giữ Ðịa ngục, câu người ấy lên với móc câu, đặt người ấy trên đất và nói với người ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā balisena uddharitvā thale patiṭṭhāpetvā evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, Ngươi muốn gì?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, kiṃ icchasī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy nói: ‘Thưa các Ngài, tôi đói bụng’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘jighacchitosmi, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, các người coi giữ Ðịa ngục lấy cọc sắt nung đỏ cạy miệng người ấy và nhét vào miệng người ấy những cục đồng nung đỏ, cháy đỏ, cháy thành ngọn, cháy đỏ rực.<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā tattena ayosaṅkunā mukhaṃ vivaritvā ādittena sampajjalitena sajotibhūtena tattaṃ lohaguḷaṃ mukhe pakkhipanti ādittaṃ sampajjalitaṃ sajotibhūtaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Môi người ấy bị cháy, miệng bị cháy, cổ họng bị cháy, ngực bị cháy. Và kéo theo một ruột lớn, ruột nhỏ, các cục đồng ấy rơi ra ngoài từ phía dưới.<br>
+<span lang="pi" class="pali">
+So tassa oṭṭhampi dahati, mukhampi dahati, kaṇṭhampi dahati, urampi dahati, antampi antaguṇampi ādāya adhobhāgā nikkhamati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đấy, người ấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mạng chung, cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, các người coi giữ Ðịa ngục nói với người ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Người kia, Ngươi muốn gì?’<br>
+<span lang="pi" class="pali">
+‘ambho purisa, kiṃ icchasī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy nói: ‘Thưa các Ngài, tôi khát nước’.<br>
+<span lang="pi" class="pali">
+So evamāha: ‘pipāsitosmi, bhante’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, các người coi giữ Ðịa ngục lấy cọc sắt nung đỏ cạy miệng người ấy ra, và đổ vào miệng người ấy nước đồng nấu sôi, cháy đỏ, cháy thành ngọn, cháy đỏ rực.<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā tattena ayosaṅkunā mukhaṃ vivaritvā ādittena sampajjalitena sajotibhūtena tattaṃ tambalohaṃ mukhe āsiñcanti ādittaṃ sampajjalitaṃ sajotibhūtaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Môi ngươi ấy bị cháy, miệng bị cháy, cổ họng bị cháy, ngực bị cháy. Và kéo theo ruột lớn, ruột nhỏ, nước đồng sôi ấy chảy ra ngoài từ phía dưới.<br>
+<span lang="pi" class="pali">
+Taṃ tassa oṭṭhampi dahati, mukhampi dahati, kaṇṭhampi dahati, urampi dahati, antampi antaguṇampi ādāya adhobhāgā nikkhamati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy ở đấy cảm thọ những cảm giác đau đớn, thống khổ, khốc liệt. Nhưng người ấy không có thể mạng chung cho đến khi ác nghiệp của người ấy chưa được tiêu trừ.<br>
+<span lang="pi" class="pali">
+So tattha dukkhā tibbā kharā kaṭukā vedanā vedeti, na ca tāva kālaṃ karoti, yāva na taṃ pāpakammaṃ byantīhoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Tỷ-kheo, các người coi giữ Ðịa ngục lại quăng người ấy vào Ðại địa ngục.<br>
+<span lang="pi" class="pali">
+Tamenaṃ, bhikkhave, nirayapālā puna mahāniraye pakkhipanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời xưa lắm, này các Tỷ-kheo, vua Yama suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Bhūtapubbaṃ, bhikkhave, yamassa rañño etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Những ai làm ác nghiệp ở đời, phải thọ lãnh những hình phạt sai khác như vậy.<br>
+<span lang="pi" class="pali">
+‘ye kira, bho, loke pāpakāni akusalāni kammāni karonti te evarūpā vividhā kammakāraṇā karīyanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong rằng ta được làm người, và Như lai, bậc A-la-hán, Chánh Ðẳng Giác xuất hiện ở đời, và ta có thể hầu hạ Thế Tôn,<br>
+<span lang="pi" class="pali">
+Aho vatāhaṃ manussattaṃ labheyyaṃ. Tathāgato ca loke uppajjeyya arahaṃ sammāsambuddho. Tañcāhaṃ bhagavantaṃ payirupāseyyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và Thế Tôn thuyết pháp cho ta, và ta có thể thông hiểu pháp Thế Tôn thuyết giảng’.<br>
+<span lang="pi" class="pali">
+So ca me bhagavā dhammaṃ deseyya. Tassa cāhaṃ bhagavato dhammaṃ ājāneyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, điều Ta đang nói không phải Ta nghe từ một Sa-môn hay Bà-la-môn nào khác; nhưng điều Ta đang nói chỉ được Ta biết mà thôi, chỉ được Ta thấy mà thôi, chỉ được Ta hiểu mà thôi.”<br>
+<span lang="pi" class="pali">
+Taṃ kho panāhaṃ, bhikkhave, nāññassa samaṇassa vā brāhmaṇassa vā sutvā vadāmi, api ca yadeva sāmaṃ ñātaṃ sāmaṃ diṭṭhaṃ sāmaṃ viditaṃ tadevāhaṃ vadāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy. Sau khi Thiện thệ nói như vậy, bậc Ðạo Sư lại nói thêm như sau:<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā. Idaṃ vatvāna sugato athāparaṃ etadavoca satthā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dầu Thiên sứ báo động,<br>
+<span lang="pi" class="pali">
+Coditā devadūtehi,<br>
+</span>
+Thanh niên vẫn phóng dật;<br>
+<span lang="pi" class="pali">
+ye pamajjanti māṇavā;<br>
+</span>
+Họ ưu buồn lâu dài,<br>
+<span lang="pi" class="pali">
+Te dīgharattaṃ socanti,<br>
+</span>
+Sanh làm người hạ liệt.<br>
+<span lang="pi" class="pali">
+hīnakāyūpagā narā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược Thiên Sứ báo động,<br>
+<span lang="pi" class="pali">
+Ye ca kho devadūtehi,<br>
+</span>
+Ở đây, bậc Chân nhân,<br>
+<span lang="pi" class="pali">
+santo sappurisā idha;<br>
+</span>
+Không bao giờ phóng dật<br>
+<span lang="pi" class="pali">
+Coditā nappamajjanti,<br>
+</span>
+Trong diệu pháp bậc thánh.<br>
+<span lang="pi" class="pali">
+ariyadhamme kudācanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy sợ trong chấp thủ,<br>
+<span lang="pi" class="pali">
+Upādāne bhayaṃ disvā,<br>
+</span>
+Trong hiện hữu sanh tử;<br>
+<span lang="pi" class="pali">
+jātimaraṇasambhave;<br>
+</span>
+Giải thoát không chấp thủ,<br>
+<span lang="pi" class="pali">
+Anupādā vimuccanti,<br>
+</span>
+Sanh tử được đoạn trừ.<br>
+<span lang="pi" class="pali">
+jātimaraṇasaṅkhaye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược yên ổn, an lạc,<br>
+<span lang="pi" class="pali">
+Te appamattā sukhino,<br>
+</span>
+Ngay hiện tại tịch tịnh;<br>
+<span lang="pi" class="pali">
+diṭṭha­dhammā­bhi­nib­b­utā­;<br>
+</span>
+Mọi oán hận sợ hãi,<br>
+Các vị ấy vượt qua,<br>
+<span lang="pi" class="pali">
+Sabbaverabhayātītā,<br>
+</span>
+Mọi đau đớn khổ sầu,<br>
+Thảy đều được siêu thoát.”<br>
+<span lang="pi" class="pali">
+sabbadukkhaṃ upaccagun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Devadūtasuttaṃ niṭṭhitaṃ dasamaṃ.<br>
+</span>
+</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn129.html#content"></a><a id="next-sutta" href="./mn131.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

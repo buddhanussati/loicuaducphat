@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trích Dẫn Kinh Điển Pali</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #ffd;
+			--background-image: url('imgbk.png');
+            --bg-card: #ffd;
+            --bg-card-image: url('imgbk.png');
+            --bg-card-border: 1px solid #333;        
+	        --text-primary: #2c2c2c;
+            --text-secondary: #5f6368;
+            --accent: #8b5a2b;
+            --btn-bg: #8b5a2b;
+            --btn-text: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(139, 90, 43, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body.dark {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #cca43b;
+            --btn-bg: #cca43b;
+            --btn-text: #121212;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+			background-image: var(--background-image);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Merriweather', serif;
+            color: var(--accent);
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: transparent;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+			border: 1px solid #b3b3b3;
+            border-radius: 5px;
+
+        }
+
+        /* Controls Grid (Giữ nguyên) */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border-color: var(--btn-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Quote Card (Giữ nguyên) */
+        .quote-card {
+            background: var(--bg-card);
+			background-image: var(--bg-card-image);
+            padding: 50px 40px;
+            border-radius: var(--border-radius);
+			border: var(--bg-card-border);
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            margin-bottom: 30px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            color: var(--accent);
+            opacity: 0.2;
+            font-family: serif;
+        }
+
+        #quote-content {
+            font-family: 'Merriweather', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            white-space: pre-line;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        #quote-content.fade-out { opacity: 0; }
+
+        /* Vùng chứa link */
+        #reference-container {
+            font-weight: 600;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        /* Style cho thẻ a (link) */
+        #quote-link {
+            color: var(--accent);
+            font-size: 1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        #quote-link:hover {
+            text-decoration: underline;
+            color: var(--accent-dark, #a97142); /* Sử dụng màu đậm hơn khi hover */
+        }
+        
+        #quote-link::before {
+             content: "— ";
+        }
+
+        /* Actions (Giữ nguyên) */
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #new-quote-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+        }
+        #new-quote-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        #copy-btn {
+            background: transparent;
+            border: 2px solid var(--btn-bg);
+            color: var(--text-primary);
+        }
+        body.dark #copy-btn {
+            color: var(--accent);
+        }
+        #copy-btn:hover {
+            background: rgba(139, 90, 43, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            .theme-toggle { position: relative; display: block; margin: 0 auto 10px auto; }
+            #quote-content { font-size: 1.1rem; }
+            .actions { width: 100%; }
+            .action-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <button class="theme-toggle" id="theme-toggle" title="Đổi giao diện">☀️</button>
+            <h1>Trích Lời Phật Dạy</h1>
+        </header>
+
+        <div class="controls">
+            <button class="filter-btn active" data-id="all">Tất cả</button>
+            <button class="filter-btn" data-id="dn">DN (Trường Bộ)</button>
+            <button class="filter-btn" data-id="mn">MN (Trung Bộ)</button>
+            <button class="filter-btn" data-id="sn">SN (Tương Ưng)</button>
+            <button class="filter-btn" data-id="an">AN (Tăng Chi)</button>
+            <button class="filter-btn" data-id="dhp">Dhp (Pháp Cú)</button>
+            <button class="filter-btn" data-id="kp">Kp (Tiểu Tụng)</button>
+            <button class="filter-btn" data-id="ud">Ud (Cảm Hứng)</button>
+            <button class="filter-btn" data-id="iti">Iti (Phật Thuyết)</button>
+            <button class="filter-btn" data-id="snp">Snp (Kinh Tập)</button>
+            <button class="filter-btn" data-id="thag">Thag (Trưởng Lão)</button>
+            <button class="filter-btn" data-id="thig">Thig (Trưởng Lão Ni)</button>
+        </div>
+
+        <main class="quote-card">
+            <div class="quote-icon">“</div>
+            <div id="quote-content">Loading...</div>
+            <div id="reference-container"></div>
+        </main>
+
+        <div class="actions">
+            <button class="action-btn" id="copy-btn">📋 <span id="copy-text">Sao chép</span></button>
+            <button class="action-btn" id="new-quote-btn">Lời dạy khác ➜</button>
+        </div>
+    </div>
+
+    <script>
+        const quotesData = {
+            dn: [
+                // ĐÃ THÊM TRƯỜNG 'url'
+                { text: "“Công đức người bố thí, \nLuôn luôn được tăng trưởng,\nTrừ được tâm hận thù.\nKhông chất chứa, chế ngự,\nKẻ chí thiện từ bỏ.\nMọi ác hạnh bất thiện,\nDiệt trừ tham, sân, si.\nTâm giải thoát thanh tịnh.”", ref: "DN 16 – Kinh Đại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+                { text: "Hãy tự mình là ngọn đèn cho chính mình, hãy tự mình nương tựa chính mình, chớ nương tựa một gì khác.", ref: "DN 16 – Kinh Đại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+			{ text: `"Này các Tỷ-kheo, nếu có người hủy báng Ta, hủy báng Pháp hay hủy báng Tăng, các ngươi chớ có vì vậy sanh lòng công phẫn, tức tối, tâm sanh phiền muộn. Này các Tỷ-kheo, nếu có người hủy báng Ta, hủy báng Pháp hay hủy báng Tăng, và nếu các ngươi sanh lòng công phẫn, tức tối, tâm sanh phiền muộn, thời như vậy sẽ có hại cho các ngươi. Nếu các ngươi công phẫn và phiền muộn, thời các ngươi có thể biết được lời nói của những kẻ ấy là đúng hay sai lạc chăng?"`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Này các Tỷ-kheo, nếu có người tán thán Ta, tán thán Pháp, hay tán thán Tăng, thời các ngươi không nên hoan hỷ, vui mừng, tâm không nên thích thú. Này các Tỷ-kheo, nếu có người tán thán ta, tán thán Pháp hay tán thán Tăng, mà nếu các ngươi hoan hỷ, vui mừng và thích thú thời sẽ có hại cho các ngươi. Này các Tỷ-kheo, nếu có người tán thán Ta... thời các ngươi hãy công nhận những gì đúng sự thật là đúng sự thật."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Sa-môn Gotama từ bỏ sát sanh, tránh xa sát sanh, bỏ trượng, bỏ kiếm, biết tàm quý, có lòng từ, sống thương xót đến hạnh phúc của tất cả chúng sanh và loài hữu tình. Sa-môn Gotama từ bỏ lấy của không cho, tránh xa sự lấy của không cho, chỉ lấy những vật đã cho, chỉ mong những vật đã cho, tự sống thanh tịnh không có trộm cướp. Này các Tỷ-kheo, đó là lời tán thán Như Lai của kẻ phàm phu."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Sa-môn Gotama từ bỏ nói láo, tránh xa nói láo, nói những lời chân thật, y chỉ nơi sự thật, chắc chắn, đáng tin cậy, không lừa gạt, không phản lại lời hứa đối với đời. Sa-môn Gotama từ bỏ nói hai lưỡi, tránh xa nói hai lưỡi; nghe điều gì ở chỗ này, không đi nói đến chỗ kia để sanh chia rẽ ở những người nầy; nghe điều gì ở chỗ kia, không đi nói với những người này để sanh chia rẽ ở những người kia."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Như vậy Sa-môn Gotama sống hòa hợp những kẻ ly gián, tăng trưởng những kẻ đã hòa hợp, hoan hỷ trong hòa hợp, nói những lời đưa đến hòa hợp. Này các Tỷ-kheo, Sa-môn Gotama từ bỏ lời nói độc ác, tránh xa lời nói độc ác, những lời nói không lỗi lầm, đẹp tai, dễ thương, thông cảm đến tâm, tao nhã, đẹp lòng nhiều người, vui lòng nhiều người, Sa-môn Gotama nói những lời như vậy."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Này các Tỷ-kheo, Sa-môn Gotama từ bỏ lời nói phù phiếm, tránh xa lời nói phù phiếm, nói đúng thời, nói những lời chân thật, nói những lời có ý nghĩa, nói những lời về Chánh pháp, nói những lời về Luật, nói những lời đáng được gìn giữ, những lời hợp thời, thuận lý, có mạch lạc hệ thống, có ích lợi. Này các Tỷ-kheo, đó là những lời tán thán Như Lai của kẻ phàm phu."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Này các Tỷ-kheo, thật chỉ thuộc các vấn đề không quan trọng, nhỏ nhặt, chỉ thuộc giới luật mà kẻ phàm phu tán thán Như Lai. [...] Lại có những pháp khác, sâu kín, khó thấu, khó chứng, tịch tịnh, mỹ diệu, vượt ngoài tầm của luận lý suông, tế nhị chỉ những người trí mới nhận hiểu. Những pháp ấy Như Lai đã tự chứng tri, giác ngộ và tuyên thuyết."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Này các Tỷ-kheo, Như Lai tuệ tri như thế này: 'Những sở kiến ấy, chấp trước như vậy, chấp thủ như vậy, sẽ đưa đến những cõi thú như vậy, sẽ tác thành những định mạng như vậy'. Như Lai biết như vậy, Ngài lại biết hơn thế nữa, và Ngài không chấp sở tri ấy. Nhờ không chấp trước sở tri ấy, nội tâm chứng được tịch tịnh."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Ngài như thật biết sự tập khởi, sự diệt trừ của các thọ, vị ngọt, những nguy hiểm và sự xuất ly của chúng. Nhờ biết vậy, này các Tỷ-kheo, Như Lai được giải thoát hoàn toàn, không có chấp thủ. Những chấp pháp ấy, này các Tỷ-kheo, là những pháp sâu kín, khó thấy, khó chứng... và chính những pháp ấy, những ai như thật chân chánh tán thán Như Lai mới nói đến."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Vị hữu tình đầu tiên sanh qua nghĩ rằng: 'Ta là Phạm thiên, Ðại Phạm thiên, Toàn năng... Tổ phụ các chúng sanh đã và sẽ sanh. Những loài hữu tình ấy do chính ta sanh ra. Tại sao vậy? Vì chính do ta khởi niệm: Mong sao các loài hữu tình khác cũng đến tại chỗ này'. Các loài hữu tình đến sau cũng nghĩ như thế này: 'Vị ấy là Phạm thiên... Chúng ta do vị Phạm thiên này hóa sanh'."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Này các Tỷ-kheo, ở đời có Sa-môn hay Bà-la-môn, là nhà suy luận, là nhà thẩm sát. Do sự chia chẻ của suy luận, và sự tùy thuận theo thẩm sát, vị này tuyên bố như thế này: 'Bản ngã và thế giới là thường trú, bất sanh, vững chắc như đảnh núi, như trụ đá, còn những loại hữu tình kia thời lưu chuyển luân hồi, chết đi sanh lại, tuy vậy chúng vẫn thường còn'."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Khi hỏi đến vấn đề này hay vấn đề khác, vị ấy dùng lời ngụy biện trườn uốn như con lươn: 'Tôi không nói là như vậy. Tôi không nói là như kia. Tôi không nói là khác như thế. Tôi không nói là không phải như thế. Tôi không nói là không không phải như thế'. Này các Tỷ-kheo, đó là trường hợp thứ nhất... một số Sa-môn, Bà-la-môn chủ trương Ngụy biện luận."`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `Vị ấy nói: 'Bản ngã và thế giới do vô nhân sanh. Tại sao vậy? Vì rằng tôi trước kia không có, nay tôi có. Từ nơi trạng thái không có, tôi trở thành loài hữu tình'. Này các Tỷ-kheo, đó là trường hợp thứ nhất... một số Sa-môn, Bà-la-môn chủ trương Vô nhân luận, chấp bản ngã và thế giới do vô nhân sanh.`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `Chủ trương ấy là kinh nghiệm cá nhân, là sự không biết, không thấy, sự cảm thọ của những Sa-môn, Bà-la-môn, là sự kích thích, dao động, xuyên tạc của những vị bị tham ái chi phối. [...] Chủ trương ấy phát khởi do sự xúc chạm (của các căn). Những vị này không có thể cảm thọ những chủ trương trên, nếu không có cảm xúc.`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `Tất cả những vị này có những cảm thọ (những chủ trương trên) do sự xúc chạm qua sáu xúc xứ. Do duyên với những cảm thọ mà tham ái phát khởi; do duyên tham ái, thủ phát khởi; do duyên thủ, hữu phát khởi; do duyên hữu, sanh phát khởi, do duyên sanh, già, chết, sầu, bi, khổ, ưu, não phát khởi.`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `Này các Tỷ-kheo, cũng ví như người đánh cá lành nghề hay người học đánh cá vung lưới trên mặt hồ nước nhỏ có mắt sít sao. Người ấy nghĩ: 'Những con cá lớn ở trong hồ nước nhỏ này, tất cả chúng đều bị bao phủ trong tấm lưới này, dầu chúng có nhảy vọt lên, chúng vẫn bị hạn cuộc bao phủ ở nơi đây'.`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `Cũng như vậy này các Tỷ-kheo, những Sa-môn, Bà-la-môn nào, luận bàn về quá khứ tối sơ, hay luận bàn về tương lai... đề xướng nhiều sở kiến sai khác, tất cả những vị này đều bị bao phủ trong lưới của sáu mươi hai luận chấp này; dầu có nhảy vọt lên, những vị này vẫn bị hạn cuộc bao phủ ở nơi đây.`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `Này các Tỷ-kheo, thân của Như Lai còn tồn tại, nhưng cái khiến đưa đến đời sống khác đã bị chấm dứt. [...] Như nhánh có một chùm xoài bị chặt đứt, tất cả trái xoài dính với nhánh ấy đều bị chung một số phận với nhánh kia. Cũng như vậy này các Tỷ-kheo, thân của Như Lai còn tồn tại, nhưng cái khiến đưa đến một đời sống khác đã bị chặt đứt.`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `Khi thân của vị này còn tồn tại thời chư Thiên và loài Người có thể thấy thân ấy. Khi thân hoại mạng chung thời chư Thiên và loài Người không thể thấy được. Này các Tỷ-kheo, thân của Như Lai còn tồn tại, nhưng cái khiến đưa đến một đời sống khác đã bị chặt đứt. Khi thân của vị này còn tồn tại thời chư Thiên và loài Người có thể thấy thân ấy.`, ref: "DN 1 – Kinh Phạm Võng ", url: "../dn/dn1.html#content" },
+
+{ text: `"Như vậy Tỷ-kheo ấy sống hòa hợp những kẻ ly gián, khuyến khích những kẻ hòa hợp, thích thú hòa hợp, hoan hỷ hòa hợp, nói những lời đưa đến hòa hợp. Vị ấy từ bỏ nói lời thô ác, tránh xa lời thô ác, nói những lời nhu hòa, êm tai, khả ái, đi vào lòng người, tao nhã, đẹp lòng nhiều người. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Vị ấy từ bỏ nói láo, tránh xa nói láo, nói những lời chân thật, y chỉ trên sự thật, chắc chắn, đáng tin cậy, không lường gạt, không phản lại lời hứa đối với đời.  Như vậy là giới hạnh của vị ấy trong giới luật."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo từ bỏ nói hai lưỡi, tránh xa nói hai lưỡi, nghe điều gì ở chỗ này, không đến chỗ kia nói để sanh chia rẽ ở những người này; nghe điều gì ở chỗ kia, không đi nói với những người này để sanh chia rẽ ở những người kia."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Cũng vậy, này Ðại vương, Tỷ-kheo ấy nhờ đầy đủ giới luật, nên không thấy sợ hãi từ một chỗ nào về phương diện hộ trì giới luật. Vị ấy nhờ đầy đủ giới luật cao quý này, nên hưởng lạc thọ, nội tâm không vẩn đục. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Này Ðại vương, khi mắt thấy sắc, Tỷ-kheo không nắm giữ tướng chung, không nắm giữ tướng riêng. Những nguyên nhân gì, khiến nhãn căn không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên, Tỷ-kheo tự chế ngự nguyên nhân ấy, hộ trì nhãn căn, thực hành sự hộ trì nhãn căn. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Những nguyên nhân gì khiến ý căn không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên, Tỷ-kheo chế ngự nguyên nhân ấy, hộ trì ý căn, thực hành sự hộ trì ý căn. Vị ấy, nhờ sự hộ trì cao quý các căn ấy, nên hưởng lạc thọ nội tâm, không vẩn đục. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `Ajàtasattu, con bà Videhi, vua nước Magadha nhìn khắp chúng Tỷ-kheo đang yên lặng an tịnh như một hồ nước trong, cảm hứng nói rằng: "Mong hoàng tử Udàyibhadda cũng được sự trầm lặng như sự trầm lặng của các vị Tỷ-kheo này vậy".`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Ðại vương, cũng như con chim bay đến chỗ nào cũng mang theo hai cánh; cũng vậy, Ðại vương, vị Tỷ-kheo bằng lòng với tấm y để che thân, với đồ ăn khất thực để nuôi bụng, đi tại chỗ nào cũng mang theo. Như vậy, này Ðại vương, là Tỷ-kheo biết đủ. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Vị ấy từ bỏ tham ái ở đời, sống với tâm thoát ly tham ái, gột rửa tâm hết tham ái. Từ bỏ sân hận, vị ấy sống với tâm không sân hận, lòng từ mẫn thương xót tất cả chúng hữu tình, gột rửa tâm hết sân hận. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Từ bỏ hôn trầm, thụy miên, vị ấy sống thoát ly hôn trầm và thụy miên; với tâm tưởng hướng về ánh sáng, chánh niệm tỉnh giác, gột rửa tâm hết hôn trầm, thụy miên. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Từ bỏ trạo cử hối tiếc, vị ấy sống không trạo cử, nội tâm trầm lặng, gột rửa tâm hết trạo cử, hối tiếc. Từ bỏ nghi ngờ, vị ấy sống thoát khỏi nghi ngờ, không phân vân lưỡng lự, gột rửa tâm hết nghi ngờ. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Này Ðại vương, cũng như không mắc nợ, như không bệnh tật, như được khỏi tù tội, như được tự do, như đất lành yên ổn, này Ðại vương, Tỷ-kheo quán năm triền cái khi diệt trừ chúng. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Khi quán tự thân đã xả ly năm triền cái ấy, hân hoan sanh; do hân hoan nên hỷ sanh; do tâm hoan hỷ, thân được khinh an; do thân khinh an, lạc thọ sanh; do lạc thọ, tâm được định tĩnh. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo ly dục, ly ác pháp, chứng và trú thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, với tầm, với tứ. Tỷ-kheo thấm nhuần, tẩm ướt, làm cho sung mãn, tràn đầy thân mình với hỷ lạc do ly dục sanh, không một chỗ nào trên toàn thân không được hỷ lạc do ly dục sanh ấy thấm nhuần. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo thấm nhuần, tẩm ướt, làm cho sung mãn tràn đầy thân mình với hỷ lạc do định sanh, không một chỗ nào trên toàn thân, không được hỷ lạc do định sanh ấy thấm nhuần. Này Ðại vương, đó là quả thiết thực hiện tại của hạnh Sa-môn, còn vi diệu thù thắng hơn những quả thiết thực hiện tại của hạnh Sa-môn trước. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là 'Xả niệm lạc trú', chứng và an trú thiền thứ ba. Tỷ-kheo thấm nhuần... thân mình với lạc thọ không có hỷ ấy, không một chỗ nào trên toàn thân, không được lạc thọ không có hỷ ấy thấm nhuần. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo, xả lạc, xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và trú vào thiền thứ tư, không khổ, không lạc, xả niệm thanh tịnh. Tỷ-kheo ấy thấm nhuần toàn thân mình với tâm thuần tịnh trong sáng, không một chỗ nào trên toàn thân không được tâm thuần tịnh trong sáng ấy thấm nhuần. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Với tâm định tĩnh, thuần tịnh, không cấu nhiễm, không phiền não, nhu nhuyến, dễ sử dụng, vững chắc, bình thản như vậy, Tỷ-kheo dẫn tâm, hướng tâm đến thiên nhĩ thông. Tỷ-kheo với thiên nhĩ thanh tịnh siêu nhân có thể nghe hai loại tiếng, chư Thiên và Người, xa và gần. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Với tâm định tĩnh, thuần tịnh, không cấu nhiễm, không phiền não, nhu nhuyến, dễ sử dụng, vững chắc, bình thản như vậy, Tỷ-kheo dẫn tâm, hướng tâm đến trí huệ về sanh tử của chúng sanh. Vị ấy với thiên nhãn thuần tịnh, siêu nhân, thấy sự sống và chết của chúng sanh. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Vị ấy biết như thật 'đây là khổ', biết như thật 'đây là nguyên nhân của khổ', biết như thật 'đây là khổ diệt', biết như thật 'đây là con đường đưa đến khổ diệt', biết như thật 'đây là những lậu hoặc'... Nhờ hiểu biết như vậy, nhờ nhận thức như vậy, tâm của vị ấy thoát khỏi dục lậu, thoát khỏi hữu lậu, thoát khỏi vô minh lậu. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Ðối với tự thân đã giải thoát, vị ấy biết: Sanh đã tận, phạm hạnh đã thành, việc cần làm đã làm; sau đời hiện tại, không có đời sống nào khác nữa. Này Ðại vương, đó là quả thiết thực, hiện tại của hạnh Sa-môn, còn vi diệu thù thắng hơn những quả thiết thực hiện tại của hạnh Sa-môn trước. "`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Thật khả ái thay, đêm rằm sáng trăng! Nay chúng ta nên đến chiêm bái vị Sa-môn hay Bà-la-môn nào, nhờ sự chiêm bái này tâm chúng ta được tịnh tín?" Jìvaka thưa: "Thế Tôn Gotama có tiếng đồn tốt đẹp: 'Ðây là Thế Tôn, bậc A-la-hán... Phật, Thế Tôn'. Ðại vương hãy đến chiêm bái Thế Tôn này. Rất có thể, nhờ chiêm bái, tâm Ðại vương được tịnh tín."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Bạch Thế Tôn, con muốn hỏi Thế Tôn một vấn đề này... Chúng hưởng được kết quả thiết thực hiện tại từ công nghiệp chức nghiệp của chúng... Chúng giúp cho tự thân, vợ con, cha mẹ, bạn bè được sống an lạc, hạnh phúc. Chúng dâng các vật cúng dường cho Sa-môn, Bà-la-môn... Bạch Thế Tôn, Ngài có thể chỉ cho rõ ràng kết quả thiết thực, hiện tại của hạnh Sa-môn chăng?"`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo từ bỏ nói láo, tránh xa nói láo, nói những lời chân thật, y chỉ trên sự thật, chắc chắn, đáng tin cậy, không lường gạt, không phản lại lời hứa đối với đời. Vị ấy từ bỏ nói hai lưỡi, sống hòa hợp những kẻ ly gián, khuyến khích những kẻ hòa hợp. Như vậy là giới hạnh của vị ấy."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Trong khi một số Sa-môn, Bà-la-môn... vẫn sống nói những câu chuyện vô ích tầm thường như câu chuyện nói về vua chúa, câu chuyện về ăn trộm, câu chuyện về đại thần, câu chuyện về binh lính, câu chuyện về hãi hùng, câu chuyện về chiến tranh, câu chuyện về đồ ăn, đồ uống, và các câu chuyện vô ích khác." Còn Sa-môn Gotama từ bỏ nói những lời tầm thường vô ích như trên.`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Trong khi một số Sa-môn, Bà-la-môn... vẫn sống dùng các đồ trang sức và mỹ phẩm như thoa dầu, đấm bóp, tắm, gương kem đánh mặt, vòng hoa và phấn son, vòng tay, tóc giả trên đầu, gậy cầm tay... Còn vị ấy thì không dùng các loại trang sức và mỹ phẩm như trên."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Vị ấy tránh xa các tà mạng như: hỏi gương soi, hỏi phù đồng thiếu nữ, hỏi thiên thần để biết họa phước, thờ mặt trời, thờ đại địa, phun ra lửa, cầu Siri thần tài, dùng bùa chú để giúp người được may mắn, hay khiến người bị rủi ro. Như vậy là giới hạnh của vị ấy trong giới luật."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Vị ấy tránh xa các tà mạng như: dùng các ảo thuật để được yên ổn, lễ rửa miệng, lễ tắm, lễ hy sinh, làm cho mửa, làm cho xổ, bài tiết các nhơ bẩn... chữa bệnh cho mắt, làm thầy thuốc, mổ xẻ chữa bệnh cho con nít, cho thuốc uống bằng các loại rễ cây, ngăn ngừa công hiệu của thuốc."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Khi mắt thấy sắc, Tỷ-kheo không nắm giữ tướng chung, không nắm giữ tướng riêng. Những nguyên nhân gì, khiến nhãn căn không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên, Tỷ-kheo tự chế ngự nguyên nhân ấy, hộ trì nhãn căn... Vị ấy nhờ sự hộ trì cao quý các căn ấy, nên hưởng lạc thọ nội tâm, không vẩn đục."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo khi đi tới, đi lui, biết rõ mình đang đi tới, đi lui; khi nhìn tới, nhìn lui, biết rõ mình đang nhìn tới, nhìn lui; khi co tay, duỗi tay, biết rõ mình đang co tay, duỗi tay... Như vậy, Tỷ-kheo sống chánh niệm tỉnh giác, thực hành sự chánh niệm tỉnh giác."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo ly dục, ly ác pháp, chứng và trú thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, với tầm, với tứ. Tỷ-kheo thấm nhuần, tẩm ướt, làm cho sung mãn, tràn đầy thân mình với hỷ lạc do ly dục sanh, không một chỗ nào trên toàn thân không được hỷ lạc ấy thấm nhuần."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo, xả lạc, xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và trú vào thiền thứ tư, không khổ, không lạc, xả niệm thanh tịnh. Tỷ-kheo ấy thấm nhuần toàn thân mình với tâm thuần tịnh trong sáng, không một chỗ nào trên toàn thân không được tâm thuần tịnh trong sáng ấy thấm nhuần."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Tỷ-kheo, thể hiện nhiều loại thần thông như: một thân biến thành nhiều thân, nhiều thân biến thành một thân; hiện hình biến hình, đi ngang qua vách, qua tường, qua núi, như đi ngang qua hư không; độn thổ trồi lên, ngang qua đất liền như ở trong nước; đi trên nước không chìm như đi trên đất liền... có thể tự thân bay đến cõi Phạm thiên."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `"Nhờ hiểu biết như vậy, nhận thức như vậy, tâm của vị ấy thoát khỏi dục lậu, thoát khỏi hữu lậu, thoát khỏi vô minh lậu. Ðối với tự thân đã giải thoát, vị ấy biết: Sanh đã tận, phạm hạnh đã thành, việc cần làm đã làm; sau đời hiện tại, không có đời sống nào khác nữa. Này Ðại vương, đó là quả thiết thực hiện tại của hạnh Sa-môn."`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+
+{ text: `Ví như một tòa lầu có thượng đài, giữa ngã tư đường, một người có mắt đứng trên ấy, sẽ thấy những người đi vào nhà, đi từ nhà ra, đi qua lại trên đường... Cũng vậy, Tỷ-kheo thấy sự sống và chết của chúng sanh.`, ref: "DN 2 – Kinh Sa-môn Quả ", url: "../dn/dn2.html#content" },
+{ text: `"Những tiếng đồn tốt đẹp sau đây được truyền đi về Sa-môn Gotama: 'Ngài là bậc Thế Tôn, A-la-hán, Chánh Ðẳng Giác, Minh Hạnh Túc, Thiện Thệ, Thế Gian Giải, Vô Thượng Sĩ, Ðiều Ngự Trượng Phu, Thiên Nhân Sư, Phật, Thế Tôn.' Ngài thuyết pháp, sơ thiện, trung thiện, hậu thiện, nghĩa văn đầy đủ, trình bày phạm hạnh hoàn toàn đầy đủ, thanh tịnh.`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `"Theo truyền thống của chúng ta về ba mươi hai tướng của vị đại nhân, những ai có ba mươi hai tướng ấy sẽ chọn trong hai con đường, không có đường nào khác. Nếu là tại gia, sẽ thành vị Chuyển luân Thánh vương... Nếu vị này xuất gia... sẽ chứng quả A-la-hán, Chánh Ðẳng Giác, quét sạch mê lầm ở đời. "`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `"Này Ambattha, cũng như con chim cáy, con chim cáy con có thể tự hát thỏa thích trong tổ của nó.  Này Ambattha, Kapilavatthu thuộc dòng họ Thích ca. Thật không xứng để cho Ambattha phải phật lòng vì một vấn đề nhỏ mọn này. "`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `Bài kệ này do Phạm thiên SanamaKumàra thuyết:\n'Ðối với chúng sanh tin tưởng ở giai cấp,\nSát-đế-lỵ chiếm địa vị tối thắng ở nhân gian.\nNhững vị nào giới hạnh và trí tuệ đầy đủ,\nvị này chiếm địa vị tối thắng giữa Người và chư Thiên.'`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `"Những ai còn chấp trước lý thuyết thọ sanh, còn chấp trước lý thuyết giai cấp, còn chấp trước lý thuyết kiêu mạn, hoặc còn chấp trước cưới hỏi rước dâu, những người ấy còn rất xa sự thành tựu vô thượng trí đức. "`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `"Không chấp trước lý thuyết thọ sanh, không chấp trước lý thuyết giai cấp, không chấp trước lý thuyết kiêu mạn, không chấp trước cưới hỏi, đưa dâu, người ấy tức chứng ngộ vô thượng trí đức. Không có sự thành tựu trí đức nào khác siêu việt hơn, cao thượng hơn sự thành tựu trí đức này. "`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `Thật vi diệu thay, Tôn giả Gotama! Thật vi diệu thay, Tôn giả Gotama! Như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho người bị lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy, chánh pháp đã được Tôn giả Gotama dùng nhiều phương tiện trình bày, giải thích.`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `Thế Tôn liền thứ lớp giảng pháp cho Bà-la-môn Pokkharasàdi, thuyết về bố thí, thuyết về trì giới, thuyết về các cõi trời, trình bày sự nguy hiểm, sự hạ liệt, sự nhiễm ô của dục lạc và sự lợi ích của xuất ly. Khi Thế Tôn biết tâm của Bà-la-môn Pokkharasàdi đã sẵn sàng, đã nhu thuận, không còn chướng ngại, được phấn khởi, được tín thành, liền thuyết pháp mà chư Phật đã chứng ngộ, tức là khổ, tập, diệt, đạo. Cũng như tấm vải thuần bạch, được gột rửa các vết đen, sẽ rất dễ thấm màu nhuộm, cũng vậy, chính chỗ ngồi này, pháp nhãn xa trần ly cấu khởi lên trong tâm Bà-la-môn Pokkharasàdi: "Phàm pháp gì được tập khởi lên đều bị tiêu diệt".`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `Như vậy, này Ambattha, ngươi và thầy ngươi không phải là một ẩn sĩ, không sống đời sống của nhà ẩn sĩ. Này Ambattha, nếu có gì nghi ngờ, có gì phân vân về Ta, hãy hỏi Ta và Ta sẽ trả lời.`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+
+{ text: `Ambattha, ngươi nghĩ thế nào? Ngươi có được nghe những vị Bà-la-môn, trưởng lão, tôn túc, những vị giáo sư và tổ sư nói đến không? Thuở xưa những vị ẩn sĩ, giữa các Bà-la-môn, những tác giả của chú thuật, những nhà tụng tán các chú thuật đã hát, đã nói lên, đã sưu tầm những Thánh cú mà nay những Bà-la-môn, cũng hát lên, nói lên, đọc lên giống như các vị trước đã làm. Những vị ẩn sĩ ấy tên là Atthaka, Vàmaka,..., Kassapa, Bhagu. Những vị ấy có khéo tắm, khéo chải chuốt, tóc và râu khéo sửa soạn, trang điểm với vòng hoa và ngọc, mặc toàn đồ trắng, tận hưởng và tham đắm năm món dục lạc, như người và thầy của ngươi hiện nay không?`, ref: "DN 3 – Kinh Ambattha ", url: "../dn/dn3.html#content" },
+{ text: `Này Bà-la-môn, trí tuệ được giới hạnh làm cho thanh tịnh, giới hạnh được trí tuệ làm cho thanh tịnh. Chỗ nào có giới hạnh, chỗ ấy có trí tuệ; chỗ nào có trí tuệ, chỗ ấy có giới hạnh. Người có giới hạnh nhất định có trí tuệ; người có trí tuệ nhất định có giới hạnh. Giới hạnh và trí tuệ được xem là tối thắng ở trên đời.`, ref: "DN 5 – Kinh Kūṭadanta", url: "../dn/dn5.html#content" },
+
+
+{ text: `Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu, này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.`, ref: "DN 8 – Đại Kinh Sử Tử Hống", url: "../dn/dn8.html#content" },
+
+{ text: `Ta đến các vị ấy và nói: “Này các Hiền giả, những điểm bất đồng ý, hãy để chúng yên như vậy. Những điểm đồng ý, các vị có trí hãy hỏi nhau, tìm hiểu và đàm luận với nhau, giáo sư với giáo sư, hay chúng đệ tử với chúng đệ tử: “Những pháp bất thiện hay được xem là bất thiện, những pháp lỗi lầm hay được xem là lỗi lầm, những pháp không nên tuân hành hay được xem là không nên tuân hành, những pháp không xứng bậc Thánh hay được xem là không xứng đáng bậc Thánh, những pháp ô nhiễm hay được xem là ô nhiễm.`, ref: "DN 8 – Đại Kinh Sử Tử Hống", url: "../dn/dn8.html#content" },
+
+{ text: `Này Kassapa, và sự tình này xảy ra. Khi các vị có trí hỏi nhau, tìm hiểu và đàm luận với nhau, các vị này nói: “Những pháp thiện hay được xem là thiện, những pháp không lỗi lầm hay được xem là không lỗi lầm, những pháp nên tuân hành hay được xem là nên tuân hành, những pháp xứng bậc Thánh hay được xem là xứng bậc Thánh, những pháp thanh tịnh hay được xem là thanh tịnh, Sa-môn Gotama đã hoàn toàn thành tựu những pháp này, còn những vị tôn giả, sư trưởng các giáo phái kia chỉ thành tựu một phần”.`, ref: "DN 8 – Đại Kinh Sử Tử Hống", url: "../dn/dn8.html#content" },
+
+
+{ text: `Du sĩ ngoại đạo Poṭṭhapāda thấy Thế Tôn từ xa đến, liền khuyến cáo chúng của mình: “Các Tôn giả hãy nhỏ tiếng, các Tôn giả hãy đừng làm ồn. Nay Sa-môn Gotama đang đến, Ngài ưa mến sự trầm lặng, vị Ðại đức này tán thán sự trầm lặng. Nếu biết chúng này yên tịnh, Ngài có thể ghé đến đây”. Nghe nói vậy, các du sĩ ngoại đạo liền im lặng.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `Cũng vậy, này Poṭṭhapāda, Tỷ-kheo ấy nhờ đầy đủ giới luật nên không thấy sợ hãi từ một chỗ nào về phương diện hộ trì giới luật. Vị ấy nhờ đầy đủ giới luật cao quý này, nên hưởng lạc thọ nội tâm không lỗi lầm. Như vậy, này Poṭṭhapāda, Tỷ-kheo đầy đủ giới luật.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `Này Poṭṭhapāda, khi Tỷ-kheo ở đây tự mình khởi tưởng, vị này tiếp tục đi từ tưởng này đến tưởng khác cho đến tưởng tột đỉnh. Và vị này, khi đứng lại tưởng tột đỉnh có thể nghĩ: “Tâm còn suy tưởng, có hại cho ta, tâm không suy tưởng mới tốt cho ta. Nếu ta cứ tiếp tục suy tưởng khi những tưởng này của ta diệt đi, các thô tưởng khác lại khởi lên. Vậy ta hãy đừng có suy tưởng”. Và vị này không có suy tưởng. Do không có suy tưởng, các tưởng kia diệt tận và các thô tưởng khác cũng không khởi lên. Vị ấy cảm thọ sự diệt tận. Như vậy này Poṭṭhapāda là sự chứng đạt trí tuệ diệt trừ dần dần các tăng thượng tưởng.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `"- Bạch Thế Tôn, tưởng khởi trước, trí khởi sau; hay trí khởi trước tưởng khởi sau; hay tưởng và trí cùng khởi một lần không trước không sau?" - Này Poṭṭhapāda, tưởng khởi trước trí mới khởi sau, do tưởng sanh, trí mới sanh. Vị ấy tuệ tri: “Do duyên tưởng, trí sanh ra nơi ta”. Này Poṭṭhapāda, với lời dạy này cần phải hiểu tưởng sanh trước trí sanh sau, tưởng sanh trí mới sanh.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `—Thật vi diệu thay, bạch Thế Tôn! Thật vi diệu thay, bạch Thế Tôn! Như người dựng lại những gì bị quăng ngã xuống, phơi bày những gì bị che kín, chỉ đường cho những người lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy chánh pháp đã được Thế Tôn dùng nhiều phương tiện trình bày, giải thích. Bạch Thế Tôn, con xin quy y Thế Tôn, quy y Pháp và quy y chúng Tỷ-kheo. Mong Thế Tôn nhận con làm đệ tử, từ nay trở đi cho đến mạng chung, con trọn đời quy ngưỡng.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `Này Poṭṭhapāda, Khi nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, ngay hiện tại tự mình giác ngộ, với thắng trí, chứng đạt và an trú trí tuệ sung mãn, quảng đại, thời hân hoan sanh, hoan hỷ, khinh an, chánh niệm, tỉnh giác và lạc trú sanh.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `Này Poṭṭhapāda, những pháp gì được Ta tuyên thuyết trình bày một cách dứt khoát? “Ðây là khổ”, này Poṭṭhapāda, đó là pháp được Ta tuyên thuyết trình bày một cách dứt khoát. “Ðây là khổ tập”, này Poṭṭhapāda, đó là pháp được Ta tuyên thuyết trình bày một cách dứt khoát. “Ðây là khổ diệt”, này Poṭṭhapāda, đó là pháp được Ta tuyên thuyết trình bày một cách dứt khoát. “Ðây là con đường đưa đến khổ diệt”, này Poṭṭhapāda, đó là pháp được Ta tuyên thuyết, trình bày một cách dứt khoát.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `Này Poṭṭhapāda, những pháp thuộc về đích giải thoát, thuộc về Pháp, thuộc căn bản phạm hạnh, đưa đến yểm ly, đến ly tham, đến tịch diệt, đến tịch tịnh, đến thắng trí, đến giác ngộ, đến Niết-bàn. Vì vậy những pháp ấy được Ta tuyên thuyết trình bày một cách dứt khoát.`, ref: "DN 9 – Kinh Poṭṭhapāda", url: "../dn/dn9.html#content" },
+
+{ text: `Này Kevaddha, thế nào là giáo hóa thần thông? Ở đời có Tỷ-kheo giáo hóa như sau: “Hãy suy tư như thế này, chớ có suy tư như thế kia; hãy tác ý như thế này, chớ có tác ý như thế kia; hãy trừ bỏ điều này, hãy chứng đạt và an trú điều kia”. Này Kevaddha, như vậy gọi là giáo hóa thần thông.`, ref: "DN 10 – Kinh Kevaddha", url: "../dn/dn10.html#content" },
+
+{ text: `“Thức là không thể thấy, vô biên,\nbiến thông hết thảy xứ.\nỞ đây, địa đại, thủy đại,\nhỏa đại, phong đại không có chân đứng.\nỞ đây, cũng vậy dài, ngắn,\ntế, thô, tịnh và bất tịnh.\nỞ đây danh và sắc tiêu diệt hoàn toàn.\nKhi thức diệt, ở đây mọi thứ đều diệt tận”.`, ref: "DN 10 – Kinh Kevaddha", url: "../dn/dn10.html#content" },
+
+
+{ text: `- Này Vāsaṭṭha, những Bà-la-môn tinh thông ba tập Vedà không biết, không thấy con đường đưa đến cộng trú với Phạm thiên mà thuyết dạy: “Ðây là trực đạo, đây là chánh đạo hướng đến, dẫn đến cộng trú với Phạm thiên cho những ai thực hành theo”, thật không thể có sự kiện ấy. Này Vāsaṭṭha, ví như một chuỗi người mù ôm lưng nhau, người trước không thấy, người giữa cũng không thấy, người cuối cùng cũng không thấy. Như vậy, này Vāsaṭṭha lời nói của những Bà-la-môn tinh thông ba tập Vedà, người đầu không thấy, giữa cũng không thấy, người cuối cùng cũng không thấy, giống như lời nói mù quáng. Lời nói của những Bà-la-môn tinh thông ba tập Vedà như vậy là lời nói đáng chê cười, là lời nói suông, là lời nói không tưởng, là lời nói trống rỗng.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Người gia trưởng hay con vị gia trưởng, hay một người sinh ở giai cấp (hạ tiện) nào nghe pháp ấy. Sau khi nghe pháp, người ấy sanh lòng tín ngưỡng Như Lai. Khi có lòng tin ngưỡng ấy, vị này suy nghĩ: “Ðời sống tại gia đầy những triền phược, con đường đầy những bụi đời. Ðời sống xuất gia phóng khoáng như hư không. Thật rất khó cho một người sống tại gia có thể sống theo phạm hạnh hoàn toàn đầy đủ, hoàn toàn thanh tịnh, trắng bạch như vỏ ốc. Vậy ta nên cạo bỏ râu tóc, đắp áo cà sa, xuất gia, từ bỏ gia đình”.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Này Vāseṭṭha, năm pháp khiến dục lạc tăng thịnh ấy, các Bà-la-môn tinh thông ba tập Vedā chấp trước, mê đắm, bị trói buộc, không thấy nguy hiểm của chúng, không nhận thức sự không thoát ly của chúng, đã tận hưởng năm pháp ấy. Này Vāseṭṭha, những Bà-la-môn tinh thông ba tập Vedā, loại bỏ những pháp tác thành người Bà-la-môn, tuân theo những pháp không tác thành người Bà-la-môn, chấp trước, mê đắm, bị trói buộc, không thấy nguy hiểm của chúng, không nhận thức sự không thoát ly của chúng, tận hưởng chúng, bị trói buộc bởi sự trói buộc của dục lạc, sau khi thân hoại mạng chung sẽ cộng trú với Phạm thiên, thật không có sự kiện ấy.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Này Vàsettha, như một người muốn xây tại ngã tư đường một cái thang để leo lên lầu. Có người hỏi: "Này bạn, Ông muốn xây một cái thang để leo lên lầu, vậy Ông có biết lầu ấy là về hướng Ðông, hay về hướng Tây, hay về hướng Bắc, hay về hướng Nam? Nhà lầu ấy cao hay thấp, hay trung bình?". Ðược hỏi vậy, vị ấy trả lời không biết. Có người hỏi: "Này bạn, như vậy có phải Ông xây một cái thang để leo lên một cái lầu mà Ông không biết, không thấy?". Hỏi vậy, vị ấy trả lời phải. Này Vàsettha, ngươi nghĩ thế nào? Sự kiện là như vậy, thời có phải lời nói người kia không chánh xác, hợp lý?`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Này Vàsettha, như sông Aciravati này, đầy tràn cho đến bờ khiến con quạ có thể uống được. Có người đến, có sự việc bên bờ bên kia, tìm đến bờ bên kia, hướng đến bờ bên kia và muốn lội qua bờ bên kia. Người đứng bờ bên này kêu bờ bên kia và nói: "Bờ bên kia, hãy lại đây! Bờ bên kia, hãy lại đây". Này Vàsettha, Ngươi nghĩ thế nào? Có phải vì người kia kêu gọi bờ bên kia, vì cầu khẩn, vì hy vọng, vì tán thán mà bờ bên kia của sông Aciravati đến bờ bên này không? "- Tôn giả Gotama, không thể vậy."`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Cũng vậy, này Vàsettha, có năm triền cái được gọi là chướng ngại, cũng được gọi là triền cái, cũng được gọi là màn che, cũng được gọi là triền phược trong giới luật của bậc Thánh. Thế nào là năm? Dục cái, sân cái, hôn trầm thụy miên cái, trạo hối cái, nghi cái. Này Vàsettha, năm triền cái này được gọi là chướng ngại, cũng được gọi là triền cái, cũng được gọi là màn che, cũng được gọi là triền phược. Này Vàsettha, các Bà-la-môn tinh thông ba tập Vedà, bị chướng ngại, bị triền phược, bị che đậy, bị trói buộc bởi năm triền cái này, Này Vàsettha, thật vậy, những Bà-la-môn tinh thông ba tập Vedà, loại bỏ những pháp tác thành người Bà-la-môn, tuân theo những pháp không tác thành người Bà-la-môn, bị chướng ngại, bị triền phược, bị che đậy, bị trói buộc bởi năm triền cái, sau khi thân hoại mạng chung, sẽ cộng trú với Phạm thiên - Thật không thể có sự kiện ấy.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Này Vàsettha, như sông Acivarati này, đầy tràn cho đến bờ khiến con quạ có thể uống được. Có người đến, có sự việc bên bờ bên kia, tìm đến bờ bên kia, hướng đến bờ bên kia và muốn lội qua bờ bên kia. Người này ở bên bờ này trùm đầu và nằm ngủ. Này Vàsettha, nhà Ngươi nghĩ thế nào? Người ấy có thể từ bên này của sông Aciravati đến bờ bên kia không? "- Tôn giả Gotama, không có thể được."`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `"Tỷ-kheo có tự tại, Phạm Thiên có tự tại. Giữa Tỷ-kheo có tự tại với Phạm thiên có tự tại, có thể có một sự cộng hành, cộng trú không? - Tôn giả Gotama, có thể có được. - Lành thay, Vàsettha. Này Vàsettha, Tỷ-kheo sau khi thân hoại mạng chung sẽ cộng trú với Phạm thiên. Sự kiện ấy thật có thể có."`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Này Vàsettha, như người lực sĩ thổi tù và khiến tiếng được nghe khắp bốn phương, không có gì khó khăn, cũng vậy này Vàsettha, đối với mọi hình thức của sự sống, không có ai là vị ấy bỏ qua hay bỏ sót mà không biến mãn với tâm giải thoát, câu hữu với từ. Này Vàsettha, đó là con đường đưa đến cộng trú với Phạm thiên.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Lại nữa, này Vàsettha, vị Tỷ-kheo an trú,  biến mãn một phương với tâm câu hữu với từ... với tâm câu hữu với bi... với tâm câu hữu với hỷ... biến mãn một phương với tâm câu hữu với xả, cũng vậy phương thứ hai, cũng vậy phương thứ ba, cũng vậy phương thứ tư. Như vậy, cùng khắp thế giới, trên, dưới, bề ngang hết thảy phương xứ, cùng khắp vô biên giới, vị ấy an trú biến mãn với tâm câu hữu với xả, quảng đại, vô biên, không hận, không sân.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Khi đã xuất gia như vậy, vị ấy sống chế ngự với sự chế ngự của giới bổn Pàtimokkha, đầy đủ oai nghi chánh hạnh, thấy nguy hiểm trong những lỗi nhỏ nhặt, thọ lãnh và tu học trong giới pháp, thân nghiệp, ngữ nghiệp, thanh tịnh. Mạng sống trong sạch, giới hạnh đầy đủ, thủ hộ các căn, chánh niệm, tỉnh giác và biết tri túc.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Này Vàsettha, đối với người ấy đã sinh trưởng Manasàkata, còn có thể nghi ngờ và có khó khăn hỏi đến con đường đưa đến Manasàkata nhưng đối với Như Lai thì không có nghi ngờ hay khó khăn gì khi hỏi đến Phạm thiên giới hay con đường đưa đến Phạm thiên giới! Này Vàsettha, Ta biết đến Phạm thiên, Phạm thiên giới và con đường đưa đến Phạm thiên giới.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `Này Vàsettha, ở đời các Bà-la-môn dầu có tinh thông ba tập Vedà, khi các vị này ngồi với sự tự tín, thật sự đang chìm trong bùn lầy, và khi đang chìm trong bùn lầy, phải sống trong thất vọng, lầm tưởng rằng đã đến cảnh giới an lạc hơn. Do vậy đối với những Bà-la-môn tinh thông Vedà sự tinh thông ấy được gọi là bãi sa mạc không có nước, sự tinh thông ấy cũng được gọi là rừng rậm không có đường lối, sự tinh thông ấy cũng được gọi là sự bất hạnh.`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+
+{ text: `"Phạm thiên có dục ái hay không dục ái? - Tôn giả Gotama, không có dục ái. - Có hận tâm hay không hận tâm? - Tôn giả Gotama, không có hận tâm. - Có sân tâm hay không sân tâm? - Tôn giả Gotama, không có sân tâm. - Có nhiễm tâm hay không có nhiễm tâm? - Tôn giả Gotama, không có nhiễm tâm. - Có tự tại hay không có tự tại? - Tôn giả Gotama, có tự tại." "Các Bà-la-môn tinh thông ba tập Vedà có dục ái hay không dục ái? - Tôn giả Gotama, có dục ái. - Có hận tâm hay không hận tâm? - Tôn giả Gotama, có hận tâm. - Có sân tâm hay không có sân tâm? - Tôn giả Gotama, có sân tâm. - Có nhiễm tâm hay không có nhiễm tâm? - Tôn giả Gotama, có nhiễm tâm. - Có tự tại hay không có tự tại? - Tôn giả Gotama, không có tự tại." "Này Vàsettha, Ngươi nói rằng các Bà-la-môn tinh thông ba tập Vedà là có tham ái, Phạm thiên không có tham ái. Giữa các Bà-la-môn tinh thông ba tập Vedà là có tham ái với Phạm thiên không có tham ái, có thể có một sự cộng hành, cộng trú không? - Tôn giả Gotama, không thể có được."`, ref: "DN 13 – Kinh Tam Minh", url: "../dn/dn13.html#content" },
+{ text: `Này các Tỷ-kheo, hoàng tử Vipassì trên đường đi đến vườn ngự uyển, thấy một người già nua, lưng còng như nóc nhà, chống gậy, vừa đi vừa run rẩy, khổ não, không còn đâu là tuổi trẻ. Thấy vậy hoàng tử hỏi người đánh xe: “Này khanh, người đó là ai vậy? Sao thân người đó không giống các người khác?”: “Tâu Hoàng tử, người đó là một người được gọi là già vậy”. “Này khanh, sao người ấy được gọi là một người già?”: “Tâu Hoàng tử, người ấy gọi là già vì nay người ấy sống không bao lâu nữa”. “Này khanh, vậy rồi Ta có bị già không, một người chưa qua tuổi già?”: “Tâu Hoàng tử, Hoàng tử và cả con nữa, chúng ta tất cả sẽ bị già nua, dầu chúng ta chưa qua tuổi già!”: “Này khanh, thôi nay thăm vườn ngự uyển như vậy là vừa rồi. Hãy cho đánh xe trở về cung”. “Thưa vâng, Hoàng tử”. Này các Tỷ-kheo, hoàng tử Vipassì về trong cung, đau khổ, sầu muộn và suy nghĩ. “Sỉ nhục thay, cái gọi là sanh. Và ai sanh ra cũng phải già yếu như vậy!”.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, rồi Bồ-tát Vipassì suy nghĩ như sau: “Thức này xoay trở lui lại, từ nơi danh sắc, không vượt khỏi danh sắc. Chỉ như thế này, con người được sanh ra hay trở thành già, hay bị chết, hay từ biệt cõi này, hay sanh lại ở cõi khác, nghĩa là do duyên danh sắc, thức sanh; do duyên thức, danh sắc sanh; do duyên danh sắc, lục nhập sanh; do duyên lục nhập, xúc sanh; do duyên xúc, thọ sanh; do duyên thọ, ái sanh; do duyên ái, thủ sanh; do duyên thủ, hữu sanh; do duyên hữu, sanh sanh; do duyên sanh, lão, tử, sầu bi, khổ ưu não sanh. Như vậy là sự tập khởi của toàn bộ khổ uẩn này”.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, rồi Bồ-tát Vipassì suy nghĩ: “Ôi, Ta đã chứng được con đường đưa đến Bồ-đề, nhờ pháp tu quán. Nghĩa là, do danh sắc diệt, thức diệt; do thức diệt, danh sắc diệt; do danh sắc diệt, lục nhập diệt; do lục nhập diệt, xúc diệt; do xúc diệt, thọ diệt, do thọ diệt, ái diệt; do ái diệt, thủ diệt; do thủ diệt, hữu diệt; do hữu diệt, sanh diệt; do sanh diệt, già, chết, ưu, bi, khổ, sầu, não diệt. Như vậy, toàn bộ khổ uẩn diệt”.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, hoàng tử Vipassì trên đường đi đến ngự uyển thấy một vị xuất gia, đầu trọc, đắp áo cà sa. Thấy vậy, hoàng tử hỏi người đánh xe: “Này khanh, người này đã làm gì, mà đầu người ấy lại khác đầu của những người khác, và áo của người ấy cũng khác áo của những người khác?”: “Tâu Hoàng tử, người ấy được gọi là người xuất gia!”: “Này khanh, sao người ấy được gọi là người xuất gia?”: “Tâu Hoàng tử, xuất gia nghĩa là khéo tu phạm hạnh, khéo tu tịnh hạnh, khéo hành thiện nghiệp, khéo hành công đức nghiệp, khéo giữ không hại chúng sanh, khéo có lòng từ đối với chúng sanh!”: “Này khanh, hãy đánh xe đến gần vị xuất gia”. “Thưa vâng, Hoàng tử”.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, rồi hoàng tử Vipassì hỏi vị xuất gia: “Thưa Hiền giả, Ngài đã làm gì, mà đầu của Ngài không giống những người khác, và áo của Ngài không giống các người khác?”: “Thưa Hoàng tử, tôi là một người xuất gia!”: “Thưa Hiền giả, thế nào gọi là người xuất gia?”: “Thưa Hoàng tử, tôi là người được gọi là xuất gia, vì tôi khéo tu phạm hạnh, khéo tu tịnh hạnh, khéo hành thiện nghiệp, khéo hành công đức nghiệp, khéo giữ không hại chúng sanh, khéo có lòng từ đối với chúng sanh”. “Thưa Hiền giả, lành thay hạnh xuất gia của Ngài, lành thay khéo tu phạm hạnh, khéo tu tịnh hạnh, khéo hành thiện nghiệp, khéo hành công đức nghiệp, khéo giữ không hại chúng sanh, khéo có lòng từ đối với chúng sanh”.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, trong khi yên lặng tịnh cư, Bồ-tát Vipassì suy nghĩ: “Sao Ta lại sống bị bao vây bởi đồ chúng này. Tốt hơn là Ta sống một mình, lánh xa đồ chúng này!”`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, rồi Bồ-tát Vipassì, sau một thời gian sống quán sự sanh diệt trong năm uẩn: “Ðây là sắc, đây là sắc tập khởi, đây là sắc diệt. Ðây là thọ, đây là thọ tập khởi, đây là thọ diệt. Ðây là tưởng, đây là tưởng tập khởi, đây là tưởng diệt. Ðây là hành, đây là hành tập khởi, đây là hành diệt! Ðây là thức, đây là thức tập khởi, đây là thức diệt”. Và đối với Ngài, sau khi sống quán pháp sanh diệt trong năm thủ uẩn, chẳng bao lâu các lậu hoặc được tiêu trừ và Ngài được giải thoát.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, Thế Tôn Vipassì, bậc A-la-hán, Chánh Ðẳng Giác suy nghĩ: “Pháp này do Ta chứng được, thật là sâu kín, khó thấy, khó chứng, tịch tịnh, cao thượng, siêu lý luận, vi diệu, chỉ người trí mới hiểu thấu. Còn quần chúng này thì ưa ái dục, khoái ái dục, ham thích ái dục. Ðối với quần chúng ưa ái dục, khoái ái dục, ham thích ái dục, thật khó mà thấy được định lý “Y tánh duyên khởi pháp” (idapaccayatā paṭicca samuppāda); thật khó mà thấy được định lý tất cả hành là tịch tịnh, tất cả sanh y được trừ bỏ, ái được đoạn tận, ly dục, ái diệt, Niết-bàn. Nếu nay Ta thuyết pháp mà các người khác không hiểu Ta, thời như vậy thật khổ não cho Ta!”`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, Thế Tôn Vipassì, bậc A-la-hán, Chánh Ðẳng Giác nhìn đời với Phật nhãn, thấy có hạng chúng sanh nhiễm ít bụi đời, nhiễm nhiều bụi đời, có hạng lợi căn độn căn, có hạng tánh thuận tánh nghịch, có hạng dễ dạy khó dạy, và một số ít thấy sự nguy hiểm phải tái sanh thế giới khác và sự nguy hiểm của những hành động lỗi lầm. Như trong hồ sen xanh, sen hồng hay sen trắng, có một số hoa sen xanh, sen hồng hay sen trắng sanh ra dưới nước, lớn lên dưới nước, không vượt lên khỏi mặt nước, được nuôi dưỡng dưới nước; có một số hoa sen xanh, sen hồng hay sen trắng sanh ra dưới nước lớn lên dưới nước, sống vươn lên tới mặt nước, có một số hoa sen xanh, sen hồng hay sen trắng sanh ra dưới nước lớn lên dưới nước vươn lên khỏi mặt nước, không bị nước làm đẫm ướt.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+
+{ text: `Này các Tỷ-kheo, Thế Tôn Vipassì, bậc A-la-hán, Chánh Ðẳng Giác, giữa chúng Tỷ-kheo, tụng đọc giới bổn này:\n\n“Chư Phật dạy Niết-bàn là đệ nhất.\n“Nhẫn nhục, khổ hạnh, kham nhẫn, là đệ nhất.\n“Người xuất gia hại người xuất gia khác.\n“Hại người khác như vậy không xứng gọi là Sa-môn.\n\n“Mọi điều ác không làm, hướng tâm các thiện nghiệp.\n“Giữ tâm trí thanh tịnh, chính lời chư Phật dạy.\n\n“Không chỉ trích, không đánh đập, giữ mình trong giới bổn.\n“Ăn uống có tiết độ, ngủ nghỉ riêng một mình.\n“Hướng tâm đến cao khiết, chính lời chư Phật dạy”.`, ref: "DN 14 – Kinh Ðại bổn", url: "../dn/dn14.html#content" },
+{ text: `Này Ānanda khi nào dân Vajjì, không ban hành những luật lệ không được ban hành, không hủy bỏ những luật lệ đã được ban hành, sống đúng với truyền thống của dân Vajjì như đã ban hành thuở xưa thời, này Ānanda, dân Vajjì sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, khi nào dân Vajjì tôn sùng, kính trọng, đảnh lễ, cúng dường các bậc trưởng lão Vajjì và nghe theo lời dạy của những vị này, thời dân Vajjì sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo tụ họp trong niệm đoàn kết, giải tán trong niệm đoàn kết, và làm việc Tăng sự trong niệm đoàn kết, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không ban hành những luật lệ không được ban hành, không hủy bỏ những luật lệ đã được ban hành, sống đúng với những học giới được ban hành, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo tôn sùng, kính trọng, đảnh lễ, cúng dường các bậc Tỷ-kheo thượng tọa những vị này là những vị giàu kinh nghiệm, niên cao lạp trưởng, bậc cha của chúng Tăng, bậc thầy của chúng Tăng và nghe theo lời dạy của những vị này, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không bị chi phối bởi tham ái, tham ái này tác thành một đời sống khác, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo thích sống những chỗ nhàn tịnh, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo tự thân an trú chánh niệm, khiến các bạn đồng tu thiện chí chưa đến muốn đến ở, và các bạn đồng tu thiện chí đã đến ở, được sống an lạc, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không ưa thích làm thế sự, không hoan hỷ làm thế sự, không đam mê làm thế sự, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không ưa thích phiếm luận, không hoan hỷ phiếm luận, không đam mê phiếm luận, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không ưa thích ngủ nghỉ, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không ưa thích quần tụ, không hoan hỷ quần tụ, không đam mê quần tụ, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không có ác dục vọng, không bị chi phối bởi ác dục vọng, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào chúng Tỷ-kheo không bạn bè ác dục vọng, không thân tín ác dục vọng, không cộng hành với ác dục vọng, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các, Tỷ-kheo khi nào các vị Tỷ-kheo đối với các vị đồng tu phạm hạnh, tại chỗ đông người và vắng người, gìn giữ thân nghiệp từ hòa, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào các vị Tỷ-kheo đối với các vị đồng tu phạm hạnh, tại chỗ đông người và vắng người gìn giữ khẩu nghiệp từ hòa, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào các vị Tỷ-kheo đối với các vị đồng tu phạm hạnh, tại chỗ đông người và vắng người, gìn giữ ý nghiệp từ hòa, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào các vị Tỷ-kheo phân phối không thiên vị, chung thọ hưởng với các bạn giới đức đồng tu, mọi lợi dưỡng chơn chánh, hợp pháp, cho đến những vật thọ lãnh trong bình bát khất thực, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào các vị Tỷ-kheo sống với các bạn đồng tu, tại chỗ đông người và vắng người, trong sự thọ trì những giới luật đúng với Sa-môn hạnh, những giới luật không bị gẫy vụn, không bị sứt mẻ, không bị tỳ vết, không bị uế trược, những giới luật đưa đến giải thoát, được người có trí tán thán, không bị ô nhiễm bởi mục đích sai lạc, những giới luật hướng đến định tâm, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi nào các vị Tỷ-kheo sống với các bạn đồng tu, tại chỗ đông người và vắng người, trong sự thọ trì những tri kiến đúng với Sa-môn hạnh, những thánh tri kiến đưa đến giải thoát, hướng đến sự diệt tận khổ đau cho những ai thực hành theo, thời này các Tỷ-kheo, chúng Tỷ-kheo sẽ được cường thịnh, không bị suy giảm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Ðây là Giới, đây là Ðịnh, đây là Tuệ, Ðịnh cùng tu với Giới sẽ đưa đến quả vị lớn, lợi ích lớn. Tuệ cùng tu với Ðịnh sẽ đưa đến quả vị lớn, lợi ích lớn. Tâm cùng tu với Tuệ sẽ đưa đến giải thoát hoàn toàn các món lậu hoặc, tức là dục lậu, hữu lậu (tri kiến lậu), vô minh lậu.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Ở đây, này các Gia chủ, người phạm giới, sống trái giới luật sẽ bị tiêu hao tiền của rất nhiều vì sống phóng dật. Ðó là điều nguy hiểm thứ nhất cho những ai phạm giới, sống trái giới luật.\nLại nữa, này các Gia chủ, người phạm giới, sống trái giới luật bị tiếng dữ đồn xa. Ðó là điều nguy hiểm thứ hai cho những ai phạm giới, sống trái giới luật.\nLại nữa, này các Gia chủ, người phạm giới, sống trái giới luật khi vào hội chúng nào, hoặc Sát Ðế Lỵ, hoặc Bà-la-môn, hoặc gia chủ, hoặc Sa-môn, người ấy đi vào với tâm thần sợ hãi, bối rối. Ðó là điều nguy hiểm thứ ba cho những ai phạm giới, sống trái giới luật.\nLại nữa, này các Gia chủ, người phạm giới, sống trái giới luật sẽ chết với tâm hồn rối loạn. Ðó là điều nguy hiểm thứ tư cho những ai phạm giới, sống trái giới luật.\nLại nữa, này các Gia chủ, người phạm giới, sống trái giới luật sau khi thân hoại mạng chung, sẽ bị sanh vào khổ cảnh, ác thú, đọa xứ, địa ngục. Ðó là điều nguy hiểm thứ năm cho những ai phạm giới, sống trái giới luật.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Ở đây, này các Gia chủ, người giữ giới, sống theo giới luật sẽ có tiền của dồi dào rất nhiều vì sống không phóng dật. Ðó là sự lợi ích thứ nhất cho những ai giữ giới, sống theo giới luật.\nLại nữa, này các Gia chủ, người giữ giới, sống theo giới luật được tiếng tốt đồn xa. Ðó là sự lợi ích thứ hai cho những ai giữ giới, sống theo giới luật.\nLại nữa, này các Gia chủ, người giữ giới, sống theo giới luật khi đi vào hội chúng nào, hoặc Sát Ðế Lỵ, hoặc Bà-la-môn, hoặc gia chủ, hoặc Sa-môn, người ấy đi vào với tâm thần không sợ hãi, không bối rối. Ðó là sự lợi ích thứ ba cho những ai giữ giới, sống theo giới luật.\nLại nữa, này các Gia chủ, người giữ giới, sống theo giới luật sẽ chết với tâm hồn không rối loạn. Ðó là sự lợi ích thứ tư cho những ai giữ giới, sống theo giới luật.\nLại nữa, này các Gia chủ, người giữ giới, sống theo giới luật sau khi thân hoại mạng chung, sẽ được sanh vào thiện thú, thiên giới. Ðó là sự lợi ích thứ năm cho những ai giữ giới, sống theo giới luật.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Tại chỗ nào người sáng suốt lấy làm chỗ trú xứ.\nHãy nuôi dưỡng người giữ giới và người phạm hạnh.\nVà san sẽ công đức với Chư Thiên trú tại chỗ ấy.\nÐược tôn kính, chúng sẽ tôn kính lại.\nÐược trọng vọng, chúng sẽ trọng vọng lại.\nChúng sẽ mến thương người ấy như người mẹ thương mến con.\nVà những ai được thiên thần thân mến luôn luôn được thấy may mắn.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Thế Tôn thấy những người kia, người đang đi tìm thuyền, người đang đi tìm phao, người đang đi cột bè để qua bờ bên kia. Thế Tôn hiểu được ý nghĩa của cảnh này, lúc ấy bèn ứng khẩu lời cảm khái:\n“Những ai làm cầu vượt biển trùng dương,\nbỏ lại đất sũng đầm ao, trong khi người phàm phu đang cột bè.\nNhững người ấy thật là những vị trí tuệ được giải thoát”`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, chính vì không giác ngộ, không thông hiểu Bốn Thánh đế mà chúng ta phải lưu chuyển luân hồi lâu năm, Ta và các Ngươi. Bốn Thánh đế ấy là gì?\nNày các Tỷ-kheo, chính vì không giác ngộ, không thông hiểu Khổ Thánh đế,; không giác ngộ, không thông hiểu Khổ Tập Thánh đế,...Khổ Diệt Thánh đế,...Khổ Diệt Ðạo Thánh đế mà chúng ta phải lưu chuyển luân hồi lâu năm, Ta và các Ngươi.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo khi Khổ Thánh đế này được giác ngộ, được thông hiểu; khi Khổ Tập Thánh đế này được giác ngộ, được thông hiểu; khi Khổ Diệt Thánh đế này được giác ngộ, được thông hiểu; khi Khổ Diệt Ðạo Thánh đế này được giác ngộ, được thông hiểu, thời hữu ái được diệt trừ, sự dắt dẫn đến một đời sống được đoạn tuyệt, nay không còn hậu hữu nữa.\nThế Tôn thuyết như vậy. Thiện Thệ lại nói thêm:\n—Chính vì không thấy như thật Bốn Thánh đế nên có sự luân chuyển lâu ngày trong nhiều đời. Khi những sự thực này được nhận thức, nguyên nhân của một đời sống khác được trừ diệt, khi khổ căn được đoạn trừ, sẽ không còn một đời sống khác nữa.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, vì vậy ta sẽ giảng Pháp kính (Gương chánh pháp) để Thánh đệ tử, sau khi chứng đạt pháp nghĩa này, nếu muốn, sẽ tự tuyên bố về mình như sau: “Ðối với ta, sẽ không còn địa ngục, sẽ không còn tái sanh cõi bàng sanh, ngạ quỷ, đọa xứ, ác thú. Ta đã chứng quả Dự lưu, nhứt định không đọa ác đạo, sẽ đạt Chánh giác”.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, vị Thánh đệ tử có chánh tín đối với đức Phật: “Thế Tôn là bậc A-la-hán, Chánh Ðẳng Giác, Minh hạnh Túc, Thiện Thệ, Thế Gian Giải, Vô Thượng Sĩ, Ðiều Ngự Trượng Phu, Thiên Nhân Sư, Phật, Thế Tôn”. Vị ấy có chánh tín đối với chánh pháp: “Chánh pháp được Thế Tôn khéo giảng dạy, thiết thực, vượt ngoài thời gian chi phối, đến để mà thấy, có khả năng giải thoát, được kẻ trí tự mình thâm hiểu”.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Vị ấy có chánh tín đối với chúng Tăng: “Chúng Tăng đệ tử Thế Tôn chân chánh tu hành, chúng Tăng đệ tử Thế Tôn chân trực tu hành, chúng Tăng đệ tử Thế Tôn chân trí tu hành, chúng Tăng đệ tử Thế Tôn chân tịnh tu hành, tức là bốn đôi tám vị. Chúng Tăng đệ tử Thế Tôn đáng được nghênh đón, đáng được cúng dường, đáng được chiêm ngưỡng, đáng được chấp tay, là phước điền vô thượng ở trên đời.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Vị ấy có chánh tín đối với giới hạnh được bậc Thánh mến chuộng, được viên mãn không mảy mún, được vẹn toàn không sứt mẻ, không tỳ vết, không ô nhiễm, những giới hạnh đưa đến giải thoát, được người trí tán thán, không bị ảnh hưởng bởi đời sau, hướng dẫn đến thiền định”.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, các Ngươi phải sống an trú chánh niệm, tỉnh giác. Ðó là lời dạy của Ta cho các Ngươi.\nNày các Tỷ-kheo, thế nào là Tỷ-kheo an trú chánh niệm? Này các Tỷ-kheo, Tỷ-kheo đối với thân, quán thân, tinh tấn, tỉnh giác, chánh niệm nhiếp phục mọi tham ái, ưu bi ở trên đời, đối với các cảm thọ … đối với tâm … đối với các pháp, quán pháp, tinh tấn, tỉnh giác, chánh niệm, nhiếp phục mọi tham ái, ưu bi ở trên đời. Này các Tỷ-kheo, như vậy gọi là chánh niệm.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo thế nào là Tỷ-kheo tỉnh giác? Này các Tỷ-kheo, ở đây Tỷ Kheo tỉnh giác khi đi tới, đi lui, tỉnh giác khi ngó tới, ngó lui; tỉnh giác khi co tay, duỗi tay, tỉnh giác khi mang áo sanghati (tăng-già-lê) mang bát, mang y, tỉnh giác khi ăn, khi uống, khi nhai, khi nếm, tỉnh giác khi đại tiện, tiểu tiện; tỉnh giác khi đi; khi đứng, khi ngồi, khi nằm, khi thức, khi nói, khi im lặng. Này các Tỷ-kheo, như vậy Tỷ-kheo sống tỉnh giác. Này các Tỷ-kheo, Tỷ-kheo phải sống an trú chánh niệm, tỉnh giác. Ðó là lời dạy của Ta cho các Ngươi.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Trong khi Thế Tôn an cư trong mùa mưa, một cơn bệnh trầm trọng khởi lên, rất đau đớn, gần như muốn chết. Nhưng Thế Tôn giữ tâm chánh niệm, tỉnh giác, chịu đựng cơn đau ấy, không một chút ta thán. Thế Tôn tự nghĩ: “Thật không hợp lẽ nếu Ta diệt độ mà không có một lời với các đệ tử hầu cận Ta, không từ biệt chúng Tỷ-kheo. Vậy Ta hãy lấy sức tinh tấn, nhiếp phục cơn bệnh này, duy trì mạng căn và tiếp tục sống”. Và Thế Tôn với sức tinh tấn, nhiếp phục bệnh ấy duy trì mạng căn.\nRồi Thế Tôn lành bệnh. Sau khi lành bệnh không bao lâu, đức Phật rời khỏi tịnh xá và ngồi trên ghế đã soạn sẵn, trong bóng mát của ngôi tịnh xá.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Bạch Thế Tôn, con được thấy Thế Tôn khỏe mạnh. Bạch Thế Tôn, con được thấy Thế Tôn kham nhẫn, bạch Thế Tôn, thấy Thế Tôn bệnh hoạn, thân con cảm thấy yếu ớt như lau sậy, mắt con mờ mịt không thấy rõ phương hướng, dầu cho, bạch Thế Tôn, con được một chút an ủi rằng, Thế Tôn sẽ không diệt độ, nếu Ngài chưa có lời di giáo lại cho chúng Tỷ-kheo.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, chúng Tỷ-kheo còn mong mỏi gì nữa ở Ta! Này Ānanda, Ta đã giảng Chánh pháp, không có phân biệt trong ngoài (mật giáo và không phải mật giáo), vì này Ānanda, đối với các Pháp, Như Lai không bao giờ là vị Ðạo sư còn nắm tay (còn giữ lại một ít mật giáo chưa giảng dạy). Này Ānanda, những ai nghĩ rằng: “Như Lai là vị cầm đầu chúng Tỷ-kheo”; hay “chúng Tỷ-kheo chịu sự giáo huấn của Như Lai” thời này Ānanda, người ấy sẽ có lời di giáo cho chúng Tỷ-kheo. Này Ānanda, Như Lai không nghĩ rằng: “Ta là vị cầm đầu chúng Tỷ-kheo; hay “chúng Tỷ-kheo chịu sự giáo huấn của Ta” thời này Ānanda, làm sao Như Lai lại có lời di giáo cho chúng Tỷ-kheo? Này Ānanda, Ta nay đã già, đã thành bậc trưởng thượng, đã đến tuổi lâm chung, đã đến tám mươi tuổi. Này Ānanda, như cỗ xe đã già mòn, sở dĩ còn chạy được là nhờ dây thắng chằng chịt, cũng vậy thân Như Lai được duy trì sự sống giống như chính nhờ chống đỡ dây chằng. Này Ānanda, chỉ trong khi Như Lai không tác ý đến tất cả tướng, với sự diệt trừ một số cảm thọ, chứng và an trú vô tướng tâm định, chính khi ấy thân Như Lai được thoải mái.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Vậy nên, này Ānanda, hãy tự mình là ngọn đèn cho chính mình, hãy tự mình nương tựa chính mình, chớ nương tựa một gì khác. Dùng Chánh pháp làm ngọn đèn, dùng Chánh pháp làm chỗ nương tựa, chớ nương tựa một gì khác.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, ở đời, vị Tỷ-kheo, đối với thân quán thân, tinh tấn, tỉnh giác, chánh niệm, nhiếp phục mọi tham ái, ưu bi trên đời; đối với các cảm thọ … đối với tâm … đối với các pháp, quán pháp, tinh tấn, tỉnh giác, chánh niệm, nhiếp phục mọi tham ái, ưu bi trên đời. Này Ānanda, như vậy vị Tỷ-kheo tự mình là ngọn đèn cho chính mình, tự mình nương tựa chính mình, không nương tựa một gì khác, dùng Chánh pháp làm ngọn đèn, dùng Chánh pháp làm chỗ nương tựa, không nương tựa một gì khác.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, những ai sau khi Ta diệt độ, tự mình là ngọn đèn cho chính mình, tự mình nương tựa chính mình, không nương tựa một gì khác, dùng Chánh pháp làm ngọn đèn, dùng Chánh pháp làm chỗ nương tựa, không nương tựa vào một pháp gì khác, những vị ấy, này Ānanda, là những vị tối thượng trong hàng Tỷ-kheo của Ta, nếu những vị ấy tha thiết học hỏi.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ác ma, Ta sẽ không diệt độ khi nào những Tỷ-kheo của Ta,...những Tỷ-kheo ni,...những nam cư sĩ,...những nữ cư sĩ của ta chưa trở thành những vị đệ tử chân chánh, sáng suốt, có kỷ luật, sẵn sàng, đa văn, duy trì Chánh pháp, thành tựu Chánh pháp và tùy pháp, sống chân chánh, sống theo Chánh pháp, sau khi học hỏi giáo lý, chưa có thể tuyên bố, diễn giảng, trình bày, xác định, khai minh, phân tích, và giải thích rõ ràng Chánh pháp, khi có tà đạo khởi lên chưa có thể chất vấn và hàng phục một cách khéo léo, chưa có thể truyền bá Chánh pháp thần diệu”.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Và tại điện thờ Capala, Thế Tôn chánh niệm, tỉnh giác, từ bỏ thọ, hành (không duy trì mạng sống lâu hơn nữa). Khi Thế Tôn từ bỏ, không duy trì mạng sống thêm nữa, thời đại địa chấn động, ghê rợn, tóc lông dựng ngược, sấm trời vang dậy. Thế Tôn nhận hiểu ý nghĩa của sự kiện ấy, liền thốt câu kệ cảm khái như sau:\nMạng sống có hạn hay vô hạn,\nTu sĩ từ bỏ, không kéo dài.\nNội tâm chuyên nhất trú thiền định.\nNhư tháo áo giáp đang mang mặc.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, có tám nhân, có tám duyên khiến đại địa chấn động. Thế nào là tám? Này Ānanda, đại địa này thiết lập trên nước, nước ở trên gió và gió ở tại hư không. Này Ānanda, đến thời đại phong khởi lên, gió lớn khi thổi làm nổi sóng nước, và khi nước nổi sóng thì quả đất rung động. Ðó là nhân thứ nhất, duyên thứ nhất, đại địa chấn động.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ác ma, Ta không diệt độ khi nào phạm hạnh mà Ta giảng dạy chưa được thành tựu, thịnh đạt, phổ biến, quảng bá, biến mãn, nghĩa là được khéo giảng dạy cho loài Người.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, phải chăng ngay từ ban đầu Ta đã từng tuyên bố rằng mọi vật ưu ái, thân hình đều phải bị thay đổi, trở về hư không, biến dịch? Này Ānanda, làm sao có thể được như vầy: Những gì sanh khởi, tồn tại, hữu vi, chịu sự biến hoại mà lại mong khỏi có sự biến diệt? Thật không có sự trạng ấy. Này Ānanda, những gì Như Lai đã từ bỏ, dứt khoát, xả ly, phóng xả, khước từ, chính là thọ, hành. Như Lai đã nói và nói một cách dứt khoát: “Không lâu, Như Lai sẽ diệt độ. Sau ba tháng bắt đầu hôm nay, Như Lai sẽ diệt độ”. Nói rằng Như Lai vì muốn sống mà phản lại lời tuyên bố trên thời thật không có sự trạng ấy.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, nay những pháp do Ta chứng ngộ và giảng dạy cho các Ngươi, các Ngươi phải khéo học hỏi, thực chứng tu tập và truyền rộng để phạm hạnh được trường tồn, vĩnh cửu, vì hạnh phúc cho chúng sanh, vì an lạc cho chúng sanh, vì lòng thương tưởng cho đời, vì lợi ích, vì hạnh phúc, vì an lạc cho loài Trời và loài Người.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, thế nào là các pháp do Ta chứng ngộ và giảng dạy, các Ngươi phải khéo học hỏi, thực chứng, tu tập và truyền rộng để cho phạm hạnh được trường tồn, vĩnh cửu, vì hạnh phúc cho chúng sanh, vì an lạc cho chúng sanh, vì lòng thương tưởng cho đời, vì lợi ích, vì hạnh phúc, vì an lạc cho loài Trời và loài Người? Chính là Bốn Niệm xứ, Bốn Chánh cần, Bốn Thần túc, Năm Căn, Năm Lực, Bảy Bồ-đề phần, Tám Thánh đạo phần. Này các Tỷ-kheo, chính những pháp này do Ta chứng ngộ và giảng dạy, mà các Ngươi phải khéo học hỏi, thực chứng, tu tập và truyền rộng để phạm hạnh được trường tồn, vĩnh cửu, vì hạnh phúc cho chúng sanh, vì lòng thương tưởng cho đời, vì lợi ích, vì hạnh phúc, vì an lạc cho loài Trời và loài Người.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, đây là lời Ta nhắn nhủ các Ngươi. Các hành là vô thường. Hãy tinh tấn lên để tự giải thoát, không lâu Như Lai sẽ diệt độ. Sau ba tháng bắt đầu từ hôm nay, Như Lai sẽ diệt độ.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Ta đã già, dư mạng chẳng còn bao,\nTừ biệt các Ngươi, Ta đi một mình.\nTự mình làm sở y cho chính mình,\nHãy tinh tấn, chánh niệm, giữ giới luật,\nNhiếp thúc ý chí, bảo hộ tự tâm.\nAi tinh tấn trong pháp và luật này\nSẽ diệt sanh tử, chấm dứt khổ đau.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, chính vì không giác ngộ, không chứng đạt bốn Pháp mà Ta và các Ngươi lâu đời phải trôi lăn trong biển sanh tử. Thế nào là bốn? Này các Tỷ-kheo, chính vì không giác ngộ, không chứng đạt Thánh Giới mà Ta và các Ngươi lâu đời phải trôi lăn trong biển sanh tử. Này các Tỷ-kheo, chính vì không giác ngộ, không chứng đạt Thánh Ðịnh mà Ta và các Ngươi lâu đời phải trôi lăn trong biển sanh tử. Này các Tỷ-kheo, chính vì không giác ngộ, không chứng đạt Thánh Tuệ mà Ta và các Ngươi lâu đời phải trôi lăn trong biển sanh tử. Này các Tỷ-kheo, chính vì không giác ngộ, không chứng đạt Thánh giải thoát mà Ta và các Ngươi lâu đời phải trôi lăn trong biển sanh tử.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, khi Thánh Giới được giác ngộ, được chứng đạt; khi Thánh Ðịnh được giác ngộ, được chứng đạt; khi Thánh Tuệ được giác ngộ, được chứng đạt; khi Thánh Giải thoát được giác ngộ, được chứng đạt, thời tham ái một đời sống tương lai được trừ diệt, những gì đưa đến một đời sống mới được dứt sạch, nay không còn một đời sống nào nữa.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Giới, Ðịnh, Tuệ và Giải thoát vô thượng\nGotama danh xưng đã chứng ngộ.\nÐấng Giác Ngộ giảng pháp chúng Tỷ-kheo.\nÐạo Sư diệt khổ, pháp nhãn, tịnh lạc.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, có thể có vị Tỷ-kheo nói: “Tại trú xứ kia có nhiều Tỷ-kheo Thượng tọa ở, những vị này là bậc đa văn, gìn giữ truyền thống, trì pháp, trì luật, trì pháp yếu. Tôi tự thân nghe từ miệng những vị Thượng tọa ấy, tự thân lãnh thọ, như vậy là Pháp, như vậy là Luật, như vậy là lời dạy của vị Ðạo Sư”. Này các Tỷ-kheo, các Ngươi không nên tán thán, không nên hủy báng lời nói của Tỷ-kheo ấy. Không tán thán, không hủy báng, mỗi mỗi chữ, mỗi mỗi câu, phải được học hỏi kỹ lưỡng và đem so sánh với Kinh, đem đối chiếu với Luật. Khi đem so sánh với Kinh, đối chiếu với Luật, và nếu chúng không phù hợp với Kinh, không tương ứng với Luật, thời các Ngươi có thể kết luận: “Chắc chắn những lời này không phải là lời Thế Tôn và Tỷ-kheo ấy đã thọ giáo sai lầm”. Và, này các Tỷ-kheo, các Ngươi hãy từ bỏ chúng. Khi đem so sánh với Kinh, đem đối chiếu với Luật, nếu chúng phù hợp với Kinh, tương ứng với Luật, thời các Ngươi có thể kết luận: “Chắc chắn những lời ấy phải là lời dạy của Thế Tôn và Tỷ-kheo ấy đã thọ giáo chơn chánh”. Này các Tỷ-kheo, như vậy là Ðại giáo pháp thứ ba, các Ngươi hãy thọ trì.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Tôi nghe: Sau khi dùng cơm tại nhà thợ sắt Cunda.\nCơn bệnh khốc liệt bỗng khởi lên, gần như chết đến nơi.\nSau khi cùng món ăn loại mộc nhĩ.\nKịch bệnh khởi lên nơi bậc Ðạo Sư.\nÐiều phục bệnh hoạn, Thế Tôn dạy rằng:\n“Ta đi đến thành Kusināra”.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Tôn giả Ānanda tự nghĩ: “Thật kỳ diệu thay, thật hy hữu thay thần túc và uy lực của Như Lai. Con sông nhỏ đang chảy nông cạn, khuấy động và vẩn đục này, khi ta đến, liền trở thành trong trẻo, sáng lặng và không vẩn đục”.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Bạch Thế Tôn, thật là kỳ diệu, bạch Thế Tôn, thật là hy hữu, trạng thái trầm tĩnh của một vị xuất gia!`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Pukkusa, người ấy liền tự nghĩ: “Thật là kỳ diệu, thật là hy hữu sự trầm lặng của vị xuất gia, khi thức tỉnh, dầu có mưa tầm tã ào ào, điện quang chói lòa, sấm sét vang động, có hai anh em nông phu và bốn con bò đực bị sét đánh chết mà không thấy gì, không nghe gì hết”. Sau khi nói lên lòng tin tưởng ở nơi Ta, người ấy đảnh lễ Ta, thân phía hữu hướng về phía Ta và từ biệt.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Bạch Thế Tôn, sự tin tưởng của con đối với ngài Alāra Kālāma, nay con đem rải rắc trước luồng gió lớn, nay con đem thả trôi vào dòng nước cuốn. Kỳ diệu thay, bạch Thế Tôn! Hy hữu thay bạch Thế Tôn! Bạch Thế Tôn, như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho người bị lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy, Chánh pháp đã được Thế Tôn dùng nhiều phương tiện trình bày. Bạch Thế Tôn, con xin quy y Thế Tôn, quy y Pháp và quy y Tỷ-kheo Tăng. Mong Thế Tôn nhận con làm đệ tử, từ nay trở đi cho đến mạng chung, con trọn đời quy ngưỡng.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Ðức Phật tự đi đến\nCon sông Kakutthà.\nCon sông chảy trong sáng.\nMát lạnh và thanh tịnh.\nVị Ðạo Sư mỏi mệt\nÐi dần xuống mé sông.\nNhư Lai đấng Vô Thượng\nNgự trị ở trên đời\nTắm xong, uống nước xong,\nLội qua bên kia sông.\nBậc Ðạo Sư đi trước,\nGiữa Tăng chúng Tỷ-kheo,\nVừa đi vừa diễn giảng.\nChánh pháp thật vi diệu.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Hiền giả Cunda, tôi tự thân nghe, tự thân lãnh thọ lời nói này của Thế Tôn: “Có hai sự cúng dường ăn uống đồng một quả báo, đồng một dị thục quả, quả báo lớn hơn, lợi ích hơn các sự cúng dường ăn uống khác? Thế nào là hai? Một là bữa ăn trước khi Như Lai chứng vô thượng Chánh Ðẳng Chánh Giác, hai là bữa ăn trước khi Như Lai diệt độ Niết-bàn giới, không còn di hưởng sanh tử. Hai bữa ăn này đồng một quả báo, đồng một dị thục quả, quả báo lớn hơn, lợi ích hơn các sự cúng dường ăn uống khác. Nhờ hành động này, đại đức Cunda sẽ được hưởng tuổi thọ; nhờ hành động này, đại đức Cunda sẽ được hưởng sắc đẹp; nhờ hành động này, đại đức Cunda sẽ được hưởng an lạc; nhờ hành động này, đại đức Cunda sẽ được hưởng danh tiếng; nhờ hành động này, đại đức Cunda sẽ được hưởng cõi trời, nhờ hành động này, đại đức Cunda sẽ được hưởng uy quyền”.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+{ text: `Này Ānanda, nếu có Tỷ-kheo, Tỷ-kheo ni, cư sĩ nam hay cư sĩ nữ nào thành tựu Chánh pháp và Tùy pháp, sống chơn chánh trong Chánh pháp, hành trì đúng Chánh pháp, thời người ấy kính trọng, tôn sùng, đảnh lễ, cúng dường Như Lai với sự cúng dường tối thượng. Do vậy, này Ānanda, hãy thành tựu Chánh pháp và Tùy pháp, sống chơn chánh trong Chánh pháp và hành trì đúng Chánh pháp. Này Ānanda, các Người phải học tập như vậy.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Subhadda, trong pháp luật nào không có Bát Thánh đạo, thời ở đây không có đệ nhất Sa-môn, ở đây cũng không có đệ nhị Sa-môn, cũng không có đệ tam Sa-môn, cũng không có đệ tứ Sa-môn. Này Subhadda trong pháp luật nào có Bát Thánh đạo, thời ở đây có đệ nhất Sa-môn, cũng có đệ nhị Sa-môn, cũng có đệ tam Sa-môn, ở đấy cũng có đệ tứ Sa-môn. Này Subhadda, chính trong pháp luật này có Bát Thánh Ðạo, thời này Subhadda, ở đây có đệ nhất Sa-môn, ở đây cũng có đệ nhị Sa-môn, cũng có đệ tam Sa-môn, cũng có đệ tứ Sa-môn. Những hệ thống ngoại đạo khác đều không có những Sa-môn. Này Subhadda, nếu những vị Tỷ-kheo này sống chơn chánh, thời đời này không vắng những vị A-la-hán.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Subhadda, năm hai mươi chín,\nTa xuất gia hướng tìm chân thiện đạo.\nTrải năm mươi năm với thêm một năm\nTừ khi xuất gia, này Subhadda,\nTa là du sĩ tu Trí, tu Ðức.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này Ānanda, nếu trong các ngươi có người nghĩ rằng: “Lời nói của bậc Ðạo sư không còn nữa. Chúng ta không có Ðạo sư (giáo chủ)”. Này Ānanda, chớ có những tư tưởng như vậy. Này Ānanda, Pháp và Luật, Ta đã giảng dạy và trình bày, sau khi Ta diệt độ, chính Pháp và Luật ấy sẽ là Ðạo Sư của các Ngươi.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ-kheo, nay Ta khuyên dạy các ngươi: “Các pháp hữu vi là vô thường, hãy tinh tấn, chớ có phóng dật”.\nÐó là lời cuối cùng Như Lai.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Các hành là vô thường,\nCó sanh phải có diệt\nÐã sanh, chúng phải diệt,\nNhiếp chúng là an lạc.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Không phải thở ra vào\nChính tâm trú chánh định\nKhông tham ái tịch tịnh\nTu sĩ hướng diệt độ\nChính tâm tịnh bất động\nNhẫn chịu mọi cảm thọ\nNhư đèn sáng bị tắt\nTâm giải thoát hoàn toàn.`, ref: "DN 16 – Kinh Ðại Bát Niết Bàn", url: "../dn/dn16.html#content" },
+
+{ text: `Này các Tỷ kheo, đây là con đường độc nhất, đưa đến thanh tịnh cho chúng sanh, vượt khỏi sầu bi, diệt trừ khổ ưu, thành tựu chánh lý, chứng ngộ Niết bàn. Ðó là Bốn niệm xứ.\nThế nào là bốn? Này các Tỷ kheo, ở đây vị Tỷ kheo sống quán thân trên thân, nhiệt tâm, tỉnh giác, chánh niệm, để chế ngự tham ưu ở đời; sống quán thọ trên các thọ, nhiệt tâm, tỉnh giác, chánh niệm, để chế ngự tham ưu ở đời; sống quán tâm trên tâm, nhiệt tâm, tỉnh giác, chánh niệm, để chế ngự tham ưu ở đời; sống quán pháp trên các pháp, nhiệt tâm, tỉnh giác, chánh niệm, để chế ngự tham ưu ở đời.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, ở đây Tỷ kheo đi đến khu rừng, đi đến gốc cây, hay đi đến ngôi nhà trống, và ngồi kiết già, lưng thẳng và an trú chánh niệm trước mặt. Tỉnh giác, vị ấy thở vô; tỉnh giác, vị ấy thở ra. Thở vô dài, vị ấy tuệ tri: “Tôi thở vô dài”; hay thở ra dài, vị ấy tuệ tri: “Tôi thở ra dài”; hay thở vô ngắn, vị ấy tuệ tri: “Tôi thở vô ngắn”; hay thở ra ngắn, vị ấy tuệ tri: “Tôi thở ra ngắn”; Cảm giác toàn thân, tôi sẽ thở vô”, vị ấy tập; “Cảm giác toàn thân, tôi sẽ thở ra”, vị ấy tập; “An tịnh thân hành, tôi sẽ thở vô”, vị ấy tập; “An tịnh thân hành, tôi sẽ thở ra”, vị ấy tập.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Như vậy, vị ấy sống quán thân trên nội thân; hay sống quán thân trên ngoại thân; hay sống quán thân trên cả nội thân, ngoại thân. Hay vị ấy sống quán tánh sanh khởi trên thân; hay sống quán tánh diệt tận trên thân; hay sống quán tánh sanh diệt trên thân. “Có thân đây”, vị ấy an trú chánh niệm như vậy với hy vọng hướng đến chánh trí, chánh niệm. Và vị ấy sống không nương tựa, không chấp trước một vật gì trên đời. Này các Tỷ kheo, như vậy Tỷ kheo sống quán thân trên thân.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Lại nữa, này các Tỷ kheo, Tỷ kheo, khi bước tới, bước lui, biết rõ việc mình đang làm. Khi ngó tới, ngó lui, biết rõ việc mình đang làm. Khi co tay khi duỗi tay biết rõ việc mình đang làm. Khi mang áo Sanghàti (Tăng-già-lê), mang bát, mang y, biết rõ việc mình đang làm. Khi ăn, uống, nhai, nếm, biết rõ việc mình đang làm. Khi đi đại tiện, tiểu tiện, biết rõ việc mình đang làm. Khi đi, đứng, ngồi, nằm, biết rõ việc mình đang làm.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, cũng như một bao đồ, hai đầu trống đựng đầy các loại hột như gạo, lúa, đậu xanh, đậu lớn, mè, gạo đã xay rồi. Một người có mắt, đổ các hột ấy ra và quan sát: “Ðây là hột gạo, đây là hột lúa, đây là đậu xanh, đây là đậu đỏ, đây là mè, đây là hột lúa đã xay rồi.” Cũng vậy, này các Tỷ kheo, một Tỷ kheo quán sát thân này dưới từ bàn chân trở lên, trên cho đến đảnh tóc, bao bọc bởi da và chứa đầy những vật bất tịnh sai biệt: “Trong thân này, đây là tóc, lông, móng, răng, da, thịt, gân, xương, tủy, thận, tim, gan, hoành cách mô, lá lách, phổi, ruột, màng ruột, bụng, phân, mật, đàm, mủ, máu, mồ hôi, mỡ, nước mắt, mỡ da, nước miếng, niêm dịch, nước ở khớp xương, nước tiểu.”`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, ở nơi đây Tỷ kheo khi cảm giác lạc thọ, biết rằng: “Tôi cảm giác lạc thọ”; khi cảm giác khổ thọ, biết rằng: “Tôi cảm giác khổ thọ”; khi cảm giác bất khổ bất lạc thọ, biết rằng: “Tôi cảm giác bất khổ bất lạc thọ”. Hay khi cảm giác lạc thọ thuộc vật chất biết rằng: “Tôi cảm giác lạc thọ thuộc vật chất”. Hay khi cảm giác lạc thọ không thuộc vật chất, biết rằng: “Tôi cảm giác lạc thọ không thuộc vật chất”. Hay khi cảm giác khổ thọ thuộc vật chất, biết rằng: “Tôi cảm giác khổ thọ thuộc vật chất”. Hay khi cảm giác khổ thọ không thuộc vật chất, biết rằng: “Tôi cảm giác khổ thọ không thuộc vật chất”. Hay khi cảm giác bất khổ bất lạc thọ thuộc vật chất, biết rằng: “Tôi cảm giác bất khổ bất lạc thọ thuộc vật chất”. Hay khi cảm giác bất khổ bất lạc thọ không thuộc vật chất, biết rằng: “Tôi cảm giác bất khổ bất lạc thọ không thuộc vật chất”.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, ở đây vị Tỷ kheo: “Với tâm có tham, biết rằng tâm có tham”; hay “Với tâm không tham, biết rằng tâm không tham”; hay “Với tâm có sân, biết rằng tâm có sân”; hay “Với tâm không sân, biết rằng tâm không sân”; hay “Với tâm có si, biết rằng tâm có si”; hay “Với tâm không si, biết rằng tâm không si”; hay “Với tâm có định, biết rằng tâm có định”; hay “Với tâm không định, biết rằng tâm không định”; hay “Với tâm giải thoát, biết rằng tâm có giải thoát”; hay “Với tâm không giải thoát, biết rằng tâm không giải thoát”.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, ở đây Tỷ kheo, nội tâm có tham dục, tuệ tri: “Nội tâm tôi có tham dục”; hay nội tâm không có tham dục, tuệ tri rằng: “Nội tâm tôi không có tham dục”. Và với tham dục chưa sanh nay sanh khởi, vị ấy tuệ tri như vậy. Và với tham dục đã sanh nay được đoạn diệt, vị ấy tuệ tri như vậy. Và với tham dục đã được đoạn diệt, tương lai không sanh khởi nữa, vị ấy tuệ tri như vậy.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Hay nội tâm có sân hận, tuệ tri rằng: “Nội tâm tôi có sân hận”; hay nội tâm không có sân hận, tuệ tri rằng: “Nội tâm tôi không có sân hận.” Và với sân hận chưa sanh nay sanh khởi, vị ấy tuệ tri như vậy. Và với sân hận đã sanh nay được đoạn diệt, vị ấy tuệ tri như vậy. Và với sân hận đã được đoạn diệt, tương lai không sanh khởi nữa, vị ấy tuệ tri như vậy.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Hay nội tâm có hôn trầm thụy miên, tuệ tri rằng: “Nội tâm tôi có hôn trầm thụy miên”; hay nội tâm không có hôn trầm thụy miên, tuệ tri rằng: “Nội tâm tôi không có hôn trầm thụy miên”. Và với hôn trầm thụy miên chưa sanh nay sanh khởi, vị ấy tuệ tri như vậy. Và với hôn trầm thụy miên đã sanh nay được đoạn diệt, vị ấy tuệ tri như vậy. Và với hôn trầm thụy miên đã được đoạn diệt, tương lai không sanh khởi nữa, vị ấy tuệ tri như vậy.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, Tỷ kheo suy tư: “Ðây là sắc, đây là sắc sanh, đây là sắc diệt. Ðây là thọ, đây là thọ sanh, đây là thọ diệt. Ðây là tưởng, đây là tưởng sanh, đây là tưởng diệt. Ðây là hành, đây là hành sanh, đây là hành diệt. Ðây là thức, đây là thức sanh, đây là thức diệt”. Như vậy vị ấy sống quán pháp trên các nội pháp; hay sống quán pháp trên các ngoại pháp; hay sống quán pháp trên các nội pháp, ngoại pháp; hay sống quán tánh sanh khởi trên các pháp; hay sống quán tánh diệt tận trên các pháp; hay sống quán tánh sanh diệt trên các pháp. “Có những pháp ở đây”, vị ấy sống an trú chánh niệm như vậy, với hy vọng hướng đến chánh trí, chánh niệm. Và vị ấy sống không nương tựa, không chấp trước một vật gì ở trên đời. Này các Tỷ kheo, như vậy Tỷ kheo sống quán pháp trên các pháp đối với Năm Thủ uẩn.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Và này các Tỷ kheo, thế nào Khổ Thánh đế? Sanh là khổ, già là khổ, chết là khổ, sầu, bi. Khổ, ưu, não là khổ, cầu không được là khổ, tóm lại Năm Thủ uẩn là khổ.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, sự tham ái này khi sanh khởi thì sanh khởi ở đâu, khi an trú thì an trú ở đâu? Ở đời, sắc gì thân ái, sắc gì khả ái? Ở đời con mắt là sắc thân ái, là sắc khả ái. Sự tham ái này khi sanh khởi thì sanh khởi ở đấy, khi an trú thì an trú ở đấy. Ở đời cái tai … ở đời mũi … ở đời lưỡi … ở đời thân … ở đời ý là sắc thân ái, là sắc khả ái. Sự tham ái này khi sanh khởi thì sanh khởi ở đấy, khi an trú thì an trú ở đấy.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, thế nào là Khổ diệt đạo Thánh đế. Ðó là bát chi Thánh đạo, tức là Chánh tri kiến, Chánh tư duy, Chánh ngữ, Chánh nghiệp, Chánh mạng, Chánh tinh tấn, Chánh niệm, Chánh định.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, thế nào là Chánh tri kiến? Này các Tỷ kheo, tri kiến về Khổ, tri kiến về Khổ tập, tri kiến về Khổ diệt, tri kiến về Khổ diệt đạo. Này các Tỷ kheo, như vậy gọi là Chánh tri kiến.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, thế nào là Chánh tư duy? Tư duy về ly dục, tư duy về vô sân, tư duy về bất hại. Này các tỷ kheo, như vậy gọi là Chánh tư duy.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo thế nào là Chánh ngữ? Tự chế không nói láo, tự chế không nói hai lưỡi, tự chế không ác khẩu, tự chế không nói lời phù phiếm. Này các Tỷ kheo, như vậy gọi là Chánh ngữ.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, thế nào là Chánh nghiệp? Tự chế không sát sanh, tự chế không trộm cướp, tự chế không tà dâm. Này các Tỷ kheo, như vậy gọi là Chánh nghiệp.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, thế nào là Chánh mạng? Này các Tỷ kheo, ở đây vị Thánh đệ tử từ bỏ tà mạng, sinh sống bằng chánh mạng. Này các Tỷ kheo, như vậy gọi là Chánh mạng.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, và thế nào là Chánh tinh tấn? Này các Tỷ kheo, ở đây Tỷ kheo, đối với các ác, bất thiện pháp chưa sanh, khởi lên ý muốn không cho sanh khởi; vị này nỗ lực, tinh tấn, quyết tâm, trì chí. Ðối với các ác, bất thiện pháp đã sanh, khởi lên ý muốn trừ diệt, vị này nỗ lực, tinh tấn, quyết tâm, trì chí. Ðối với các thiện pháp chưa sanh, khởi lên ý muốn khiến cho sanh khởi; vị này nỗ lực, tinh tấn, quyết tâm, trì chí. Ðối với các thiện pháp đã sanh, khởi lên ý muốn khiến cho an trú, không cho băng hoại, khiến cho tăng trưởng, phát triển, viên mãn. Vị này nỗ lực, tinh tấn, quyết tâm, trì chí. Này các Tỷ kheo, như vậy gọi là Chánh tinh tấn.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, thế nào là Chánh niệm? Này các Tỷ kheo, ở đây vị Tỷ kheo sống quán thân trên thân, nhiệt tâm, tỉnh giác, chánh niệm, để chế ngự tham ưu ở đời; trên các cảm thọ … trên các tâm … quán pháp trên các pháp, tinh cần tỉnh giác, chánh niệm để chế ngự tham ưu ở đời. Này các Tỷ kheo, như vậy gọi là Chánh niệm.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+
+{ text: `Này các Tỷ kheo, thế nào là Chánh định? Này các Tỷ kheo, ở đây Tỷ kheo ly dục, ly ác bất thiện pháp, chứng và trú Thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, với tầm, với tứ. Tỷ kheo ấy diệt tầm, diệt tứ, chứng và trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm, không tứ, nội tĩnh nhất tâm. Tỷ kheo ấy ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là xả niệm lạc trú, chứng và trú Thiền thứ ba. Tỷ kheo ấy xả lạc, xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và trú Thiền thứ tư, không khổ, không lạc, xả niệm thanh tịnh. Này các Tỷ kheo, như vậy gọi là Chánh định.`, ref: "DN 22 – Kinh Ðại Niệm xứ", url: "../dn/dn22.html#content" },
+{ text: `Này Bhaggava, Ta biết về khởi nguyên thế giới, Ta còn biết hơn thế nữa. Và khi Ta biết như vậy, Ta không có chấp trước. Vì không chấp trước, Ta tự thân thấu hiểu được sự an tịnh ấy. Chính nhờ chứng ngộ sự an tịnh này mà Như Lai không rơi vào lầm lỗi.`, ref: "DN 24 – Kinh Ba-lê", url: "../dn/dn24.html#content" },
+
+{ text: `Nhưng này Bhaggava, Ta không có nói như vậy: “Khi một ai đạt đến thanh tịnh, giải thoát, khi ấy vị ấy biết mọi vật là bất tịnh.” Này Bhaggava, Ta nói như sau: “Khi một ai đạt đến thanh tịnh, giải thoát, khi ấy vị ấy biết mọi vật là thanh tịnh.”`, ref: "DN 24 – Kinh Ba-lê", url: "../dn/dn24.html#content" },
+
+{ text: `- Này Bhaggava, thật khó cho Ngươi khi Ngươi theo các kiến giải sai khác, kham nhẫn các sự việc sai khác, theo dõi những mục tiêu sai khác, đeo đuổi những mục đích sai khác, được huấn luyện theo các phương pháp sai khác để có thể đạt được thanh tịnh, giải thoát. Này Bhaggava, hãy đặt nặng lòng tin ở nơi Ta, hãy khéo gìn giữ lòng tin tưởng ấy.`, ref: "DN 24 – Kinh Ba-lê", url: "../dn/dn24.html#content" },
+
+{ text: `Bạch Thế Tôn, nếu thật khó cho con, khi con theo các kiến giải sai khác, kham nhẫn các sự việc sai khác, theo dõi những mục tiêu sai khác, đeo đuổi những mục đích sai khác, được huấn luyện theo các phương pháp sai khác, để có thể đạt được thanh tịnh giải thoát, thời Bạch Thế Tôn, ít nhất con cũng đặt nặng lòng tin vào Thế Tôn, và con sẽ khéo gìn giữ lòng tin tưởng ấy.`, ref: "DN 24 – Kinh Ba-lê", url: "../dn/dn24.html#content" },
+            ],
+            mn: [
+                { text: "Vậy Ta, tự mình bị sanh, sau khi biết rõ sự nguy hại của bị sanh, hãy tìm cầu cái không sanh, vô thượng an ổn khỏi các khổ ách, Niết-bàn; tự mình bị già… cái không già… tự mình bị bệnh… cái không bệnh… tự mình bị chết… cái bất tử… tự mình bị sầu… cái không sầu… tự mình bi ô nhiễm, sau khi biết rõ sự nguy hại của cái bị nhiễm, hãy tìm cầu cái không ô nhiễm, vô thượng an ổn khỏi các khổ ách, Niết-bàn.", ref: "MN 26 - Kinh Thánh Cầu", url: "../mn/mn26.html" }
+            ],
+            sn: [
+                { text: "Đang Cập Nhật", ref: "SN 56.11", url: "../sn/sn56.11.html" },
+            ],
+            an: [
+                { text: "Đang Cập Nhật", ref: "AN 5.14", url: "../an/an5.14.html" }
+            ],
+            dhp: [
+                { text: "Đang Cập Nhật", ref: "Kinh Pháp Cú 273", url: "../dhp/dhp273.html" }
+            ],
+            kp: [
+                { text: "Đang Cập Nhật", ref: "Tiểu Tụng", url: "../kp/kp.html" }
+            ],
+            ud: [
+                { text: "Đang Cập Nhật", ref: "Ud 8.5", url: "../ud/ud8.5.html" }
+            ],
+            iti: [
+                { text: "Đang Cập Nhật", ref: "Iti 22", url: "../iti/iti22.html" }
+            ],
+            snp: [
+                { text: "Đang Cập Nhật", ref: "Sutta Nipata 812", url: "../snp/snp812.html" }
+            ],
+            thag: [
+                { text: 'Đang Cập Nhật', ref: "Trưởng Lão Tăng Kệ", url: "../thag/thag.html" }
+            ],
+            thig: [
+                { text: "Đang Cập Nhật", ref: "Thig 5.4", url: "../thig/thig5.4.html" }
+            ]
+        };
+
+        // Gộp dữ liệu (Giữ nguyên)
+        let allQuotes = [];
+        Object.keys(quotesData).forEach(key => {
+            allQuotes = allQuotes.concat(quotesData[key]);
+        });
+        quotesData['all'] = allQuotes;
+
+        let currentCategory = 'all';
+        const quoteContentEl = document.getElementById('quote-content');
+        const refContainerEl = document.getElementById('reference-container');
+
+        function getRandomQuote(category) {
+            const list = quotesData[category] || quotesData['all'];
+            if (!list || list.length === 0) return { text: "Chưa có dữ liệu.", ref: "", url: "#" };
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function renderQuote() {
+            quoteContentEl.classList.add('fade-out');
+            
+            setTimeout(() => {
+                const q = getRandomQuote(currentCategory);
+                
+                // 1. Cập nhật nội dung quote
+                quoteContentEl.textContent = q.text;
+                
+                // 2. TẠO VÀ CẬP NHẬT LINK
+                // Xóa nội dung cũ
+                refContainerEl.innerHTML = ''; 
+                
+                // Tạo thẻ <a>
+                const linkEl = document.createElement('a');
+                linkEl.id = 'quote-link';
+                linkEl.href = q.url;
+                linkEl.textContent = q.ref;
+                linkEl.target = "_blank"; // Mở link trong tab mới
+                
+                // Chèn thẻ <a> vào container
+                refContainerEl.appendChild(linkEl);
+                
+                quoteContentEl.classList.remove('fade-out');
+            }, 300);
+        }
+
+        // --- XỬ LÝ SỰ KIỆN (Giữ nguyên) ---
+
+        // Nút New Quote
+        document.getElementById('new-quote-btn').addEventListener('click', renderQuote);
+
+        // Nút Copy
+        const copyBtn = document.getElementById('copy-btn');
+        const copyTextEl = document.getElementById('copy-text');
+
+        copyBtn.addEventListener('click', () => {
+            // Lấy text của link để sao chép cả tham chiếu
+            const refText = document.getElementById('quote-link').textContent;
+            const fullText = `"${quoteContentEl.textContent}"\n— ${refText}`;
+            
+            navigator.clipboard.writeText(fullText).then(() => {
+                const originalText = copyTextEl.textContent;
+                copyTextEl.textContent = "Đã chép!";
+                copyBtn.style.borderColor = "#4caf50";
+                
+                setTimeout(() => {
+                    copyTextEl.textContent = originalText;
+                    copyBtn.style.borderColor = ""; 
+                }, 2000);
+            });
+        });
+
+        // Bộ lọc
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCategory = e.target.dataset.id;
+                renderQuote();
+            });
+        });
+
+        // Dark Mode
+        const themeToggle = document.getElementById('theme-toggle');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+            themeToggle.textContent = '🌙';
+        }
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        renderQuote();
+    </script>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 5.180 </title>
+<p lang="vi" class="vi"; style="text-align: center">
+Tăng Chi Bộ 5.180<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 5.180<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+18. Phẩm Nam Cư Sĩ<br>
+<span lang="pi" class="pali">
+18. Upāsakavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Gavesi, Người Tầm Cầu<br>
+<span lang="pi" class="pali">
+Gavesīsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Một thời, Thế Tôn đang đi du hành giữa dân chúng Kosala cùng với đại chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā kosalesu cārikaṃ carati mahatā bhikkhusaṅghena saddhiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong khi đang đi trên đường, Thế Tôn thấy một chỗ có khóm rừng cây Sāla to lớn;<br>
+<span lang="pi" class="pali">
+Addasā kho bhagavā addhānamaggappaṭipanno aññatarasmiṃ padese mahantaṃ sālavanaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy vậy, Ngài bước xuống đường, đi đến khóm rừng cây Sāla ấy, đi sâu vào rừng Sāla ấy, và tại một địa điểm, Ngài mỉm cười.<br>
+<span lang="pi" class="pali">
+disvāna maggā okkamma yena taṃ sālavanaṃ tenupasaṅkami; upasaṅkamitvā taṃ sālavanaṃ ajjhogāhetvā aññatarasmiṃ padese sitaṃ pātvākāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Ānanda suy nghĩ:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmato ānandassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do nhân gì, do duyên gì, Thế Tôn tỏ lộ mỉm cười? Không phải không có duyên cớ, các Như Lai tỏ lộ mỉm cười.”<br>
+<span lang="pi" class="pali">
+“ko nu kho hetu ko paccayo bhagavato sitassa pātukammāya? Na akāraṇena tathāgatā sitaṃ pātukarontī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Ānanda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā ānando bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, do nhân gì, do duyên gì, Thế Tôn tỏ lộ mỉm cười? Không phải không có duyên cớ, các Như Lai tỏ lộ mỉm cười.”<br>
+<span lang="pi" class="pali">
+“ko nu kho, bhante, hetu ko paccayo bhagavato sitassa pātukammāya? Na akāraṇena tathāgatā sitaṃ pātukarontī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“2. Thuở xưa, này Ānanda, tại địa điểm này, có một thành phố phồn thịnh, giàu có và dân cư đông đúc.<br>
+<span lang="pi" class="pali">
+“Bhūtapubbaṃ, ānanda, imasmiṃ padese nagaraṃ ahosi iddhañceva phītañca bahujanaṃ ākiṇṇamanussaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại thành phố ấy, này Ānanda, Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác ở gần đây.<br>
+<span lang="pi" class="pali">
+Taṃ kho panānanda, nagaraṃ kassapo bhagavā arahaṃ sammāsambuddho upanissāya vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, Gavesī là một nam cư sĩ của Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác, nhưng giữ giới không được viên mãn.<br>
+<span lang="pi" class="pali">
+Kassapassa kho panānanda, bhagavato arahato sammāsambuddhassa gavesī nāma upāsako ahosi sīlesu aparipūrakārī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, có khoảng 500 nam cư sĩ được cư sĩ Gavesī thuyết pháp và khích lệ, các người này giữ giới luật không được viên mãn.<br>
+<span lang="pi" class="pali">
+Gavesinā kho, ānanda, upāsakena pañcamattāni upāsakasatāni paṭidesitāni samādapitāni ahesuṃ sīlesu aparipūrakārino.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, nam cư sĩ Gavesī suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesissa upāsakassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ta giúp đỡ rất nhiều 500 vị nam cư sĩ này. Ta đi trước, ta khích lệ họ, nhưng ta giữ giới luật không được viên mãn.<br>
+<span lang="pi" class="pali">
+‘ahaṃ kho imesaṃ pañcannaṃ upāsakasatānaṃ bahūpakāro pubbaṅgamo samādapetā, ahañcamhi sīlesu aparipūrakārī, imāni ca pañca upāsakasatāni sīlesu aparipūrakārino.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là đồng đẳng giống nhau, không có gì trội hơn, nhiều hơn. Vậy ta hãy làm cái gì trội hơn, nhiều hơn.’<br>
+<span lang="pi" class="pali">
+Iccetaṃ samasamaṃ, natthi kiñci atirekaṃ; handāhaṃ atirekāyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, nam cư sĩ Gavesī đi đến 500 nam cư sĩ ấy; sau khi đến, nói với 500 nam cư sĩ ấy như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesī upāsako yena tāni pañca upāsakasatāni tenupasaṅkami; upasaṅkamitvā tāni pañca upāsakasatāni etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này các Tôn giả, bắt đầu từ hôm nay, ta sẽ thọ trì viên mãn trong các giới luật.’<br>
+<span lang="pi" class="pali">
+‘ajjatagge maṃ āyasmanto sīlesu paripūrakāriṃ dhārethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 nam cư sĩ ấy suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tesaṃ pañcannaṃ upāsakasatānaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Gavesī đã giúp đỡ chúng ta rất nhiều, đã đi trước, đã khích lệ chúng ta.<br>
+<span lang="pi" class="pali">
+‘ayyo kho gavesī amhākaṃ bahūpakāro pubbaṅgamo samādapetā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Gavesī sẽ gìn giữ viên mãn trong các giới luật.<br>
+<span lang="pi" class="pali">
+Ayyo hi nāma gavesī sīlesu paripūrakārī bhavissati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại sao chúng ta lại không như vậy?’<br>
+<span lang="pi" class="pali">
+Kimaṅgaṃ pana mayan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 nam cư sĩ ấy đi đến nam cư sĩ Gavesī; sau khi đến, nói với nam cư sĩ Gavesī:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tāni pañca upāsakasatāni yena gavesī upāsako tenupasaṅkamiṃsu; upasaṅkamitvā gavesiṃ upāsakaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bắt đầu từ hôm nay, thưa Tôn giả Gavesī, chúng tôi sẽ thọ trì viên mãn trong các giới luật.’<br>
+<span lang="pi" class="pali">
+‘ajjatagge ayyo gavesī imānipi pañca upāsakasatāni sīlesu paripūrakārino dhāretū’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, nam cư sĩ Gavesī suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesissa upāsakassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ta giúp đỡ rất nhiều cho 500 nam cư sĩ này, ta đi trước, ta khích lệ họ. Và năm trăm nam cư sĩ này gìn giữ viên mãn trong các giới luật.<br>
+<span lang="pi" class="pali">
+‘ahaṃ kho imesaṃ pañcannaṃ upāsakasatānaṃ bahūpakāro pubbaṅgamo samādapetā, ahañcamhi sīlesu paripūrakārī, imānipi pañca upāsakasatāni sīlesu paripūrakārino.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là đồng đẳng giống nhau, không có gì trội hơn, nhiều hơn. Vậy ta hãy làm cái gì trội hơn, nhiều hơn.’<br>
+<span lang="pi" class="pali">
+Iccetaṃ samasamaṃ, natthi kiñci atirekaṃ; handāhaṃ atirekāyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, nam cư sĩ Gavesī đi đến 500 nam cư sĩ ấy; sau khi đến, nói với 500 vị nam cư sĩ ấy như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesī upāsako yena tāni pañca upāsakasatāni tenupasaṅkami; upasaṅkamitvā tāni pañca upāsakasatāni etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bắt đầu từ ngày hôm nay, này các Tôn giả, ta sẽ thọ trì Phạm hạnh, sống viễn ly, từ bỏ dâm dục hạ liệt.’<br>
+<span lang="pi" class="pali">
+‘ajjatagge maṃ āyasmanto brahmacāriṃ dhāretha ārācāriṃ virataṃ methunā gāmadhammā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 nam cư sĩ ấy suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tesaṃ pañcannaṃ upāsakasatānaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tôn giả Gavesī giúp đỡ chúng ta rất nhiều, đã đi trước và khích lệ chúng ta. Và Tôn giả Gavesī sẽ hành Phạm hạnh, sống viễn ly, từ bỏ dâm dục hạ liệt. Tại sao chúng ta lại không như vậy?’<br>
+<span lang="pi" class="pali">
+‘ayyo kho gavesī amhākaṃ bahūpakāro pubbaṅgamo samādapetā. Ayyo hi nāma gavesī brahmacārī bhavissati ārācārī virato methunā gāmadhammā. Kimaṅgaṃ pana mayan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 nam cư sĩ ấy đi đến nam cư sĩ Gavesī; sau khi đến, nói với nam cư sĩ Gavesī:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tāni pañca upāsakasatāni yena gavesī upāsako tenupasaṅkamiṃsu; upasaṅkamitvā gavesiṃ upāsakaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bắt đầu từ hôm nay, thưa Tôn giả Gavesī, chúng tôi sẽ thọ trì Phạm hạnh, sống viễn ly, từ bỏ dâm dục hèn hạ.’<br>
+<span lang="pi" class="pali">
+‘ajjatagge ayyo gavesī imānipi pañca upāsakasatāni brahmacārino dhāretu ārācārino viratā methunā gāmadhammā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi nam cư sĩ Gavesī suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesissa upāsakassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ta giúp đỡ rất nhiều cho 500 nam cư sĩ này, ta đi trước, ta khích lệ họ. Ta giữ gìn viên mãn trong các giới luật, 500 nam cư sĩ này giữ gìn viên mãn trong các giới luật. Và ta hành Phạm hạnh, sống viễn ly, từ bỏ dâm dục hạ liệt.<br>
+<span lang="pi" class="pali">
+‘ahaṃ kho imesaṃ pañcannaṃ upāsakasatānaṃ bahūpakāro pubbaṅgamo samādapetā. Ahañcamhi sīlesu paripūrakārī. Imānipi pañca upāsakasatāni sīlesu paripūrakārino. Ahañcamhi brahmacārī ārācārī virato methunā gāmadhammā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và 500 nam cư sĩ này hành Phạm hạnh, sống viễn ly, từ bỏ dâm dục hạ liệt. Như vậy là đồng đẳng giống nhau, không có gì trội hơn, nhiều hơn. Vậy ta hãy làm cái gì trội hơn, nhiều hơn.’<br>
+<span lang="pi" class="pali">
+Imānipi pañca upāsakasatāni brahmacārino ārācārino viratā methunā gāmadhammā. Iccetaṃ samasamaṃ, natthi kiñci atirekaṃ; handāhaṃ atirekāyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, nam cư sĩ Gavesī đi đến 500 nam cư sĩ ấy; sau khi đến, nói với 500 vị nam cư sĩ ấy như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesī upāsako yena tāni pañca upāsakasatāni tenupasaṅkami; upasaṅkamitvā tāni pañca upāsakasatāni etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bắt đầu từ ngày hôm nay, này các Tôn giả, ta sẽ ăn mỗi ngày một bữa, không ăn ban đêm, từ bỏ ăn phi thời.’<br>
+<span lang="pi" class="pali">
+‘ajjatagge maṃ āyasmanto ekabhattikaṃ dhāretha rattūparataṃ virataṃ vikālabhojanā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 nam cư sĩ ấy suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tesaṃ pañcannaṃ upāsakasatānaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Gavesī giúp đỡ chúng ta rất nhiều, đã đi trước và khích lệ chúng ta. Tôn giả Gavesī sẽ ăn mỗi ngày một bữa, không ăn ban đêm, từ bỏ ăn phi thời. Tại sao chúng ta lại không như vậy?<br>
+<span lang="pi" class="pali">
+‘ayyo kho gavesī bahūpakāro pubbaṅgamo samādapetā. Ayyo hi nāma gavesī ekabhattiko bhavissati rattūparato virato vikālabhojanā. Kimaṅgaṃ pana mayan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 nam cư sĩ ấy đi đến nam cư sĩ Gavesī; sau khi đến, nói với nam cư sĩ Gavesī:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tāni pañca upāsakasatāni yena gavesī upāsako tenupasaṅkamiṃsu; upasaṅkamitvā gavesiṃ upāsakaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bắt đầu từ hôm nay, thưa Tôn giả Gavesī, 500 nam cư sĩ này sẽ thọ trì ăn mỗi ngày một bữa, không ăn ban đêm, từ bỏ ăn phi thời.’<br>
+<span lang="pi" class="pali">
+‘ajjatagge ayyo gavesī imānipi pañca upāsakasatāni ekabhattike dhāretu rattūparate virate vikālabhojanā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, nam cư sĩ Gavesī suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesissa upāsakassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ta giúp đỡ cho 500 nam cư sĩ này rất nhiều. Ta đã đi trước và khích lệ họ. Nay ta giữ gìn viên mãn trong các giới luật, 500 nam cư sĩ này giữ gìn viên mãn trong các giới luật. Ta hành Phạm hạnh, sống viễn ly, từ bỏ dâm dục hèn hạ, 500 nam cư sĩ này hành Phạm hạnh, sống viễn ly, từ bỏ dâm dục hèn hạ.<br>
+<span lang="pi" class="pali">
+‘ahaṃ kho imesaṃ pañcannaṃ upāsakasatānaṃ bahūpakāro pubbaṅgamo samādapetā. Ahañcamhi sīlesu paripūrakārī. Imānipi pañca upāsakasatāni sīlesu paripūrakārino. Ahañcamhi brahmacārī ārācārī virato methunā gāmadhammā. Imānipi pañca upāsakasatāni brahmacārino ārācārino viratā methunā gāmadhammā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta ăn mỗi ngày một bữa, không ăn ban đêm, từ bỏ ăn phi thời. 500 nam cư sĩ này cũng ăn mỗi ngày một bữa, không ăn ban đêm, từ bỏ ăn phi thời.<br>
+<span lang="pi" class="pali">
+Ahañcamhi ekabhattiko rattūparato virato vikālabhojanā. Imānipi pañca upāsakasatāni ekabhattikā rattūparatā viratā vikālabhojanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là có sự đồng đẳng giống nhau, không có gì trội hơn, nhiều hơn. Vậy ta hãy làm cái gì trội hơn, nhiều hơn.’<br>
+<span lang="pi" class="pali">
+Iccetaṃ samasamaṃ, natthi kiñci atirekaṃ; handāhaṃ atirekāyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, Tôn giả Gavesī đi đến Thế Tôn Kassapa; bậc A-la-hán, Chánh Ðẳng Giác, sau khi đến, bạch với Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesī upāsako yena kassapo bhagavā arahaṃ sammāsambuddho tenupasaṅkami; upasaṅkamitvā kassapaṃ bhagavantaṃ arahantaṃ sammāsambuddhaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, hãy cho con xuất gia với Thế Tôn, hãy cho con thọ đại giới.’<br>
+<span lang="pi" class="pali">
+‘labheyyāhaṃ, bhante, bhagavato santike pabbajjaṃ labheyyaṃ upasampadan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, nam cư sĩ Gavesī được xuất gia với Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác, được thọ đại giới.<br>
+<span lang="pi" class="pali">
+Alattha kho, ānanda, gavesī upāsako kassapassa bhagavato arahato sammāsambuddhassa santike pabbajjaṃ, alattha upasampadaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược thọ đại giới không bao lâu này Ānanda, Tỷ-kheo Gavesī sống một mình, an tịnh, không phóng dật, nhiệt tâm, tinh cần và không bao lâu, vị này chứng được mục đính tối cao mà các thiện nam tử xuất gia, từ bỏ gia đình, sống không gia đình hướng đến. Ðó là vô thượng cứu cánh Phạm hạnh, vị này ngay trong hiện tại tự mình chứng ngộ với thắng trí, chứng đạt và an trú.<br>
+<span lang="pi" class="pali">
+Acirūpasampanno kho panānanda, gavesī bhikkhu eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto nacirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, tadanuttaraṃ—brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy xác chứng: ‘Sanh đã tận, Phạm hạnh đã thành, các điều nên làm đã làm, không còn trở lui trạng thái này nữa.’<br>
+<span lang="pi" class="pali">
+‘Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā’ti abbhaññāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Tỷ-kheo Gavesī trở thành một vị A-la-hán.<br>
+<span lang="pi" class="pali">
+Aññataro ca panānanda, gavesī bhikkhu arahataṃ ahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, 500 nam cư sĩ ấy suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tesaṃ pañcannaṃ upāsakasatānaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tỷ-kheo Gavesī giúp đỡ chúng ta rất nhiều, đã đi trước và khích lệ chúng ta.<br>
+<span lang="pi" class="pali">
+‘ayyo kho gavesī amhākaṃ bahūpakāro pubbaṅgamo samādapetā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay Tôn giả Gavesī đã cạo bỏ râu tóc, đắp áo cà-sa, xuất gia, từ bỏ gia đình, sống không gia đình. Tại sao chúng ta lại không như vậy?’<br>
+<span lang="pi" class="pali">
+Ayyo hi nāma gavesī kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajissati. Kimaṅgaṃ pana mayan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 nam cư sĩ ấy đi đến Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác, sau khi đến, bạch Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tāni pañca upāsakasatāni yena kassapo bhagavā arahaṃ sammāsambuddho tenupasaṅkamiṃsu; upasaṅkamitvā kassapaṃ bhagavantaṃ arahantaṃ sammāsambuddhaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, hãy cho chúng con xuất gia với Thế Tôn, cho chúng con thọ đại giới.’<br>
+<span lang="pi" class="pali">
+‘labheyyāma mayaṃ, bhante, bhagavato santike pabbajjaṃ, labheyyāma upasampadan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, năm trăm nam cư sĩ ấy được xuất gia với Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác, được thọ đại giới.<br>
+<span lang="pi" class="pali">
+Alabhiṃsu kho, ānanda, tāni pañca upāsakasatāni kassapassa bhagavato arahato sammāsambuddhassa santike pabbajjaṃ, alabhiṃsu upasampadaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, Tỷ-kheo Gavesī suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, gavesissa bhikkhuno etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ta đã chứng minh được vô thượng giải thoát này không khó khăn, chứng được không mệt nhọc, chứng được không phí sức.<br>
+<span lang="pi" class="pali">
+‘ahaṃ kho imassa anuttarassa vimuttisukhassa nikāmalābhī homi akicchalābhī akasiralābhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong rằng 500 vị Tỷ-kheo ấy có thể chứng minh được vô thượng giải thoát này không khó khăn, chứng được không mệt nhọc, chứng được không phí sức!’<br>
+<span lang="pi" class="pali">
+Aho vatimānipi pañca bhikkhusatāni imassa anuttarassa vimuttisukhassa nikāmalābhino assu akicchalābhino akasiralābhino’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Ānanda, 500 vị Tỷ-kheo ấy sống an tịnh, không phóng dật, nhiệt tâm tinh cần, không bao lâu, các vị ấy chứng được mục đích tối cao mà các thiện nam tử xuất gia, từ bỏ gia đình, sống không gia đình hướng đến. Ðó là vô thượng cứu cánh Phạm hạnh, các vị ấy ngay trong hiện tại, tự mình chứng ngộ với thắng trí, chứng đạt và an trú.<br>
+<span lang="pi" class="pali">
+Atha kho, ānanda, tāni pañca bhikkhusatāni vūpakaṭṭhā appamattā ātāpino pahitattā viharantā nacirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, tadanuttaraṃ—<br>
+brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihariṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và các vị ấy xác chứng: “Sanh đã tận, Phạm hạnh đã thành, việc phải làm đã làm, không còn trở lui trạng thái này nữa”.<br>
+<span lang="pi" class="pali">
+‘Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā’ti abbhaññiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Như vậy, này Ānanda, 500 vị Tỷ-kheo ấy, do Gavesī cầm đầu, trong khi tinh tấn đạt đến những gì cao hơn nữa, những gì tối thắng hơn nữa, đã chứng ngộ vô thượng giải thoát.<br>
+<span lang="pi" class="pali">
+Iti kho, ānanda, tāni pañca bhikkhusatāni gavesīpamukhāni uttaruttari paṇītapaṇītaṃ vāyamamānā anuttaraṃ vimuttiṃ sacchākaṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Ānanda, cần phải học tập như sau:<br>
+<span lang="pi" class="pali">
+Tasmātiha, ānanda, evaṃ sikkhitabbaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘4. Hãy tinh tấn để đạt đến những gì cao hơn nữa, tối thắng hơn nữa, chúng ta sẽ chứng ngộ vô thượng giải thoát.’<br>
+<span lang="pi" class="pali">
+‘uttaruttari paṇītapaṇītaṃ vāyamamānā anuttaraṃ vimuttiṃ sacchikarissāmā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda, các Thầy cần phải học tập.”<br>
+<span lang="pi" class="pali">
+Evañhi vo, ānanda, sikkhitabban”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an5.179.html#content"></a><a id="next-sutta" href="./an5.181.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

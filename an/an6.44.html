@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 6.44 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 6.44<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 6.44<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+5. Phẩm Dhammika<br>
+<span lang="pi" class="pali">
+5. Dhammikavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Migasala<br>
+<span lang="pi" class="pali">
+Migasālāsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Rồi Tôn giả Ānanda vào buổi sáng đắp y, cầm y bát, đi đến trú xứ của nữ tu sĩ Migasālā; sau khi đến, ngồi trên ghế đã soạn sẵn. Ngồi xuống một bên, nữ cư sĩ Migasālā thưa với Tôn giả Ānanda:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā ānando pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya yena migasālāya upāsikāya nivesanaṃ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi. Atha kho migasālā upāsikā yenāyasmā ānando tenupasaṅkami; upasaṅkamitvā āyasmantaṃ ānandaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnā kho migasālā upāsikā āyasmantaṃ ānandaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“2. Như thế nào, thế nào, thưa Tôn giả Ānanda, cần phải hiểu pháp này do Thế Tôn tuyên thuyết: Cả hai sống Phạm hạnh và sống không phạm hạnh đều đồng đẳng về sanh thú trong tương lai?<br>
+<span lang="pi" class="pali">
+“Kathaṃ kathaṃ nāmāyaṃ, bhante ānanda, bhagavatā dhammo desito aññeyyo, yatra hi nāma brahmacārī ca abrahmacārī ca ubho samasamagatikā bhavissanti abhisamparāyaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Purāṇa, thân phụ của con, thưa Tôn giả, sống Phạm hạnh, sống biệt lập, tránh xa dâm dục hạ liệt.<br>
+<span lang="pi" class="pali">
+Pitā me, bhante, purāṇo brahmacārī ahosi ārācārī virato methunā gāmadhammā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi mệnh chung được Thế Tôn trả lời: ‘Là bậc Dự lưu sanh với thân ở Tusitā ( Ðâu-suất)’.<br>
+<span lang="pi" class="pali">
+So kālaṅkato bhagavatā byākato sakadāgāmī satto tusitaṃ kāyaṃ upapannoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn Isidatta, cậu của con, thưa Tôn giả, sống không Phạm hạnh, tự bằng lòng với vợ mình.<br>
+<span lang="pi" class="pali">
+Petteyyopi me, bhante, isidatto abrahmacārī ahosi sadārasantuṭṭho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi mệnh chung được Thế Tôn trả lời: ‘Là bậc Dự lưu, sanh với thân ở Tusitā’.<br>
+<span lang="pi" class="pali">
+Sopi kālaṅkato bhagavatā byākato sakadāgāmipatto tusitaṃ kāyaṃ upapannoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như thế nào, thế nào, thưa Tôn giả Ānanda, cần phải hiểu pháp này do Thế Tôn tuyên thuyết: Cả hai sống Phạm hạnh và sống không Phạm hạnh đều đồng đẳng về sanh thú trong tương lai?”<br>
+<span lang="pi" class="pali">
+Kathaṃ kathaṃ nāmāyaṃ, bhante ānanda, bhagavatā dhammo desito aññeyyo, yatra hi nāma brahmacārī ca abrahmacārī ca ubho samasamagatikā bhavissanti abhisamparāyan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Chị, như vậy là câu trả lời của Thế Tôn.”<br>
+<span lang="pi" class="pali">
+“Evaṃ kho panetaṃ, bhagini, bhagavatā byākatan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Tôn giả Ānanda sau khi nhận đồ ăn khất thực tại nhà của nữ cư sĩ Migasālā, từ chỗ ngồi đứng dậy rồi ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā ānando migasālāya upāsikāya nivesane piṇḍapātaṃ gahetvā uṭṭhāyāsanā pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Ānanda, sau buổi ăn, trên con đường đi khất thực trở về, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, Tôn giả Ānanda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā ānando pacchābhattaṃ piṇḍapātapaṭikkanto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho āyasmā ānando bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, bạch Thế Tôn, vào buổi sáng con đắp y, cầm y bát, đi đến trú xứ của nữ cư sĩ Migasālā, sau khi đến, con ngồi xuống trên chỗ đã soạn sẵn. Nữ cư sĩ Migasālā đi đến con, sau khi đến, đảnh lễ con rồi ngồi xuống một bên. Ngồi xuống một bên, bạch Thế Tôn, nữ cư sĩ Migasālā thưa với con:<br>
+<span lang="pi" class="pali">
+“Idhāhaṃ, bhante, pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya yena migasālāya upāsikāya nivesanaṃ tenupasaṅkamiṃ; upasaṅkamitvā paññatte āsane nisīdiṃ. Atha kho, bhante, migasālā upāsikā yenāhaṃ tenupasaṅkami; upasaṅkamitvā maṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnā kho, bhante, migasālā upāsikā maṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như thế nào, thế nào, thưa Tôn giả Ānanda, cần phải hiểu pháp này do Thế Tôn tuyên thuyết (nói rằng): Cả hai sống Phạm hạnh và sống không Phạm hạnh đều đồng đẳng về sanh thú trong tương lai.<br>
+<span lang="pi" class="pali">
+‘kathaṃ kathaṃ nāmāyaṃ, bhante ānanda, bhagavatā dhammo desito aññeyyo, yatra hi nāma brahmacārī ca abrahmacārī ca ubho samasamagatikā bhavissanti abhisamparāyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Purāṇa thân phụ con, thưa Tôn giả, sống Phạm hạnh, sống biệt lập, tránh xa dâm dục hạ liệt, khi mệnh chung, được Thế Tôn trả lời: Là bậc Dự lưu, sanh với thân ở Tusitā.<br>
+<span lang="pi" class="pali">
+Pitā me, bhante, purāṇo brahmacārī ahosi ārācārī virato methunā gāmadhammā. So kālaṅkato bhagavatā byākato sakadāgāmipatto tusitaṃ kāyaṃ upapannoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn Isidatta, cậu của con, thưa Tôn giả, sống không Phạm hạnh, tự bằng lòng với vợ mình, sau khi mệnh chung, được Thế Tôn trả lời: Là bậc Dự lưu, sanh với thân ở Tusitā.<br>
+<span lang="pi" class="pali">
+Petteyyopi me, bhante, isidatto abrahmacārī ahosi sadārasantuṭṭho. Sopi kālaṅkato bhagavatā byākato sakadāgāmipatto tusitaṃ kāyaṃ upapannoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như thế nào, thế nào, thưa Tôn giả Ānanda, cần phải hiểu pháp này do Phạm hạnh và sống không Phạm hạnh đều đồng đẳng về sanh thú trong tương lai?<br>
+<span lang="pi" class="pali">
+Kathaṃ kathaṃ nāmāyaṃ, bhante ānanda, bhagavatā dhammo desito aññeyyo, yatra hi nāma brahmacārī ca abrahmacārī ca ubho samasamagatikā bhavissanti abhisamparāyan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược hỏi vậy, bạch Thế Tôn, con nói với nữ cư sĩ Migasālā: ‘Này Chị, như vậy là câu trả lời của Thế Tôn’”.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, ahaṃ, bhante, migasālaṃ upāsikaṃ etadavocaṃ: ‘evaṃ kho panetaṃ, bhagini, bhagavatā byākatan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nhưng này Ānanda, ai là nữ cư sĩ Migasālā lại ngu si, kém thông minh, với thân như bà mẹ, với trí như bà mẹ, để có thể hiểu biết sự thắng liệt giữa các người?<br>
+<span lang="pi" class="pali">
+“Kā cānanda, migasālā upāsikā bālā abyattā ammakā ammakapaññā, ke ca purisapuggalaparopariyañāṇe?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, có sáu hạng người có mặt, hiện hữu ở đời. Thế nào là sáu?<br>
+<span lang="pi" class="pali">
+Chayime, ānanda, puggalā santo saṃvijjamānā lokasmiṃ. Katame cha?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Ở đây, này Ānanda, có người khéo tự chế ngự, dễ chung sống, các đồng Phạm hạnh hoan hỷ sống chung.<br>
+<span lang="pi" class="pali">
+Idhānanda, ekacco puggalo sorato hoti sukhasaṃvāso, abhinandanti sabrahmacārī ekattavāsena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghe Pháp không có tác động, học nhiều không có tác động, không thể nhập vào tri kiến, không chứng đắc thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tassa savanenapi akataṃ hoti, bāhusaccenapi akataṃ hoti, diṭṭhiyāpi appaṭividdhaṃ hoti, sāmāyikampi vimuttiṃ na labhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy sau khi thân hoại mạng chung hướng về thối đọa, không hướng về thù thắng, chỉ đi đến thối đọa, không đi về thù thắng.<br>
+<span lang="pi" class="pali">
+So kāyassa bhedā paraṃ maraṇā hānāya pareti no visesāya, hānagāmīyeva hoti no visesagāmī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Ở đây, này Ānanda, có người khéo tự chế ngự, dễ chung sống, các đồng Phạm hạnh hoan hỷ sống chung.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekacco puggalo sorato hoti sukhasaṃvāso, abhinandanti sabrahmacārī ekattavāsena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghe Pháp có tác động, học nhiều có tác động, có thể nhập vào tri kiến, có chứng đắc thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tassa savanenapi kataṃ hoti, bāhusaccenapi kataṃ hoti, diṭṭhiyāpi paṭividdhaṃ hoti, sāmāyikampi vimuttiṃ labhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy sau khi thân hoại mạng chung hướng về thù thắng, không hướng về thối đọa, chỉ đi đến thù thắng, không đi về thối đọa.<br>
+<span lang="pi" class="pali">
+So kāyassa bhedā paraṃ maraṇā visesāya pareti no hānāya, visesagāmīyeva hoti no hānagāmī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, những kẻ đo lường đo lường như sau:<br>
+<span lang="pi" class="pali">
+Tatrānanda, pamāṇikā pamiṇanti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những pháp ấy của vị này là như vậy, những pháp ấy của vị kia là như vậy; làm sao trong những hạng người này, có người hạ liệt, có người là thắng diệu?’<br>
+<span lang="pi" class="pali">
+‘imassapi teva dhammā aparassapi teva dhammā, kasmā tesaṃ eko hīno eko paṇīto’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và do sự đo lường ấy, này Ānanda, đối với những người đo lường là không hạnh phúc, là đau khổ lâu dài.<br>
+<span lang="pi" class="pali">
+Tañhi tesaṃ, ānanda, hoti dīgharattaṃ ahitāya dukkhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, hạng người này, khéo tự chế ngự, dễ chung sống, các đồng Phạm hạnh hoan hỷ sống chung. Vị này nghe pháp có tác động, học nhiều có tác động, thể nhập được vào tri kiến, chứng được thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tatrānanda, yvāyaṃ puggalo sorato hoti sukhasaṃvāso, abhinandanti sabrahmacārī ekattavāsena, tassa savanenapi kataṃ hoti, bāhusaccenapi kataṃ hoti, diṭṭhiyāpi paṭividdhaṃ hoti, sāmāyikampi vimuttiṃ labhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hạng người này, này Ānanda, so sánh với hạng người trước là tiến bộ hơn, là thắng diệu hơn. Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Ayaṃ, ānanda, puggalo amunā purimena puggalena abhikkantataro ca paṇītataro ca. Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì dòng pháp đưa người này ra phía trước.<br>
+<span lang="pi" class="pali">
+Imaṃ hānanda, puggalaṃ dhammasoto nibbahati,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng ai ngoài Như Lai có thể biết được sự khác biệt?<br>
+<span lang="pi" class="pali">
+tadantaraṃ ko jāneyya aññatra tathāgatena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Ānanda, chớ có là người đo lường các hạng người.<br>
+<span lang="pi" class="pali">
+Tasmātihānanda, mā puggalesu pamāṇikā ahuvattha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chớ có lấy sự đo lường của các hạng người.<br>
+<span lang="pi" class="pali">
+mā puggalesu pamāṇaṃ gaṇhittha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ananada, tự đào hố cho mình là người đi lấy sự đo lường của các hạng người.<br>
+<span lang="pi" class="pali">
+Khaññati hānanda, puggalesu pamāṇaṃ gaṇhanto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có ta, này Ānanda, mới có thể lấy sự đo lường của các hạng người, hay là người như Ta.<br>
+<span lang="pi" class="pali">
+Ahaṃ vā, ānanda, puggalesu pamāṇaṃ gaṇheyyaṃ, yo vā panassa mādiso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Ở đây, này Ānanda, có hạng người đã chinh phục được phẫn nộ và kiêu mạn, nhưng thỉnh thoảng các tham pháp khởi lên;<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekaccassa puggalassa kodhamāno adhigato hoti, samayena samayañcassa lobhadhammā uppajjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+với người này, nghe pháp không có tác động, học nhiều không có tác động, không thể nhập tri kiến, không chứng được thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tassa savanenapi akataṃ hoti, bāhusaccenapi akataṃ hoti, diṭṭhiyāpi appaṭividdhaṃ hoti, sāmāyikampi vimuttiṃ na labhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hạng người này sau khi thân hoại mạng chung hướng về thối đọa, không hướng về thù thắng, chỉ đi đến thối đọa, không đi về thù thắng.<br>
+<span lang="pi" class="pali">
+So kāyassa bhedā paraṃ maraṇā hānāya pareti no visesāya, hānagāmīyeva hoti no visesagāmī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Ở đây, này Ānanda, có hạng người đã chinh phục được phẫn nộ và kiêu mạn, nhưng thỉnh thoảng các tham pháp khởi lên;<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekaccassa puggalassa kodhamāno adhigato hoti, samayena samayañcassa lobhadhammā uppajjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+với người này, nghe pháp có tác động, học nhiều có tác động, có thể nhập tri kiến, có chứng được thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tassa savanenapi kataṃ hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy sau khi thân hoại mạng chung hướng về thù thắng, không hướng về thối đọa, chỉ đi đến thù thắng, không đi đến thối đọa.<br>
+<span lang="pi" class="pali">
+no hānagāmī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, những kẻ đo lường đo lường như sau: …<br>
+<span lang="pi" class="pali">
+Tatrānanda, pamāṇikā pamiṇanti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có ta, này Ānanda, mới có thể lấy sự đo lường của các hạng người, hay là người như Ta.<br>
+<span lang="pi" class="pali">
+yo vā panassa mādiso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Nhưng ở đây, này Ānanda, có hạng người đã chinh phục được phẫn nộ và kiêu mạn, nhưng thỉnh thoảng khẩu hành khởi lên.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekaccassa puggalassa kodhamāno adhigato hoti, samayena samayañcassa vacīsaṅkhārā uppajjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+với người này, nghe pháp không có tác động, học nhiều không có tác động, không thể nhập tri kiến, không chứng được thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tassa savanenapi akataṃ hoti ...pe... sāmāyikampi vimuttiṃ na labhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hạng người này sau khi thân hoại mạng chung hướng về thối đọa, không hướng về thù thắng, chỉ đi đến thối đọa, không đi đến thù thắng.<br>
+<span lang="pi" class="pali">
+So kāyassa bhedā paraṃ maraṇā hānāya pareti no visesāya, hānagāmīyeva hoti no visesagāmī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+9. Ở đây, này Ānanda, có hạng người đã chinh phục được phẫn nộ và kiêu mạn, nhưng thỉnh thoảng khẩu hành khởi lên.<br>
+<span lang="pi" class="pali">
+Idha panānanda, ekaccassa puggalassa kodhamāno adhigato hoti, samayena samayañcassa vacīsaṅkhārā uppajjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với người này, nghe pháp có tác động, học nhiều có tác động, có thể nhập tri kiến, chứng được thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tassa savanenapi kataṃ hoti, bāhusaccenapi kataṃ hoti, diṭṭhiyāpi paṭividdhaṃ hoti, sāmāyikampi vimuttiṃ labhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hạng người này sau khi thân hoại mạng chung hướng về thù thắng, không hướng về thối đọa, chỉ đi đến thù thắng, không đi đến thối đọa.<br>
+<span lang="pi" class="pali">
+So kāyassa bhedā paraṃ maraṇā visesāya pareti no hānāya, visesagāmīyeva hoti no hānagāmī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Này Ānanda, những kẻ đo lường đo lường như sau:<br>
+<span lang="pi" class="pali">
+Tatrānanda, pamāṇikā pamiṇanti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Những pháp ấy của vị này là như vậy; những pháp ấy của vị kia là như vậy. Làm sao trong những hạng người là hạ liệt, cò người là thắng diệu?’<br>
+<span lang="pi" class="pali">
+‘imassapi teva dhammā, aparassapi teva dhammā. Kasmā tesaṃ eko hīno, eko paṇīto’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và sự đo lường ấy, này Ānanda, đối với những người đo lường là không hạnh phúc, là đau khổ lâu dài.<br>
+<span lang="pi" class="pali">
+Tañhi tesaṃ, ānanda, hoti dīgharattaṃ ahitāya dukkhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, hạng người này khéo tự chế ngự, dễ chung sống, các đồng Phạm hạnh hoan hỷ sống chung. Vị này nghe pháp có tác động, học nhiều có tác động, thể nhập được vào tri kiến, chứng được thời giải thoát.<br>
+<span lang="pi" class="pali">
+Tatrānanda, yassa puggalassa kodhamāno adhigato hoti, samayena samayañcassa vacīsaṅkhārā uppajjanti, tassa savanenapi kataṃ hoti, bāhusaccenapi kataṃ hoti, diṭṭhiyāpi paṭividdhaṃ hoti, sāmāyikampi vimuttiṃ labhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hạng người này, này Ānanda, so sánh với hạng người trước là tiến bộ hơn, là thắng diệu hơn. Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Ayaṃ, ānanda, puggalo amunā purimena puggalena abhikkantataro ca paṇītataro ca. Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì dòng pháp đưa người này ra phía trước.<br>
+<span lang="pi" class="pali">
+Imaṃ hānanda, puggalaṃ dhammasoto nibbahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng ai ngoài Như Lai có thể biết được sự khác biệt?<br>
+<span lang="pi" class="pali">
+Tadantaraṃ ko jāneyya aññatra tathāgatena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Ānanda, chớ có làm người đo lường các hạng người.<br>
+<span lang="pi" class="pali">
+Tasmātihānanda, mā puggalesu pamāṇikā ahuvattha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chớ có lấy sự đo lường của các hạng người.<br>
+<span lang="pi" class="pali">
+mā puggalesu pamāṇaṃ gaṇhittha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, tự đào hố cho mình là người đi lấy sự đo lường của các hạng người.<br>
+<span lang="pi" class="pali">
+Khaññati hānanda, puggalesu pamāṇaṃ gaṇhanto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Ta, này Ānanda, mới có thể lấy sự đo lường của các hạng người này hay là người như Ta.<br>
+<span lang="pi" class="pali">
+Ahaṃ vā, ānanda, puggalesu pamāṇaṃ gaṇheyyaṃ, yo vā panassa mādiso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, ai là nữ cư sĩ Migasālā, lại ngu si, kém thông minh, với thân như bà mẹ, với trí như bà mẹ, để có thể biết sự thắng liệt giữa các người?<br>
+<span lang="pi" class="pali">
+Kā cānanda, migasālā upāsikā bālā abyattā ammakā ammakapaññā, ke ca purisapuggalaparopariyañāṇe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, có sáu hạng người này có mặt, hiện hữu ở đời.<br>
+<span lang="pi" class="pali">
+Ime kho, ānanda, cha puggalā santo saṃvijjamānā lokasmiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Giới như thế nào, này Ānanda, Purāṇa được thành tựu, giới ấy Isidatta chưa thành tựu. Do vậy ở đây, Purāṇa có sanh thú khác với sanh thú của Isidatta.<br>
+<span lang="pi" class="pali">
+Yathārūpena, ānanda, sīlena purāṇo samannāgato ahosi, tathārūpena sīlena isidatto samannāgato abhavissa. Nayidha purāṇo isidattassa gatimpi aññassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tuệ như thế nào, này Ānanda, Isidatta được thành tựu, tuệ ấy Purāṇa chưa thành tựu. Do vậy ở đây, Isidatta có sanh thú khác với sanh thú của Purāṇa.<br>
+<span lang="pi" class="pali">
+Yathārūpāya ca, ānanda, paññāya isidatto samannāgato ahosi, tathārūpāya paññāya purāṇo samannāgato abhavissa. Nayidha isidatto purāṇassa gatimpi aññassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda, cả hai người này đều có thiếu sót một chi phần.”<br>
+<span lang="pi" class="pali">
+Iti kho, ānanda, ime puggalā ubho ekaṅgahīnā”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an6.43.html#content"></a><a id="next-sutta" href="./an6.45.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

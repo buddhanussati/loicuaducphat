@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="pressed w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Dīgha Nikāya – Trường Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>Trường Bộ 9</title>
+
+<p lang="vi" class="vi"; style="text-align: center">Trường Bộ 9<br>
+<span lang="pi" class="pali">Dīgha Nikāya 9</span></p>
+
+<p lang="vi" class="vi"; style="text-align: center">Kinh Poṭṭhapāda<br>
+<span lang="pi" class="pali">Poṭṭhapādasutta</span></p>
+
+
+<p lang="vi" class="vi">Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">Evaṃ me sutaṃ—</span></p>
+
+<p lang="vi" class="vi">Một thời Thế Tôn ở tại Sāvatthi (Xá-vệ), rừng Jetavana (Kỳ viên), vườn Anāthapindika (Cấp Cô Ðộc).<br>
+<span lang="pi" class="pali">ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.</span></p>
+
+<p lang="vi" class="vi">Lúc bấy giờ, du sĩ ngoại đạo Potthapada (Bố-sá-bà-lâu) cùng với đại chúng du sĩ ngoại đạo khoảng ba trăm vị, ở tại vườn của hoàng hậu Mallika (Mạt-lê-viên) tên là Ekasālaka có hàng rào cây tinduka, một hội thảo trường luận bàn về chánh kiến, tà kiến.<br>
+<span lang="pi" class="pali">Tena kho pana samayena poṭṭhapādo paribbājako samayappavādake tindukācīre ekasālake mallikāya ārāme paṭivasati mahatiyā paribbājakaparisāya saddhiṃ tiṃsamattehi paribbājakasatehi.</span></p>
+
+<p lang="vi" class="vi">Lúc bấy giờ Thế Tôn, vào buổi sáng đắp y cầm bát vào Sāvatthi khất thực.<br>
+<span lang="pi" class="pali">Atha kho bhagavā pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiṃ piṇḍāya pāvisi.</span></p>
+
+<p lang="vi" class="vi">Rồi Thế Tôn tự nghĩ:<br>
+<span lang="pi" class="pali">Atha kho bhagavato etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Nay còn quá sớm để đi khất thực tại Sāvatthi,<br>
+<span lang="pi" class="pali">“atippago kho tāva sāvatthiyaṃ piṇḍāya carituṃ.</span></p>
+
+<p lang="vi" class="vi">Ta hãy đi đến vườn của hoàng hậu Mallika tên là Ekasālaka, có hàng rào cây tinduka, một hội thảo trường luận bàn chánh kiến, tà kiến, để gặp du sĩ ngoại đạo Potthapāda”. Và Thế Tôn đi đến vườn của hoàng hậu Mallika, tên là Ekasālaka, có hàng rào cây tinduka, một hội thảo trường luận về chánh kiến, tà kiến.<br>
+<span lang="pi" class="pali">Yannūnāhaṃ yena samayappavādako tindukācīro ekasālako mallikāya ārāmo, yena poṭṭhapādo paribbājako tenupasaṅkameyyan”ti.So that’s what he did.Atha kho bhagavā yena samayappavādako tindukācīro ekasālako mallikāya ārāmo tenupasaṅkami.</span></p>
+
+<p lang="vi" class="vi">Lúc bấy giờ du sĩ ngoại đạo Potthapāda ngồi với đại chúng du sĩ ngoại đạo, đang ồn ào, la lối, lớn tiếng bàn luận những vấn đề phù phiếm như<br>
+<span lang="pi" class="pali">Tena kho pana samayena poṭṭhapādo paribbājako mahatiyā paribbājakaparisāya saddhiṃ nisinno hoti unnādiniyā uccāsaddamahāsaddāya anekavihitaṃ tiracchānakathaṃ kathentiyā.</span></p>
+
+<p lang="vi" class="vi">câu chuyện về vua chúa; câu chuyện về ăn trộm, câu chuyện về đại thần; câu chuyện về binh lính; các câu chuyện về hãi hùng; câu chuyện về chiến tranh; câu chuyện về đồ ăn; câu chuyện về đồ uống; câu chuyện về đồ mặc; câu chuyện về giường nằm; câu chuyện về vòng hoa; câu chuyện về hương liệu; câu chuyện về bà con; câu chuyện về xe cộ; câu chuyện về làng xóm; câu chuyện về thị trấn; câu chuyện về thành phố; câu chuyện về quốc độ; câu chuyện về đàn bà; câu chuyện về đàn ông; câu chuyện về vị anh hùng; câu chuyện bên lề đường; câu chuyện tại chỗ lấy nước; câu chuyện về người đã chết; các câu chuyện tạp thoại; câu chuyện về hiện trạng của thế giới, hiện trạng của đại dương; câu chuyện về sự hiện hữu và sự không hiện hữu.<br>
+<span lang="pi" class="pali">Seyyathidaṃ—rājakathaṃ corakathaṃ mahāmattakathaṃ senākathaṃ bhayakathaṃ yuddhakathaṃ annakathaṃ pānakathaṃ vatthakathaṃ sayanakathaṃ mālākathaṃ gandhakathaṃ ñātikathaṃ yānakathaṃ gāmakathaṃ nigamakathaṃ nagarakathaṃ janapadakathaṃ itthikathaṃ sūrakathaṃ visikhākathaṃ kumbhaṭṭhānakathaṃ pubbapetakathaṃ nānattakathaṃ lokakkhāyikaṃ samuddakkhāyikaṃ itibhavābhavakathaṃ iti vā.</span></p>
+
+<p lang="vi" class="vi">Du sĩ ngoại đạo Potthapàda thấy Thế Tôn từ xa đến, liền khuyến cáo chúng của mình:<br>
+<span lang="pi" class="pali">Addasā kho poṭṭhapādo paribbājako bhagavantaṃ dūratova āgacchantaṃ; disvāna sakaṃ parisaṃ saṇṭhapesi:</span></p>
+
+<p lang="vi" class="vi">“Các Tôn giả hãy nhỏ tiếng, các Tôn giả hãy đừng làm ồn.<br>
+<span lang="pi" class="pali">appasaddā bhonto hontu, mā bhonto saddamakattha</span></p>
+
+<p lang="vi" class="vi">Nay Sa-môn Gotama đang đến.<br>
+<span lang="pi" class="pali">Ayaṃ samaṇo gotamo āgacchati.</span></p>
+
+<p lang="vi" class="vi">Ngài ưa mến sự trầm lặng, vị Ðại đức này tán thán sự trầm lặng.<br>
+<span lang="pi" class="pali">Appasaddakāmo kho so āyasmā appasaddassa vaṇṇavādī.</span></p>
+
+<p lang="vi" class="vi">Nếu biết chúng này yên tịnh, Ngài có thể ghé đến đây”.<br>
+<span lang="pi" class="pali">Appeva nāma appasaddaṃ parisaṃ viditvā upasaṅkamitabbaṃ maññeyyā”ti.</span></p>
+
+<p lang="vi" class="vi">Nghe nói vậy, các du sĩ ngoại đạo liền im lặng.<br>
+<span lang="pi" class="pali">Evaṃ vutte, te paribbājakā tuṇhī ahesuṃ.</span></p>
+
+<p lang="vi" class="vi">Rồi Thế Tôn đến du sĩ ngoại đạo Potthapāda. Atha kho bhagavā yena poṭṭhapādo paribbājako tenupasaṅkami. Và du sĩ ngoại đạo Potthapāda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Atha kho poṭṭhapādo paribbājako bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn! Thế Tôn hãy đến đây.<br>
+<span lang="pi" class="pali">etu kho, bhante, bhagavā.</span></p>
+
+<p lang="vi" class="vi">Hoan nghênh Thế Tôn!<br>
+<span lang="pi" class="pali">Svāgataṃ, bhante, bhagavato.</span></p>
+
+<p lang="vi" class="vi">Ðã lâu Thế Tôn không quá bộ đến đây.<br>
+<span lang="pi" class="pali">Cirassaṃ kho, bhante, bhagavā imaṃ pariyāyamakāsi, yadidaṃ idhāgamanāya.</span></p>
+
+<p lang="vi" class="vi">Mời Thế Tôn ngồi. Ðây là chỗ ngồi đã soạn sẵn”.<br>
+<span lang="pi" class="pali">Nisīdatu, bhante, bhagavā, idaṃ āsanaṃ paññattan”ti.</span></p>
+
+<p lang="vi" class="vi">Thế Tôn ngồi trên chỗ đã soạn sẵn.<br>
+<span lang="pi" class="pali">Nisīdi bhagavā paññatte āsane.</span></p>
+
+<p lang="vi" class="vi">Du sĩ ngoại đạo Potthapāda lấy một ghế thấp khác và ngồi xuống một bên.<br>
+<span lang="pi" class="pali">Poṭṭhapādopi kho paribbājako aññataraṃ nīcaṃ āsanaṃ gahetvā ekamantaṃ nisīdi.</span></p>
+
+<p lang="vi" class="vi">Rồi Thế Tôn nói với du sĩ Potthapāda đã ngồi một bên:<br>
+<span lang="pi" class="pali">Ekamantaṃ nisinnaṃ kho poṭṭhapādaṃ paribbājakaṃ bhagavā etadavoca:</span></p>
+
+<p lang="vi" class="vi">“Này Potthapāda, vấn đề gì các vị đang ngồi thảo luận? Vấn đề gì đang nói mà bị gián đoạn?”<br>
+<span lang="pi" class="pali">“kāya nuttha, poṭṭhapāda, etarahi kathāya sannisinnā, kā ca pana vo antarākathā vippakatā”ti?</span></p>
+
+
+<p lang="vi" class="vi">Khi nghe nói vậy du sĩ ngoại đạo Potthapāda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ vutte, poṭṭhapādo paribbājako bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, hãy gác một bên câu chuyện chúng tôi đang ngồi bàn luận. Bạch Thế Tôn, lát nữa Thế Tôn nghe lại cũng không khó khăn gì.<br>
+<span lang="pi" class="pali">tiṭṭhatesā, bhante, kathā, yāya mayaṃ etarahi kathāya sannisinnā. Nesā, bhante, kathā bhagavato dullabhā bhavissati pacchāpi savanāya.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, thuở xưa xưa lắm, nhiều vị Sa-môn, Bà-la-môn ngoại đạo tụ họp, ngồi hội thảo trong giảng đường nêu lên vấn đề sự diệt tận các tăng thượng tưởng.<br>
+<span lang="pi" class="pali">Purimāni, bhante, divasāni purimatarāni, nānātitthiyānaṃ samaṇabrāhmaṇānaṃ kotūhalasālāya sannisinnānaṃ sannipatitānaṃ abhisaññānirodhe kathā udapādi:</span></p>
+
+<p lang="vi" class="vi">“Này Tôn giả, tăng thượng tưởng diệt tận như thế nào?”<br>
+<span lang="pi" class="pali">‘kathaṃ nu kho, bho, abhisaññānirodho hotī’ti?</span></p>
+
+<p lang="vi" class="vi">Một vài vị trả lời:<br>
+<span lang="pi" class="pali">Tatrekacce evamāhaṃsu:</span></p>
+
+<p lang="vi" class="vi">“Không nhân, không duyên, các tưởng của con người sinh và diệt!<br>
+<span lang="pi" class="pali">ahetū appaccayā purisassa saññā uppajjantipi nirujjhantipi.</span></p>
+
+<p lang="vi" class="vi">Khi tưởng sanh con người có tưởng. Khi tưởng diệt con người không có tưởng”.<br>
+<span lang="pi" class="pali">Yasmiṃ samaye uppajjanti, saññī tasmiṃ samaye hoti. Yasmiṃ samaye nirujjhanti, asaññī tasmiṃ samaye hotī’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy, một vài vị giải thích sự diệt tận các tăng thượng tưởng.<br>
+<span lang="pi" class="pali">Ittheke abhisaññānirodhaṃ paññapenti.</span></p>
+
+<p lang="vi" class="vi">Về vấn đề này, người khác lại nói như sau:<br>
+<span lang="pi" class="pali">Tamañño evamāha:</span></p>
+
+<p lang="vi" class="vi">“Các Tôn giả, sự kiện không phải như vậy.<br>
+<span lang="pi" class="pali">na kho pana metaṃ, bho, evaṃ bhavissati.</span></p>
+
+<p lang="vi" class="vi">Này Tôn giả, tưởng là tự ngã của con người, chính tưởng ấy đến và đi.<br>
+<span lang="pi" class="pali">Saññā hi, bho, purisassa attā. Sā ca kho upetipi apetipi.</span></p>
+
+<p lang="vi" class="vi">Khi tưởng ấy đến thì con người có tưởng. Khi tưởng ấy đi thì con người không có tưởng”.<br>
+<span lang="pi" class="pali">Yasmiṃ samaye upeti, saññī tasmiṃ samaye hoti. Yasmiṃ samaye apeti, asaññī tasmiṃ samaye hotī’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy một vài vị giải thích sự diệt tận các tăng thượng tưởng.<br>
+<span lang="pi" class="pali">Ittheke abhisaññānirodhaṃ paññapenti.</span></p>
+
+<p lang="vi" class="vi">Vấn đề này, người khác lại nói như sau:<br>
+<span lang="pi" class="pali">Tamañño evamāha:</span></p>
+
+<p lang="vi" class="vi">“Các Tôn giả, sự kiện không phải như vậy.<br>
+<span lang="pi" class="pali">na kho pana metaṃ, bho, evaṃ bhavissati.</span></p>
+
+<p lang="vi" class="vi">Này Tôn giả, có những Sa-môn, Bà-la-môn có đại thần thông và đại oai lực.<br>
+<span lang="pi" class="pali">Santi hi, bho, samaṇabrāhmaṇā mahiddhikā mahānubhāvā.</span></p>
+
+<p lang="vi" class="vi">Chính những vị này khiến tưởng nhập vào trong người và cũng kéo tưởng ra ngoài người ấy.<br>
+<span lang="pi" class="pali">Te imassa purisassa saññaṃ upakaḍḍhantipi apakaḍḍhantipi.</span></p>
+
+<p lang="vi" class="vi">Khi các vị này khiến tưởng nhập vào trong người, người ấy có tưởng. Khi kéo tưởng ra ngoài, người ấy không có tưởng”.<br>
+<span lang="pi" class="pali">Yasmiṃ samaye upakaḍḍhanti, saññī tasmiṃ samaye hoti. Yasmiṃ samaye apakaḍḍhanti, asaññī tasmiṃ samaye hotī’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy một vài vị giải thích sự diệt tận các tăng thượng tưởng.<br>
+<span lang="pi" class="pali">Ittheke abhisaññānirodhaṃ paññapenti.</span></p>
+
+<p lang="vi" class="vi">Về vấn đề này, người khác lại nói như sau:<br>
+<span lang="pi" class="pali">Tamañño evamāha:</span></p>
+
+<p lang="vi" class="vi">“Các Tôn giả, sự kiện không phải như vậy.<br>
+<span lang="pi" class="pali">na kho pana metaṃ, bho, evaṃ bhavissati.</span></p>
+
+<p lang="vi" class="vi">Này Tôn giả, có những vị thiên thần có đại thần thông, có đại oai lực,<br>
+<span lang="pi" class="pali">Santi hi, bho, devatā mahiddhikā mahānubhāvā.</span></p>
+
+<p lang="vi" class="vi">Chính những vị này khiến tưởng nhập vào trong người và cũng kéo tưởng ra ngoài người ấy.<br>
+<span lang="pi" class="pali">Tā imassa purisassa saññaṃ upakaḍḍhantipi apakaḍḍhantipi.</span></p>
+
+<p lang="vi" class="vi">Khi các vị này khiến tưởng nhập vào trong người, người ấy có tưởng. Khi kéo tưởng ra ngoài, người ấy không có tưởng”.<br>
+<span lang="pi" class="pali">Yasmiṃ samaye upakaḍḍhanti, saññī tasmiṃ samaye hoti. Yasmiṃ samaye apakaḍḍhanti, asaññī tasmiṃ samaye hotī’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy một vài vị giải thích sự diệt tận các tăng thượng tưởng.<br>
+<span lang="pi" class="pali">Ittheke abhisaññānirodhaṃ paññapenti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, lúc bấy giờ con tưởng niệm đến Thế Tôn:<br>
+<span lang="pi" class="pali">Tassa mayhaṃ, bhante, bhagavantaṃyeva ārabbha sati udapādi:</span></p>
+
+<p lang="vi" class="vi">“Mong Thế Tôn có mặt ở đây! Mong Thiện thệ có mặt ở đây! Ngài rất tinh thông những pháp này.<br>
+<span lang="pi" class="pali">aho nūna bhagavā, aho nūna sugato, yo imesaṃ dhammānaṃ sukusalo’ti.</span></p>
+
+<p lang="vi" class="vi">Chắc chắn Thế Tôn biết rõ sự diệt tận các tăng thượng tưởng”.<br>
+<span lang="pi" class="pali">Bhagavā, bhante, kusalo, bhagavā pakataññū abhisaññānirodhassa.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, sự diệt tận các tăng thượng tưởng như thế nào?<br>
+<span lang="pi" class="pali">Kathaṃ nu kho, bhante, abhisaññānirodho hotī”ti?</span></p>
+
+
+<p lang="vi" class="vi">Này Potthapāda, những Sa-môn, Bà-la-môn nào đã nói:<br>
+<span lang="pi" class="pali">Tatra, poṭṭhapāda, ye te samaṇabrāhmaṇā evamāhaṃsu:</span></p>
+
+<p lang="vi" class="vi">“Không nhân, không duyên, các tưởng của con người sinh và diệt”. Những vị này đã sai lạc ngay từ ban đầu.<br>
+<span lang="pi" class="pali">ahetū appaccayā purisassa saññā uppajjantipi nirujjhantipī’ti, āditova tesaṃ aparaddhaṃ.</span></p>
+
+<p lang="vi" class="vi">Vì sao vậy?<br>
+<span lang="pi" class="pali">Taṃ kissa hetu?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, chính vì có nhân, có duyên, các tưởng của con người sinh và diệt.<br>
+<span lang="pi" class="pali">Sahetū hi, poṭṭhapāda, sappaccayā purisassa saññā uppajjantipi nirujjhantipi.</span></p>
+
+<p lang="vi" class="vi">Chính do sự học tập, một loại tưởng sanh, chính do sự học tập, một loại tưởng diệt.<br>
+<span lang="pi" class="pali">Sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: Sự học tập ấy là gì?<br>
+<span lang="pi" class="pali">Kā ca sikkhā”ti? Bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, nay ở đời Như Lai xuất hiện, là bậc A-la-hán, Chánh Biến Tri... thân nghiệp, ngữ nghiệp thanh tịnh, mạng sống trong sạch, giới hạnh đầy đủ, hộ trì các căn, chánh niệm tỉnh giác và biết tri túc.<br>
+<span lang="pi" class="pali">“Idha, poṭṭhapāda, tathāgato loke uppajjati arahaṃ, sammāsambuddho ...pe...</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, thế nào là Tỷ-kheo giới hạnh đầy đủ? Ở đây này Potthapāda, Tỷ-kheo từ bỏ sát sanh, tránh xa sát sanh, bỏ trượng, bỏ kiếm, biết tàm quý, có lòng từ, sống thương xót hạnh phúc của tất cả chúng sanh và loài hữu tình. Như vậy là giới hạnh của vị ấy trong giới luật ... như dùng ảo thuật để yên ổn, để khỏi làm các điều đã hứa... ngăn ngừa công hiệu của thuốc. Còn vị ấy thì tránh xa các tà mạng kể trên... như vậy là giới hạnh của vị ấy trong giới luật. Này Potthapāda, và như vậy Tỷ-kheo ấy nhờ đầy đủ giới luật nên không thấy sợ hãi từ một chỗ nào về phương diện hộ trì giới luật. Này Potthapāda, như một Sát-đế-lỵ đã làm lễ quán đảnh, đã hàng phục kẻ thù địch, không còn thấy sợ hãi từ chỗ nào nữa về phương diện thù địch. Cũng vậy, này Potthapāda, Tỷ-kheo ấy nhờ đầy đủ giới luật nên không thấy sợ hãi từ một chỗ nào về phương diện hộ trì giới luật. Vị ấy nhờ đầy đủ giới luật cao quý này, nên hưởng lạc thọ nội tâm không lỗi lầm. Như vậy, này Potthapāda, Tỷ-kheo đầy đủ giới luật. Này Potthapāda, thế nào là Tỷ-kheo hộ trì các căn? Này Potthapāda, khi mắt thấy sắc, Tỷ-kheo không nắm giữ tướng chung, không nắm giữ tướng riêng. Những nguyên nhân gì, vì con mắt không được chế ngự, khiến tham ái ưu bi, các ác, bất thiện pháp khởi lên, Tỷ-kheo tự chế ngự nguyên nhân ấy, hộ trì con mắt, thực hành sự hộ trì con mắt. Khi tai nghe tiếng... mũi ngửi hương... lưỡi nếm vị... thân cảm xúc... ý nhận thức các pháp, vị ấy không nắm giữ tướng chung, không nắm giữ tướng riêng. Những nguyên nhân gì, vì ý căn không được chế ngự, khiến tham ái ưu bi, các ác bất thiện pháp khởi lên, Tỷ-kheo chế ngự nguyên nhân ấy, hộ trì ý căn, thực hành sự hộ trì ý căn. Vị ấy, nhờ sự hộ trì cao quý các căn ấy, nên hưởng lạc thọ, nội tâm không lỗi lầm. Như vậy, này Potthapāda, Tỷ-kheo hộ trì các căn...<br>
+<span lang="pi" class="pali">Evaṃ kho, poṭṭhapāda, bhikkhu sīlasampanno hoti ...pe...tassime pañcanīvaraṇe pahīne attani samanupassato pāmojjaṃ jāyati, pamuditassa pīti jāyati, pītimanassa kāyo passambhati, passaddhakāyo sukhaṃ vedeti, sukhino cittaṃ samādhiyati.</span></p>
+
+<p lang="vi" class="vi">Khi quán tự thân đã xả ly năm triền cái ấy, hân hoan sanh; do hân hoan, nên hỷ sanh; do tâm hoan hỷ, thân được khinh an; do thân khinh an, lạc thọ sanh; do lạc thọ, tâm được định tĩnh. Tỷ-kheo, ly dục, ly bất thiện pháp, chứng và trú thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh với tầm, với tứ.<br>
+<span lang="pi" class="pali">So vivicceva kāmehi, vivicca akusalehi dhammehi, savitakkaṃ savicāraṃ vivekajaṃ pītisukhaṃ paṭhamaṃ jhānaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Dục tưởng xưa kia của vị ấy được diệt trừ. Và khi tưởng hỷ lạc vi diệu chân thật do ly dục sanh khởi lên, vị ấy có tưởng hỷ lạc vi diệu chân thật, do ly dục sanh.<br>
+<span lang="pi" class="pali">Tassa yā purimā kāmasaññā, sā nirujjhati. Vivekajapītisukhasukhumasaccasaññā tasmiṃ samaye hoti, vivekajapītisukhasukhumasaccasaññīyeva tasmiṃ samaye hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy do học tập, một tưởng khởi lên, cũng do học tập, một tưởng diệt trừ.<br>
+<span lang="pi" class="pali">Evampi sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: “Ðó là sự học tập Thế Tôn nói đến”.<br>
+<span lang="pi" class="pali">Ayaṃ sikkhā”ti bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">Lại nữa, này Potthapāda, Tỷ-kheo diệt tầm, diệt tứ, chứng và trú thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm không tứ, nội tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">“Puna caparaṃ, poṭṭhapāda, bhikkhu vitakkavicārānaṃ vūpasamā ajjhattaṃ sampasādanaṃ cetaso ekodibhāvaṃ avitakkaṃ avicāraṃ samādhijaṃ pītisukhaṃ dutiyaṃ jhānaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Tưởng hỷ lạc vi diệu chơn thật do ly dục sanh xưa kia của vị ấy được diệt trừ.<br>
+<span lang="pi" class="pali">Tassa yā purimā vivekajapītisukhasukhumasaccasaññā, sā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và khi tưởng hỷ lạc vi diệu chơn thật do định sanh khởi lên, vị ấy có tưởng hỷ lạc vi diệu chơn thật do định sanh.<br>
+<span lang="pi" class="pali">Samādhijapītisukhasukhumasaccasaññā tasmiṃ samaye hoti, samādhijapītisukhasukhumasaccasaññīyeva tasmiṃ samaye hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy do học tập, một tưởng khởi lên, cũng do học tập một tưởng diệt trừ.<br>
+<span lang="pi" class="pali">Evampi sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: “Ðó là sự học tập Thế Tôn nói đến”.<br>
+<span lang="pi" class="pali">Ayampi sikkhā”ti bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">“Lại nữa này Potthapāda, Tỷ-kheo ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là “Xả niệm lạc trú”, chứng và trú thiền thứ ba.<br>
+<span lang="pi" class="pali">“Puna caparaṃ, poṭṭhapāda, bhikkhu pītiyā ca virāgā upekkhako ca viharati sato ca sampajāno, sukhañca kāyena paṭisaṃvedeti, yaṃ taṃ ariyā ācikkhanti: ‘upekkhako satimā sukhavihārī’ti, tatiyaṃ jhānaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Tưởng hỷ lạc chơn thật vi diệu do định sanh xưa kia của vị ấy được diệt trừ.<br>
+<span lang="pi" class="pali">Tassa yā purimā samādhijapītisukhasukhumasaccasaññā, sā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và khi tưởng xả lạc vi diệu chơn thật khởi lên, vị ấy có tưởng xả lạc vi diệu chơn thật.<br>
+<span lang="pi" class="pali">Upekkhāsukhasukhumasaccasaññā tasmiṃ samaye hoti, upekkhāsukhasukhumasaccasaññīyeva tasmiṃ samaye hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy do học tập, một tưởng khởi lên và cũng do học tập, một tưởng diệt trừ.<br>
+<span lang="pi" class="pali">Evampi sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: “Ðó là sự học tập Thế Tôn nói đến”.<br>
+<span lang="pi" class="pali">Ayampi sikkhā”ti bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">Lại nữa này Potthapāda, Tỷ-kheo xả lạc, xả khổ, diệt hỷ, ưu đã cảm thọ trước, chứng và trú thiền thứ tư không khổ không lạc, xả niệm thanh tịnh.<br>
+<span lang="pi" class="pali">Puna caparaṃ, poṭṭhapāda, bhikkhu sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṃ atthaṅgamā adukkhamasukhaṃ upekkhāsatipārisuddhiṃ catutthaṃ jhānaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Như vậy xả lạc chơn thật vi diệu xưa kia của vị ấy được diệt trừ.<br>
+<span lang="pi" class="pali">Tassa yā purimā upekkhāsukhasukhumasaccasaññā, sā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và khi tưởng xả lạc, xả khổ vi diệu chơn thật khởi lên, vị ấy có tưởng xả lạc, xả khổ vi diệu chơn thật.<br>
+<span lang="pi" class="pali">Adukkhamasukhasukhumasaccasaññā tasmiṃ samaye hoti, adukkhamasukhasukhumasaccasaññīyeva tasmiṃ samaye hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy do học tập một tưởng khởi lên, cũng do học tập một tưởng diệt trừ.<br>
+<span lang="pi" class="pali">Evampi sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: “Ðó là sự học tập Thế Tôn nói đến”.<br>
+<span lang="pi" class="pali">Ayampi sikkhā”ti bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">Lại nữa này Potthapāda, với sự vượt thoát mọi sắc tưởng, với sự diệt trừ mọi chướng ngại tưởng, với sự không tác ý đối với dị tưởng, Tỷ-kheo nghĩ rằng: “Hư không là vô biên”, chứng và trú Không vô biên xứ.<br>
+<span lang="pi" class="pali">Puna caparaṃ, poṭṭhapāda, bhikkhu sabbaso rūpasaññānaṃ samatikkamā paṭighasaññānaṃ atthaṅgamā nānattasaññānaṃ amanasikārā ‘ananto ākāso’ti ākāsānañcāyatanaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Như vậy sắc tưởng xưa kia của vị ấy được diệt trừ.<br>
+<span lang="pi" class="pali">Tassa yā purimā rūpasaññā, sā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và khi tưởng Không vô biên xứ vi diệu chơn thật khởi lên, vị ấy có tưởng Không vô biên xứ vi diệu chơn thật.<br>
+<span lang="pi" class="pali">Ākāsānañcāyatanasukhumasaccasaññā tasmiṃ samaye hoti, ākāsānañcāyatanasukhumasaccasaññīyeva tasmiṃ samaye hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy do sự học tập, một tưởng khởi lên, cũng do học tập một tưởng diệt trừ.<br>
+<span lang="pi" class="pali">Evampi sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: “Ðó là sự học tập Thế Tôn nói đến”.<br>
+<span lang="pi" class="pali">Ayampi sikkhā”ti bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">Lại nữa này Potthapāda, với sự vượt thoát mọi Không vô biên xứ, Tỷ-kheo nghĩ rằng: “Thức là vô biên”, chứng và trú Thức vô biên xứ.<br>
+<span lang="pi" class="pali">Puna caparaṃ, poṭṭhapāda, bhikkhu sabbaso ākāsānañcāyatanaṃ samatikkamma ‘anantaṃ viññāṇan’ti viññāṇañcāyatanaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Như vậy tưởng Không vô biên xứ vi diệu chơn thật xưa kia của vị ấy được diệt trừ.<br>
+<span lang="pi" class="pali">Tassa yā purimā ākāsānañcāyatanasukhumasaccasaññā, sā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">và khi tưởng Thức vô biên xứ vi diệu chơn thật khởi lên, vị ấy có tưởng Thức vô biên xứ vi diệu chơn thật.<br>
+<span lang="pi" class="pali">Viññāṇañcāyatanasukhumasaccasaññā tasmiṃ samaye hoti, viññāṇañcāyatanasukhumasaccasaññīyeva tasmiṃ samaye hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy do học tập, một tưởng khởi lên, cũng do học tập, một tưởng diệt trừ.<br>
+<span lang="pi" class="pali">Evampi sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: “Ðó là sự học tập Thế Tôn nói đến”.<br>
+<span lang="pi" class="pali">Ayampi sikkhā”ti bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">Lại nữa này Potthapāda, với sự vượt thoát mọi Thức vô biên xứ, Tỷ-kheo nghĩ rằng: “Không có vật gì” chứng và trú Vô sở hữu xứ.<br>
+<span lang="pi" class="pali">Puna caparaṃ, poṭṭhapāda, bhikkhu sabbaso viññāṇañcāyatanaṃ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Như vậy tưởng Thức vô biên xứ vi diệu chơn thật xưa kia của vị ấy được diệt trừ.<br>
+<span lang="pi" class="pali">Tassa yā purimā viññāṇañcāyatanasukhumasaccasaññā, sā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và khi tưởng Vô sở hữu xứ vi diệu chơn thật khởi lên, vị ấy có tưởng Vô sở hữu xứ vi diệu chơn thật.<br>
+<span lang="pi" class="pali">Ākiñcaññāyatanasukhumasaccasaññā tasmiṃ samaye hoti, ākiñcaññāyatanasukhumasaccasaññīyeva tasmiṃ samaye hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy do học tập, một tưởng khởi lên, cũng do học tập, một tưởng diệt trừ.<br>
+<span lang="pi" class="pali">Evampi sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn nói: “Ðó là sự học tập Thế Tôn nói đến”.<br>
+<span lang="pi" class="pali">Ayampi sikkhā”ti bhagavā avoca.</span></p>
+
+<p lang="vi" class="vi">Lại nữa này Potthapāda, khi Tỷ-kheo ở nơi đây tự mình khởi tưởng, vị này tiếp tục đi từ tưởng này đến tưởng khác cho đến tưởng tột đỉnh.<br>
+<span lang="pi" class="pali">Yato kho, poṭṭhapāda, bhikkhu idha sakasaññī hoti, so tato amutra tato amutra anupubbena saññaggaṃ phusati.</span></p>
+
+<p lang="vi" class="vi">Và vị này khi đứng tại tưởng tột đỉnh có thể nghĩ:<br>
+<span lang="pi" class="pali">Tassa saññagge ṭhitassa evaṃ hoti:</span></p>
+
+<p lang="vi" class="vi">“Tâm còn suy tưởng có hại cho ta, tâm không suy tưởng mới tốt cho ta.<br>
+<span lang="pi" class="pali">cetayamānassa me pāpiyo, acetayamānassa me seyyo.</span></p>
+
+<p lang="vi" class="vi">Nếu ta cứ tiếp tục suy tưởng, khi những tưởng này của ta diệt đi, các thô tưởng khác lại khởi lên<br>
+<span lang="pi" class="pali">Ahañceva kho pana ceteyyaṃ, abhisaṅkhareyyaṃ, imā ca me saññā nirujjheyyuṃ, aññā ca oḷārikā saññā uppajjeyyuṃ;</span></p>
+
+<p lang="vi" class="vi">ta hãy đừng có suy tưởng”.<br>
+<span lang="pi" class="pali">yannūnāhaṃ na ceva ceteyyaṃ na ca abhisaṅkhareyyan’ti.</span></p>
+
+<p lang="vi" class="vi">Do không có suy tưởng,<br>
+<span lang="pi" class="pali">So na ceva ceteti, na ca abhisaṅkharoti.</span></p>
+
+<p lang="vi" class="vi">các tưởng kia diệt tận và các thô tưởng khác không khởi lên,<br>
+<span lang="pi" class="pali">Tassa acetayato anabhisaṅkharoto tā ceva saññā nirujjhanti, aññā ca oḷārikā saññā na uppajjanti.</span></p>
+
+<p lang="vi" class="vi">vị ấy cảm thọ sự diệt tận.<br>
+<span lang="pi" class="pali">So nirodhaṃ phusati.</span></p>
+
+<p lang="vi" class="vi">Như vậy, này Potthapāda, là sự chứng đạt trí tuệ diệt trừ dần dần các tăng thượng tưởng.<br>
+<span lang="pi" class="pali">Evaṃ kho, poṭṭhapāda, anupubbābhisaññānirodhasampajānasamāpatti hoti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi nghĩ thế nào?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda,</span></p>
+
+<p lang="vi" class="vi">Trước đây ngươi đã nghe sự chứng đạt trí tuệ diệt trừ dần dần các tăng thượng tưởng này không?<br>
+<span lang="pi" class="pali">api nu te ito pubbe evarūpā anupubbābhisaññānirodhasampajānasamāpatti sutapubbā”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, con không có nghe.<br>
+<span lang="pi" class="pali">No hetaṃ, bhante.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, nhưng nay con hiểu lời nói của Thế Tôn.<br>
+<span lang="pi" class="pali">Evaṃ kho ahaṃ, bhante, bhagavato bhāsitaṃ ājānāmi:</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, khi Tỷ-kheo ở đây tự mình khởi tưởng, vị này tiếp tục đi từ tưởng này đến tưởng khác cho đến tưởng tột đỉnh, và vị này, khi đứng lại tưởng tột đỉnh có thể nghĩ:<br>
+<span lang="pi" class="pali">yato kho, poṭṭhapāda, bhikkhu idha sakasaññī hoti, so tato amutra tato amutra anupubbena saññaggaṃ phusati, tassa saññagge ṭhitassa evaṃ hoti:</span></p>
+
+<p lang="vi" class="vi">“Tâm còn suy tưởng, có hại cho ta, tâm không suy tưởng mới tốt cho ta.<br>
+<span lang="pi" class="pali">cetayamānassa me pāpiyo, acetayamānassa me seyyo.</span></p>
+
+<p lang="vi" class="vi">Nếu ta cứ tiếp tục suy tưởng khi những tưởng này của ta diệt đi, các thô tưởng khác lại khởi lên; vậy ta hãy đừng có suy tưởng”, và vị này không có suy tưởng.<br>
+<span lang="pi" class="pali">Ahañceva kho pana ceteyyaṃ abhisaṅkhareyyaṃ, imā ca me saññā nirujjheyyuṃ, aññā ca oḷārikā saññā uppajjeyyuṃ; yannūnāhaṃ na ceva ceteyyaṃ, na ca abhisaṅkhareyyan”ti.</span></p>
+
+<p lang="vi" class="vi">Do không có suy tưởng, các tưởng kia diệt tận và các thô tưởng khác cũng không khởi lên.<br>
+<span lang="pi" class="pali">So na ceva ceteti, na cābhisaṅkharoti, tassa acetayato anabhisaṅkharoto tā ceva saññā nirujjhanti, aññā ca oḷārikā saññā na uppajjanti.</span></p>
+
+<p lang="vi" class="vi">Vị ấy cảm thọ sự diệt tận.<br>
+<span lang="pi" class="pali">So nirodhaṃ phusati.</span></p>
+
+<p lang="vi" class="vi">Như vậy này Potthapāda là sự chứng đạt trí tuệ diệt trừ dần dần các tăng thượng tưởng.<br>
+<span lang="pi" class="pali">Evaṃ kho, poṭṭhapāda, anupubbābhisaññānirodhasampajānasamāpatti hotī’”ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy là phải, này Potthapāda!<br>
+<span lang="pi" class="pali">Evaṃ, poṭṭhapādā”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, Thế Tôn chỉ nói đến một tưởng tuyệt đỉnh hay nhiều tưởng tuyệt đỉnh?<br>
+<span lang="pi" class="pali">Ekaññeva nu kho, bhante, bhagavā saññaggaṃ paññapeti, udāhu puthūpi saññagge paññapetī”ti?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ta nói đến một tưởng tuyệt đỉnh và cũng nói đến nhiều tưởng tuyệt đỉnh.<br>
+<span lang="pi" class="pali">Ekampi kho ahaṃ, poṭṭhapāda, saññaggaṃ paññapemi, puthūpi saññagge paññapemī”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, làm sao Thế Tôn nói đến một tưởng tuyệt đỉnh và cũng nói đến nhiều tưởng tuyệt đỉnh?<br>
+<span lang="pi" class="pali">Yathā kathaṃ pana, bhante, bhagavā ekampi saññaggaṃ paññapeti, puthūpi saññagge paññapetī”ti?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, tùy theo vị ấy cảm thọ sự diệt tận (của một tưởng) sau tưởng khác, vị ấy đạt tới nhiều tuyệt đỉnh sai khác, cái này tiếp theo cái kia cho đến tuyệt đỉnh cuối cùng mà Ta nói đến nhiều tưởng tuyệt đỉnh.<br>
+<span lang="pi" class="pali">Yathā yathā kho, poṭṭhapāda, nirodhaṃ phusati tathā tathāhaṃ saññaggaṃ paññapemi.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda như vậy Ta nói đến một tưởng tuyệt đỉnh và cũng nói đến nhiều tưởng tuyệt đỉnh.<br>
+<span lang="pi" class="pali">Evaṃ kho ahaṃ, poṭṭhapāda, ekampi saññaggaṃ paññapemi, puthūpi saññagge paññapemī”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, tưởng khởi trước, trí khởi sau? hay trí khởi trước tưởng khởi sau? hay tưởng và trí cùng khởi một lần không trước không sau?<br>
+<span lang="pi" class="pali">Saññā nu kho, bhante, paṭhamaṃ uppajjati, pacchā ñāṇaṃ, udāhu ñāṇaṃ paṭhamaṃ uppajjati, pacchā saññā, udāhu saññā ca ñāṇañca apubbaṃ acarimaṃ uppajjantī”ti?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, tưởng khởi trước trí mới khởi sau, do tưởng sanh, trí mới sanh.<br>
+<span lang="pi" class="pali">Saññā kho, poṭṭhapāda, paṭhamaṃ uppajjati, pacchā ñāṇaṃ, saññuppādā ca pana ñāṇuppādo hoti.</span></p>
+
+<p lang="vi" class="vi">Vị ấy tuệ tri:<br>
+<span lang="pi" class="pali">So evaṃ pajānāti:</span></p>
+
+<p lang="vi" class="vi">“Do duyên tưởng, trí sanh ra nơi ta”.<br>
+<span lang="pi" class="pali">idappaccayā kira me ñāṇaṃ udapādī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, với lời dạy này cần phải hiểu rằng: tưởng sanh trước trí sanh sau, tưởng sanh trí mới sanh.<br>
+<span lang="pi" class="pali">Iminā kho etaṃ, poṭṭhapāda, pariyāyena veditabbaṃ—yathā saññā paṭhamaṃ uppajjati, pacchā ñāṇaṃ, saññuppādā ca pana ñāṇuppādo hotī”ti.</span></p>
+
+
+<p lang="vi" class="vi">Bạch Thế Tôn, tưởng có phải là tự ngã của con người hay tưởng khác, tự ngã khác?<br>
+<span lang="pi" class="pali">Saññā nu kho, bhante, purisassa attā, udāhu aññā saññā añño attā”ti?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi hiểu tự ngã như thế nào?<br>
+<span lang="pi" class="pali">“Kaṃ pana tvaṃ, poṭṭhapāda, attānaṃ paccesī”ti?</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn, con hiểu tự ngã là thô phù, có sắc, do bốn đại hình thành, và do đoàn thực nuôi dưỡng.”<br>
+<span lang="pi" class="pali">“Oḷārikaṃ kho ahaṃ, bhante, attānaṃ paccemi rūpiṃ cātumahābhūtikaṃ kabaḷīkārāhārabhakkhan”ti.</span></p>
+
+<p lang="vi" class="vi">“Này Potthapāda, nếu tự ngã là thô phù, có sắc, do bốn đại hình thành và do đoàn thực nuôi dưỡng, như vậy này Potthapāda, tưởng khác và tự ngã khác.“<br>
+<span lang="pi" class="pali">Oḷāriko ca hi te, poṭṭhapāda, attā abhavissa rūpī cātumahābhūtiko kabaḷīkārāhārabhakkho. Evaṃ santaṃ kho te, poṭṭhapāda, aññāva saññā bhavissati añño attā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, với sự nhận thức này, cần phải hiểu, tưởng khác và tự ngã khác.<br>
+<span lang="pi" class="pali">Tadamināpetaṃ, poṭṭhapāda, pariyāyena veditabbaṃ yathā aññāva saññā bhavissati añño attā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, giả sử tự ngã ấy là thô phù, có sắc, do bốn đại hình thành và do đoàn thực nuôi dưỡng, tuy vậy một vài tưởng khác của người ấy khởi lên, một vài tưởng khác diệt xuống.<br>
+<span lang="pi" class="pali">Tiṭṭhateva sāyaṃ, poṭṭhapāda, oḷāriko attā rūpī cātumahābhūtiko kabaḷīkārāhārabhakkho, atha imassa purisassa aññā ca saññā uppajjanti, aññā ca saññā nirujjhanti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, với sự nhận thức này cần phải hiểu tưởng khác, tự ngã khác.<br>
+<span lang="pi" class="pali">”Iminā kho etaṃ, poṭṭhapāda, pariyāyena veditabbaṃ yathā aññāva saññā bhavissati añño attā”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, con hiểu tự ngã là do ý sở thành, đầy đủ mọi chi tiết lớn nhỏ, đầy đủ các căn.<br>
+<span lang="pi" class="pali">“Manomayaṃ kho ahaṃ, bhante, attānaṃ paccemi sabbaṅgapaccaṅgiṃ ahīnindriyan”ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, nếu tự ngã là do ý sở thành, đầy đủ mọi chi tiết lớn nhỏ, đầy đủ các căn, như vậy này Potthapàda, với sự nhận thức này, cần phải hiểu tưởng khác, tự ngã khác.<br>
+<span lang="pi" class="pali">Manomayo ca hi te, poṭṭhapāda, attā abhavissa sabbaṅgapaccaṅgī ahīnindriyo, evaṃ santampi kho te, poṭṭhapāda, aññāva saññā bhavissati añño attā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, với sự nhận thức này, cần phải hiểu, tưởng khác và tự ngã khác.<br>
+<span lang="pi" class="pali">Tadamināpetaṃ, poṭṭhapāda, pariyāyena veditabbaṃ yathā aññāva saññā bhavissati añño attā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, giả sử tự ngã ấy là do ý sở thành, đầy đủ mọi chi tiết lớn nhỏ, đầy đủ các căn, tuy vậy một vài tưởng khác của người ấy khởi lên, một vài tưởng khác diệt xuống.<br>
+<span lang="pi" class="pali">Tiṭṭhateva sāyaṃ, poṭṭhapāda, manomayo attā sabbaṅgapaccaṅgī ahīnindriyo, atha imassa purisassa aññā ca saññā uppajjanti, aññā ca saññā nirujjhanti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, với sự nhận thức này, cần phải hiểu tưởng khác, tự ngã khác.<br>
+<span lang="pi" class="pali">”Imināpi kho etaṃ, poṭṭhapāda, pariyāyena veditabbaṃ yathā aññāva saññā bhavissati añño attā”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, con hiểu tự ngã là vô sắc, do tưởng sở thành.<br>
+<span lang="pi" class="pali">“Arūpiṃ kho ahaṃ, bhante, attānaṃ paccemi saññāmayan”ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, nếu tự ngã là vô sắc, do tưởng sở thành, với sự nhận thức này Potthapāda, cần phải hiểu tưởng khác, tự ngã khác.<br>
+<span lang="pi" class="pali">Arūpī ca hi te, poṭṭhapāda, attā abhavissa saññāmayo, evaṃ santampi kho te, poṭṭhapāda, aññāva saññā bhavissati añño attā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, với sự nhận thức này, cần phải hiểu, tưởng khác và tự ngã khác.<br>
+<span lang="pi" class="pali">Tadamināpetaṃ, poṭṭhapāda, pariyāyena veditabbaṃ yathā aññāva saññā bhavissati añño attā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, giả sự tự ngã là vô sắc, do tưởng sở thành, tuy vậy, một vài tưởng khác của người khởi lên, một vài tưởng khác diệt xuống.<br>
+<span lang="pi" class="pali">Tiṭṭhateva sāyaṃ, poṭṭhapāda, arūpī attā saññāmayo, atha imassa purisassa aññā ca saññā uppajjanti, aññā ca saññā nirujjhanti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, với sự nhận thức này, cần phải hiểu tưởng khác, tự ngã khác.<br>
+<span lang="pi" class="pali">”Imināpi kho etaṃ, poṭṭhapāda, pariyāyena veditabbaṃ yathā aññāva saññā bhavissati añño attā”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, con có thể hiểu được chăng: “tưởng là tự ngã của con người” hay “tưởng khác, tự ngã khác”?<br>
+<span lang="pi" class="pali">Sakkā panetaṃ, bhante, mayā ñātuṃ: ”‘saññā purisassa attā’ti vā ‘aññāva saññā añño attā’ti vā”ti?</span></p>
+
+<p lang="vi" class="vi">“Này Potthapāda, thật khó cho ngươi biết được “tưởng là tự ngã của con người” hay “tưởng khác, tự ngã khác”, vì ngươi có dị kiến, có tin tưởng khác, có lý tưởng khác, có thiên tư khác, có hạnh nguyện khác.”<br>
+<span lang="pi" class="pali">“Dujjānaṃ kho etaṃ, poṭṭhapāda, tayā aññadiṭṭhikena aññakhantikena aññarucikena aññatrāyogena aññatrācariyakena:‘saññā purisassa attā’ti vā, ‘aññāva saññā añño attāti’ vā”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, nếu thật khó cho con biết được “tưởng là tự ngã của con người”, hay “tưởng khác, tự ngã khác” vì con có dị kiến khác, có tin tưởng khác, có lý tưởng khác, có thiên tư khác, có hạnh nguyện khác<br>
+<span lang="pi" class="pali">Sacetaṃ, bhante, mayā dujjānaṃ aññadiṭṭhikena aññakhantikena aññarucikena aññatrāyogena aññatrācariyakena:‘saññā purisassa attā’ti vā, ‘aññāva saññā añño attā’ti vā;</span></p>
+
+<p lang="vi" class="vi">Thời bạch Thế Tôn, thế giới có phải là thường còn không? Chỉ có quan niệm này là đúng sự thực, ngoài ra là mê muội không?<br>
+<span lang="pi" class="pali">”kiṃ pana, bhante, ‘sassato loko, idameva saccaṃ moghamaññan’”ti?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ta không trả lời: “Thế giới là thường còn, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">“Abyākataṃ kho etaṃ, poṭṭhapāda, mayā:‘sassato loko, idameva saccaṃ moghamaññan’”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải thế giới là vô thường, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không?<br>
+<span lang="pi" class="pali">“Kiṃ pana, bhante, ‘asassato loko, idameva saccaṃ moghamaññan’”ti?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ta không trả lời: “Thế giới là vô thường, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">“Etampi kho, poṭṭhapāda, mayā abyākataṃ:‘asassato loko, idameva saccaṃ moghamaññan’”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải thế giới này là hữu biên, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không? Này Potthapāda, Ta không trả lời: “Thế giới là hữu biên, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">“Kiṃ pana, bhante, ‘antavā loko ...pe...</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải thế giới là vô biên, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không? Này Potthapāda, Ta không trả lời: “Thế giới là vô biên, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">‘anantavā loko ...‘</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải sinh mạng và thân thể là một, chỉ có quan điểm này là đúng sự thật, ngoài ra là mê muội không? Này Potthapāda, Ta không trả lời: “Thân thể và sinh mạng là một, chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">‘taṃ jīvaṃ taṃ sarīraṃ ...‘</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải sinh mạng khác, thân thể khác? Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không? Này Potthapāda, Ta không trả lời: “Sinh mạng khác, thân thể khác. Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">‘aññaṃ jīvaṃ aññaṃ sarīraṃ ...‘</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải Như Lai tồn tại sau khi chết? Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không? Này Potthapāda, Ta không trả lời: “Như Lai tồn tại sau khi chết. Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">‘hoti tathāgato paraṃ maraṇā ...‘</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải Như Lai không tồn tại sau khi chết không? Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không? Này Potthapāda, Ta không trả lời: “Như Lai không tồn tại sau khi chết. Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">‘na hoti tathāgato paraṃ maraṇā ...‘</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải Như Lai tồn tại và không tồn tại sau khi chết. Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không? Này Potthapāda, Ta không trả lời: “Như Lai tồn tại và không tồn tại sau khi chết. Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">‘hoti ca na ca hoti tathāgato paraṃ maraṇā ...‘</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, có phải Như Lai không tồn tại và không không tồn tại sau khi chết. Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội không?<br>
+<span lang="pi" class="pali">”‘neva hoti na na hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan’”ti?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ta không trả lời: “Như Lai không tồn tại và không không tồn tại sau khi chết. Chỉ có quan điểm này là đúng sự thực, ngoài ra là mê muội”.<br>
+<span lang="pi" class="pali">“Etampi kho, poṭṭhapāda, mayā abyākataṃ:‘neva hoti na na hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan’”ti.</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn, vì sao Thế Tôn không trả lời?”<br>
+<span lang="pi" class="pali">“Kasmā panetaṃ, bhante, bhagavatā abyākatan”ti?</span></p>
+
+<p lang="vi" class="vi">“Này Potthapāda, câu hỏi này không thuộc về đích giải thoát, không thuộc về Pháp, không thuộc căn bản của phạm hạnh, không đưa đến yểm ly, đến ly tham, đến tịch diệt, đến tịch tịnh, đến thắng trí, đến giác ngộ, đến Niết bàn.“<br>
+<span lang="pi" class="pali">Na hetaṃ, poṭṭhapāda, atthasaṃhitaṃ na dhammasaṃhitaṃ nādibrahmacariyakaṃ, na nibbidāya na virāgāya na nirodhāya na upasamāya na abhiññāya na sambodhāya na nibbānāya saṃvattati,</span></p>
+
+<p lang="vi" class="vi">Vì vậy, Ta không trả lời.<br>
+<span lang="pi" class="pali">”tasmā etaṃ mayā abyākatan”ti.</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn, vậy Thế Tôn trả lời những gì?”<br>
+<span lang="pi" class="pali">“Kiṃ pana, bhante, bhagavatā byākatan”ti?</span></p>
+
+<p lang="vi" class="vi">“Này Potthapāda, Ta trả lời: “Ðây là khổ”. Ta trả lời: “Ðây là khổ tập”. “Ta trả lời: “Ðây là khổ diệt”. Ta trả lời: “Ðây là con đường đưa đến khổ diệt”.”<br>
+<span lang="pi" class="pali">“Idaṃ dukkhanti kho, poṭṭhapāda, mayā byākataṃ. Ayaṃ dukkhasamudayoti kho, poṭṭhapāda, mayā byākataṃ. Ayaṃ dukkhanirodhoti kho, poṭṭhapāda, mayā byākataṃ. Ayaṃ dukkhanirodhagāminī paṭipadāti kho, poṭṭhapāda, mayā byākatan”ti.</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn, vì sao Thế Tôn trả lời?”<br>
+<span lang="pi" class="pali">“Kasmā panetaṃ, bhante, bhagavatā byākatan”ti?</span></p>
+
+<p lang="vi" class="vi">“Này Potthapāda, câu hỏi này thuộc về đích giải thoát, thuộc về Pháp, thuộc căn bản của phạm hạnh, đưa đến yểm ly, đến ly tham,  đến tịch diệt, đến thắng trí, đến giác ngộ, đến Niết bàn.<br>
+<span lang="pi" class="pali">“Etañhi, poṭṭhapāda, atthasaṃhitaṃ, etaṃ dhammasaṃhitaṃ, etaṃ ādibrahmacariyakaṃ, etaṃ nibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṃvattati;</span></p>
+
+<p lang="vi" class="vi">Vì vậy Ta trả lời.<br>
+<span lang="pi" class="pali">”tasmā etaṃ mayā byākatan”ti.</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn, như vậy là phải. Bạch Thiên Thệ, như vậy là phải.“<br>
+<span lang="pi" class="pali">Evametaṃ, bhagavā, evametaṃ, sugata.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, nay đã đến thời Ngài làm gì Ngài xem là phải làm.<br>
+<span lang="pi" class="pali">”Yassadāni, bhante, bhagavā kālaṃ maññatī”ti.</span></p>
+
+<p lang="vi" class="vi">Và Thế Tôn từ chỗ ngồi đứng dậy ra về.<br>
+<span lang="pi" class="pali">Atha kho bhagavā uṭṭhāyāsanā pakkāmi.</span></p>
+
+<p lang="vi" class="vi">Thế Tôn rời khỏi chưa bao lâu, những du sĩ ngoại đạo ấy liền bao vây xung quanh du sĩ ngoại đạo Potthapāda và tuôn ra những lời nói mỉa mai gay gắt:<br>
+<span lang="pi" class="pali">Atha kho te paribbājakā acirapakkantassa bhagavato poṭṭhapādaṃ paribbājakaṃ samantato vācā sannitodakena sañjhabbharimakaṃsu:</span></p>
+
+<p lang="vi" class="vi">“”Potthapāda này là như vậy, những gì Sa-môn Gotama nói đều được Potthapāda tán thành:“<br>
+<span lang="pi" class="pali">evameva panāyaṃ bhavaṃ poṭṭhapādo yaññadeva samaṇo gotamo bhāsati, taṃ tadevassa abbhanumodati:</span></p>
+
+<p lang="vi" class="vi">‘”Bạch Thế Tôn, như vậy là phải. Bạch Thiện Thệ như vậy là phải”.<br>
+<span lang="pi" class="pali">evametaṃ, bhagavā, evametaṃ, sugatā’ti.</span></p>
+
+<p lang="vi" class="vi">Chúng tôi không được biết Sa-môn Gotama đã thuyết trình dứt khoát những vấn đề sau đây: “Thế giới là thường còn”, hay “Thế giới là vô thường”, hay “Thế giới là hữu biên”, hay “Thế giới là vô biên”, hay “Sinh mạng và thân thể là một”, hay “Sinh mạng khác, thân thể khác”, “hay Như Lai có tồn tại sau khi chết” hay “Như Lai không tồn tại sau khi chết” hay “Như Lai tồn tại và cũng không tồn tại sau khi chết”, hay “Như Lai không tồn tại và cũng không không tồn tại sau khi chết”.<br>
+<span lang="pi" class="pali">Na kho pana mayaṃ kiñci samaṇassa gotamassa ekaṃsikaṃ dhammaṃ desitaṃ ājānāma:‘sassato loko’ti vā, ‘asassato loko’ti vā, ‘antavā loko’ti vā, ‘anantavā loko’ti vā, ‘taṃ jīvaṃ taṃ sarīran’ti vā, ‘aññaṃ jīvaṃ aññaṃ sarīran’ti vā, ‘hoti tathāgato paraṃ maraṇā’ti vā, ‘na hoti tathāgato paraṃ maraṇā’ti vā, ‘hoti ca na ca hoti tathāgato paraṃ maraṇā’ti vā, ‘neva hoti na na hoti tathāgato paraṃ maraṇā’ti vā”ti.</span></p>
+
+<p lang="vi" class="vi">Khi được nói vậy, du sĩ ngoại đạo Potthapāda nói với các du sĩ ngoại đạo kia:<br>
+<span lang="pi" class="pali">Evaṃ vutte, poṭṭhapādo paribbājako te paribbājake etadavoca:</span></p>
+
+<p lang="vi" class="vi">“Này các Tôn giả, tôi cũng không được biết Sa-môn Gotama đã thuyết trình dứt khoát những vấn đề sau đây: “Thế giới là thường còn”, hay “Thế giới là vô thường”, hay “Thế giới là hữu biên”, hay “Thế giới là vô biên”, hay “Sinh mạng và thân thể là một”, hay “Sinh mạng khác, thân thể khác”, hay “Như Lai có tồn tại sau khi chết”, hay “Như Lai không có tồn tại sau khi chết”, hay “Như Lai có tồn tại và cũng không tồn tại sau khi chết”, hay “Như Lai không có tồn tại và cũng không không tồn tại sau khi chết“;<br>
+<span lang="pi" class="pali">ahampi kho, bho, na kiñci samaṇassa gotamassa ekaṃsikaṃ dhammaṃ desitaṃ ājānāmi:‘sassato loko’ti vā, ‘asassato loko’ti vā ...pe...‘neva hoti na na hoti tathāgato paraṃ maraṇā’ti vā;</span></p>
+
+<p lang="vi" class="vi">Sa-môn Gotama đã tuyên bố một phương pháp như thực, chơn chánh, chơn thật, dùng Pháp làm cơ bản, dùng Pháp làm quy tắc.<br>
+<span lang="pi" class="pali">api ca samaṇo gotamo bhūtaṃ tacchaṃ tathaṃ paṭipadaṃ paññapeti dhammaṭṭhitataṃ dhammaniyāmataṃ.</span></p>
+
+<p lang="vi" class="vi">Và khi một vị tuyên bố một phương pháp như thực, chân chánh, chân thật, dùng Pháp làm cơ bản, dùng Pháp làm quy tắc thì làm sao một người hiểu biết như tôi lại không tán thành?<br>
+<span lang="pi" class="pali">”Bhūtaṃ kho pana tacchaṃ tathaṃ paṭipadaṃ paññapentassa dhammaṭṭhitataṃ dhammaniyāmataṃ, kathañhi nāma mādiso viññū samaṇassa gotamassa subhāsitaṃ subhāsitato nābbhanumodeyyā”ti?</span></p>
+
+
+<p lang="vi" class="vi">Hai ba ngày sau, Citta Hatthisāriputta và du sĩ ngoại đạo Potthapāda đi đến chỗ Thế Tôn. Khi đi đến nơi, Citta Hatthisāriputta đảnh lễ Thế Tôn và ngồi xuống một bên.<br>
+<span lang="pi" class="pali">Atha kho dvīhatīhassa accayena citto ca hatthisāriputto poṭṭhapādo ca paribbājako yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā citto hatthisāriputto bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.</span></p>
+
+<p lang="vi" class="vi">còn du sĩ ngoại đạo Potthapāda, nói những lời chào đón hỏi thăm xã giao với Thế Tôn và ngồi xuống một bên.<br>
+<span lang="pi" class="pali">Poṭṭhapādo pana paribbājako bhagavatā saddhiṃ sammodi. Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdi.</span></p>
+
+<p lang="vi" class="vi">Sau khi ngồi một bên, du sĩ ngoại đạo Potthapāda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Ekamantaṃ nisinno kho poṭṭhapādo paribbājako bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, khi Thế Tôn rời khỏi chưa bao lâu những du sĩ ngoại đạo liền bao vây xung quanh con và tuôn ra những lời nói mỉa mai gay gắt:<br>
+<span lang="pi" class="pali">“tadā maṃ, bhante, te paribbājakā acirapakkantassa bhagavato samantato vācāsannitodakena sañjhabbharimakaṃsu:</span></p>
+
+<p lang="vi" class="vi">“Potthapāda này là như vậy. Những gì Sa-môn Gotama nói đều được Potthapāda tán thành:<br>
+<span lang="pi" class="pali">evameva panāyaṃ bhavaṃ poṭṭhapādo yaññadeva samaṇo gotamo bhāsati, taṃ tadevassa abbhanumodati:</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn, như vậy là phải, Bạch Thiện Thệ như vậy là phải”.<br>
+<span lang="pi" class="pali">“evametaṃ, bhagavā, evametaṃ, sugatā”ti.</span></p>
+
+<p lang="vi" class="vi">Chúng tôi không được biết Sa-môn Gotama đã thuyết trình dứt khoát những vấn đề sau đây:<br>
+<span lang="pi" class="pali">Na kho pana mayaṃ kiñci samaṇassa gotamassa ekaṃsikaṃ dhammaṃ desitaṃ ājānāma:</span></p>
+
+<p lang="vi" class="vi">“Thế giới là thường còn”, hay “Thế giới là vô thường”, hay “Thế giới là hữu biên”, hay “Thế giới là vô biên”, hay “Sinh mạng và thân thể là một”, hay “Sinh mạng khác, thân thể khác”, hay “Như Lai có tồn tại sau khi chết”, hay “Như Lai không tồn tại sau khi chết”, hay “Như Lai có tồn tại và cũng không tồn tại sau khi chết”, hay “Như Lai không tồn tại và cũng không không tồn tại sau khi chết”.<br>
+<span lang="pi" class="pali">“sassato loko”ti vā, “asassato loko”ti vā, “antavā loko”ti vā, “anantavā loko”ti vā, “taṃ jīvaṃ taṃ sarīran”ti vā, “aññaṃ jīvaṃ aññaṃ sarīran”ti vā, “hoti tathāgato paraṃ maraṇā”ti vā, “na hoti tathāgato paraṃ maraṇā”ti vā, “hoti ca na ca hoti tathāgato paraṃ maraṇā”ti vā, “neva hoti na na hoti tathāgato paraṃ maraṇā”ti vā’ti.</span></p>
+
+<p lang="vi" class="vi">Khi được nói vậy, con nói với các du sĩ ngoại đạo kia:<br>
+<span lang="pi" class="pali">Evaṃ vuttāhaṃ, bhante, te paribbājake etadavocaṃ:</span></p>
+
+<p lang="vi" class="vi">“Này các Tôn giả, tôi cũng không được biết Sa-môn Gotama đã thuyết trình dứt khoát những vấn đề sau đây:<br>
+<span lang="pi" class="pali">‘ahampi kho, bho, na kiñci samaṇassa gotamassa ekaṃsikaṃ dhammaṃ desitaṃ ājānāmi:</span></p>
+
+<p lang="vi" class="vi">“Thế giới là thường con”, hay “Thế giới là vô thường”, hay “Thế giới là hưu biên”, hay “Thế giới là vô biên”, hay “Sinh mạng và thân thể là một”, hay “Sinh mạng khác, thân thể khác” hay “Như Lai có tồn tại sau khi chết”, hay “Như Lai không có tồn tại sau khi chết”, hay “Như Lai có tồn tại và cũng không tồn tại sau khi chết”, hay “Như Lai không tồn tại và cũng không không tồn tại sau khi chết”. Sa-môn Gotama đã tuyên bố một phương pháp như thực, chơn thánh, chơn thật, dùng Pháp làm cơ bản, dùng Pháp làm quy tắc. Và khi một vị đã tuyên bố một phương pháp như thực, chơn chánh, chơn thật, dùng Pháp làm cơ bản, dùng Pháp làm quy tắc thì làm sao một người hiểu biết như tôi lại có thể không tán thành?”<br>
+<span lang="pi" class="pali">“sassato loko”ti vā, “asassato loko”ti vā ...pe...“neva hoti na na hoti tathāgato paraṃ maraṇā”ti vā;api ca samaṇo gotamo bhūtaṃ tacchaṃ tathaṃ paṭipadaṃ paññapeti dhammaṭṭhitataṃ dhammaniyāmataṃ. Bhūtaṃ kho pana tacchaṃ tathaṃ paṭipadaṃ paññapentassa dhammaṭṭhitataṃ dhammaniyāmataṃ, kathañhi nāma mādiso viññū samaṇassa gotamassa subhāsitaṃ subhāsitato nābbhanumodeyyā’”ti?</span></p>
+
+<p lang="vi" class="vi">“Này Potthapāda, những vị du sĩ ngoại đạo ấy là mù, không có mắt; chỉ có ngươi là người có mắt độc nhất giữa chúng.<br>
+<span lang="pi" class="pali">“Sabbeva kho ete, poṭṭhapāda, paribbājakā andhā acakkhukā; tvaṃyeva nesaṃ eko cakkhumā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, có những pháp được Ta tuyên thuyết trình bày một cách dứt khoát.<br>
+<span lang="pi" class="pali">Ekaṃsikāpi hi kho, poṭṭhapāda, mayā dhammā desitā paññattā;</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, có những pháp được Ta truyền thuyết, trình bày một cách không dứt khoát.<br>
+<span lang="pi" class="pali">anekaṃsikāpi hi kho, poṭṭhapāda, mayā dhammā desitā paññattā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, những pháp gì được Ta tuyên thuyết trình bày một cách không dứt khoát?<br>
+<span lang="pi" class="pali">‘Katame ca te, poṭṭhapāda, mayā anekaṃsikā dhammā desitā paññattā?‘</span></p>
+
+<p lang="vi" class="vi">“Thế giới là thường còn”, Này Potthapāda, đó là pháp được Ta tuyên thuyết trình bày một cách không dứt khoát.<br>
+<span lang="pi" class="pali">‘Sassato loko’ti kho, poṭṭhapāda, mayā anekaṃsiko dhammo desito paññatto;‘</span></p>
+
+<p lang="vi" class="vi">“Thế giới là vô thường”, này Potthapāda, đó là pháp được Ta tuyên thuyết trình bày một cách không dứt khoát...<br>
+<span lang="pi" class="pali">‘asassato loko’ti kho, poṭṭhapāda, mayā anekaṃsiko dhammo desito paññatto;‘</span></p>
+
+<p lang="vi" class="vi">“Thế giới là hữu biên”, này Potthapāda...<br>
+<span lang="pi" class="pali">‘antavā loko’ti kho, poṭṭhapāda ...pe...‘</span></p>
+
+<p lang="vi" class="vi">“Thế giới là vô biên”, này Potthapāda...<br>
+<span lang="pi" class="pali">‘anantavā loko’ti kho, poṭṭhapāda ...‘</span></p>
+
+<p lang="vi" class="vi">“Sinh mạng và thân thể là một”, này Potthapāda...<br>
+<span lang="pi" class="pali">‘taṃ jīvaṃ taṃ sarīran’ti kho, poṭṭhapāda ...‘</span></p>
+
+<p lang="vi" class="vi">“Sinh mạng khác, thân thể khác”, này Potthapāda...<br>
+<span lang="pi" class="pali">‘aññaṃ jīvaṃ aññaṃ sarīran’ti kho, poṭṭhapāda ...‘</span></p>
+
+<p lang="vi" class="vi">“Như Lai có tồn tại sau khi chết”, này Potthapāda...<br>
+<span lang="pi" class="pali">‘hoti tathāgato paraṃ maraṇā’ti kho, poṭṭhapāda ...‘</span></p>
+
+<p lang="vi" class="vi">“Như Lai không có tồn tại sau khi chết”, này Potthapāda...<br>
+<span lang="pi" class="pali">na hoti tathāgato paraṃ maraṇā’ti kho, poṭṭhapāda ...</span></p>
+
+<p lang="vi" class="vi">“Như Lai có tồn tại và cũng không có tồn tại sau khi chết”, này Potthapāda ...<br>
+<span lang="pi" class="pali">hoti ca na ca hoti tathāgato paraṃ maraṇā’ti kho, poṭṭhapāda ...</span></p>
+
+<p lang="vi" class="vi">“Như Lai không có tồn tại và cũng không không có tồn tại sau khi chết”, này Potthapāda, đó là pháp được Ta tuyên thuyết trình bày một cách không dứt khoát.<br>
+<span lang="pi" class="pali">‘neva hoti na na hoti tathāgato paraṃ maraṇā’ti kho, poṭṭhapāda, mayā anekaṃsiko dhammo desito paññatto.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, vì sao những pháp ấy lại được Ta tuyên thuyết trình bày một cách không dứt khoát?<br>
+<span lang="pi" class="pali">Kasmā ca te, poṭṭhapāda, mayā anekaṃsikā dhammā desitā paññattā?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, những pháp này không thuộc về đích giải thoát, không thuộc về pháp, không thuộc căn bản của phạm hạnh, không đưa đến yểm ly, đến ly tham, đến tịch diệt, đến tịch tịnh, đến thắng trí, đến giác ngộ, đến Niết bàn.<br>
+<span lang="pi" class="pali">Na hete, poṭṭhapāda, atthasaṃhitā na dhammasaṃhitā na ādibrahmacariyakā na nibbidāya na virāgāya na nirodhāya na upasamāya na abhiññāya na sambodhāya na nibbānāya saṃvattanti.</span></p>
+
+<p lang="vi" class="vi">Vì vậy những pháp ấy được Ta tuyên thuyết, trình bày một cách không dứt khoát.<br>
+<span lang="pi" class="pali">Tasmā te mayā anekaṃsikā dhammā desitā paññattā.</span></p>
+
+
+<p lang="vi" class="vi">Này Potthapāda, những pháp gì được Ta tuyên thuyết trình bày một cách dứt khoát?<br>
+<span lang="pi" class="pali">Katame ca te, poṭṭhapāda, mayā ekaṃsikā dhammā desitā paññattā?</span></p>
+
+<p lang="vi" class="vi">“Ðây là khổ”, này Potthapāda, đó là pháp được Ta tuyên thuyết trình bày một cách dứt khoát. “Ðây là khổ tập”, này Potthapāda, đó là pháp được Ta tuyên thuyết trình bày một cách dứt khoát. “Ðây là khổ diệt”, này Potthapāda, đó là pháp được Ta tuyên thuyết trình bày một cách dứt khoát. “Ðây là con đường đưa đến khổ diệt”, này Potthapāda, đó là pháp được Ta tuyên thuyết, trình bày một cách dứt khoát.<br>
+<span lang="pi" class="pali">Idaṃ dukkhanti kho, poṭṭhapāda, mayā ekaṃsiko dhammo desito paññatto. Ayaṃ dukkhasamudayoti kho, poṭṭhapāda, mayā ekaṃsiko dhammo desito paññatto.Ayaṃ dukkhanirodhoti kho, poṭṭhapāda, mayā ekaṃsiko dhammo desito paññatto.Ayaṃ dukkhanirodhagāminī paṭipadāti kho, poṭṭhapāda, mayā ekaṃsiko dhammo desito paññatto.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, vì sao những pháp ấy được Ta tuyên thuyết trình bày một cách dứt khoát?<br>
+<span lang="pi" class="pali">Kasmā ca te, poṭṭhapāda, mayā ekaṃsikā dhammā desitā paññattā?</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, những pháp ấy thuộc về đích giải thoát, thuộc về Pháp, thuộc căn bản phạm hạnh, đưa đến yểm ly, đến ly tham, đến tịch diệt, đến tịch tịnh, đến thắng trí, đến giác ngộ, đến Niết-bàn.<br>
+<span lang="pi" class="pali">Ete hi, poṭṭhapāda, atthasaṃhitā, ete dhammasaṃhitā, ete ādibrahmacariyakā ete nibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṃvattanti.</span></p>
+
+<p lang="vi" class="vi">Vì vậy những pháp ấy được Ta tuyên thuyết trình bày một cách dứt khoát.<br>
+<span lang="pi" class="pali">Tasmā te mayā ekaṃsikā dhammā desitā paññattā.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, có một số Sa-môn, Bà-la-môn có chủ trương như thế này, có chủ kiến như thế này:<br>
+<span lang="pi" class="pali">Santi, poṭṭhapāda, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:</span></p>
+
+<p lang="vi" class="vi">“Sau khi chết, tự ngã hoàn toàn hạnh phúc, vô bệnh”.<br>
+<span lang="pi" class="pali">‘ekantasukhī attā hoti arogo paraṃ maraṇā’ti.</span></p>
+
+<p lang="vi" class="vi">Ta đến những vị ấy và hỏi:<br>
+<span lang="pi" class="pali">Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:</span></p>
+
+<p lang="vi" class="vi">“Có phải quý Ðại đức có chủ trương như thế này, có chủ kiến như thế này: “Sau khi chết, tự ngã hoàn toàn hạnh phúc, vô bệnh”.<br>
+<span lang="pi" class="pali">saccaṃ kira tumhe āyasmanto evaṃvādino evaṃdiṭṭhino:“ekantasukhī attā hoti arogo paraṃ maraṇā”’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được Ta hỏi như vậy, những vị ấy công nhận là phải.<br>
+<span lang="pi" class="pali">Te ce me evaṃ puṭṭhā ‘āmā’ti paṭijānanti.</span></p>
+
+<p lang="vi" class="vi">Ta nói: “Chư Ðại đức có sống và đã biết đã thấy thế giới này là hoàn toàn hạnh phúc không?”.<br>
+<span lang="pi" class="pali">Tyāhaṃ evaṃ vadāmi: api pana tumhe āyasmanto ekantasukhaṃ lokaṃ jānaṃ passaṃ viharathā’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, các vị ấy trả lời là không.<br>
+<span lang="pi" class="pali">Iti puṭṭhā ‘no’ti vadanti.</span></p>
+
+<p lang="vi" class="vi">Ta nói với các vị ấy:<br>
+<span lang="pi" class="pali">Tyāhaṃ evaṃ vadāmi:</span></p>
+
+<p lang="vi" class="vi">“Vậy chư Ðại đức có tự thân cảm biết hoàn toàn hạnh phúc trong một đêm hay trong một ngày, hay trong nửa đêm hay trong nửa ngày không?”<br>
+<span lang="pi" class="pali">api pana tumhe āyasmanto ekaṃ vā rattiṃ ekaṃ vā divasaṃ upaḍḍhaṃ vā rattiṃ upaḍḍhaṃ vā divasaṃ ekantasukhiṃ attānaṃ sañjānāthā’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, các vị ấy trả lời là không.<br>
+<span lang="pi" class="pali">Iti puṭṭhā ‘no’ti vadanti.</span></p>
+
+<p lang="vi" class="vi">Ta nói với các vị ấy:<br>
+<span lang="pi" class="pali">Tyāhaṃ evaṃ vadāmi:</span></p>
+
+<p lang="vi" class="vi">“Chư Ðại đức có biết một con đường nào, một phương pháp nào có thể đưa đến sự chứng ngộ một thế giới hoàn toàn hạnh phúc không?”<br>
+<span lang="pi" class="pali">api pana tumhe āyasmanto jānātha: ayaṃ maggo ayaṃ paṭipadā ekantasukhassa lokassa sacchikiriyāyā”’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, các vị ấy trả lời là không!<br>
+<span lang="pi" class="pali">Iti puṭṭhā ‘no’ti vadanti.</span></p>
+
+<p lang="vi" class="vi">Ta nói với các vị ấy:<br>
+<span lang="pi" class="pali">Tyāhaṃ evaṃ vadāmi:</span></p>
+
+<p lang="vi" class="vi">“Chư Ðại đức có nghe tiếng nói của chư thiên, đã được sinh vào một thế giới hoàn toàn hạnh phúc.<br>
+<span lang="pi" class="pali">api pana tumhe āyasmanto yā tā devatā ekantasukhaṃ lokaṃ upapannā, tāsaṃ bhāsamānānaṃ saddaṃ suṇātha:</span></p>
+
+<p lang="vi" class="vi">“Này các vị, hãy cố gắng khéo thực hành. Này các vị hãy thực chứng một thế giới hoàn toàn hạnh phúc.<br>
+<span lang="pi" class="pali">suppaṭipannāttha, mārisā, ujuppaṭipannāttha, mārisā, ekantasukhassa lokassa sacchikiriyāya;</span></p>
+
+<p lang="vi" class="vi">Này các vị, chúng tôi đã thực hành, đã sanh vào một thế giới hoàn toàn hạnh phúc” không?<br>
+<span lang="pi" class="pali">mayampi hi, mārisā, evaṃpaṭipannā ekantasukhaṃ lokaṃ upapannā”’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, các vị ấy không trả lời không.<br>
+<span lang="pi" class="pali">Iti puṭṭhā ‘no’ti vadanti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi nghĩ thế nào?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda,</span></p>
+
+<p lang="vi" class="vi">Sự kiện là như vậy, thời có phải lời nói của những Sa-môn, Bà-la-môn kia là không chánh xác hợp lý?<br>
+<span lang="pi" class="pali">”nanu evaṃ sante tesaṃ samaṇabrāhmaṇānaṃ appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn! Sự kiện là như vậy, thời lời nói của người kia là không chánh xác, hợp lý.<br>
+<span lang="pi" class="pali">“Addhā kho, bhante, evaṃ sante tesaṃ samaṇabrāhmaṇānaṃ appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+
+<p lang="vi" class="vi">“Ví như, này Poṭṭhapāda, có một người nói:“<br>
+<span lang="pi" class="pali">Seyyathāpi, poṭṭhapāda, puriso evaṃ vadeyya:</span></p>
+
+<p lang="vi" class="vi">“Tôi yêu và ái luyến một cô gái đẹp trong nước này”.<br>
+<span lang="pi" class="pali">ahaṃ yā imasmiṃ janapade janapadakalyāṇī, taṃ icchāmi taṃ kāmemī’ti.</span></p>
+
+<p lang="vi" class="vi">Có người hỏi:<br>
+<span lang="pi" class="pali">Tamenaṃ evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này bạn, cô gái đẹp ông yêu và ái luyến ấy, Ông có biết là người giai cấp nào, là Sát-đế-lỵ, hay Bà-la-môn, hay Phệ-xá, hay Thủ-đà?”<br>
+<span lang="pi" class="pali">ambho purisa, yaṃ tvaṃ janapadakalyāṇiṃ icchasi kāmesi, jānāsi taṃ janapadakalyāṇiṃ khattiyī vā brāhmaṇī vā vessī vā suddī vā’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, người ấy trả lời không biết.<br>
+<span lang="pi" class="pali">Iti puṭṭho ‘no’ti vadeyya.</span></p>
+
+<p lang="vi" class="vi">Có người hỏi:<br>
+<span lang="pi" class="pali">Tamenaṃ evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này bạn, cô gái đẹp Ông yêu và ái luyến ấy, Ông có biết tên gì, lớn người, thấp người hay người bậc trung? Da đen sẫm, da ngăm ngăm đen hay da hồng hào? Ở tại làng nào, hay thành phố nào?”<br>
+<span lang="pi" class="pali">ambho purisa, yaṃ tvaṃ janapadakalyāṇiṃ icchasi kāmesi, jānāsi taṃ janapadakalyāṇiṃ evaṃnāmā evaṅgottāti vā, dīghā vā rassā vā majjhimā vā kāḷī vā sāmā vā maṅguracchavī vāti, amukasmiṃ gāme vā nigame vā nagare vā’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, người ấy trả lời không biết.<br>
+<span lang="pi" class="pali">Iti puṭṭho ‘no’ti vadeyya.</span></p>
+
+<p lang="vi" class="vi">Có người hỏi:<br>
+<span lang="pi" class="pali">Tamenaṃ evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này bạn, như vậy có phải Ông đã yêu và ái luyến một người Ông không biết, Ông không thấy?”<br>
+<span lang="pi" class="pali">ambho purisa, yaṃ tvaṃ na jānāsi na passasi, taṃ tvaṃ icchasi kāmesī’ti?</span></p>
+
+<p lang="vi" class="vi">Ðược hỏi vậy vị ấy trả lời phải.<br>
+<span lang="pi" class="pali">Iti puṭṭho ‘āmā’ti vadeyya.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi nghĩ thế nào?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda,</span></p>
+
+<p lang="vi" class="vi">Sự kiện là như vậy, thời có phải lời nói của người kia là không chánh xác hợp lý?<br>
+<span lang="pi" class="pali">nanu evaṃ sante tassa purisassa appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn! Sự kiện là như vậy, thời lời nói của người kia là không chánh xác, hợp lý.<br>
+<span lang="pi" class="pali">Addhā kho, bhante, evaṃ sante tassa purisassa appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+
+<p lang="vi" class="vi">
+Như vậy này Potthapāda, những Sa-môn, Bà-la-môn có chủ trương như thế này, có chủ kiến như thế này: “Sau khi chết tự ngã hoàn toàn hạnh phúc, vô bệnh”, Ta đến những vị ấy và hỏi: “Có phải quý Ðại đức có chủ trương như thế này, có chủ kiến như thế này: “Sau khi chết, tự ngã hoàn toàn hạnh phúc, vô bệnh”. Khi được hỏi như vậy, những vị ấy công nhận là phải. Ta nói: “Chư Ðại đức có sống và đã biết, đã thấy thế giới này là hoàn toàn hạnh phúc không?” Khi được hỏi vậy, các vị ấy trả lời là không. Ta nói với các vị ấy: “Vậy chư Ðại đức có tự nhận cảm biết hoàn toàn hạnh phúc trong một đêm hay trong một ngày, hay trong nửa đêm hay trong nửa ngày không?”. Khi được hỏi vậy, các vị ấy trả lời là không. Ta nói với các vị ấy: “Chư Ðại đức có biết một con đường nào, một phương pháp nào đưa đến sự chứng ngộ một thế giới hoàn toàn hạnh phúc không?” Khi được hỏi vậy, các vị ấy trả lời là không? Ta nói với các vị ấy: “Chư Ðại đức có nghe tiếng nói của chư thiên đã được sinh vào một thế giới hoàn toàn hạnh phúc: ‘Này các vị, hãy cố gắng khéo thực hành! Này các vị, hãy trực chứng một thế giới hoàn toàn hạnh phúc! Này các vị, chúng tôi đã thực hành, đã sanh vào một thế giới hoàn toàn hạnh phúc’ không?” Khi được hỏi vậy, các vị ấy trả lời là không. <br>
+<span lang="pi" class="pali">
+Evameva kho, poṭṭhapāda, ye te samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:‘ekantasukhī attā hoti arogo paraṃ maraṇā’ti.Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:‘saccaṃ kira tumhe āyasmanto evaṃvādino evaṃdiṭṭhino:“ekantasukhī attā hoti arogo paraṃ maraṇā”’ti? Te ce me evaṃ puṭṭhā ‘āmā’ti paṭijānanti.Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto ekantasukhaṃ lokaṃ jānaṃ passaṃ viharathā’ti? Iti puṭṭhā ‘no’ti vadanti. Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto ekaṃ vā rattiṃ ekaṃ vā divasaṃ upaḍḍhaṃ vā rattiṃ upaḍḍhaṃ vā divasaṃ ekantasukhiṃ attānaṃ sañjānāthā’ti?Iti puṭṭhā ‘no’ti vadanti. Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto jānātha:“ayaṃ maggo ayaṃ paṭipadā ekantasukhassa lokassa sacchikiriyāyā”’ti? Iti puṭṭhā ‘no’ti vadanti.<br>
+Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto yā tā devatā ekantasukhaṃ lokaṃ upapannā, tāsaṃ bhāsamānānaṃ saddaṃ suṇātha:“suppaṭipannāttha, mārisā, ujuppaṭipannāttha, mārisā, ekantasukhassa lokassa sacchikiriyāya;mayampi hi, mārisā, evaṃpaṭipannā ekantasukhaṃ lokaṃ upapannā”’ti? Iti puṭṭhā ‘no’ti vadanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ngươi nghĩ thế nào? Sự kiện là như vậy, thời có phải lời nói của những Sa-môn, Bà-la-môn kia là không chánh xác, hợp lý?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda, nanu evaṃ sante tesaṃ samaṇabrāhmaṇānaṃ appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn sự kiện là như vậy, theo lời nói của người kia là không chánh xác, hợp lý.<br>
+<span lang="pi" class="pali">Addhā kho, bhante, evaṃ sante tesaṃ samaṇabrāhmaṇānaṃ appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, như một người muốn xây tại ngã tư đường một cái thang để leo lên lầu.<br>
+<span lang="pi" class="pali">Seyyathāpi, poṭṭhapāda, puriso cātumahāpathe nisseṇiṃ kareyya pāsādassa ārohaṇāya.</span></p>
+
+<p lang="vi" class="vi">Có người hỏi:<br>
+<span lang="pi" class="pali">Tamenaṃ evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này bạn, Ông muốn xây một cái thang để leo lên lầu, vậy Ông có biết lầu ấy là về hướng Ðông, hay về hướng Tây, hay về hướng Bắc, hay về hướng Nam? Nhà lầu ấy cao hay thấp, hay trung bình?”<br>
+<span lang="pi" class="pali">ambho purisa, yassa tvaṃ pāsādassa ārohaṇāya nisseṇiṃ karosi, jānāsi taṃ pāsādaṃ puratthimāya vā disāya dakkhiṇāya vā disāya pacchimāya vā disāya uttarāya vā disāya ucco vā nīco vā majjhimo vā’ti?</span></p>
+
+<p lang="vi" class="vi">Ðược hỏi vậy, vị ấy trả lời không biết.<br>
+<span lang="pi" class="pali">Iti puṭṭho ‘no’ti vadeyya.</span></p>
+
+<p lang="vi" class="vi">Có người hỏi:<br>
+<span lang="pi" class="pali">Tamenaṃ evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này bạn, như vậy có phải, Ông xây một cái thang để leo lên một cái lầu mà Ông không biết, không thấy?”<br>
+<span lang="pi" class="pali">ambho purisa, yaṃ tvaṃ na jānāsi na passasi, tassa tvaṃ pāsādassa ārohaṇāya nisseṇiṃ karosī’ti?</span></p>
+
+<p lang="vi" class="vi">Ðược hỏi vậy, vị ấy trả lời phải.<br>
+<span lang="pi" class="pali">Iti puṭṭho ‘āmā’ti vadeyya.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda ngươi nghĩ thế nào?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda,</span></p>
+
+<p lang="vi" class="vi">Sự kiện là như vậy thời có phải lời nói của người kia là không chánh xác, hợp lý?<br>
+<span lang="pi" class="pali">nanu evaṃ sante tassa purisassa appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn! Sự kiện là như vậy, thời lời nói của người kia là không chánh xác, hợp lý.<br>
+<span lang="pi" class="pali">Addhā kho, bhante, evaṃ sante tassa purisassa appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+<p lang="vi" class="vi">
+“Như vậy này Potthapāda, những Sa-môn, Bà-la-môn có chủ trương như thế này, có chủ kiến như thế này: “Sau khi chết, tự ngã hoàn toàn hạnh phúc, vô bệnh”. Ta đến những vị ấy và hỏi: “Có phải quý Ðại đức có chủ trương như thế này, có chủ kiến như thế này: “Sau khi chết, tự ngã hoàn toàn hạnh phúc, vô bệnh”. Khi được hỏi vậy, những vị ấy công nhận là phải. Ta nói: “Chư Ðại đức có sống và đã biết, đã thấy thế giới này là hoàn toàn hạnh phúc không?” Khi được hỏi vậy, các vị ấy trả lời là không. Ta nói với các vị ấy: “Chư Ðại đức có biết một con đường nào, một phương pháp nào có thể đưa đến sự chứng ngộ một thế giới hoàn toàn hạnh phúc không?” Khi được hỏi vậy, các vị ấy trả lời là không. Ta nói với các vị ấy: “Vậy chư Ðại đức có tự tâm cảm biết hoàn toàn hạnh phúc trong một đêm hay trong một ngày, hay trong nửa đêm hay trong nửa ngày không?” Khi được hỏi vậy, các vị ấy trả lời là không. Ta nói với các vị ấy: “Chư Ðại đức có nghe tiếng nói của chư thiên đã được sinh vào một thế giới hoàn toàn hạnh phúc: ‘Này các vị, hãy cố gắng thực hành! Này các vị, hãy trực chứng một thế giới hoàn toàn hạnh phúc. Này các vị, chúng tôi đã thực hành, đã sanh vào một thế giới hoàn toàn hạnh phúc’ không?” Khi được nói vậy, các vị ấy trả lời là không.<br>
+<span lang="pi" class="pali">
+“Evameva kho, poṭṭhapāda, ye te samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:‘ekantasukhī attā hoti arogo paraṃ maraṇā’ti.Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:‘saccaṃ kira tumhe āyasmanto evaṃvādino evaṃdiṭṭhino:“ekantasukhī attā hoti arogo paraṃ maraṇā”’ti? Te ce me evaṃ puṭṭhā ‘āmā’ti paṭijānanti.Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto ekantasukhaṃ lokaṃ jānaṃ passaṃ viharathā’ti? Iti puṭṭhā ‘no’ti vadanti. Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto ekaṃ vā rattiṃ ekaṃ vā divasaṃ upaḍḍhaṃ vā rattiṃ upaḍḍhaṃ vā divasaṃ ekantasukhiṃ attānaṃ sañjānāthā’ti? Iti puṭṭhā ‘no’ti vadanti. Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto jānātha ayaṃ maggo ayaṃ paṭipadā ekantasukhassa lokassa sacchikiriyāyā’ti? Iti puṭṭhā ‘no’ti vadanti.<br>
+Tyāhaṃ evaṃ vadāmi:‘api pana tumhe āyasmanto yā tā devatā ekantasukhaṃ lokaṃ upapannā tāsaṃ devatānaṃ bhāsamānānaṃ saddaṃ suṇātha:“suppaṭipannāttha, mārisā, ujuppaṭipannāttha, mārisā, ekantasukhassa lokassa sacchikiriyāya;mayampi hi, mārisā, evaṃ paṭipannā ekantasukhaṃ lokaṃ upapannā”’ti?Iti puṭṭhā ‘no’ti vadanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi nghĩ như thế nào? Sự kiện là như vậy, thời có phải lời nói của những Sa-môn, Bà-la-môn, kia là không chánh xác, hợp lý.<br>
+<span lang="pi" class="pali">”Taṃ kiṃ maññasi, poṭṭhapāda, nanu evaṃ sante tesaṃ samaṇabrāhmaṇānaṃ appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn! Sự kiện là như vậy, thời lời nói của người kia không chánh đáng, hợp lý.<br>
+<span lang="pi" class="pali">Addhā kho, bhante, evaṃ sante tesaṃ samaṇabrāhmaṇānaṃ appāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+
+
+<p lang="vi" class="vi">“Này Poṭṭhapāda, có ba loại ngã chấp: thô phù ngã chấp, ý sở thành ngã chấp, vô sắc ngã chấp.“<br>
+<span lang="pi" class="pali">Tayo kho me, poṭṭhapāda, attapaṭilābhā—oḷāriko attapaṭilābho, manomayo attapaṭilābho, arūpo attapaṭilābho.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, thế nào là thô phù ngã chấp?<br>
+<span lang="pi" class="pali">Katamo ca, poṭṭhapāda, oḷāriko attapaṭilābho?</span></p>
+
+<p lang="vi" class="vi">Có sắc, do bốn đại hình thành, do đoàn thực nuôi dưỡng là thô phù ngã chấp.<br>
+<span lang="pi" class="pali">Rūpī cātumahābhūtiko kabaḷīkārāhārabhakkho, ayaṃ oḷāriko attapaṭilābho.</span></p>
+
+<p lang="vi" class="vi">Thế nào ý sở thành ngã chấp?<br>
+<span lang="pi" class="pali">Katamo manomayo attapaṭilābho?</span></p>
+
+<p lang="vi" class="vi">Có sắc, do ý sở thành, đầy đủ chi tiết lớn nhỏ, các căn đầy đủ, là ý sở thành ngã chấp.<br>
+<span lang="pi" class="pali">Rūpī manomayo sabbaṅgapaccaṅgī ahīnindriyo, ayaṃ manomayo attapaṭilābho.</span></p>
+
+<p lang="vi" class="vi">Thế nào là vô sắc ngã chấp?<br>
+<span lang="pi" class="pali">Katamo arūpo attapaṭilābho?</span></p>
+
+<p lang="vi" class="vi">Không có sắc, do tưởng sở thành là vô sắc ngã chấp.<br>
+<span lang="pi" class="pali">Arūpī saññāmayo, ayaṃ arūpo attapaṭilābho.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ta thuyết pháp để diệt thô phù ngã chấp:<br>
+<span lang="pi" class="pali">Oḷārikassapi kho ahaṃ, poṭṭhapāda, attapaṭilābhassa pahānāya dhammaṃ desemi:</span></p>
+
+<p lang="vi" class="vi">‘Nếu các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, và ngay hiện tại, tự mình giác ngộ, với thắng trí, chứng đạt và an trú trí tuệ sung mãn, quảng đại.‘<br>
+<span lang="pi" class="pali">yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, rất có thể các người nghĩ:<br>
+<span lang="pi" class="pali">Siyā kho pana te, poṭṭhapāda, evamassa:</span></p>
+
+<p lang="vi" class="vi">“Các nhiễm pháp sẽ diệt trừ, các tịnh pháp sẽ tăng trưởng, và ngay hiện tại tự mình giác ngộ, với thắng trí, chứng đạt và an trú trí tuệ sung mãn, quảng đại, tuy vậy đau khổ vẫn tồn tại”.<br>
+<span lang="pi" class="pali">saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissati, dukkho ca kho vihāro’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, chớ có nghĩ như vậy.<br>
+<span lang="pi" class="pali">Na kho panetaṃ, poṭṭhapāda, evaṃ daṭṭhabbaṃ.</span></p>
+
+<p lang="vi" class="vi">Khi nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, ngay hiện tại tự mình giác ngộ, với thắng trí, chứng đạt và an trú trí tuệ sung mãn, quảng đại, thời hân hoan sanh, hoan hỷ, khinh an, chánh niệm, tỉnh giác và lạc trú sanh.<br>
+<span lang="pi" class="pali">Saṅkilesikā ceva dhammā pahīyissanti, vodāniyā ca dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissati, pāmujjañceva bhavissati pīti ca passaddhi ca sati ca sampajaññañca sukho ca vihāro.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ta thuyết pháp cũng để diệt trừ ý sở thành ngã chấp:<br>
+<span lang="pi" class="pali">Manomayassapi kho ahaṃ, poṭṭhapāda, attapaṭilābhassa pahānāya dhammaṃ desemi:</span></p>
+
+<p lang="vi" class="vi">Nếu các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, và ngay hiện tại, tự mình giác ngộ và an trú trí tuệ sung mãn quảng đại.<br>
+<span lang="pi" class="pali">‘yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, rất có thể các ngươi nghĩ:<br>
+<span lang="pi" class="pali">Siyā kho pana te, poṭṭhapāda, evamassa:</span></p>
+
+<p lang="vi" class="vi">“Các nhiễm pháp sẽ diệt trừ, các tịnh pháp sẽ tăng trưởng, và ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại, tuy vậy đau khổ vẫn tồn tại”.<br>
+<span lang="pi" class="pali">‘saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissati, dukkho ca kho vihāro’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, chớ có nghĩ như vậy.<br>
+<span lang="pi" class="pali">Na kho panetaṃ, poṭṭhapāda, evaṃ daṭṭhabbaṃ.</span></p>
+
+<p lang="vi" class="vi">Khi nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, khi ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn quãng đại, thời hân hoan sanh, hoan hỷ, khinh an, chánh niệm tỉnh giác là lạc trú sanh.<br>
+<span lang="pi" class="pali">Saṅkilesikā ceva dhammā pahīyissanti, vodāniyā ca dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissati, pāmujjañceva bhavissati pīti ca passaddhi ca sati ca sampajaññañca sukho ca vihāro.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, Ta thuyết pháp cũng để diệt trừ vô sắc ngã chấp:<br>
+<span lang="pi" class="pali">Arūpassapi kho ahaṃ, poṭṭhapāda, attapaṭilābhassa pahānāya dhammaṃ desemi:</span></p>
+
+<p lang="vi" class="vi">Nếu các ngươi thực hành theo pháp này, thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, và ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại.<br>
+<span lang="pi" class="pali">‘yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, rất có thể các ngươi nghĩ:<br>
+<span lang="pi" class="pali">Siyā kho pana te, poṭṭhapāda, evamassa:</span></p>
+
+<p lang="vi" class="vi">“Các nhiễm pháp sẽ diệt trừ, các tịnh pháp sẽ tăng trưởng, ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại, tuy vậy đau khổ vẫn tồn tại”.<br>
+<span lang="pi" class="pali">‘saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissati, dukkho ca kho vihāro’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, chớ có nghĩ như vậy.<br>
+<span lang="pi" class="pali">Na kho panetaṃ, poṭṭhapāda, evaṃ daṭṭhabbaṃ.</span></p>
+
+<p lang="vi" class="vi">Khi nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại, thời hân hoan sanh, hoan hỷ, chánh niệm, tỉnh giác và lạc trú sanh.<br>
+<span lang="pi" class="pali">Saṅkilesikā ceva dhammā pahīyissanti, vodāniyā ca dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissati, pāmujjañceva bhavissati pīti ca passaddhi ca sati ca sampajaññañca sukho ca vihāro.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, có những người ngoài hỏi chúng tôi:<br>
+<span lang="pi" class="pali">Pare ce, poṭṭhapāda, amhe evaṃ puccheyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, thô phù ngã chấp ấy là gì mà Hiền giả thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng, và ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại?”<br>
+<span lang="pi" class="pali">katamo pana so, āvuso, oḷāriko attapaṭilābho, yassa tumhe pahānāya dhammaṃ desetha, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti,</span></p>
+
+<p lang="vi" class="vi">Khi được chúng hỏi như vậy, chúng tôi trả lời:<br>
+<span lang="pi" class="pali">tesaṃ mayaṃ evaṃ puṭṭhā evaṃ byākareyyāma:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, chính thô phù ngã chấp ấy, chúng tôi thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này, thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng và ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại”.<br>
+<span lang="pi" class="pali">’‘ayaṃ vā so, āvuso, oḷāriko attapaṭilābho, yassa mayaṃ pahānāya dhammaṃ desema, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, có những người ngoài hỏi:<br>
+<span lang="pi" class="pali">Pare ce, poṭṭhapāda, amhe evaṃ puccheyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, ý sở thành ngã chấp ấy là gì mà Hiền giả thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này thời nhiễm pháp này được diệt trừ, tịnh pháp được tăng trưởng và ngay hiện tại tự mình giác ngộ, với thắng trí chứng đạt và an trú trí tuệ sung mãn, quảng đại?”<br>
+<span lang="pi" class="pali">katamo pana so, āvuso, manomayo attapaṭilābho, yassa tumhe pahānāya dhammaṃ desetha, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, chúng tôi trả lời:<br>
+<span lang="pi" class="pali">Tesaṃ mayaṃ evaṃ puṭṭhā evaṃ byākareyyāma:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, chính ý sở thành ngã chấp ấy chúng tôi thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng và ngay hiện tại, tự mình giác ngộ với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại”.<br>
+<span lang="pi" class="pali">ayaṃ vā so, āvuso, manomayo attapaṭilābho yassa mayaṃ pahānāya dhammaṃ desema, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, có những người ngoài hỏi chúng tôi:<br>
+<span lang="pi" class="pali">Pare ce, poṭṭhapāda, amhe evaṃ puccheyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, vô sắc ngã chấp ấy là gì mà Hiền giả thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng và ngay hiện tại, tự mình giác ngộ với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại?”<br>
+<span lang="pi" class="pali">katamo pana so, āvuso, arūpo attapaṭilābho, yassa tumhe pahānāya dhammaṃ desetha, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, chúng tôi trả lời:<br>
+<span lang="pi" class="pali">Tesaṃ mayaṃ evaṃ puṭṭhā evaṃ byākareyyāma:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, chính vô sắc ngã chấp ấy, chúng tôi thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng và ngay hiện tại, tự mình giác ngộ với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại”.<br>
+<span lang="pi" class="pali">ayaṃ vā so, āvuso, arūpo attapaṭilābho yassa mayaṃ pahānāya dhammaṃ desema, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi nghĩ thế nào?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda,</span></p>
+
+<p lang="vi" class="vi">Sự kiện là như vậy, thời có phải lời nói ấy là chánh xác, hợp lý?<br>
+<span lang="pi" class="pali">nanu evaṃ sante sappāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn, sự kiện là như vậy, thời lời nói của người kia là chánh xác, hợp lý!<br>
+<span lang="pi" class="pali">“Addhā kho, bhante, evaṃ sante sappāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ví như một người xây một cái thang để leo lên lầu, từ dưới chân lầu ấy.<br>
+<span lang="pi" class="pali">Seyyathāpi, poṭṭhapāda, puriso nisseṇiṃ kareyya pāsādassa ārohaṇāya tasseva pāsādassa heṭṭhā.</span></p>
+
+<p lang="vi" class="vi">Người ấy được hỏi:<br>
+<span lang="pi" class="pali">Tamenaṃ evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này bạn, Ông xây cái thang để leo lên lầu, cái lầu ấy về hướng Ðông hay hướng Nam, hay hướng Tây, hay hướng Bắc? Nhà lầu ấy cao, hay thấp, hay trung bình?<br>
+<span lang="pi" class="pali">ambho purisa, yassa tvaṃ pāsādassa ārohaṇāya nisseṇiṃ karosi, jānāsi taṃ pāsādaṃ, puratthimāya vā disāya dakkhiṇāya vā disāya pacchimāya vā disāya uttarāya vā disāya ucco vā nīco vā majjhimo vā’ti?</span></p>
+
+<p lang="vi" class="vi">Nếu người ấy trả lời:<br>
+<span lang="pi" class="pali">So evaṃ vadeyya:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, cái lầu mà tôi xây thang để leo lên chính tại dưới chân lầu này”.<br>
+<span lang="pi" class="pali">ayaṃ vā so, āvuso, pāsādo, yassāhaṃ ārohaṇāya nisseṇiṃ karomi, tasseva pāsādassa heṭṭhā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi nghĩ thế nào?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda,</span></p>
+
+<p lang="vi" class="vi">Sự kiện là như vậy thời có phải lời nói ấy là chính xác, hợp chăng?<br>
+<span lang="pi" class="pali">nanu evaṃ sante tassa purisassa sappāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn, sự kiện là như vậy, thời lời nói của người kia là chánh xác, hợp lý!<br>
+<span lang="pi" class="pali">“Addhā kho, bhante, evaṃ sante tassa purisassa sappāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy, này Potthapāda, và có những người ngoài hỏi chúng tôi:<br>
+<span lang="pi" class="pali">“Evameva kho, poṭṭhapāda, pare ce amhe evaṃ puccheyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, thô phù ngã chấp là gì?... Này Hiền giả, ý sở thành ngã chấp là gì?... Này Hiền giả, vô sắc ngã chấp ấy là gì mà Hiền giả thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng và ngay hiện tại, tự mình giác ngộ với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại?”<br>
+<span lang="pi" class="pali">‘katamo pana so, āvuso, oḷāriko attapaṭilābho ...pe...katamo pana so, āvuso, manomayo attapaṭilābho ...pe...katamo pana so, āvuso, arūpo attapaṭilābho, yassa tumhe pahānāya dhammaṃ desetha, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti?</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi vậy, chúng tôi trả lời:<br>
+<span lang="pi" class="pali">Tesaṃ mayaṃ evaṃ puṭṭhā evaṃ byākareyyāma:</span></p>
+
+<p lang="vi" class="vi">“Này Hiền giả, chính vô sắc ngã chấp ấy mà chúng tôi thuyết pháp để diệt trừ, khiến các người thực hành theo pháp này thời nhiễm pháp được diệt trừ, tịnh pháp được tăng trưởng và ngay hiện tại, tự mình giác ngộ với thắng trí chứng đạt và an trú trí tuệ sung mãn quảng đại”<br>
+<span lang="pi" class="pali">‘ayaṃ vā so, āvuso, arūpo attapaṭilābho, yassa mayaṃ pahānāya dhammaṃ desema, yathāpaṭipannānaṃ vo saṅkilesikā dhammā pahīyissanti, vodāniyā dhammā abhivaḍḍhissanti, paññāpāripūriṃ vepullattañca diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharissathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Potthapāda, ngươi nghĩ thế nào? Sự kiện là như vậy, thời có phải lời nói ấy là chánh xác, hợp lý?<br>
+<span lang="pi" class="pali">Taṃ kiṃ maññasi, poṭṭhapāda, nanu evaṃ sante sappāṭihīrakataṃ bhāsitaṃ sampajjatī”ti?</span></p>
+
+<p lang="vi" class="vi">Vâng phải, bạch Thế Tôn, sự kiện là như vậy, thời lời nói của người kia là chánh xác, hợp lý!<br>
+<span lang="pi" class="pali">“Addhā kho, bhante, evaṃ sante sappāṭihīrakataṃ bhāsitaṃ sampajjatī”ti.</span></p>
+
+<p lang="vi" class="vi">Khi nghe nói vậy, Citta Hatthisāriputta bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ vutte, citto hatthisāriputto bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">“Bạch Thế Tôn, trong khi có thô phù ngã chấp, phải chăng không có ý sở thành ngã chấp, không có vô sắc ngã chấp?“<br>
+<span lang="pi" class="pali">yasmiṃ, bhante, samaye oḷāriko attapaṭilābho hoti, moghassa tasmiṃ samaye manomayo attapaṭilābho hoti, mogho arūpo attapaṭilābho hoti;</span></p>
+
+<p lang="vi" class="vi">Thô phù ngã chấp khi ấy thật có tồn tại?<br>
+<span lang="pi" class="pali">oḷāriko vāssa attapaṭilābho tasmiṃ samaye sacco hoti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, trong khi sở thành ngã chấp, phải chăng không có thô phù ngã chấp, không có vô sắc ngã chấp?<br>
+<span lang="pi" class="pali">Yasmiṃ, bhante, samaye manomayo attapaṭilābho hoti, moghassa tasmiṃ samaye oḷāriko attapaṭilābho hoti, mogho arūpo attapaṭilābho hoti;</span></p>
+
+<p lang="vi" class="vi">Ý sở thành ngã chấp khi ấy thật có tồn tại?<br>
+<span lang="pi" class="pali">manomayo vāssa attapaṭilābho tasmiṃ samaye sacco hoti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, trong khi có vô sắc ngã chấp, phải chăng không có thô phù ngã chấp, không có ý sở thành ngã chấp?<br>
+<span lang="pi" class="pali">Yasmiṃ, bhante, samaye arūpo attapaṭilābho hoti, moghassa tasmiṃ samaye oḷāriko attapaṭilābho hoti, mogho manomayo attapaṭilābho hoti;</span></p>
+
+<p lang="vi" class="vi">Vô sắc ngã chấp khi ấy thật có tồn tại?”<br>
+<span lang="pi" class="pali">arūpo vāssa attapaṭilābho tasmiṃ samaye sacco hotī”ti.</span></p>
+
+<p lang="vi" class="vi">Này Citta, trong khi có thô phù ngã chấp, thời ngã chấp ấy không thuộc ý sở thành ngã chấp, không thuộc vô sắc ngã chấp, chính khi ấy thuộc thô phù ngã chấp.<br>
+<span lang="pi" class="pali">Yasmiṃ, citta, samaye oḷāriko attapaṭilābho hoti, neva tasmiṃ samaye manomayo attapaṭilābhoti saṅkhaṃ gacchati, na arūpo attapaṭilābhoti saṅkhaṃ gacchati;only as a substantial reincarnation.oḷāriko attapaṭilābhotveva tasmiṃ samaye saṅkhaṃ gacchati.</span></p>
+
+<p lang="vi" class="vi">Này Citta, trong khi có ý sở thành ngã chấp, thời ngã chấp ấy không thuộc thô phù ngã chấp, không thuộc vô sắc ngã chấp, chính khi ấy thuộc ý sở thành ngã chấp.<br>
+<span lang="pi" class="pali">Yasmiṃ, citta, samaye manomayo attapaṭilābho hoti, neva tasmiṃ samaye oḷāriko attapaṭilābhoti saṅkhaṃ gacchati, na arūpo attapaṭilābhoti saṅkhaṃ gacchati; manomayo attapaṭilābhotveva tasmiṃ samaye saṅkhaṃ gacchati.</span></p>
+
+<p lang="vi" class="vi">Này Citta, trong khi có vô sắc ngã chấp, thời ngã chấp ấy không thuộc thô phù ngã chấp, không thuộc ý sở thành ngã chấp, chính khi ấy thuộc vô sắc ngã chấp.<br>
+<span lang="pi" class="pali">Yasmiṃ, citta, samaye arūpo attapaṭilābho hoti, neva tasmiṃ samaye oḷāriko attapaṭilābhoti saṅkhaṃ gacchati, na manomayo attapaṭilābhoti saṅkhaṃ gacchati; arūpo attapaṭilābhotveva tasmiṃ samaye saṅkhaṃ gacchati.</span></p>
+
+<p lang="vi" class="vi">Này Citta, nếu có người hỏi ngươi:<br>
+<span lang="pi" class="pali">Sace taṃ, citta, evaṃ puccheyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Ngươi đã có tồn tại ở quá khứ hay không?<br>
+<span lang="pi" class="pali">ahosi tvaṃ atītamaddhānaṃ, na tvaṃ nāhosi;</span></p>
+
+<p lang="vi" class="vi">Ngươi sẽ tồn tại ở tương lai hay không?<br>
+<span lang="pi" class="pali">bhavissasi tvaṃ anāgatamaddhānaṃ, na tvaṃ na bhavissasi;</span></p>
+
+<p lang="vi" class="vi">Ngươi có tồn tại ở hiện tại không?”<br>
+<span lang="pi" class="pali">atthi tvaṃ etarahi, na tvaṃ natthī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Citta, được hỏi vậy, ngươi trả lời như thế nào?<br>
+<span lang="pi" class="pali">”Evaṃ puṭṭho tvaṃ, citta, kinti byākareyyāsī”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, nếu có người hỏi con: “Ngươi đã có tồn tại ở quá khứ hay không? Ngươi sẽ tồn tại ở tương lai hay không? Ngươi có tồn tại ở hiện tại hay không?”<br>
+<span lang="pi" class="pali">“Sace maṃ, bhante, evaṃ puccheyyuṃ:‘ahosi tvaṃ atītamaddhānaṃ, na tvaṃ na ahosi;bhavissasi tvaṃ anāgatamaddhānaṃ, na tvaṃ na bhavissasi;atthi tvaṃ etarahi, na tvaṃ natthī’ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn được hỏi vậy, con sẽ trả lời:<br>
+<span lang="pi" class="pali">Evaṃ puṭṭho ahaṃ, bhante, evaṃ byākareyyaṃ:</span></p>
+
+<p lang="vi" class="vi">“Tôi đã có tồn tại ở quá khứ, không phải không tồn tại;<br>
+<span lang="pi" class="pali">ahosāhaṃ atītamaddhānaṃ, nāhaṃ na ahosiṃ;</span></p>
+
+<p lang="vi" class="vi">tôi sẽ tồn tại ở tương lai, không phải không tồn tại;<br>
+<span lang="pi" class="pali">bhavissāmahaṃ anāgatamaddhānaṃ, nāhaṃ na bhavissāmi;</span></p>
+
+<p lang="vi" class="vi">tôi tồn tại ở hiện tại, không phải không tồn tại”.<br>
+<span lang="pi" class="pali">’atthāhaṃ etarahi, nāhaṃ natthī’ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, nếu được hỏi như vậy, con sẽ trả lời như vậy.<br>
+<span lang="pi" class="pali">”Evaṃ puṭṭho ahaṃ, bhante, evaṃ byākareyyan”ti.</span></p>
+
+<p lang="vi" class="vi">Này Citta, nếu có người hỏi lại ngươi:<br>
+<span lang="pi" class="pali">Sace pana taṃ, citta, evaṃ puccheyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Quá khứ ngã chấp mà Ngươi đã có, có phải ngã chấp ấy đối với Ngươi là thật có, ngã chấp tương lai không tồn tại, ngã chấp hiện tại không tồn tại?<br>
+<span lang="pi" class="pali">yo te ahosi atīto attapaṭilābho, sova te attapaṭilābho sacco, mogho anāgato, mogho paccuppanno?</span></p>
+
+<p lang="vi" class="vi">Tương lai ngã chấp mà Ngươi sẽ có, có phải ngã chấp ấy đối với Ngươi là thật có, ngã chấp quá khứ không tồn tại, ngã chấp hiện tại không tồn tại?<br>
+<span lang="pi" class="pali">Yo te bhavissati anāgato attapaṭilābho, sova te attapaṭilābho sacco, mogho atīto, mogho paccuppanno</span></p>
+
+<p lang="vi" class="vi">Hiện tại ngã chấp mà Ngươi hiện có, có phải ngã chấp ấy đối với Ngươi là thật có, ngã chấp quá khứ không tồn tại, ngã chấp tương lai không tồn tại?”<br>
+<span lang="pi" class="pali">’Yo te etarahi paccuppanno attapaṭilābho, sova te attapaṭilābho sacco, mogho atīto, mogho anāgato’ti.</span></p>
+
+<p lang="vi" class="vi">Này Citta, được hỏi vậy, Ngươi trả lời thế nào?<br>
+<span lang="pi" class="pali">”Evaṃ puṭṭho tvaṃ, citta, kinti byākareyyāsī”ti?</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, nếu có người hỏi con: “Quá khứ ngã chấp mà Ngươi đã có, có phải ngã chấp ấy đối với Ngươi là thật có, ngã chấp tương lai không tồn tại, ngã chấp hiện tại không tồn tại? Tương lai ngã chấp mà Ngươi sẽ có, có phải ngã chấp ấy đối với Ngươi là thật có, ngã chấp quá khứ không tồn tại, ngã chấp hiện tại không tồn tại? Hiện tại ngã chấp mà Ngươi hiện có, có phải ngã chấp ấy đối với Ngươi là thật có, ngã chấp quá khứ không tồn tại, ngã chấp tương lai không tồn tại?”<br>
+<span lang="pi" class="pali">“Sace pana maṃ, bhante, evaṃ puccheyyuṃ:‘yo te ahosi atīto attapaṭilābho, sova te attapaṭilābho sacco, mogho anāgato, mogho paccuppanno? Yo te bhavissati anāgato attapaṭilābho, sova te attapaṭilābho sacco, mogho atīto, mogho paccuppanno? Yo te etarahi paccuppanno attapaṭilābho, sova te attapaṭilābho sacco, mogho atīto, mogho anāgato’ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, nếu được hỏi vậy, con sẽ trả lời:<br>
+<span lang="pi" class="pali">Evaṃ puṭṭho ahaṃ, bhante, evaṃ byākareyyaṃ:</span></p>
+
+<p lang="vi" class="vi">“Quá khứ ngã chấp mà tôi đã có, ngã chấp ấy đối với tôi là thật có, ngã chấp tương lai không tồn tại, ngã chấp hiện tại không tồn tại?<br>
+<span lang="pi" class="pali">yo me ahosi atīto attapaṭilābho, sova me attapaṭilābho tasmiṃ samaye sacco ahosi, mogho anāgato, mogho paccuppanno.</span></p>
+
+<p lang="vi" class="vi">Tương lai ngã chấp mà tôi sẽ có, ngã chấp ấy đối với tôi là thật có, ngã chấp quá khứ không tồn tại, ngã chấp hiện tại không tồn tại.<br>
+<span lang="pi" class="pali">Yo me bhavissati anāgato attapaṭilābho, sova me attapaṭilābho tasmiṃ samaye sacco bhavissati, mogho atīto, mogho paccuppanno.</span></p>
+
+<p lang="vi" class="vi">Hiện tại ngã chấp mà tôi hiện có, ngã chấp ấy đối với tôi là thật có, ngã chấp quá khứ không tồn tại, ngã chấp tương lai không tồn tại”.<br>
+<span lang="pi" class="pali">Yo me etarahi paccuppanno attapaṭilābho, sova me attapaṭilābho sacco, mogho atīto, mogho anāgato’ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, được hỏi vậy, con sẽ trả lời như vậy.<br>
+<span lang="pi" class="pali">”Evaṃ puṭṭho ahaṃ, bhante, evaṃ byākareyyan”ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy này Citta, trong khi có thô phù ngã chấp, thời ngã chấp ấy không thuộc ý sở thành ngã chấp, không thuộc vô sắc ngã chấp, chính khi ấy thuộc thô phù ngã chấp. Này Citta, trong khi có ý sở thành ngã chấp, thời ngã chấp ấy không thuộc vô sắc ngã chấp, chính khi ấy thuộc ý sở thành ngã chấp. Này Citta, trong khi có vô sắc ngã chấp, thời ngã chấp không thuộc thô phù ngã chấp, không thuộc ý sở thành ngã chấp, chính khi ấy thuộc vô sắc ngã chấp.<br>
+<span lang="pi" class="pali">Evameva kho, citta, yasmiṃ samaye oḷāriko attapaṭilābho hoti, neva tasmiṃ samaye manomayo attapaṭilābhoti saṅkhaṃ gacchati, na arūpo attapaṭilābhoti saṅkhaṃ gacchati. Oḷāriko attapaṭilābhotveva tasmiṃ samaye saṅkhaṃ gacchati. Yasmiṃ, citta, samaye manomayo attapaṭilābho hoti ...pe...yasmiṃ, citta, samaye arūpo attapaṭilābho hoti, neva tasmiṃ samaye oḷāriko attapaṭilābhoti saṅkhaṃ gacchati, na manomayo attapaṭilābhoti saṅkhaṃ gacchati;arūpo attapaṭilābhotveva tasmiṃ samaye saṅkhaṃ gacchati.</span></p>
+
+<p lang="vi" class="vi">Này Citta, ví như từ bò cái sanh ra sữa, từ sữa sinh ra lạc, từ lạc sanh ra sanh tô, từ sanh tô sanh ra thục tô, từ thục tô sanh ra đề hồ.<br>
+<span lang="pi" class="pali">Seyyathāpi, citta, gavā khīraṃ, khīramhā dadhi, dadhimhā navanītaṃ, navanītamhā sappi, sappimhā sappimaṇḍo.</span></p>
+
+<p lang="vi" class="vi">Khi thành sữa thời sữa ấy không thuộc lạc, không thuộc sanh tô, không thuộc thục tô, không thuộc đề hồ,.<br>
+<span lang="pi" class="pali">Yasmiṃ samaye khīraṃ hoti, neva tasmiṃ samaye dadhīti saṅkhaṃ gacchati, na navanītanti saṅkhaṃ gacchati, na sappīti saṅkhaṃ gacchati, na sappimaṇḍoti saṅkhaṃ gacchati;</span></p>
+
+<p lang="vi" class="vi">chính khi ấy thuộc sữa<br>
+<span lang="pi" class="pali">khīrantveva tasmiṃ samaye saṅkhaṃ gacchati.</span></p>
+
+<p lang="vi" class="vi">khi thành lạc... khi thành sanh tô... khi thành thục tô...<br>
+<span lang="pi" class="pali">Yasmiṃ samaye dadhi hoti ...pe...navanītaṃ hoti ...sappi hoti ...</span></p>
+
+<p lang="vi" class="vi">khi thành đề hồ thời đề hồ không thuộc sữa, không thuộc lạc, không thuộc sanh tô, không thuộc thục tô,<br>
+<span lang="pi" class="pali">sappimaṇḍo hoti, neva tasmiṃ samaye khīranti saṅkhaṃ gacchati, na dadhīti saṅkhaṃ gacchati, na navanītanti saṅkhaṃ gacchati, na sappīti saṅkhaṃ gacchati;</span></p>
+
+<p lang="vi" class="vi">chính khi ấy thuộc đề hồ.<br>
+<span lang="pi" class="pali">sappimaṇḍotveva tasmiṃ samaye saṅkhaṃ gacchati.</span></p>
+
+<p lang="vi" class="vi">Như vậy này Citta trong khi có thô phù ngã chấp... Này Citta, trong khi có ý sở thành ngã chấp... Này Citta, trong khi có vô sắc ngã chấp thời ngã chấp ấy không thuộc thô phù ngã chấp, không thuộc ý sở thành ngã chấp, chính khi ấy thuộc vô sắc ngã chấp.<br>
+<span lang="pi" class="pali">Evameva kho, citta, yasmiṃ samaye oḷāriko attapaṭilābho hoti ...pe...yasmiṃ, citta, samaye manomayo attapaṭilābho hoti ...pe...yasmiṃ, citta, samaye arūpo attapaṭilābho hoti, neva tasmiṃ samaye oḷāriko attapaṭilābhoti saṅkhaṃ gacchati, na manomayo attapaṭilābhoti saṅkhaṃ gacchati;arūpo attapaṭilābhotveva tasmiṃ samaye saṅkhaṃ gacchati.</span></p>
+
+<p lang="vi" class="vi">Này Citta, chúng chỉ là danh tự thế gian, ngôn ngữ thế gian, danh xưng thế gian, ký pháp thế gian. Như Lai dùng chúng nhưng không chấp trước chúng.<br>
+<span lang="pi" class="pali">”Imā kho, citta, lokasamaññā lokaniruttiyo lokavohārā lokapaññattiyo, yāhi tathāgato voharati aparāmasan”ti.</span></p>
+
+<p lang="vi" class="vi">Ðược nghe nói vậy du sĩ ngoại đạo Potthapāda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ vutte, poṭṭhapādo paribbājako bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Thật vi diệu thay, bạch Thế Tôn! Thật vi diệu thay, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">abhikkantaṃ, bhante, abhikkantaṃ, bhante.</span></p>
+
+<p lang="vi" class="vi">Như người dựng lại những gì bị quăng ngã xuống, phơi bày những gì bị che kín, chỉ đường cho những người lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy chánh pháp đã được Thế Tôn dùng nhiều phương tiện trình bày, giải thích.<br>
+<span lang="pi" class="pali">Seyyathāpi, bhante, nikkujjitaṃ vā ukkujjeyya, paṭicchannaṃ vā vivareyya, mūḷhassa vā maggaṃ ācikkheyya, andhakāre vā telapajjotaṃ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṃ bhagavatā anekapariyāyena dhammo pakāsito.</span></p>
+
+<p lang="vi" class="vi">Bạch Thế Tôn, con xin quy y Thế Tôn, quy y Pháp và quy y chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">Saṅgha.Esāhaṃ, bhante, bhagavantaṃ saraṇaṃ gacchāmi dhammañca bhikkhusaṅghañca.</span></p>
+
+<p lang="vi" class="vi">Mong Thế Tôn nhận con làm đệ tử, từ nay trở đi cho đến mạng chung, con trọn đời quy ngưỡng.<br>
+<span lang="pi" class="pali">”Upāsakaṃ maṃ bhagavā dhāretu ajjatagge pāṇupetaṃ saraṇaṃ gatan”ti.</span></p>
+
+
+<p lang="vi" class="vi">Và Citta Hatthisāriputta cũng bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Citto pana hatthisāriputto bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Thật vi diệu thay, bạch Thế Tôn! Thật vi diệu thay, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">abhikkantaṃ, bhante, abhikkantaṃ, bhante.</span></p>
+
+<p lang="vi" class="vi">Như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho những người đi lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy, chánh pháp đã được Thế Tôn dùng nhiều phương tiện trình bày giải thích.<br>
+<span lang="pi" class="pali">Seyyathāpi, bhante, nikkujjitaṃ vā ukkujjeyya, paṭicchannaṃ vā vivareyya, mūḷhassa vā maggaṃ ācikkheyya, andhakāre vā telapajjotaṃ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṃ bhagavatā anekapariyāyena dhammo pakāsito.</span></p>
+
+<p lang="vi" class="vi">Con xin quy y Thế Tôn, quy y Pháp và quy y chúng Tăng.<br>
+<span lang="pi" class="pali">Esāhaṃ, bhante, bhagavantaṃ saraṇaṃ gacchāmi dhammañca bhikkhusaṅghañca.</span></p>
+
+<p lang="vi" class="vi">Mong Thế Tôn cho con được xuất gia với Thế Tôn, mong cho con thọ đại giới.<br>
+<span lang="pi" class="pali">”Labheyyāhaṃ, bhante, bhagavato santike pabbajjaṃ, labheyyaṃ upasampadan”ti</span></p>
+
+<p lang="vi" class="vi">Citta Hatthisāriputta được xuất gia với Thế Tôn và được thọ đại giới.<br>
+<span lang="pi" class="pali">Alattha kho citto hatthisāriputto bhagavato santike pabbajjaṃ, alattha upasampadaṃ.</span></p>
+
+<p lang="vi" class="vi">Thọ đại giới không bao lâu, Ðại đức Citta Hatthisāriputta ở một mình, an tịnh, không phóng dật, sống nhiệt tâm, cần mẫn. Và không bao lâu, vị này chứng được mục đích tối cao mà con cháu các lương gia đã xuất gia, từ bỏ gia đình, sống không gia đình hướng đến.<br>
+<span lang="pi" class="pali">Acirūpasampanno kho panāyasmā citto hatthisāriputto eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto na cirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, tadanuttaraṃ—brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihāsi.</span></p>
+
+<p lang="vi" class="vi">Ðó là vô thượng phạm hạnh ngay trong hiện tại, tự mình với thắng trí chứng ngộ, chứng đạt và an trú: sanh đã tận, phạm hạnh đã thành, những gì nên làm đã làm sau đời này sẽ không có đời sống khác nữa. Ðại đức Citta Hatthisāriputta hiểu biết như vậy.<br>
+<span lang="pi" class="pali">“khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthAttāyā”ti abbhaññāsi.</span></p>
+
+<p lang="vi" class="vi">Và đại đức Citta Hatthisāriputta trở thành một vị A-la-hán nữa.<br>
+<span lang="pi" class="pali">Aññataro kho panāyasmā citto hatthisāriputto arahataṃ ahosīti.</span></p>
+
+<span lang="pi" class="vi">Poṭṭhapādasuttaṃ niṭṭhitaṃ navamaṃ.</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+<div id="nextprev"><a id="previous-sutta" href="./dn8.html#content"></a><a id="next-sutta" href="./dn10.html#content"></a></div>
+
+
+<!-- COPY SCRIPT NEXT VÀ PREVIOUS Ở ĐÂY -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>
+
+

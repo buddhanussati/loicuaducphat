@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 12.68 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 12.68<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 12.68<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+7. Đại Phẩm Thứ Bảy<br>
+<span lang="pi" class="pali">
+7. Mahāvagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Kosambī<br>
+<span lang="pi" class="pali">
+Kosambisutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Tôn giả Musīla, Tôn giả Saviṭṭha, Tôn giả Nārada, Tôn giả Ānanda trú ở Kosambī, vườn Ghositā.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ āyasmā ca musilo āyasmā ca paviṭṭho āyasmā ca nārado āyasmā ca ānando kosambiyaṃ viharanti ghositārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Saviṭṭha nói với Tôn giả Musīla:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā paviṭṭho āyasmantaṃ musilaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Musīla, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự hành tướng, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Musīla tự mình có trí biết được:<br>
+<span lang="pi" class="pali">
+“aññatreva, āvuso musila, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato musilassa paccattameva ñāṇaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do duyên sanh, già chết sanh khởi’?”<br>
+<span lang="pi" class="pali">
+‘jātipaccayā jarāmaraṇan’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự hành tướng, ngoài thẩm định và chấp nhận quan điểm, tôi có biết được, tôi có thấy được:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do duyên sanh, già chết sanh khởi’.”<br>
+<span lang="pi" class="pali">
+‘jātipaccayā jarāmaraṇan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Musīla, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Musīla tự mình có trí biết được:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso musila, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato musilassa paccattameva ñāṇaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do duyên hữu, nên sanh sinh khởi... (như trên)...<br>
+<span lang="pi" class="pali">
+‘bhavapaccayā jātīti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên thủ nên hữu sanh khởi ...<br>
+<span lang="pi" class="pali">
+upādānapaccayā bhavoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên ái nên thủ sanh khởi ...<br>
+<span lang="pi" class="pali">
+taṇhāpaccayā upādānanti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên thọ nên ái sanh khởi ...<br>
+<span lang="pi" class="pali">
+vedanāpaccayā taṇhāti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên xúc nên thọ sanh khởi ...<br>
+<span lang="pi" class="pali">
+phassapaccayā vedanāti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên sáu xứ nên xúc sanh khởi ...<br>
+<span lang="pi" class="pali">
+saḷāyatanapaccayā phassoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên danh sắc nên sáu xứ sanh khởi ...<br>
+<span lang="pi" class="pali">
+nāmarūpapaccayā saḷāyatananti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên thức nên danh sắc sanh khởi ...<br>
+<span lang="pi" class="pali">
+viññāṇapaccayā nāmarūpanti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên hành nên thức sanh khởi ...<br>
+<span lang="pi" class="pali">
+saṅkhārapaccayā viññāṇanti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên vô minh nên hành sanh khởi?”<br>
+<span lang="pi" class="pali">
+avijjāpaccayā saṅkhārā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết được, tôi thấy được:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do duyên vô minh, các hành sanh khởi’.”<br>
+<span lang="pi" class="pali">
+‘avijjāpaccayā saṅkhārā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Musīla, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài sự thẩm định và chấp nhận quan điểm, Tôn giả Musīla tự mình có trí biết như sau:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso musila, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato musilassa paccattameva ñāṇaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do sanh diệt, nên già chết diệt’?”<br>
+<span lang="pi" class="pali">
+‘jātinirodhā jarāmaraṇanirodho’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết như sau, tôi thấy như sau:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do sanh diệt, nên già chết diệt’.”<br>
+<span lang="pi" class="pali">
+‘jātinirodhā jarāmaraṇanirodho’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Musīla, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Musīla tự mình có trí biết như sau:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso musila, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato musilassa paccattameva ñāṇaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do hữu diệt, nên sanh diệt ...<br>
+<span lang="pi" class="pali">
+‘bhavanirodhā jātinirodhoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thủ diệt, nên hữu diệt...<br>
+<span lang="pi" class="pali">
+upādānanirodhā bhavanirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do ái diệt, nên thủ diệt...<br>
+<span lang="pi" class="pali">
+taṇhānirodhā upādānanirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thọ diệt, nên ái diệt...<br>
+<span lang="pi" class="pali">
+vedanānirodhā taṇhānirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do xúc diệt nên thọ diệt...<br>
+<span lang="pi" class="pali">
+phassanirodhā vedanānirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do sáu xứ diệt, nên xúc diệt...<br>
+<span lang="pi" class="pali">
+saḷāyatananirodhā phassanirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do danh sắc diệt, nên sáu xứ diệt...<br>
+<span lang="pi" class="pali">
+nāmarūpanirodhā saḷāyatananirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thức diệt, nên danh sắc diệt...<br>
+<span lang="pi" class="pali">
+viññāṇanirodhā nāmarūpanirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do hành diệt, nên thức diệt...<br>
+<span lang="pi" class="pali">
+saṅkhāranirodhā viññāṇanirodhoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vô minh diệt, nên hành diệt?”<br>
+<span lang="pi" class="pali">
+avijjānirodhā saṅkhāranirodho’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết như sau, tôi thấy như sau:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do vô minh diệt, nên hành diệt’.”<br>
+<span lang="pi" class="pali">
+‘avijjānirodhā saṅkhāranirodho’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Musīla, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Musīla tự mình có trí biết như sau:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso musila, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato musilassa paccattameva ñāṇaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do hữu diệt là Niết-bàn’?”<br>
+<span lang="pi" class="pali">
+‘bhavanirodho nibbānan’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết như sau, tôi thấy như sau:<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Do hữu diệt là Niết-bàn’.”<br>
+<span lang="pi" class="pali">
+‘bhavanirodho nibbānan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như vậy, Tôn giả Musīla là bậc A-la-hán đã đoạn tận các lậu hoặc?”<br>
+<span lang="pi" class="pali">
+“Tenahāyasmā musilo arahaṃ khīṇāsavo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, Tôn giả Musīla giữ im lặng.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, āyasmā musilo tuṇhī ahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Nārada nói với Tôn giả Saviṭṭha:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā nārado āyasmantaṃ paviṭṭhaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, lành thay nếu tôi được hỏi câu này.<br>
+<span lang="pi" class="pali">
+“sādhāvuso paviṭṭha, ahaṃ etaṃ pañhaṃ labheyyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hãy hỏi tôi câu hỏi này, và tôi sẽ trả lời cho Hiền giả câu hỏi này”.<br>
+<span lang="pi" class="pali">
+Maṃ etaṃ pañhaṃ puccha. Ahaṃ te etaṃ pañhaṃ byākarissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Nārada hãy lấy câu hỏi này. Tôi sẽ hỏi Tôn giả Nārada câu hỏi này. Và Tôn giả Nārada hãy trả lời cho tôi câu hỏi này.<br>
+<span lang="pi" class="pali">
+“Labhatāyasmā nārado etaṃ pañhaṃ. Pucchāmahaṃ āyasmantaṃ nāradaṃ etaṃ pañhaṃ. Byākarotu ca me āyasmā nārado etaṃ pañhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+(Tôn giả Saviṭṭha lặp lại chính xác một loạt câu hỏi tương tự, và Tôn giả Nārada trả lời giống như Tôn giả Musīla đã làm.)<br>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Nārada, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự hành tướng, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Nārada tự mình có trí biết được: ‘Do duyên sanh, già chết sanh khởi’?”<br>
+<span lang="pi" class="pali">
+Aññatreva, āvuso nārada, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato nāradassa paccattameva ñāṇaṃ: ‘jātipaccayā jarāmaraṇan’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự hành tướng, ngoài thẩm định và chấp nhận quan điểm, tôi có biết được, tôi có thấy được: ‘Do duyên sanh, già chết sanh khởi’.”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi: ‘jātipaccayā jarāmaraṇan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Nārada, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Nārada tự mình có trí biết được: ‘Do duyên hữu, nên sanh sinh khởi ... Do duyên vô minh nên hành sanh khởi?”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso nārada, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato nāradassa paccattameva ñāṇaṃ— bhavapaccayā jāti ...pe... avijjāpaccayā saṅkhārā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết được, tôi thấy được: ‘Do duyên vô minh, các hành sanh khởi’.”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi: ‘avijjāpaccayā saṅkhārā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Nārada, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài sự thẩm định và chấp nhận quan điểm, Tôn giả Nārada tự mình có trí biết như sau: ‘Do sanh diệt, nên già chết diệt’?”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso nārada, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato nāradassa paccattameva ñāṇaṃ: ‘jātinirodhā jarāmaraṇanirodho’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết như sau, tôi thấy như sau: ‘Do sanh diệt, nên già chết diệt’.”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi: ‘jātinirodhā jarāmaraṇanirodho’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Nārada, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Nārada tự mình có trí biết như sau: ‘Do hữu diệt, nên sanh diệt ... Do vô minh diệt, nên hành diệt?”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso nārada, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato nāradassa paccattameva ñāṇaṃ: ‘bhavanirodhā jātinirodhoti ...pe... avijjānirodhā saṅkhāranirodho’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết như sau, tôi thấy như sau: ‘Do vô minh diệt, nên hành diệt’.”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi:<br>
+‘avijjānirodhā saṅkhāranirodho’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Nārada, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, Tôn giả Nārada tự mình có trí biết như sau: ‘Do hữu diệt là Niết-bàn’?”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso nārada, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā atthāyasmato nāradassa paccattameva ñāṇaṃ: ‘bhavanirodho nibbānan’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, ngoài lòng tin, ngoài ưa thích, ngoài truyền thuyết, ngoài thẩm lự các điều kiện, ngoài thẩm định và chấp nhận quan điểm, tôi biết như sau, tôi thấy như sau: ‘Do hữu diệt là Niết-bàn’.”<br>
+<span lang="pi" class="pali">
+“Aññatreva, āvuso paviṭṭha, saddhāya aññatra ruciyā aññatra anussavā aññatra ākāraparivitakkā aññatra diṭṭhinijjhānakkhantiyā ahametaṃ jānāmi ahametaṃ passāmi: ‘bhavanirodho nibbānan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như vậy, Tôn giả Nārada là bậc A-la-hán đã đoạn tận các lậu hoặc?”<br>
+<span lang="pi" class="pali">
+“Tenahāyasmā nārado arahaṃ khīṇāsavo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả, “Do hữu diệt là Niết-bàn”, tôi khéo thấy như chơn nhờ chánh trí tuệ. Nhưng tôi không phải là vị A-la-hán đã đoạn tận các lậu hoặc.<br>
+<span lang="pi" class="pali">
+“‘Bhavanirodho nibbānan’ti kho me, āvuso, yathābhūtaṃ sammappaññāya sudiṭṭhaṃ, na camhi arahaṃ khīṇāsavo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này Hiền giả, trên một con đường hoang vắng có một giếng nước. Tại đấy không có dây, không có gàu nước.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, kantāramagge udapāno, tatra nevassa rajju na udakavārako.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi có người đi đến, bị nóng bức bách, bị nóng áp đảo, mệt mỏi, run rẩy, khát nước.<br>
+<span lang="pi" class="pali">
+Atha puriso āgaccheyya ghammābhitatto ghammapareto kilanto tasito pipāsito, so taṃ udapānaṃ olokeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy ngó xuống giếng và biết được: ‘Giếng này có nước’, nhưng đứng chịu, thân thể không chạm nước.<br>
+<span lang="pi" class="pali">
+Tassa ‘udakan’ti hi kho ñāṇaṃ assa, na ca kāyena phusitvā vihareyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Hiền giả, ‘Hữu diệt là Niết-bàn’, tôi khéo thấy như chơn nhờ chánh trí tuệ, nhưng tôi không phải là vị A-la-hán đã đoạn tận các lậu hoặc.<br>
+<span lang="pi" class="pali">
+Evameva kho, āvuso, ‘bhavanirodho nibbānan’ti yathābhūtaṃ sammappaññāya sudiṭṭhaṃ, na camhi arahaṃ khīṇāsavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, Tôn giả Ānanda nói với Tôn giả Saviṭṭha:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, āyasmā ānando āyasmantaṃ paviṭṭhaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Saviṭṭha, nói như vậy thời Hiền giả nói gì về Tôn giả Nārada?”<br>
+<span lang="pi" class="pali">
+“evaṃvādī tvaṃ, āvuso paviṭṭha, āyasmantaṃ nāradaṃ kiṃ vadesī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Ānanda, nói như vậy, tôi không nói gì về Tôn giả Nārada, ngoài sự tốt lành, ngoài sự tốt đẹp.”<br>
+<span lang="pi" class="pali">
+“Evaṃvādāhaṃ, āvuso ānanda, āyasmantaṃ nāradaṃ na kiñci vadāmi aññatra kalyāṇā aññatra kusalā”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn12.67.html#content"></a><a id="next-sutta" href="./sn12.69.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

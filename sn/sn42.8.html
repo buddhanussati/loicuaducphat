@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 42.8 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 42.8<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 42.8<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+1. Phẩm Thôn Trưởng<br>
+<span lang="pi" class="pali">
+1. Gāmaṇivagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Vỏ Ốc<br>
+<span lang="pi" class="pali">
+Saṅkhadhamasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Nāḷandā, tại rừng Xoài của Pāvārika.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā nāḷandāyaṃ viharati pāvārikambavane.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi con trai của Thôn Trưởng Asibandhaka, đệ tử của phái Ni-kiền-tử đi đến Thế Tôn ... Thế Tôn nói với con trai của Thôn Trưởng Asibandhaka đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Atha kho asibandhakaputto gāmaṇi nigaṇṭhasāvako yena bhagavā tenupasaṅkami; upasaṅkamitvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho asibandhakaputtaṃ gāmaṇiṃ bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Thôn trưởng, Nigaṇṭha Nāṭaputta thuyết pháp như thế nào cho chúng đệ tử?”<br>
+<span lang="pi" class="pali">
+“kathaṃ nu kho, gāmaṇi, nigaṇṭho nāṭaputto sāvakānaṃ dhammaṃ desetī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Nigaṇṭha Nāṭaputta thuyết pháp cho chúng đệ tử như sau:<br>
+<span lang="pi" class="pali">
+“Evaṃ kho, bhante, nigaṇṭho nāṭaputto sāvakānaṃ dhammaṃ deseti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ai sát hại sanh mạng, tất cả phải sanh vào đọa xứ, địa ngục. Ai lấy của không cho, tất cả phải sanh vào đọa xứ, địa ngục. Ai sống tà hạnh trong các dục, tất cả phải sanh vào đọa xứ, địa ngục. Ai nói láo, tất cả phải sanh vào đọa xứ, địa ngục. Phàm sống tối đa, tối đa như thế nào, chiều hướng ấy sanh thú của họ sẽ như vậy’.<br>
+<span lang="pi" class="pali">
+‘yo koci pāṇaṃ atipāteti, sabbo so āpāyiko nerayiko, yo koci adinnaṃ ādiyati, sabbo so āpāyiko nerayiko, yo koci kāmesu micchā carati, sabbo so āpāyiko nerayiko, yo koci musā bhaṇati sabbo, so āpāyiko nerayiko. Yaṃbahulaṃ yaṃbahulaṃ viharati, tena tena nīyatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, bạch Thế Tôn, Nigaṇṭha Nāṭaputta thuyết pháp cho các đệ tử”.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhante, nigaṇṭho nāṭaputto sāvakānaṃ dhammaṃ desetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“‘Phàm sống tối đa, tối đa như thế nào, này Thôn trưởng, chiều hướng ấy sanh thú của họ sẽ như vậy’.<br>
+<span lang="pi" class="pali">
+“‘Yaṃbahulaṃ yaṃbahulañca, gāmaṇi, viharati, tena tena nīyati’,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự thật là vậy, thời sẽ không có ai phải sanh vào đọa xứ, địa ngục như lời của Nigaṇṭha Nāṭaputta.<br>
+<span lang="pi" class="pali">
+evaṃ sante na koci āpāyiko nerayiko bhavissati, yathā nigaṇṭhassa nāṭaputtassa vacanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ông nghĩ thế nào, này Thôn trưởng? Có người sát hại sanh mạng, ban đêm hay ban ngày, hay thỉnh thoảng làm. Thời nào là nhiều hơn, thời vị ấy sát hại sanh mạng, hay thời vị ấy không sát hại sanh mạng?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, gāmaṇi, yo so puriso pāṇātipātī rattiyā vā divasassa vā samayāsamayaṃ upādāya, katamo bahutaro samayo, yaṃ vā so pāṇamatipāteti, yaṃ vā so pāṇaṃ nātipātetī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có người sát hại sanh mạng, ban đêm hay ban ngày, hay thỉnh thoảng làm. Thời này là ít hơn, là thời vị ấy sát hại sanh mạng. Và thời kia là nhiều hơn, thời vị ấy không sát hại sanh mạng”.<br>
+<span lang="pi" class="pali">
+“Yo so, bhante, puriso pāṇātipātī rattiyā vā divasassa vā samayāsamayaṃ upādāya, appataro so samayo yaṃ so pāṇamatipāteti, atha kho sveva bahutaro samayo yaṃ so pāṇaṃ nātipātetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“‘Phàm sống tối đa, tối đa như thế nào, này Thôn trưởng, chiều hướng ấy sanh thú của vị ấy sẽ như vậy’.<br>
+<span lang="pi" class="pali">
+“‘Yaṃbahulaṃ yaṃbahulañca, gāmaṇi, viharati tena tena nīyatī’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự thật là vậy, thời sẽ không có ai phải sanh vào đọa xứ, địa ngục như lời của Nigaṇṭha Nāṭaputta.<br>
+<span lang="pi" class="pali">
+evaṃ sante na koci āpāyiko nerayiko bhavissati, yathā nigaṇṭhassa nāṭaputtassa vacanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ông nghĩ thế nào, này Thôn trưởng? Có người lấy của không cho, ban đêm hay ban ngày, hay thỉnh thoảng làm. Thời nào là nhiều hơn, thời vị ấy lấy của không cho hay thời vị ấy không lấy của không cho?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, gāmaṇi, yo so puriso adinnādāyī rattiyā vā divasassa vā samayāsamayaṃ upādāya, katamo bahutaro samayo, yaṃ vā so adinnaṃ ādiyati, yaṃ vā so adinnaṃ nādiyatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có người lấy của không cho, ban đêm hay ban ngày, hay thỉnh thoảng làm. Thời này là ít hơn, thời vị ấy lấy của không cho. Và thời kia là nhiều hơn, thời vị ấy không lấy của không cho”.<br>
+<span lang="pi" class="pali">
+“Yo so, bhante, puriso adinnādāyī rattiyā vā divasassa vā samayāsamayaṃ upādāya appataro so samayo, yaṃ so adinnaṃ ādiyati, atha kho sveva bahutaro samayo, yaṃ so adinnaṃ nādiyatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“‘Phàm sống tối đa, tối đa như thế nào, này Thôn trưởng, chiều hướng ấy sanh thú của vị ấy sẽ như vậy’.<br>
+<span lang="pi" class="pali">
+“‘Yaṃbahulaṃ yaṃbahulañca, gāmaṇi, viharati tena tena nīyatī’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự thật là vậy, thời sẽ không có ai sanh vào đọa xứ, địa ngục như lời của Nigaṇṭha Nāṭaputta.<br>
+<span lang="pi" class="pali">
+evaṃ sante na koci āpāyiko nerayiko bhavissati, yathā nigaṇṭhassa nāṭaputtassa vacanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ông nghĩ thế nào, này Thôn trưởng? Có người sống theo tà hạnh trong các dục, ban đêm hay ban ngày, hay thỉnh thoảng làm. Thời nào là nhiều hơn, thời vị ấy sống theo tà hạnh trong các dục, hay thời vị ấy không sống theo tà hạnh trong các dục?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, gāmaṇi, yo so puriso kāmesumicchācārī rattiyā vā divasassa vā samayāsamayaṃ upādāya, katamo bahutaro samayo, yaṃ vā so kāmesu micchā carati, yaṃ vā so kāmesu micchā na caratī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có người sống theo tà hạnh trong các dục, ban đêm hay ban ngày, hay thỉnh thoảng làm. Thời này là ít hơn, thời vị ấy sống theo tà hạnh trong các dục. Và thời kia là nhiều hơn, thời vị ấy không sống theo tà hạnh trong các dục”.<br>
+<span lang="pi" class="pali">
+“Yo so, bhante, puriso kāmesumicchācārī rattiyā vā divasassa vā samayāsamayaṃ upādāya, appataro so samayo yaṃ so kāmesu micchā carati, atha kho sveva bahutaro samayo, yaṃ so kāmesu micchā na caratī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“‘Phàm sống tối đa, tối đa như thế nào, này Thôn trưởng, chiều hướng ấy sanh thú của vị ấy sẽ như vậy’. Nếu sự thật là vậy, thời không có ai sẽ sanh vào đọa xứ, địa ngục như lời của Nigaṇṭha Nāṭaputta.<br>
+<span lang="pi" class="pali">
+“‘Yaṃbahulaṃ yaṃbahulañca, gāmaṇi, viharati tena tena nīyatī’ti, evaṃ sante na koci āpāyiko nerayiko bhavissati, yathā nigaṇṭhassa nāṭaputtassa vacanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ông nghĩ thế nào, này Thôn trưởng? Có người sống nói láo, ban đêm hay ban ngày, hay thỉnh thoảng nói. Thời nào là nhiều hơn, thời vị ấy nói láo, hay thời vị ấy không nói láo?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, gāmaṇi, yo so puriso musāvādī rattiyā vā divasassa vā samayāsamayaṃ upādāya, katamo bahutaro samayo, yaṃ vā so musā bhaṇati, yaṃ vā so musā na bhaṇatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có người nói láo, ban đêm hay ban ngày, hay thỉnh thoảng nói. Thời này là ít hơn, thời vị ấy nói láo. Và thời kia là nhiều hơn, thời vị ấy không nói láo”.<br>
+<span lang="pi" class="pali">
+“Yo so, bhante, puriso musāvādī rattiyā vā divasassa vā samayāsamayaṃ upādāya, appataro so samayo, yaṃ so musā bhaṇati, atha kho sveva bahutaro samayo, yaṃ so musā na bhaṇatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“‘Phàm sống tối đa, tối đa như thế nào, này Thôn trưởng, chiều hướng ấy sanh thú của vị ấy sẽ như vậy’. Nếu sự thật là vậy, thời không ai sẽ sanh vào đọa xứ, địa ngục như lời của Nigaṇṭha Nāṭaputta.<br>
+<span lang="pi" class="pali">
+“‘Yaṃbahulaṃ yaṃbahulañca, gāmaṇi, viharati tena tena nīyatī’ti, evaṃ sante na koci āpāyiko nerayiko bhavissati, yathā nigaṇṭhassa nāṭaputtassa vacanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thôn trưởng, có vị Ðạo sư nói như sau, thấy như sau:<br>
+<span lang="pi" class="pali">
+Idha, gāmaṇi, ekacco satthā evaṃvādī hoti evaṃdiṭṭhi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ai sát hại sanh mạng, tất cả phải sanh vào đọa xứ, địa ngục. Ai lấy của không cho, tất cả phải sanh vào đọa xứ, địa ngục. Ai sống theo tà hạnh trong các dục, tất cả phải sanh vào đọa xứ, địa ngục. Ai nói láo, tất cả phải sanh vào đọa xứ, địa ngục’.<br>
+<span lang="pi" class="pali">
+‘yo koci pāṇamatipāteti, sabbo so āpāyiko nerayiko, yo koci adinnaṃ ādiyati, sabbo so āpāyiko nerayiko, yo koci kāmesu micchā carati, sabbo so āpāyiko nerayiko, yo koci musā bhaṇati, sabbo so āpāyiko nerayiko’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thôn trưởng, người đệ tử đặt lòng tin tưởng vào vị Ðạo sư ấy.<br>
+<span lang="pi" class="pali">
+Tasmiṃ kho pana, gāmaṇi, satthari sāvako abhippasanno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy suy nghĩ:<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thầy ta nói như sau, thấy như sau:<br>
+<span lang="pi" class="pali">
+‘mayhaṃ kho satthā evaṃvādī evaṃdiṭṭhi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai sát hại sanh mạng tất cả phải sanh vào đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+yo koci pāṇamatipāteti, sabbo so āpāyiko nerayikoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay ta có sát hại một sanh mạng. Như vậy, ta phải sanh vào đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+Atthi kho pana mayā pāṇo atipātito, ahampamhi āpāyiko nerayikoti diṭṭhiṃ paṭilabhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chấp trước tà kiến ấy. Này Thôn trưởng, không đoạn tận lời ấy, không đoạn tận tâm ấy, không từ bỏ kiến ấy, vị ấy chắc chắn sẽ rơi vào địa ngục như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ, gāmaṇi, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thầy ta nói như sau, thấy như sau:<br>
+<span lang="pi" class="pali">
+Mayhaṃ kho satthā evaṃvādī evaṃdiṭṭhi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai lấy của không cho, tất cả phải sanh vào đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+yo koci adinnaṃ ādiyati, sabbo so āpāyiko nerayikoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay ta có lấy của không cho. Như vậy, ta phải sanh vào đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+Atthi kho pana mayā adinnaṃ ādinnaṃ ahampamhi āpāyiko nerayikoti diṭṭhiṃ paṭilabhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chấp trước tà kiến ấy. Này Thôn trưởng, không đoạn tận lời ấy, không đoạn tận tâm ấy, không từ bỏ kiến ấy, vị ấy chắc chắn rơi vào đọa xứ, địa ngục như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ, gāmaṇi, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thầy ta nói như sau, thấy như sau:<br>
+<span lang="pi" class="pali">
+Mayhaṃ kho satthā evaṃvādī evaṃdiṭṭhi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai sống theo tà hạnh trong các dục, tất cả phải sanh vào đọa xứ, địa ngục’.<br>
+<span lang="pi" class="pali">
+yo koci kāmesu micchā carati, sabbo so āpāyiko nerayiko’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay ta sống theo tà hạnh trong các dục. Như vậy, ta phải sanh vào đọa xứ, địa ngục. Vị ấy chấp trước tà kiến ấy.<br>
+<span lang="pi" class="pali">
+Atthi kho pana mayā kāmesu micchā ciṇṇaṃ. ‘Ahampamhi āpāyiko nerayiko’ti diṭṭhiṃ paṭilabhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thôn trưởng, không đoạn tận lời ấy, không đoạn tận tâm ấy, không từ bỏ kiến ấy, vị ấy chắc chắn rơi vào đọa xứ, địa ngục như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ, gāmaṇi, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thầy ta nói như sau, thấy như sau:<br>
+<span lang="pi" class="pali">
+Mayhaṃ kho satthā evaṃvādī evaṃdiṭṭhi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai nói láo, tất cả phải sanh vào đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+yo koci musā bhaṇati, sabbo so āpāyiko nerayikoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay ta nói láo. Như vậy, ta phải sanh vào đọa xứ, địa ngục. Vị ấy chấp trước tà kiến ấy.<br>
+<span lang="pi" class="pali">
+Atthi kho pana mayā musā bhaṇitaṃ. ‘Ahampamhi āpāyiko nerayiko’ti diṭṭhiṃ paṭilabhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thôn trưởng, không đoạn tận lời ấy, không đoạn tận tâm ấy, không từ bỏ kiến ấy, vị ấy chắc chắn rơi vào đọa xứ, địa ngục như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ, gāmaṇi, vācaṃ appahāya taṃ cittaṃ appahāya taṃ diṭṭhiṃ appaṭinissajjitvā yathābhataṃ nikkhitto evaṃ niraye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Thôn trưởng, Như Lai sanh ra ở đời, bậc Ứng Cúng, Chánh Biến Tri, Minh Hạnh Túc, Thiện Thệ, Thế Gian Giải, Vô Thượng Sĩ, Ðiều Ngự Trượng Phu, Thiên Nhơn Sư, Phật, Thế Tôn;<br>
+<span lang="pi" class="pali">
+Idha pana, gāmaṇi, tathāgato loke uppajjati arahaṃ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṃ buddho bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như Lai dùng nhiều phương tiện chỉ trích, công kích sát sanh và nói: “Chớ có sát sanh”;<br>
+<span lang="pi" class="pali">
+So anekapariyāyena pāṇātipātaṃ garahati vigarahati, ‘pāṇātipātā viramathā’ti cāha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ trích, công kích lấy của không cho và nói: “Chớ có lấy của không cho”;<br>
+<span lang="pi" class="pali">
+Adinnādānaṃ garahati vigarahati, ‘adinnādānā viramathā’ti cāha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ trích, công kích sống theo tà hạnh trong các dục và nói: “Chớ có sống theo tà hạnh trong các dục”;<br>
+<span lang="pi" class="pali">
+Kāmesumicchācāraṃ garahati, vigarahati ‘kāmesumicchācārā viramathā’ti cāha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ trích, công kích nói láo và nói: “Chớ có nói láo”.<br>
+<span lang="pi" class="pali">
+Musāvādaṃ garahati vigarahati ‘musāvādā viramathā’ti cāha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thôn trưởng, người đệ tử đặt lòng tin tưởng vào vị Ðạo Sư ấy. Vị ấy suy tư như sau:<br>
+<span lang="pi" class="pali">
+Tasmiṃ kho pana, gāmaṇi, satthari sāvako abhippasanno hoti. So iti paṭisañcikkhati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế Tôn dùng nhiều phương tiện chỉ trích, công kích sát sanh và nói: ‘Chớ có sát sanh”.<br>
+<span lang="pi" class="pali">
+‘bhagavā kho anekapariyāyena pāṇātipātaṃ garahati vigarahati, pāṇātipātā viramathāti cāha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay ta có sát hại như thế này, hay như thế kia. Như vậy là không nên, như vậy là không tốt.<br>
+<span lang="pi" class="pali">
+Atthi kho pana mayā pāṇo atipātito yāvatako vā tāvatako vā. Yo kho pana mayā pāṇo atipātito yāvatako vā tāvatako vā, taṃ na suṭṭhu, taṃ na sādhu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và do duyên ấy ta có thể hối hận: Ác nghiệp ta làm, nay sẽ không làm nữa’.<br>
+<span lang="pi" class="pali">
+Ahañceva kho pana tappaccayā vippaṭisārī assaṃ. Na metaṃ pāpaṃ kammaṃ akataṃ bhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy do suy tư như vậy, liền từ bỏ sát sanh.<br>
+<span lang="pi" class="pali">
+So iti paṭisaṅkhāya tañceva pāṇātipātaṃ pajahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và trong tương lai, người ấy đình chỉ sát sanh.<br>
+<span lang="pi" class="pali">
+Āyatiñca pāṇātipātā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đây là cách đình chỉ ác nghiệp. Như vậy, ác nghiệp ấy được vượt qua.<br>
+<span lang="pi" class="pali">
+Evametassa pāpassa kammassa pahānaṃ hoti. Evametassa pāpassa kammassa samatikkamo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thế Tôn dùng nhiều phương tiện chỉ trích, công kích lấy của không cho và nói: Chớ có lấy của không cho”.<br>
+<span lang="pi" class="pali">
+‘Bhagavā kho anekapariyāyena adinnādānaṃ garahati vigarahati, adinnādānā viramathāti cāha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay ta có lấy của không cho như thế này, hay như thế kia.<br>
+<span lang="pi" class="pali">
+Atthi kho pana mayā adinnaṃ ādinnaṃ yāvatakaṃ vā tāvatakaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là không nên, như vậy là không tốt.<br>
+<span lang="pi" class="pali">
+Yaṃ kho pana mayā adinnaṃ ādinnaṃ yāvatakaṃ vā tāvatakaṃ vā taṃ na suṭṭhu, taṃ na sādhu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và do duyên ấy, ta có thể hối hận: Ác nghiệp ta làm, nay sẽ không làm nữa’.<br>
+<span lang="pi" class="pali">
+Ahañceva kho pana tappaccayā vippaṭisārī assaṃ, na metaṃ pāpaṃ kammaṃ akataṃ bhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy do suy tư như vậy, liền từ bỏ lấy của không cho.<br>
+<span lang="pi" class="pali">
+So iti paṭisaṅkhāya tañceva adinnādānaṃ pajahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và trong tương lai, người ấy đình chỉ lấy của không cho.<br>
+<span lang="pi" class="pali">
+Āyatiñca adinnādānā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đây là cách đình chỉ ác nghiệp. Như vậy, ác nghiệp ấy được vượt qua.<br>
+<span lang="pi" class="pali">
+Evametassa pāpassa kammassa pahānaṃ hoti. Evametassa pāpassa kammassa samatikkamo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thế Tôn dùng nhiều phương tiện chỉ trích, công kích sống theo tà hạnh trong các dục ...<br>
+<span lang="pi" class="pali">
+‘Bhagavā kho pana anekapariyāyena kāmesumicchācāraṃ garahati vigarahati, kāmesumicchācārā viramathāti cāha.<br>
+Atthi kho pana mayā kāmesu micchā ciṇṇaṃ yāvatakaṃ vā tāvatakaṃ vā.<br>
+Yaṃ kho pana mayā kāmesu micchā ciṇṇaṃ yāvatakaṃ vā tāvatakaṃ vā taṃ na suṭṭhu, taṃ na sādhu.<br>
+Ahañceva kho pana tappaccayā vippaṭisārī assaṃ, na metaṃ pāpaṃ kammaṃ akataṃ bhavissatī’ti.<br>
+So iti paṭisaṅkhāya tañceva kāmesumicchācāraṃ pajahati, āyatiñca kāmesumicchācārā paṭivirato hoti.<br>
+Evametassa pāpassa kammassa pahānaṃ hoti.<br>
+Evametassa pāpassa kammassa samatikkamo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thế Tôn dùng nhiều phương tiện chỉ trích, công kích nói láo và nói: Chớ có nói láo.<br>
+<span lang="pi" class="pali">
+‘Bhagavā kho pana anekapariyāyena musāvādaṃ garahati vigarahati, musāvādā viramathāti cāha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay ta có nói láo như thế này, hay như thế kia.<br>
+<span lang="pi" class="pali">
+Atthi kho pana mayā musā bhaṇitaṃ yāvatakaṃ vā tāvatakaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là không nên, như vậy là không tốt.<br>
+<span lang="pi" class="pali">
+Yaṃ kho pana mayā musā bhaṇitaṃ yāvatakaṃ vā tāvatakaṃ vā taṃ na suṭṭhu, taṃ na sādhu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và do duyên ấy, ta có thể hối hận: Ác nghiệp ta làm, nay sẽ không làm nữa’.<br>
+<span lang="pi" class="pali">
+Ahañceva kho pana tappaccayā vippaṭisārī assaṃ, na metaṃ pāpaṃ kammaṃ akataṃ bhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy do suy tư như vậy, liền từ bỏ nói láo.<br>
+<span lang="pi" class="pali">
+So iti paṭisaṅkhāya tañceva musāvādaṃ pajahati,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và trong tương lai, người ấy đình chỉ nói láo.<br>
+<span lang="pi" class="pali">
+āyatiñca musāvādā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đây là cách đình chỉ ác nghiệp. Như vậy, ác nghiệp ấy được vượt qua.<br>
+<span lang="pi" class="pali">
+Evametassa pāpassa kammassa pahānaṃ hoti. Evametassa pāpassa kammassa samatikkamo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do đoạn tận sát sanh, người ấy trở thành người không sát sanh.<br>
+<span lang="pi" class="pali">
+So pāṇātipātaṃ pahāya pāṇātipātā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do đoạn tận lấy của không cho, người ấy trở thành người không lấy của không cho.<br>
+<span lang="pi" class="pali">
+Adinnādānaṃ pahāya adinnādānā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do đoạn tận sống theo tà hạnh trong các dục, người ấy trở thành người không sống theo tà hạnh trong các dục.<br>
+<span lang="pi" class="pali">
+Kāmesumicchācāraṃ pahāya kāmesumicchācārā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do đoạn tận nói láo, người ấy trở thành người từ bỏ nói láo.<br>
+<span lang="pi" class="pali">
+Musāvādaṃ pahāya musāvādā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do đoạn tận nói hai lưỡi, người ấy trở thành người từ bỏ nói hai lưỡi.<br>
+<span lang="pi" class="pali">
+Pisuṇaṃ vācaṃ pahāya pisuṇāya vācāya paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do đoạn tận nói lời độc ác, người ấy trở thành người từ bỏ nói lời độc ác.<br>
+<span lang="pi" class="pali">
+Pharusaṃ vācaṃ pahāya pharusāya vācāya paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do đoạn tận lời nói phù phiếm, người ấy trở thành người từ bỏ nói lời phù phiếm.<br>
+<span lang="pi" class="pali">
+Samphappalāpaṃ pahāya samphappalāpā paṭivirato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðoạn tận tham, không có tham lam,<br>
+<span lang="pi" class="pali">
+Abhijjhaṃ pahāya anabhijjhālu hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đoạn tận sân, không có sân tâm,<br>
+<span lang="pi" class="pali">
+Byāpādappadosaṃ pahāya abyāpannacitto hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đoạn tận tà kiến, người ấy trở thành người theo chánh kiến.<br>
+<span lang="pi" class="pali">
+Micchādiṭṭhiṃ pahāya sammādiṭṭhiko hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thôn trưởng, vị Thánh đệ tử ấy từ bỏ tham, từ bỏ sân, từ bỏ si, chánh niệm, tỉnh giác, với tâm câu hữu với từ, sống biến mãn một phương. Như vậy, phương thứ hai. Như vậy, phương thứ ba. Như vậy, phương thứ tư. Như vậy, cùng khắp thế giới, trên dưới, bề ngang, hết thảy phương xứ, cùng khắp vô biên giới, vị ấy an trú biến mãn với tâm câu hữu với từ, quảng đại vô biên, không hận, không sân.<br>
+<span lang="pi" class="pali">
+Sa kho so, gāmaṇi, ariyasāvako evaṃ vigatābhijjho vigatabyāpādo asammūḷho sampajāno paṭissato mettāsahagatena cetasā ekaṃ disaṃ pharitvā viharati, tathā dutiyaṃ, tathā tatiyaṃ, tathā catutthaṃ. Iti uddhamadho tiriyaṃ sabbadhi sabbattatāya sabbāvantaṃ lokaṃ mettāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này Thôn trưởng, một người lực sĩ thổi tù và (bằng vỏ ốc), với ít mệt nhọc làm cho bốn phương được biết.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, gāmaṇi, balavā saṅkhadhamo appakasireneva catuddisā viññāpeyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Thôn trưởng, tu tập từ tâm giải thoát như vậy, làm cho tăng trưởng như vậy, phàm nghiệp làm có hạn lượng, ở đây, sẽ không còn dư tàn; ở đây, sẽ không còn tồn tại.<br>
+<span lang="pi" class="pali">
+evameva kho, gāmaṇi, evaṃ bhāvitāya mettāya cetovimuttiyā evaṃ bahulīkatāya yaṃ pamāṇakataṃ kammaṃ, na taṃ tatrāvasissati, na taṃ tatrāvatiṭṭhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Thôn trưởng, vị Thánh đệ tử ấy, như vậy từ bỏ tham, từ bỏ sân, từ bỏ si, chánh niệm, tỉnh giác, với tâm câu hữu với bi ...<br>
+<span lang="pi" class="pali">
+Sa kho so, gāmaṇi, ariyasāvako evaṃ vigatābhijjho vigatabyāpādo asammūḷho sampajāno paṭissato karuṇāsahagatena cetasā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+với tâm câu hữu với hỷ ...<br>
+<span lang="pi" class="pali">
+muditāsahagatena cetasā ...pe....<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với tâm câu hữu với xả, sống biến mãn một phương. Như vậy, phương thứ hai. Như vậy, phương thứ ba. Như vậy, phương thứ tư. Như vậy, cùng khắp thế giới trên dưới bề ngang, hết thảy phương xứ, cùng khắp vô biên giới vị ấy an trú biến mãn với tâm câu hữu với xả, quảng đại vô biên, không hận, không sân.<br>
+<span lang="pi" class="pali">
+Upekkhāsahagatena cetasā ekaṃ disaṃ pharitvā viharati, tathā dutiyaṃ, tathā tatiyaṃ, tathā catutthaṃ. Iti uddhamadho tiriyaṃ sabbadhi sabbattatāya sabbāvantaṃ lokaṃ upekkhāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này Thôn trưởng, một người lực sĩ thổi tù và, với ít mệt nhọc làm cho bốn phương được biết.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, gāmaṇi, balavā saṅkhadhamo appakasireneva catuddisā viññāpeyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Thôn trưởng, tu tập xả tâm giải thoát như vậy, làm cho tăng trưởng như vậy, phàm nghiệp làm có hạn lượng, ở đây, sẽ không còn dư tàn; ở đây, sẽ không còn tồn tại”.<br>
+<span lang="pi" class="pali">
+evameva kho, gāmaṇi, evaṃ bhāvitāya upekkhāya cetovimuttiyā evaṃ bahulīkatāya yaṃ pamāṇakataṃ kammaṃ na taṃ tatrāvasissati, na taṃ tatrāvatiṭṭhatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nghe nói vậy, con trai của Thôn Trưởng Asibandhaka bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, asibandhakaputto gāmaṇi bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, bạch Thế Tôn! ... từ nay cho đến mạng chung, con trọn đời quy ngưỡng”.<br>
+<span lang="pi" class="pali">
+“abhikkantaṃ, bhante, abhikkantaṃ, bhante ...pe... upāsakaṃ maṃ bhagavā dhāretu ajjatagge pāṇupetaṃ saraṇaṃ gatan”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn42.7.html#content"></a><a id="next-sutta" href="./sn42.9.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

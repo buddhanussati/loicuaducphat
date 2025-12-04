@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 6.60 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 6.60<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 6.60<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+6. Đại Phẩm<br>
+<span lang="pi" class="pali">
+6. Mahāvagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Hatthisariputta<br>
+<span lang="pi" class="pali">
+
+Hatthisāriputtasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Như vầy tôi nghe:<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn trú ở Bārāṇasi tại Isipatana, vườn Lộc Uyển.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā bārāṇasiyaṃ viharati isipatane migadāye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, nhiều vị Tỷ-kheo trưởng lão, sau buổi ăn, sau khi đi khất thực trở về, ngồi tụ họp tại ngôi nhà hình tròn và thuyết về Thắng pháp luận.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena sambahulā therā bhikkhū pacchābhattaṃ piṇḍapātapaṭikkantā maṇḍalamāḷe sannisinnā sannipatitā abhidhammakathaṃ kathenti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại đấy, Tôn giả Citta Hatthisāriputta, trong khi các Tỷ-kheo trưởng lão đang thuyết về Thắng pháp luận, lại nói xen vào chặng giữa.<br>
+<span lang="pi" class="pali">
+Tatra sudaṃ āyasmā citto hatthisāriputto therānaṃ bhikkhūnaṃ abhidhammakathaṃ kathentānaṃ antarantarā kathaṃ opāteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahākoṭṭhita nói với Tôn giả Citta Hatthisāriputta:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā mahākoṭṭhiko āyasmantaṃ cittaṃ hatthisāriputtaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Citta Hatthisāriputta, trong khi các Tỷ-kheo trưởng lão đang thuyết về Thắng pháp luận, chớ có nói xen vào chặng giữa! Tôn giả Citta hãy chờ cho đến cuối câu chuyện.”<br>
+<span lang="pi" class="pali">
+“māyasmā citto hatthisāriputto therānaṃ bhikkhūnaṃ abhidhammakathaṃ kathentānaṃ antarantarā kathaṃ opātesi, yāva kathāpariyosānaṃ āyasmā citto āgametū”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược nghe nói vậy, các Tỷ-kheo bạn bè của Tôn giả Citta Hatthisāriputta nói với Tôn giả Mahākoṭṭhita:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, āyasmato cittassa hatthisāriputtassa sahāyakā bhikkhū āyasmantaṃ mahākoṭṭhikaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Kotthita chớ có bất mãn Tôn giả Citta Hatthisāriputta! Tôn giả Citta Hatthisāriputta là bậc Hiền trí. Tôn giả Citta Hatthisāriputta có thể nói chuyện về Thắng pháp luận với các Tỷ-kheo trưởng lão.”<br>
+<span lang="pi" class="pali">
+“māyasmā mahākoṭṭhiko āyasmantaṃ cittaṃ hatthisāriputtaṃ apasādesi, paṇḍito āyasmā citto hatthisāriputto. Pahoti cāyasmā citto hatthisāriputto therānaṃ bhikkhūnaṃ abhidhammakathaṃ kathetun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Và thật rất khó lòng cho các Hiền giả để biết được tâm tư của người khác.<br>
+<span lang="pi" class="pali">
+“Dujjānaṃ kho etaṃ, āvuso, parassa cetopariyāyaṃ ajānantehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Ở đây, thưa các Hiền giả, có hạng người, khi còn sống gần vị Bổn sư hay sống gần một vị đồng Phạm hạnh đóng vai trò y chỉ sư, trong khi ấy, là người nhu hòa nhất trong những người nhu hòa, là người khiêm tốn nhất trong những người khiêm tốn, là người an tịnh nhất trong những người an tịnh.<br>
+<span lang="pi" class="pali">
+Idhāvuso, ekacco puggalo tāvadeva soratasorato hoti, nivātanivāto hoti, upasantupasanto hoti, yāva satthāraṃ upanissāya viharati aññataraṃ vā garuṭṭhāniyaṃ sabrahmacāriṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi người ấy rời khỏi bậc Ðạo Sư, rời khỏi các vị đồng Phạm hạnh đóng vai trò y chỉ sư, vị ấy sống giao thiệp với các Tỷ-kheo, các Tỷ-kheo-ni, với các nam cư sĩ, nữ cư sĩ, với các vua chúa, các đại thần của vua, với các ngoại đạo, các đệ tử ngoại đạo.<br>
+<span lang="pi" class="pali">
+Yato ca kho so vapakassateva satthārā, vapakassati garuṭṭhāniyehi sabrahmacārīhi, so saṃsaṭṭho viharati bhikkhūhi bhikkhunīhi upāsakehi upāsikāhi raññā rājamahāmattehi titthiyehi titthiyasāvakehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vị ấy sống giao thiệp, phóng túng, thô lỗ, đam mê nói chuyện, tham ái tấn công tâm vị ấy.<br>
+<span lang="pi" class="pali">
+Tassa saṃsaṭṭhassa vissatthassa pākatassa bhassamanuyuttassa viharato rāgo cittaṃ anuddhaṃseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với tâm bị tham ái tấn công, liền từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+So rāgānuddhaṃsitena cittena sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Hiền giả, một con bò ăn lúa, bị dây cột lại, hay bị nhốt trong chuồng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, goṇo kiṭṭhādo dāmena vā baddho vaje vā oruddho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, nếu có ai nói như sau: “Con bò ăn lúa này sẽ không bao giờ đi xuống ruộng lúa nữa”, nói như vậy, thưa các Hiền Giả, là nói một cách chơn chánh không?”<br>
+<span lang="pi" class="pali">
+Yo nu kho, āvuso, evaṃ vadeyya: ‘na dānāyaṃ goṇo kiṭṭhādo punadeva kiṭṭhaṃ otarissatī’ti, sammā nu kho so, āvuso, vadamāno vadeyyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Hiền giả.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, āvuso”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự kiện này, thưa Hiền giả, có xảy ra: Con bò ăn lúa ấy, sau khi bứt dây, hay phá sập chuồng, có thể xuống ruộng lúa nữa.”<br>
+<span lang="pi" class="pali">
+“Ṭhānañhetaṃ, āvuso, vijjati, yaṃ so goṇo kiṭṭhādo dāmaṃ vā chetvā vajaṃ vā bhinditvā, atha punadeva kiṭṭhaṃ otareyyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, này các Hiền giả, ở đây, một số người khi còn sống gần vị Bổn Sư, hay sống gần một vị đồng Phạm hạnh đóng vai trò y chỉ sư, trong khi ấy, là người nhu hòa nhất trong những người nhu hòa, là người khiêm tốn nhất trong những người khiêm tốn, là người an tịnh nhất trong những người an tịnh.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, āvuso, idhekacco puggalo tāvadeva soratasorato hoti, nivātanivāto hoti, upasantupasanto hoti yāva satthāraṃ upanissāya viharati aññataraṃ vā garuṭṭhāniyaṃ sabrahmacāriṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi người ấy rời khỏi bậc Ðạo Sư, rời khỏi vị đồng Phạm hạnh đóng vai trò y chỉ sư, vị ấy sống giao thiệp với các Tỷ-kheo, các Tỷ-kheo-ni, với các nam cư sĩ, nữ cư sĩ, với các vua chúa, các đại thần của vua, với các ngoại đạo, các đệ tử ngoại đạo.<br>
+<span lang="pi" class="pali">
+Yato ca kho so vapakassateva satthārā, vapakassati garuṭṭhāniyehi sabrahmacārīhi, so saṃsaṭṭho viharati bhikkhūhi bhikkhunīhi upāsakehi upāsikāhi raññā rājamahāmattehi titthiyehi titthiyasāvakehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vị ấy sống giao thiệp, phóng túng, thô lỗ, đam mê nói chuyện, tham ái tấn công tâm vị ấy.<br>
+<span lang="pi" class="pali">
+Tassa saṃsaṭṭhassa vissatthassa pākatassa bhassamanuyuttassa viharato rāgo cittaṃ anuddhaṃseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với tâm bị tham ái tấn công, liền từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+So rāgānuddhaṃsitena cittena sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Ví như có hạng người ly dục…, chứng và trú sơ Thiền.<br>
+<span lang="pi" class="pali">
+Idha panāvuso, ekacco puggalo vivicceva kāmehi ...pe... paṭhamaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với tư tưởng: “Ta đã được sơ Thiền”, vị ấy sống giao thiệp với các Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi paṭhamassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Hiền giả, một cơn mưa to lớn xảy ra tại ngã tư đường, khiến cho bụi bặm biến mất và bùn hiện ra.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, cātumahāpathe thullaphusitako devo vassanto rajaṃ antaradhāpeyya, cikkhallaṃ pātukareyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Hiền giả, nếu có ai nói như sau: ‘Nay tại ngã tư đường này, bụi sẽ không hiện ra nữa’. Người ấy nói như vậy có nói một cách chơn chánh không?”<br>
+<span lang="pi" class="pali">
+Yo nu kho, āvuso, evaṃ vadeyya: ‘na dāni amusmiṃ cātumahāpathe punadeva rajo pātubhavissatī’ti, sammā nu kho so, āvuso, vadamāno vadeyyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Hiền giả.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, āvuso”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự kiện này có xảy ra, thưa Hiền giả: “Tại ngã tư đường này, có người đi qua, hay có trâu bò đi qua, hay gió và nóng có thể làm cho khô khí ẩm ướt và bụi sẽ hiện ra trở lại.”<br>
+<span lang="pi" class="pali">
+“Ṭhānañhetaṃ, āvuso, vijjati, yaṃ amusmiṃ cātumahāpathe manussā vā atikkameyyuṃ, gopasū vā atikkameyyuṃ, vātātapo vā snehagataṃ pariyādiyeyya, atha punadeva rajo pātubhaveyyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng như vậy, thưa các Hiền giả, ở đây có hạng người ly dục… chứng và trú Thiền thứ nhất.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, āvuso, idhekacco puggalo vivicceva kāmehi ...pe... paṭhamaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với ý nghĩa: “Ta đã chứng sơ thiền”, sống giao thiệp với các Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi paṭhamassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Ở đây, này các Hiền giả, có hạng người làm cho tịnh chỉ tầm và tứ… chứng và trú Thiền thứ hai …<br>
+<span lang="pi" class="pali">
+Idha panāvuso, ekacco puggalo vitakkavicārānaṃ vūpasamā ...pe... dutiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với ý nghĩa: “Ta đã chứng được Thiền thứ hai”, giao thiệp với các Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi dutiyassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa các Hiền giả, một hồ nước lớn gần một làng hay thị trấn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, gāmassa vā nigamassa vā avidūre mahantaṃ taḷākaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại đấy, một cơn mưa to xảy đến, khiến cho các loài sò ốc, các đá sỏi biến mất.<br>
+<span lang="pi" class="pali">
+Tattha thullaphusitako devo vuṭṭho sippisambukampi sakkharakaṭhalampi antaradhāpeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa các Hiền giả, nếu có ai nói như sau: “Nay tại hồ nước này, các loại sò ốc, các đá sỏi sẽ không xuất hiện ra nữa”. Người ấy nói như vậy có nói một cách chơn chánh không?”<br>
+<span lang="pi" class="pali">
+Yo nu kho, āvuso, evaṃ vadeyya: ‘na dāni amusmiṃ taḷāke punadeva sippisambukā vā sakkharakaṭhalā vā pātubhavissantī’ti, sammā nu kho so, āvuso, vadamāno vadeyyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Hiền giả.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, āvuso”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự kiện này có xảy ra, thưa Hiền giả: Tại hồ nước này, loài Người có thể uống, hay loài trâu bò có thể uống, hay gió và sức nóng có thể làm cho khô khí ẩm ướt, và các loài sò ốc, các đá sỏi có thể xuất hiện ra lại.”<br>
+<span lang="pi" class="pali">
+“Ṭhānañhetaṃ, āvuso, vijjati, yaṃ amusmiṃ taḷāke manussā vā piveyyuṃ, gopasū vā piveyyuṃ, vātātapo vā snehagataṃ pariyādiyeyya, atha punadeva sippisambukāpi sakkharakaṭhalāpi pātubhaveyyunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, thưa các Hiền giả, ở đây có hạng người làm cho tịnh chỉ tầm và tứ … chứng và trú Thiền thứ hai.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, āvuso, idhekacco puggalo vitakkavicārānaṃ vūpasamā ...pe... dutiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy với ý nghĩ: “Ta đã chứng được Thiền thứ hai”, giao thiệp với các Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi dutiyassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Ở đây, thưa các Hiền giả, có hạng người từ bỏ hỷ … chứng và trú Thiền thứ ba.<br>
+<span lang="pi" class="pali">
+Idha panāvuso, ekacco puggalo pītiyā ca virāgā ...pe... tatiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy với ý nghĩ: “Ta đã chứng được Thiền thứ ba”, giao thiệp với các Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi tatiyassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa các Hiền giả, có người đã ăn đồ ăn thượng vị, không ưa thích các đồ ăn hôm qua để lại.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, purisaṃ paṇītabhojanaṃ bhuttāviṃ ābhidosikaṃ bhojanaṃ nacchādeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa các Hiền giả, nếu ai nói như sau: “Nay người này không còn ưa thích đồ ăn nữa”, thưa các Hiền giả, người ấy nói như vậy có nói một cách chơn chánh không?”<br>
+<span lang="pi" class="pali">
+Yo nu kho, āvuso, evaṃ vadeyya: ‘na dāni amuṃ purisaṃ punadeva bhojanaṃ chādessatī’ti, sammā nu kho so, āvuso, vadamāno vadeyyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Hiền giả.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, āvuso”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự kiện có xảy ra: Người này, thưa Hiền giả, khi ăn đồ ăn thượng vị, cho đến khi nào chất dinh dưỡng còn tồn tại trong thân, cho đến khi ấy, không có một món ăn nào khác sẽ làm vị ấy ưa thích.<br>
+<span lang="pi" class="pali">
+“Ṭhānañhetaṃ, āvuso, vijjati, amuṃ purisaṃ paṇītabhojanaṃ bhuttāviṃ yāvassa sā ojā kāye ṭhassati tāva na aññaṃ bhojanaṃ chādessati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cho đến khi chất dinh dưỡng tiêu mất, khi ấy món ăn có thể làm cho vị ấy ưa thích..”<br>
+<span lang="pi" class="pali">
+Yato ca khvassa sā ojā antaradhāyissati, atha punadeva taṃ bhojanaṃ chādeyyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, này các Hiền giả, ở đây có hạng người từ bỏ hỷ… chứng và trú Thiền thứ ba.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, āvuso, idhekacco puggalo pītiyā ca virāgā ...pe... tatiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy với ý nghĩ: “Ta đã chứng được Thiền thứ ba”, giao thiệp với các Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi tatiyassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Ví như, này các Hiền giả, có hạng người từ bỏ lạc, từ bỏ khổ… chứng đạt và an trú Thiền thứ tư.<br>
+<span lang="pi" class="pali">
+Idha, panāvuso, ekacco puggalo sukhassa ca pahānā dukkhassa ca pahānā ...pe... catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy với ý nghĩ: “Ta đã chứng được Thiền thứ tư”, giao thiệp với các Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi catutthassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Hiền giả, một hồ nước trong khe núi, không có gió, không có sóng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, pabbatasaṅkhepe udakarahado nivāto vigataūmiko.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi thưa các Hiền giả, nếu có ai nói như sau: “Nay trong hồ nước này sẽ không hiện ra sóng nữa”, người ấy, thưa các Hiền giả, có nói một cách chơn chánh không?”<br>
+<span lang="pi" class="pali">
+Yo nu kho, āvuso, evaṃ vadeyya: ‘na dāni amusmiṃ udakarahade punadeva ūmi pātubhavissatī’ti, sammā nu kho so, āvuso, vadamāno vadeyyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Hiền giả.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, āvuso”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự kiện này có thể xảy ra: Nếu từ phương Ðông, mưa to gió lớn đến, mưa to gió lớn ấy làm cho hồ nước ấy khởi sóng; nếu từ phương Tây… nếu từ phương Bắc… nếu từ phương Nam, mưa to gió lớn đến, mưa to gió lớn ấy làm cho hồ nước ấy khởi sóng.”<br>
+<span lang="pi" class="pali">
+“Ṭhānañhetaṃ, āvuso, vijjati, yā puratthimāya disāya āgaccheyya bhusā vātavuṭṭhi. Sā tasmiṃ udakarahade ūmiṃ janeyya. Yā pacchimāya disāya āgaccheyya ...pe... yā uttarāya disāya āgaccheyya … yā dakkhiṇāya disāya āgaccheyya bhusā vātavuṭṭhi. Sā tasmiṃ udakarahade ūmiṃ janeyyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, này các Hiền giả, ở đây có hạng người từ bỏ lạc, từ bỏ khổ… chứng đạt và an trú Thiền thứ tư.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, āvuso, idhekacco puggalo sukhassa ca pahānā dukkhassa ca pahānā ...pe... catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy với ý nghĩ: “Ta đã chứng được Thiền thứ tư”, giao thiệp với Tỷ-kheo …<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi catutthassa jhānassā’ti saṃsaṭṭho viharati bhikkhūhi ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Ở đây, này các Hiền giả, có hạng người không tác ý tất cả các tướng, chứng đạt và an trú vô tướng tâm định.<br>
+<span lang="pi" class="pali">
+Idha, panāvuso, ekacco puggalo sabbanimittānaṃ amanasikārā animittaṃ cetosamādhiṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với ý nghĩ: “Ta đã chứng đạt được vô tướng tâm định”, sống giao thiệp với các Tỷ-kheo, các Tỷ-kheo-ni, với các nam cư sĩ, nữ cư sĩ, với các vua chúa, đại thần các vua chúa, với các ngoại đạo, các đệ tử ngoại đạo.<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi animittassa cetosamādhissā’ti saṃsaṭṭho viharati bhikkhūhi bhikkhunīhi upāsakehi upāsikāhi raññā rājamahāmattehi titthiyehi titthiyasāvakehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vị ấy sống giao thiệp, phóng túng, thô lỗ, đam mê nói chuyện, nên tham ái tấn công tâm vị ấy.<br>
+<span lang="pi" class="pali">
+Tassa saṃsaṭṭhassa vissatthassa pākatassa bhassamanuyuttassa viharato rāgo cittaṃ anuddhaṃseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với tâm bị tham ái tấn công, liền từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+So rāgānuddhaṃsitena cittena sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa các Hiền giả, một vị vua, hay đại thần của vua, đang đi giữa đường cùng với bốn loại binh chủng, đến trú ở một đêm tại một khóm rừng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, rājā vā rājamahāmatto vā caturaṅginiyā senāya addhānamaggappaṭipanno aññatarasmiṃ vanasaṇḍe ekarattiṃ vāsaṃ upagaccheyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đấy, do tiếng voi, tiếng ngựa, tiếng xe, tiếng bộ binh, tiếng trống lớn, trống nhỏ, tiếng tù và, nên tiếng của con dế biến mất.<br>
+<span lang="pi" class="pali">
+Tatra hatthisaddena assasaddena rathasaddena pattisaddena bheripaṇavasaṅkhatiṇavaninnādasaddena cīrikasaddo antaradhāyeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này các Hiền giả, có người nói như sau: “Nay trong khóm rừng này, tiếng kêu của con dế không hiện ra nữa”. Người ấy nói như vậy, thưa các Hiền giả, có nói một cách chơn chánh không?”<br>
+<span lang="pi" class="pali">
+Yo nu kho, āvuso, evaṃ vadeyya: ‘na dāni amusmiṃ vanasaṇḍe punadeva cīrikasaddo pātubhavissatī’ti, sammā nu kho so, āvuso, vadamāno vadeyyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Hiền giả.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, āvuso”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự kiện này có xảy ra, thưa Hiền giả: Khi nào vua hay vị đại thần của vua ra đi khỏi khóm rừng này, khi ấy tiếng con dế kêu sẽ hiện hữu.”<br>
+<span lang="pi" class="pali">
+“Ṭhānañhetaṃ, āvuso, vijjati, yaṃ so rājā vā rājamahāmatto vā tamhā vanasaṇḍā pakkameyya, atha punadeva cīrikasaddo pātubhaveyyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, thưa các Hiền giả, ở đây, có hạng người do không tác ý tất cả các tướng, chứng đạt và an trú vô tướng tâm định …<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, āvuso, idhekacco puggalo sabbanimittānaṃ amanasikārā animittaṃ cetosamādhiṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với ý nghĩ: “Ta đạt được vô tướng tâm định”, sống giao thiệp với các Tỷ-kheo, các Tỷ-kheo-ni, với các nam cư sĩ, nữ cư sĩ, với các vua chúa, các đại thần của vua, với các ngoại đạo, các đệ tử ngoại đạo.<br>
+<span lang="pi" class="pali">
+So ‘lābhimhi animittassa cetosamādhissā’ti saṃsaṭṭho viharati bhikkhūhi bhikkhunīhi upāsakehi upāsikāhi raññā rājamahāmattehi titthiyehi titthiyasāvakehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vị ấy sống giao thiệp, phóng túng, thô lỗ, đam mê nói chuyện, nên tham ái tấn công tâm vị ấy.<br>
+<span lang="pi" class="pali">
+Tassa saṃsaṭṭhassa vissatthassa pākatassa bhassamanuyuttassa viharato rāgo cittaṃ anuddhaṃseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, với tâm bị tham ái tấn công, liền từ bỏ học pháp và hoàn tục.”<br>
+<span lang="pi" class="pali">
+So rāgānuddhaṃsitena cittena sikkhaṃ paccakkhāya hīnāyāvattatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Rồi Tôn giả Citta Hatthisāriputta sau một thời gian từ bỏ học pháp và hoàn tục.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā citto hatthisāriputto aparena samayena sikkhaṃ paccakkhāya hīnāyāvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các Tỷ-kheo, bạn của Tôn giả Citta Hatthisāriputta đi đến Tôn giả Mahākoṭṭhita, sau khi đến nói với Tôn giả Mahākoṭṭhita:<br>
+<span lang="pi" class="pali">
+Atha kho cittassa hatthisāriputtassa sahāyakā bhikkhū yenāyasmā mahākoṭṭhiko tenupasaṅkamiṃsu; upasaṅkamitvā āyasmantaṃ mahākoṭṭhikaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Có phải Tôn giả Mahākoṭṭhita biết được tâm của Citta Hatthisāriputta với tâm của mình:<br>
+<span lang="pi" class="pali">
+“kiṃ nu kho āyasmatā mahākoṭṭhikena citto hatthisāriputto cetasā ceto paricca vidito:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Citta Hatthisāriputta đã chứng quả chứng này, quả chứng này, vị ấy sẽ từ bỏ học pháp và hoàn tục’;<br>
+<span lang="pi" class="pali">
+‘imāsañca imāsañca vihārasamāpattīnaṃ citto hatthisāriputto lābhī, atha ca pana sikkhaṃ paccakkhāya hīnāyāvattissatī’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay là chư Thiên báo cho biết về vấn đề này?<br>
+<span lang="pi" class="pali">
+udāhu devatā etamatthaṃ ārocesuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa chư Hiền, tôi biết được tâm của Citta Hatthisāriputta với tâm của tôi, rằng Citta đã chứng được quả chứng này, quả chứng này.’”<br>
+<span lang="pi" class="pali">
+‘citto, bhante, hatthisāriputto imāsañca imāsañca vihārasamāpattīnaṃ lābhī, atha ca pana sikkhaṃ paccakkhāya hīnāyāvattissatī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Thiên cũng báo cho biết về vấn đề này:<br>
+<span lang="pi" class="pali">
+“Cetasā ceto paricca vidito me, āvuso:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Citta Hatthisāriputta đã chứng được quả chứng này, quả chứng này, nhưng vị ấy sẽ từ bỏ học pháp và hoàn tục.’<br>
+<span lang="pi" class="pali">
+‘citto hatthisāriputto imāsañca imāsañca vihārasamāpattīnaṃ lābhī, atha ca pana sikkhaṃ paccakkhāya hīnāyāvattissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên cũng báo cho biết về vấn đề này:<br>
+<span lang="pi" class="pali">
+Devatāpi me etamatthaṃ ārocesuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa Tôn giả, Citta Hatthisāriputta đã chứng được quả chứng này, quả chứng này, nhưng vị ấy sẽ từ bỏ học pháp và hoàn tục.’”<br>
+<span lang="pi" class="pali">
+‘citto, bhante, hatthisāriputto imāsañca imāsañca vihārasamāpattīnaṃ lābhī, atha ca pana sikkhaṃ paccakkhāya hīnāyāvattissatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các bạn bè của Citta Hatthisāriputta đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, các Tỷ-kheo ấy bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho cittassa hatthisāriputtassa sahāyakā bhikkhū yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdiṃsu. Ekamantaṃ nisinnā kho te bhikkhū bhagavantaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Citta Hatthisāriputta đã chứng được quả chứng này, quả chứng này, nhưng đã từ bỏ học pháp và hoàn tục.”<br>
+<span lang="pi" class="pali">
+“citto, bhante, hatthisāriputto imāsañca imāsañca vihārasamāpattīnaṃ lābhī, atha ca pana sikkhaṃ paccakkhāya hīnāyāvattatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo, Citta không bao lâu sẽ nghĩ đến xuất ly.”<br>
+<span lang="pi" class="pali">
+“Na, bhikkhave, citto ciraṃ sarissati nekkhammassā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+9. Rồi Citta Hatthisāriputta không bao lâu cạo bỏ râu tóc, đắp áo cà sa, xuất gia, từ bỏ gia đình, sống không gia đình.<br>
+<span lang="pi" class="pali">
+Atha kho citto hatthisāriputto nacirasseva kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbaji.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Citta Hatthisāriputta sống một mình, an tịnh, không phóng dật, nhiệt tâm, tinh cần, không bao lâu chứng được mục đích mà các thiện nam tử chân chánh xuất gia, từ bỏ gia đình, sống không gia đình, hướng đến. Ðó là vô thượng cứu cánh Phạm hạnh, vị ấy ngay trong hiện tại đã tự mình với thắng trí chứng ngộ, chứng đạt và an trú.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā citto hatthisāriputto eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto nacirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, tadanuttaraṃ—brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy biết rõ rằng: “Sanh đã tận, Phạm hạnh đã thành, việc cần làm đã làm, không còn trở lui trạng thái này nữa”.<br>
+<span lang="pi" class="pali">
+“Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā”ti abbhaññāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Tôn giả Citta Hatthisāriputta trở thành một vị A-la-hán.<br>
+<span lang="pi" class="pali">
+Aññataro ca panāyasmā citto hatthisāriputto arahataṃ ahosīti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an6.59.html#content"></a><a id="next-sutta" href="./an6.61.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

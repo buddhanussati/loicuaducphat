@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="pressed w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Dīgha Nikāya – Trường Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>Trường Bộ 8</title>
+
+
+<p lang="vi"; style="text-align: center">Trường Bộ 8<br>
+<span lang="pi" class="pali">Dīgha Nikāya 8</span></p>
+
+<p lang="vi"; style="text-align: center">Đại Kinh Sử Tử Hống<br>
+<span lang="pi" class="pali">Mahāsīhanādasutta</span></p>
+
+<p lang="vi" class="vi">Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">Evaṃ me sutaṃ—</span></p>
+
+<p lang="vi" class="vi">Một thời đức Thế Tôn ở tại Urunnā (Uy-nhã-quốc), tại vườn nai Kannakatthala.<br>
+<span lang="pi" class="pali">ekaṃ samayaṃ bhagavā uruññāyaṃ viharati kaṇṇakatthale migadāye.</span></p>
+
+<p lang="vi" class="vi">Lúc bấy giờ, lõa thể Kassapa (Ca-diếp) đến chỗ đức Phật, nói những lời chào đón hỏi thăm xã giao với đức Thế Tôn.<br>
+<span lang="pi" class="pali">Atha kho acelo kassapo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṃ sammodi.</span></p>
+
+<p lang="vi" class="vi">Sau khi nói những lời chào đón hỏi thăm xã giao với đức Thế Tôn và đứng một bên. Sau khi đứng một bên, lõa thể Kassapa thưa với Thế Tôn:<br>
+<span lang="pi" class="pali">Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ aṭṭhāsi. Ekamantaṃ ṭhito kho acelo kassapo bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Tôn giả Gotama, tôi nghe như vầy:<br>
+<span lang="pi" class="pali">“sutaṃ metaṃ, bho gotama:</span></p>
+
+<p lang="vi" class="vi">“Sa-môn Gotama chỉ trích mọi khổ hạnh, tuyệt đối phỉ báng, mạt sát mọi khổ hạnh, mọi lối sống khắc khổ”<br>
+<span lang="pi" class="pali">’samaṇo gotamo sabbaṃ tapaṃ garahati, sabbaṃ tapassiṃ lūkhājīviṃ ekaṃsena upakkosati upavadatī’ti.</span></p>
+
+<p lang="vi" class="vi">Có phải những vị ấy nói đúng lời của Tôn giả Gotama? Có phải những vị ấy đã vu oan không xác thật cho Tôn giả Gotama? Có phải những vị ấy đã tuyên bố như pháp, thuận pháp không? Có những chủ trương nào chính và phụ gặp phải cật nạn không?<br>
+<span lang="pi" class="pali">Ye te, bho gotama, evamāhaṃsu: ‘samaṇo gotamo sabbaṃ tapaṃ garahati, sabbaṃ tapassiṃ lūkhājīviṃ ekaṃsena upakkosati upavadatī’ti, kacci te bhoto gotamassa vuttavādino, na ca bhavantaṃ gotamaṃ abhūtena abbhācikkhanti, dhammassa cānudhammaṃ byākaronti, na ca koci sahadhammiko vādānuvādo gārayhaṃ ṭhānaṃ āgacchati?</span></p>
+
+<p lang="vi" class="vi">Thật sự chúng tôi không muốn chỉ trích sai lạc Tôn giả Gotama.<br>
+<span lang="pi" class="pali">”Anabbhakkhātukāmā hi mayaṃ bhavantaṃ gotaman”ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, những ai nói: “Sa-môn Gotama chỉ trích mọi khổ hạnh, tuyệt đối phỉ báng, mạt sát mọi khổ hạnh, mọi lối sống khắc khổ”, những vị ấy nói không đúng lời của Ta, đã vu oan không xác thật cho Ta.<br>
+<span lang="pi" class="pali">Ye te, kassapa, evamāhaṃsu: ‘samaṇo gotamo sabbaṃ tapaṃ garahati, sabbaṃ tapassiṃ lūkhājīviṃ ekaṃsena upakkosati upavadatī’ti, na me te vuttavādino, abbhācikkhanti ca pana maṃ te asatā abhūtena.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, ở đời này, với thiên nhãn thanh tịnh, siêu nhân, Ta thấy một số người tu khổ hạnh, sống khắc khổ... Sau khi thân hoại mạng chung, phải sinh vào ác sanh, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">Idhāhaṃ, kassapa, ekaccaṃ tapassiṃ lūkhājīviṃ passāmi dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, ở đời này, với thiên nhãn thanh tịnh, siêu nhân, Ta thấy một số người tu khổ hạnh, sống khắc khổ... Sau khi thân hoại mạng chung, được sinh vào thiện chú, thiên giới.<br>
+<span lang="pi" class="pali">Idha panāhaṃ, kassapa, ekaccaṃ tapassiṃ lūkhājīviṃ passāmi dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, ở đời này, với thiên nhãn thanh tịnh, siêu nhân, Ta thấy một số người tu khổ hạnh nhưng sống ít khắc khổ hơn... Sau khi thân hoại mạng chung, phải sinh vào ác sanh, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">Idhāhaṃ, kassapa, ekaccaṃ tapassiṃ appadukkhavihāriṃ passāmi dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, ở đời này, với thiên nhãn thanh tịnh, siêu nhân, Ta thấy một số người tu khổ hạnh nhưng sống ít khắc khổ hơn... Sau khi thân hoại mạng chung, được sinh vào thiện thú, thiên giới, cõi đời này.<br>
+<span lang="pi" class="pali">Idha panāhaṃ, kassapa, ekaccaṃ tapassiṃ appadukkhavihāriṃ passāmi dibbena cakkhunā visuddhena atikkantamānusakena kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, khi đã biết đúng với sự thật sự lai, khứ, sanh, diệt của những người tu khổ hạnh như vậy, làm sao Ta lại chỉ trích mọi khổ hạnh và tuyệt đối phỉ báng mạt sát mọi khổ hạnh, mọi lối sống khắc khổ?<br>
+<span lang="pi" class="pali">Yohaṃ, kassapa, imesaṃ tapassīnaṃ evaṃ āgatiñca gatiñca cutiñca upapattiñca yathābhūtaṃ pajānāmi, sohaṃ kiṃ sabbaṃ tapaṃ garahissāmi, sabbaṃ vā tapassiṃ lūkhājīviṃ ekaṃsena upakkosissāmi upavadissāmi?</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, có một số Sa-môn, Bà-la-môn là những nhà bác học, tế nhị, biệt tài trong tranh luận, (nhà thiện xạ) bắn chẻ hai sợi tóc, đi chỗ này chỗ kia như đả phá mọi tà kiến với trí tuệ của mình.<br>
+<span lang="pi" class="pali">Santi, kassapa, eke samaṇa brāhmaṇā paṇḍitā nipuṇā kataparappavādā vālavedhirūpā. Te bhindantā maññe caranti paññāgatena diṭṭhigatāni.</span></p>
+
+<p lang="vi" class="vi">Giữa Ta và những vị này, có những điểm tương đồng và có những điểm không tương đồng.<br>
+<span lang="pi" class="pali">Tehipi me saddhiṃ ekaccesu ṭhānesu sameti, ekaccesu ṭhānesu na sameti.</span></p>
+
+<p lang="vi" class="vi">Có điểm những vị này công nhận là phải, chúng tôi cũng công nhận là phải.<br>
+<span lang="pi" class="pali">Yaṃ te ekaccaṃ vadanti ‘sādhū’ti, mayampi taṃ ekaccaṃ vadema ‘sādhū’ti.</span></p>
+
+<p lang="vi" class="vi">Có điểm những vị này công nhận là không phải, chúng tôi cũng công nhận là không phải.<br>
+<span lang="pi" class="pali">Yaṃ te ekaccaṃ vadanti ‘na sādhū’ti, mayampi taṃ ekaccaṃ vadema ‘na sādhū’ti.</span></p>
+
+<p lang="vi" class="vi">Có điểm những vị này công nhận là phải, chúng tôi không công nhận là phải.<br>
+<span lang="pi" class="pali">Yaṃ te ekaccaṃ vadanti ‘sādhū’ti, mayaṃ taṃ ekaccaṃ vadema ‘na sādhū’ti.</span></p>
+
+<p lang="vi" class="vi">Có điểm những vị này không công nhận là phải, chúng tôi công nhận là phải.<br>
+<span lang="pi" class="pali">Yaṃ te ekaccaṃ vadanti ‘na sādhū’ti, mayaṃ taṃ ekaccaṃ vadema ‘sādhū’ti.</span></p>
+
+<p lang="vi" class="vi">Có điểm chúng tôi công nhận là phải, các vị này cũng công nhận là phải.<br>
+<span lang="pi" class="pali">Yaṃ mayaṃ ekaccaṃ vadema ‘sādhū’ti, parepi taṃ ekaccaṃ vadanti ‘sādhū’ti.</span></p>
+
+<p lang="vi" class="vi">Có điểm chúng tôi không công nhận là phải, các vị này cũng không công nhận là phải.<br>
+<span lang="pi" class="pali">Yaṃ mayaṃ ekaccaṃ vadema ‘na sādhū’ti, parepi taṃ ekaccaṃ vadanti ‘na sādhū’ti.</span></p>
+
+<p lang="vi" class="vi">Có điểm chúng tôi không công nhận là phải, các vị này công nhận là phải.<br>
+<span lang="pi" class="pali">Yaṃ mayaṃ ekaccaṃ vadema ‘na sādhū’ti, pare taṃ ekaccaṃ vadanti ‘sādhū’ti.</span></p>
+
+<p lang="vi" class="vi">Có điểm chúng tôi công nhận là phải, các vị này không công nhận là phải.<br>
+<span lang="pi" class="pali">Yaṃ mayaṃ ekaccaṃ vadema ‘sādhū’ti, pare taṃ ekaccaṃ vadanti ‘na sādhū’ti.</span></p>
+
+
+<p lang="vi" class="vi">Ta đến các vị ấy và nói:<br>
+<span lang="pi" class="pali">Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:</span></p>
+
+<p lang="vi" class="vi">“Này các Hiền giả, những điểm bất đồng ý, hãy để chúng yên như vậy.<br>
+<span lang="pi" class="pali">‘yesu no, āvuso, ṭhānesu na sameti, tiṭṭhantu tāni ṭhānāni.</span></p>
+
+<p lang="vi" class="vi">Những điểm đồng ý, các vị có trí hãy hỏi nhau, tìm hiểu và đàm luận với nhau, giáo sư với giáo sư, hay chúng đệ tử với chúng đệ tử:<br>
+<span lang="pi" class="pali">Yesu ṭhānesu sameti, tattha viññū samanuyuñjantaṃ samanugāhantaṃ samanubhāsantaṃ satthārā vā satthāraṃ saṅghena vā saṅghaṃ:</span></p>
+
+<p lang="vi" class="vi">“Những pháp bất thiện hay được xem là bất thiện, những pháp lỗi lầm hay được xem là lỗi lầm, những pháp không nên tuân hành hay được xem là không nên tuân hành, những pháp không xứng bậc Thánh hay được xem là không xứng đáng bậc Thánh, giữa những pháp ô nhiễm hay được xem là ô nhiễm, giữa quí vị hiền giả này<br>
+<span lang="pi" class="pali">ye imesaṃ bhavataṃ dhammā akusalā akusalasaṅkhātā, sāvajjā sāvajjasaṅkhātā, asevitabbā asevitabbasaṅkhātā, na alamariyā na alamariyasaṅkhātā, kaṇhā kaṇhasaṅkhātā.</span></p>
+
+<p lang="vi" class="vi">ai đã hoàn toàn xả ly những pháp ấy, Sa-môn Gotama hay những vị Tôn giả, sư trưởng các giáo phái kia?”<br>
+<span lang="pi" class="pali">’Ko ime dhamme anavasesaṃ pahāya vattati, samaṇo vā gotamo, pare vā pana bhonto gaṇācariyā”ti?</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, và sự tình này xảy ra. Khi các vị có trí hỏi nhau, tìm hiểu và đàm luận với nhau. Các vị này nói:<br>
+<span lang="pi" class="pali">Ṭhānaṃ kho panetaṃ, kassapa, vijjati, yaṃ viññū samanuyuñjantā samanugāhantā samanubhāsantā evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Những pháp bất thiện hay được xem là bất thiện, những pháp lỗi lầm hay được xem là lỗi lầm, những pháp không nên tuân hành hay được xem là không nên tuân hành, những pháp không xứng bậc Thánh hay được xem là không xứng bậc Thánh, những pháp ô nhiễm hay được xem là ô nhiễm, giữa những vị hiền giả này<br>
+<span lang="pi" class="pali">‘ye imesaṃ bhavataṃ dhammā akusalā akusalasaṅkhātā, sāvajjā sāvajjasaṅkhātā, asevitabbā asevitabbasaṅkhātā, na alamariyā na alamariyasaṅkhātā, kaṇhā kaṇhasaṅkhātā.‘</span></p>
+
+<p lang="vi" class="vi">Sa-môn Gotama đã hoàn toàn xả ly những pháp ấy, còn những vị tôn giả, sư trưởng các giáo phái kia chỉ xả ly một phần thôi”.<br>
+<span lang="pi" class="pali">’Samaṇo gotamo ime dhamme anavasesaṃ pahāya vattati, yaṃ vā pana bhonto pare gaṇācariyā’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy, này Kassapa, những vị có trí khi hỏi nhau, tìm hiểu và đàm luận với nhau, một phần lớn tán thán chúng tôi về vấn đề này.<br>
+<span lang="pi" class="pali">Itiha, kassapa, viññū samanuyuñjantā samanugāhantā samanubhāsantā amheva tattha yebhuyyena pasaṃseyyuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, lại nữa các vị có trí lại hỏi nhau, tìm hiểu và đàm luận với nhau, giữa giáo sư với giáo sư, giữa chúng đệ tử với chúng đệ tử:<br>
+<span lang="pi" class="pali">Aparampi no, kassapa, viññū samanuyuñjantaṃ samanugāhantaṃ samanubhāsantaṃ satthārā vā satthāraṃ saṅghena vā saṅghaṃ:</span></p>
+
+<p lang="vi" class="vi">“Những pháp thiện hay được xem là thiện, những pháp không lỗi lầm hay được xem là không lỗi lầm, những pháp nên tuân hành hay được xem là nên tuân hành, những pháp xứng bậc Thánh hay được xem là xứng bậc Thánh, những pháp thanh tịnh hay được xem là thanh tịnh, giữa quí vị hiền giả này<br>
+<span lang="pi" class="pali">ye imesaṃ bhavataṃ dhammā kusalā kusalasaṅkhātā, anavajjā anavajjasaṅkhātā, sevitabbā sevitabbasaṅkhātā, alamariyā alamariyasaṅkhātā, sukkā sukkasaṅkhātā.</span></p>
+
+<p lang="vi" class="vi">ai đã hoàn toàn thành tựu những pháp này, Sa-môn Gotama hay những vị tôn giả, sư trưởng các giáo phái kia?<br>
+<span lang="pi" class="pali">Ko ime dhamme anavasesaṃ samādāya vattati, samaṇo vā gotamo, pare vā pana bhonto gaṇācariyā’ti?</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, và sự tình này xảy ra. Khi các vị có trí hỏi nhau, tìm hiểu và đàm luận với nhau, các vị này nói:<br>
+<span lang="pi" class="pali">Ṭhānaṃ kho panetaṃ, kassapa, vijjati, yaṃ viññū samanuyuñjantā samanugāhantā samanubhāsantā evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Những pháp thiện hay được xem là thiện, những pháp không lỗi lầm hay được xem là không lỗi lầm, những pháp nên tuân hành hay được xem là nên tuân hành, những pháp xứng bậc Thánh hay được xem là xứng bậc Thánh, những pháp thanh tịnh hay được xem là thanh tịnh,<br>
+<span lang="pi" class="pali">‘ye imesaṃ bhavataṃ dhammā kusalā kusalasaṅkhātā, anavajjā anavajjasaṅkhātā, sevitabbā sevitabbasaṅkhātā, alamariyā alamariyasaṅkhātā, sukkā sukkasaṅkhātā.</span></p>
+
+<p lang="vi" class="vi">Sa-môn Gotama đã hoàn toàn thành tựu những pháp này, còn những vị tôn giả, sư trưởng các giáo phái kia chỉ thành tựu một phần”.<br>
+<span lang="pi" class="pali">Samaṇo gotamo ime dhamme anavasesaṃ samādāya vattati, yaṃ vā pana bhonto pare gaṇācariyā’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy này Kassapa, những vị có trí hỏi nhau, tìm hiểu và đàm luận với nhau, một phần lớn tán thán chúng tôi về vấn đề này.<br>
+<span lang="pi" class="pali">Itiha, kassapa, viññū samanuyuñjantā samanugāhantā samanubhāsantā amheva tattha yebhuyyena pasaṃseyyuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, lại nữa, các vị có trí lại hỏi nhau, tìm hiểu và đàm luận với nhau, giữa giáo sư với giáo sư, giữa chúng đệ tử với chúng đệ tử:<br>
+<span lang="pi" class="pali">Aparampi no, kassapa, viññū samanuyuñjantaṃ samanugāhantaṃ samanubhāsantaṃ satthārā vā satthāraṃ saṅghena vā saṅghaṃ:</span></p>
+
+<p lang="vi" class="vi">“Những pháp bất thiện hay được xem là bất thiện, những pháp lỗi lầm hay được xem là lỗi lầm, những pháp không nên tuân hành hay được xem là không nên tuân hành, những pháp không xứng bậc Thánh hay được xem là không xứng bậc Thánh, những pháp ô nhiễm hay được xem là ô nhiễm, giữa những vị hiền giả này<br>
+<span lang="pi" class="pali">ye imesaṃ bhavataṃ dhammā akusalā akusalasaṅkhātā, sāvajjā sāvajjasaṅkhātā, asevitabbā asevitabbasaṅkhātā, na alamariyā na alamariyasaṅkhātā, kaṇhā kaṇhasaṅkhātā.</span></p>
+
+<p lang="vi" class="vi">ai đã hoàn toàn xả ly những pháp ấy, chúng đệ tử của Gotama hay chúng đệ tử của những tôn giả, sư trưởng các giáo phái kia?”<br>
+<span lang="pi" class="pali">Ko ime dhamme anavasesaṃ pahāya vattati, gotamasāvakasaṅgho vā, pare vā pana bhonto gaṇācariyasāvakasaṅghā’ti?</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, và sự tình này xảy ra khi các vị có trí hỏi nhau, tìm hiểu và đàm luận với nhau. Các vị này nói:<br>
+<span lang="pi" class="pali">Ṭhānaṃ kho panetaṃ, kassapa, vijjati, yaṃ viññū samanuyuñjantā samanugāhantā samanubhāsantā evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Những pháp bất thiện hay được xem là bất thiện, những pháp lỗi lầm hay được xem là lỗi lầm, những pháp không nên tuân hành hay được xem là không nên tuân hành, những pháp không xứng bậc Thánh hay được xem là không xứng bậc Thánh, những pháp ô nhiễm hay được xem là ô nhiễm, giữa những vị hiền giả này,<br>
+<span lang="pi" class="pali">‘ye imesaṃ bhavataṃ dhammā akusalā akusalasaṅkhātā, sāvajjā sāvajjasaṅkhātā, asevitabbā asevitabbasaṅkhātā, na alamariyā na alamariyasaṅkhātā, kaṇhā kaṇhasaṅkhātā.‘</span></p>
+
+<p lang="vi" class="vi">chúng đệ tử của Gomata đã hoàn toàn xả ly những pháp ấy, còn chúng đệ tử của những vị tôn giả, sư trưởng các giáo phái kia chỉ xả ly một phần thôi”.<br>
+<span lang="pi" class="pali">Gotamasāvakasaṅgho ime dhamme anavasesaṃ pahāya vattati, yaṃ vā pana bhonto pare gaṇācariyasāvakasaṅghā’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy, này Kassapa, những vị có trí khi hỏi nhau, tìm hiểu và đàm luận với nhau một phần lớn tán thán chúng tôi về vấn đề này.<br>
+<span lang="pi" class="pali">Itiha, kassapa, viññū samanuyuñjantā samanugāhantā samanubhāsantā amheva tattha yebhuyyena pasaṃseyyuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, lại nữa, các vị có trí lại hỏi nhau, tìm hiểu và đàm luận với nhau, giữa giáo sư với giáo sư, giữa chúng đệ tử với chúng đệ tử:<br>
+<span lang="pi" class="pali">Aparampi no, kassapa, viññū samanuyuñjantaṃ samanugāhantaṃ samanubhāsantaṃ satthārā vā satthāraṃ saṅghena vā saṅghaṃ.</span></p>
+
+<p lang="vi" class="vi">“Những pháp thiện hay được xem là thiện, những pháp không lỗi lầm hay được xem là không lỗi lầm, những pháp nên tuân hành hay được xem là nên tuân hành, những pháp xứng bậc Thánh hay được xem là xứng bậc Thánh, những pháp thanh tịnh hay được xem là thanh tịnh, giữa những vị hiền giả này<br>
+<span lang="pi" class="pali">Ye imesaṃ bhavataṃ dhammā kusalā kusalasaṅkhātā, anavajjā anavajjasaṅkhātā, sevitabbā sevitabbasaṅkhātā, alamariyā alamariyasaṅkhātā, sukkā sukkasaṅkhātā.</span></p>
+
+<p lang="vi" class="vi">Ai đã hoàn toàn thành tựu những pháp này, chúng đệ tử của Gotama hay chúng đệ tử của những tôn giả, sư trưởng các giáo phái kia?”<br>
+<span lang="pi" class="pali">Ko ime dhamme anavasesaṃ samādāya vattati, gotamasāvakasaṅgho vā, pare vā pana bhonto gaṇācariyasāvakasaṅghā’ti?</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, sự tình này xảy ra khi các vị có trí hỏi nhau, tìm hiểu và đàm luận với nhau. Các vị này nói:<br>
+<span lang="pi" class="pali">Ṭhānaṃ kho panetaṃ, kassapa, vijjati, yaṃ viññū samanuyuñjantā samanugāhantā samanubhāsantā evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Những pháp thiện hay được xem là thiện, những pháp không lỗi lầm hay được xem là không lỗi lầm, những pháp nên tuân hành hay được xem là nên tuân hành, những pháp xứng bậc Thánh hay được xem là xứng bậc Thánh, những pháp thanh tịnh hay được xem là thanh tịnh, giữa những vị hiền giả này,<br>
+<span lang="pi" class="pali">‘ye imesaṃ bhavataṃ dhammā kusalā kusalasaṅkhātā, anavajjā anavajjasaṅkhātā, sevitabbā sevitabbasaṅkhātā, alamariyā alamariyasaṅkhātā, sukkā sukkasaṅkhātā.‘</span></p>
+
+<p lang="vi" class="vi">chúng đệ tử của Gotama đã hoàn toàn thành tựu những pháp này, còn chúng đệ tử của những vị tôn giả, sư trưởng các giáo phái kia chỉ thành tựu một phần thôi”.<br>
+<span lang="pi" class="pali">Gotamasāvakasaṅgho ime dhamme anavasesaṃ samādāya vattati, yaṃ vā pana bhonto pare gaṇācariyasāvakasaṅghā’ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy này Kassapa, những vị có trí hỏi nhau, tìm hiểu và đàm luận với nhau, một phần lớn tán thán chúng tôi về vấn đề này.<br>
+<span lang="pi" class="pali">Itiha, kassapa, viññū samanuyuñjantā samanugāhantā samanubhāsantā amheva tattha yebhuyyena pasaṃseyyuṃ.</span></p>
+
+
+<p lang="vi" class="vi">Này Kassapa, có con đường, có phương pháp khiến ai tuân theo sẽ tự thấy và tự biết:<br>
+<span lang="pi" class="pali">Atthi, kassapa, maggo atthi paṭipadā, yathāpaṭipanno sāmaññeva ñassati sāmaṃ dakkhati:‘</span></p>
+
+<p lang="vi" class="vi">“Sa-môn Gotama nói đúng thời, nói chân thật, nói lợi ích, nói hợp pháp, nói đúng luật”.<br>
+<span lang="pi" class="pali">samaṇova gotamo kālavādī bhūtavādī atthavādī dhammavādī vinayavādī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, con đường ấy là gì, phương pháp ấy là gì khiến ai tuân theo sẽ tự thấy và biết: “Sa-môn Gotama nói đúng thời, nói chân thật, nói lợi ích, nói hợp pháp, nói đúng luật?”<br>
+<span lang="pi" class="pali">Katamo ca, kassapa, maggo, katamā ca paṭipadā, yathāpaṭipanno sāmaññeva ñassati sāmaṃ dakkhati:‘samaṇova gotamo kālavādī bhūtavādī atthavādī dhammavādī vinayavādī’ti?</span></p>
+
+<p lang="vi" class="vi">Chính là con đường Thánh tám ngành tức là:<br>
+<span lang="pi" class="pali">Ayameva ariyo aṭṭhaṅgiko maggo.</span></p>
+
+<p lang="vi" class="vi">chánh tri kiến, chánh tư duy, chánh ngữ, chánh nghiệp, chánh mạng, chánh tinh tấn, chánh niệm, chánh định.<br>
+<span lang="pi" class="pali">Seyyathidaṃ—sammādiṭṭhi sammāsaṅkappo sammāvācā sammākammanto sammāājīvo sammāvāyāmo sammāsati sammāsamādhi.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, chính con đường này, chính phương pháp này khiến ai tuân theo sẽ tự thấy và tự biết: “Sa-môn Gotama nói đúng thời, nói lời chân thật, nói lợi ích, nói hợp pháp, nói đúng luật”.<br>
+<span lang="pi" class="pali">”Ayaṃ kho, kassapa, maggo, ayaṃ paṭipadā, yathāpaṭipanno sāmaññeva ñassati sāmaṃ dakkhati ‘samaṇova gotamo kālavādī bhūtavādī atthavādī dhammavādī vinayavādī’”ti.</span></p>
+
+
+<p lang="vi" class="vi">Nghe nói vậy, lõa thể Kassapa bạch đức Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ vutte, acelo kassapo bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Hiền giả Gotama, những pháp khổ hạnh này được những Sa-môn và Bà-la-môn công nhận là đưa đến Sa-môn quả và Bà-la-môn quả:<br>
+<span lang="pi" class="pali">“imepi kho, āvuso gotama, tapopakkamā etesaṃ samaṇabrāhmaṇānaṃ sāmaññasaṅkhātā ca brahmaññasaṅkhātā ca.</span></p>
+
+<p lang="vi" class="vi">Sống lõa thể, sống phóng túng, không theo lễ nghi (như đứng mà đi đại tiểu tiện, đứng ăn, không chịu ngồi theo lễ nghi), liếm tay cho sạch (sau khi ăn, không chịu rửa), đi khất thực không chịu bước tới (theo yêu cầu để thí chủ bỏ đồ ăn vào bát), không nhận đồ ăn mang đến (cho mình, trước khi đi khất thực), không nhận đồ ăn đặc biệt nấu cho mình, Không nhận mời đi ăn.<br>
+<span lang="pi" class="pali">Acelako hoti, muttācāro, hatthāpalekhano, naehibhaddantiko, natiṭṭhabhaddantiko, nābhihaṭaṃ, na uddissakataṃ, na nimantanaṃ sādiyati.</span></p>
+
+<p lang="vi" class="vi">Không nhận đồ ăn từ nơi nồi chảo (sợ nồi chảo bị nạo, bị cạy để cúng dường đồ ăn), không nhận đồ ăn tại ngưỡng cửa (sợ dành riêng cho mình), không nhận đồ ăn đặt giữa những cây gậy (sợ dành riêng cho mình), không nhận đồ ăn đặt giữa những cối giã gạo (sợ dành riêng cho mình), không nhận đồ ăn từ hai người đang ăn (sợ đồ ăn chỉ do một người cho), không nhận đồ ăn từ người đàn bà có thai (sợ đứa con trong bụng mẹ bị thiệt thòi), không nhận đồ ăn từ người đàn bà đang cho con bú (sợ sữa đàn bà sẽ bớt đi), không nhận đồ ăn từ người đàn bà đang giao cấu (sợ làm trở ngại sự giao cấu), không nhận đồ ăn đi quyên (bởi tín đồ khi có nạn đói), không nhận đồ ăn tại chỗ có chó đứng (sợ chó mất phần ăn), không nhận đồ ăn tại chỗ ruồi bu (sợ ruồi mất phần ăn), không ăn cá, ăn thịt, không uống rượu nấu, rượu men.<br>
+<span lang="pi" class="pali">So na kumbhimukhā paṭiggaṇhāti, na kaḷopimukhā paṭiggaṇhāti, na eḷakamantaraṃ, na daṇḍamantaraṃ, na musalamantaraṃ, na dvinnaṃ bhuñjamānānaṃ, na gabbhiniyā, na pāyamānāya, na purisantaragatāya, na saṅkittīsu, na yattha sā upaṭṭhito hoti, na yattha makkhikā saṇḍasaṇḍacārinī, na macchaṃ, na maṃsaṃ, na suraṃ, na merayaṃ, na thusodakaṃ pivati.</span></p>
+
+<p lang="vi" class="vi">Vị ấy chỉ nhận ăn tại một nhà, chỉ nhận ăn một miếng hay vị ấy chỉ nhận ăn tại hai nhà, chỉ nhận ăn hai miếng, hay vị ấy chỉ nhận ăn tại bảy nhà, vị ấy chỉ nhận ăn bảy miếng.<br>
+<span lang="pi" class="pali">So ekāgāriko vā hoti ekālopiko, dvāgāriko vā hoti dvālopiko ... sattāgāriko vā hoti sattālopiko;</span></p>
+
+<p lang="vi" class="vi">Vị ấy chỉ nuôi sống với một bát, nuôi sống chỉ với hai bát, nuôi sống chỉ với bảy bát.<br>
+<span lang="pi" class="pali">ekissāpi dattiyā yāpeti, dvīhipi dattīhi yāpeti ... sattahipi dattīhi yāpeti;</span></p>
+
+<p lang="vi" class="vi">Vị ấy chỉ ăn một ngày một bữa, hai ngày một bữa, bảy ngày một bữa. Như vậy vị ấy sống theo hạnh tiết chế ăn uống cho đến nửa tháng mới ăn một lần.<br>
+<span lang="pi" class="pali">ekāhikampi āhāraṃ āhāreti, dvīhikampi āhāraṃ āhāreti ... sattāhikampi āhāraṃ āhāreti. Iti evarūpaṃ addhamāsikampi pariyāyabhattabhojanānuyogamanuyutto viharati.</span></p>
+
+<p lang="vi" class="vi">Này Hiền giả Gotama, những pháp khổ hạnh này được chúng Sa-môn, Bà-la-môn công nhận là đưa đến Sa-môn quả và Bà-la-môn quả.<br>
+<span lang="pi" class="pali">Imepi kho, āvuso gotama, tapopakkamā etesaṃ samaṇabrāhmaṇānaṃ sāmaññasaṅkhātā ca brahmaññasaṅkhātā ca.</span></p>
+
+<p lang="vi" class="vi">Vị này chỉ ăn cỏ lúa để sống, lúa tắc, gạo lức, ăn hột cải nivara, ăn da vụn, ăn trấu, ăn nước bột gạo, ăn bột vừng, ăn cỏ, ăn phân bò, ăn trái cây, ăn rễ cây trong rừng, ăn trái cây rụng để sống.<br>
+<span lang="pi" class="pali">Sākabhakkho vā hoti, sāmākabhakkho vā hoti, nīvārabhakkho vā hoti, daddulabhakkho vā hoti, haṭabhakkho vā hoti, kaṇabhakkho vā hoti, ācāmabhakkho vā hoti, piññākabhakkho vā hoti, tiṇabhakkho vā hoti, gomayabhakkho vā hoti, vanamūlaphalāhāro yāpeti pavattaphalabhojī.</span></p>
+
+<p lang="vi" class="vi">Này Hiền giả Gotama, những pháp khổ hạnh này được công nhận bởi những Sa-môn, Bà-la-môn là đưa đến Sa-môn và Bà-la-môn quả.<br>
+<span lang="pi" class="pali">Imepi kho, āvuso gotama, tapopakkamā etesaṃ samaṇabrāhmaṇānaṃ sāmaññasaṅkhātā ca brahmaññasaṅkhātā ca.</span></p>
+
+<p lang="vi" class="vi">Vị ấy mặc vải gai thô, mặc vải gai thô lẫn với các vải khác, mặc vải tẩm liệm rồi quăng đi, mặc vải phấn tảo y, mặc vỏ cây tititaka làm áo, mặc da con sơn dương đen, mặc áo bện bằng từng mảnh da của con sơn dương đen, mặc áo bằng cỏ cát tường (kusa), mặc áo vỏ cây, mặc áo bằng tấm gỗ nhỏ, mặc áo bằng tóc bện lại thành mền, mặc áo bằng đuôi ngựa bện lại, mặc áo bằng lông cú.<br>
+<span lang="pi" class="pali">Sāṇānipi dhāreti, masāṇānipi dhāreti, chavadussānipi dhāreti, paṃsukūlānipi dhāreti, tirīṭānipi dhāreti, ajinampi dhāreti, ajinakkhipampi dhāreti, kusacīrampi dhāreti, vākacīrampi dhāreti, phalakacīrampi dhāreti, kesakambalampi dhāreti, vāḷakambalampi dhāreti, ulūkapakkhikampi dhāreti,</span></p>
+
+<p lang="vi" class="vi">Vị ấy là người sống nhổ râu tóc, là người theo tập tục sống nhổ râu tóc,<br>
+<span lang="pi" class="pali">kesamassulocakopi hoti kesamassulocanānuyogamanuyutto,</span></p>
+
+<p lang="vi" class="vi">là người theo hạnh thường đứng, không dùng chỗ ngồi,<br>
+<span lang="pi" class="pali">ubbhaṭṭhakopi hoti āsanapaṭikkhitto,</span></p>
+
+<p lang="vi" class="vi">là người ngồi chò hỏ, sống theo hạnh ngồi chò hỏ một cách tinh tấn,<br>
+<span lang="pi" class="pali">ukkuṭikopi hoti ukkuṭikappadhānamanuyutto,</span></p>
+
+<p lang="vi" class="vi">là người dùng gai làm giường, thường ngủ nằm trên giường gai,<br>
+<span lang="pi" class="pali">kaṇṭakāpassayikopi hoti kaṇṭakāpassaye seyyaṃ kappeti,</span></p>
+
+<p lang="vi" class="vi">sống dùng ván gỗ làm giường, sống nằm trên đất trần,<br>
+<span lang="pi" class="pali">phalakaseyyampi kappeti, thaṇḍilaseyyampi kappeti,</span></p>
+
+<p lang="vi" class="vi">thường nằm ngủ một bên hông,<br>
+<span lang="pi" class="pali">ekapassayikopi hoti</span></p>
+
+<p lang="vi" class="vi">sống để bụi và nhớp che dính thân mình,<br>
+<span lang="pi" class="pali">rajojalladharo,</span></p>
+
+<p lang="vi" class="vi">sống và ngủ ngoài trời,<br>
+<span lang="pi" class="pali">abbhokāsikopi hoti</span></p>
+
+<p lang="vi" class="vi">theo hạnh bạ đâu nằm đấy,<br>
+<span lang="pi" class="pali">yathāsanthatiko,</span></p>
+
+<p lang="vi" class="vi">sống ăn các uế vật, theo hạnh ăn các uế vật (phân bò, nước tiểu bò, tro và đất),<br>
+<span lang="pi" class="pali">vekaṭikopi hoti vikaṭabhojanānuyogamanuyutto,</span></p>
+
+<p lang="vi" class="vi">sống không uống nước lạnh, theo hạnh không uống nước lạnh,<br>
+<span lang="pi" class="pali">apānakopi hoti apānakattamanuyutto,</span></p>
+
+<p lang="vi" class="vi">sống một đêm tắm ba lần, theo hạnh xuống nước tắm (để gột sạch tội lỗi).<br>
+<span lang="pi" class="pali">”sāyatatiyakampi udakorohanānuyogamanuyutto viharatī”ti.</span></p>
+
+
+<p lang="vi" class="vi">Này Kassapa nếu một người sống lõa thể, sống phóng túng không theo lễ nghi, liếm tay... như vậy sống theo hạnh tiết chế ăn uống cho đến nửa tháng chỉ ăn một lần,<br>
+<span lang="pi" class="pali">“Acelako cepi, kassapa, hoti, muttācāro, hatthāpalekhano ...pe... iti evarūpaṃ addhamāsikampi pariyāyabhattabhojanānuyogamanuyutto viharati.</span></p>
+
+<p lang="vi" class="vi">nhưng nếu vị này không tu và không chứng được giới cụ túc, tâm cụ túc, tuệ cụ túc, thời vị ấy cách rất xa Sa-môn vị, cách rất xa Bà-la-môn vị.<br>
+<span lang="pi" class="pali">Tassa cāyaṃ sīlasampadā cittasampadā paññāsampadā abhāvitā hoti asacchikatā. Atha kho so ārakāva sāmaññā ārakāva brahmaññā.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu,<br>
+<span lang="pi" class="pali">Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">này Kassapa Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipi.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu một người chỉ ăn cỏ lúa để sống, này Kassapa nếu người ấy chỉ ăn lúa tắc, gạo lức, ăn hột cải nivàra... ăn trái cây, rễ cây trong rừng, ăn trái cây rụng để sống, nhưng nếu vị này không tu và không chứng được giới cụ túc, tâm cụ túc, tuệ cụ túc thời vị ấy cách rất xa Sa-môn vị, cách rất xa Bà-la-môn vị. Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu, này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">Sākabhakkho cepi, kassapa, hoti, sāmākabhakkho ...pe... vanamūlaphalāhāro yāpeti pavattaphalabhojī.Tassa cāyaṃ sīlasampadā cittasampadā paññāsampadā abhāvitā hoti asacchikatā.Atha kho so ārakāva sāmaññā ārakāva brahmaññā.Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati. Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipi.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu một người mặc vải gai thô, mặc vải gai thô trộn với các vải khác,... sống một đêm tắm ba lần, theo hạnh xuống nước tắm (để gột sạch tội lỗi), nhưng nếu vị này không tu và không chứng được giới cụ túc, tâm cụ túc, tuệ cụ túc, thời vị ấy cách rất xa Sa-môn vị, cách rất xa Bà-la-môn vị. Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu, này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">Sāṇāni cepi, kassapa, dhāreti, masāṇānipi dhāreti ...pe...sāyatatiyakampi udakorohanānuyogamanuyutto viharati.Tassa cāyaṃ sīlasampadā cittasampadā paññāsampadā abhāvitā hoti asacchikatā.Atha kho so ārakāva sāmaññā ārakāva brahmaññā.Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipī”ti.</span></p>
+
+<p lang="vi" class="vi">Khi nghe nói đến đây, lõa thể Kassapa bạch Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ vutte, acelo kassapo bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Tôn giả Gotama, khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!<br>
+<span lang="pi" class="pali">“dukkaraṃ, bho gotama, sāmaññaṃ dukkaraṃ brahmaññan”ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, đó là lời nói thường tình ở đời: “Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!<br>
+<span lang="pi" class="pali">“Pakati kho esā, kassapa, lokasmiṃ ‘dukkaraṃ sāmaññaṃ dukkaraṃ brahmaññan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, như một người sống lõa thể, sống phóng túng không theo lễ nghi, liếm tay... như vậy sống theo hạnh tiết chế ăn uống, cho đến nửa tháng chỉ ăn một lần.<br>
+<span lang="pi" class="pali">Acelako cepi, kassapa, hoti, muttācāro, hatthāpalekhano ...pe... iti evarūpaṃ addhamāsikampi pariyāyabhattabhojanānuyogamanuyutto viharati.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu sự khó hành, sự rất khó hành của Sa-môn hạnh, của Bà-la-môn hạnh chỉ tùy thuộc khổ hạnh này và chỉ tùy thuộc sự thực hành khổ hạnh này, thời thật không xứng mà nói:<br>
+<span lang="pi" class="pali">Imāya ca, kassapa, mattāya iminā tapopakkamena sāmaññaṃ vā abhavissa brahmaññaṃ vā dukkaraṃ sudukkaraṃ, netaṃ abhavissa kallaṃ vacanāya:</span></p>
+
+<p lang="vi" class="vi">“Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!”<br>
+<span lang="pi" class="pali">‘dukkaraṃ sāmaññaṃ dukkaraṃ brahmaññan’ti.</span></p>
+
+<p lang="vi" class="vi">Một người cư sĩ, hay con một người cư sĩ cho đến một người đầy tớ gái đội ghè nước có thể làm theo những hạnh:<br>
+<span lang="pi" class="pali">Sakkā ca panetaṃ abhavissa kātuṃ gahapatinā vā gahapatiputtena vā antamaso kumbhadāsiyāpi:</span></p>
+
+<p lang="vi" class="vi">“Tôi sống lõa thể, sống phóng túng không theo lễ nghi, liếm tay.... như vậy sống theo hạnh tiết chế ăn uống, cho đến nửa tháng ăn một lần”.<br>
+<span lang="pi" class="pali">‘handāhaṃ acelako homi, muttācāro, hatthāpalekhano ...pe... iti evarūpaṃ addhamāsikampi pariyāyabhattabhojanānuyogamanuyutto viharāmī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, vì ngoài khổ hạnh này, ngoài sự thực hành khổ hạnh này, Sa-môn hạnh hay Bà-la-môn hạnh vẫn khó hành trì, vẫn thật khó hành trì, do vậy thật xứng đáng mà nói:<br>
+<span lang="pi" class="pali">Yasmā ca kho, kassapa, aññatreva imāya mattāya aññatra iminā tapopakkamena sāmaññaṃ vā hoti brahmaññaṃ vā dukkaraṃ sudukkaraṃ, tasmā etaṃ kallaṃ vacanāya:</span></p>
+
+<p lang="vi" class="vi">“Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!”<br>
+<span lang="pi" class="pali">‘dukkaraṃ sāmaññaṃ dukkaraṃ brahmaññan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự tận diệt các lậu hoặc tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu<br>
+<span lang="pi" class="pali">Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipi.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu một người chỉ ăn cỏ lúa để sống, ăn lúa tắc, gạo lức... ăn trái cây, rễ cây trong rừng, ăn trái cây rụng để sống, nếu sự khó hành, sự rất khó hành của Sa-môn hạnh, của Bà-la-môn hạnh chỉ tùy thuộc khổ hạnh này, và chỉ tùy thuộc sự thực hành khổ hạnh này thời thật không xứng mà nói: “Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh”. Một người cư sĩ, hay con một người cư sĩ, cho đến một người đầy tớ gái đội ghè nước có thể làm theo những hạnh: “Tôi chỉ ăn cỏ lúa để sống, ăn lúa tắc, gạo lức... ăn trái cây, rễ cây trong rừng, ăn trái cây rừng để sống”.<br>
+<span lang="pi" class="pali">Sākabhakkho cepi, kassapa, hoti, sāmākabhakkho ...pe... vanamūlaphalāhāro yāpeti pavattaphalabhojī.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, vì ngoài khổ hạnh này, ngoài sự thực hành khổ hạnh này, Sa-môn hạnh hay Bà-la-môn hạnh vẫn khó hành trì, vẫn thật khó hành trì, do vậy thật xứng đáng mà nói: “Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!”<br>
+<span lang="pi" class="pali">Imāya ca, kassapa, mattāya iminā tapopakkamena sāmaññaṃ vā abhavissa brahmaññaṃ vā dukkaraṃ sudukkaraṃ, netaṃ abhavissa kallaṃ vacanāya:‘dukkaraṃ sāmaññaṃ dukkaraṃ brahmaññan’ti.</span></p>
+
+<p lang="vi" class="vi">Một người cư sĩ, hay con một người cư sĩ, cho đến một người đầy tớ gái đội ghè nước có thể làm theo những hạnh: “Tôi chỉ ăn cỏ lúa để sống, ăn lúa tắc, gạo lức... ăn trái cây, rễ cây trong rừng, ăn trái cây rừng để sống”.<br>
+<span lang="pi" class="pali">Sakkā ca panetaṃ abhavissa kātuṃ gahapatinā vā gahapatiputtena vā antamaso kumbhadāsiyāpi:‘handāhaṃ sākabhakkho vā homi, sāmākabhakkho vā ...pe... vanamūlaphalāhāro yāpemi pavattaphalabhojī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, vì ngoài khổ hạnh này, ngoài sự thực hành khổ hạnh này, Sa-môn hạnh hay Bà-la-môn hạnh vẫn khó hành trì, vẫn thật khó hành trì, do vậy thật xứng đáng mà nói: “Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!”<br>
+<span lang="pi" class="pali">Yasmā ca kho, kassapa, aññatreva imāya mattāya aññatra iminā tapopakkamena sāmaññaṃ vā hoti brahmaññaṃ vā dukkaraṃ sudukkaraṃ, tasmā etaṃ kallaṃ vacanāya:‘dukkaraṃ sāmaññaṃ dukkaraṃ brahmaññan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu, này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn!<br>
+<span lang="pi" class="pali">Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati. Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipi.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu một người mặc vải gai thô, mặc vải gai thô trộn lẫn với các vải khác... sống một đêm tắm ba lần, theo hạnh xuống nước tắm (để gột sạch tội lỗi), nếu có sự khó hành, sự rất khó hành của Sa-môn hạnh, của Bà-la-môn hạnh chỉ tùy thuộc khổ hạnh này và chỉ tùy thuộc sự thực hành khổ hạnh này, thời thật không xứng mà nói: “Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!”<br>
+<span lang="pi" class="pali">Sāṇāni cepi, kassapa, dhāreti, masāṇānipi dhāreti ...pe... sāyatatiyakampi udakorohanānuyogamanuyutto viharati.Imāya ca, kassapa, mattāya iminā tapopakkamena sāmaññaṃ vā abhavissa brahmaññaṃ vā dukkaraṃ sudukkaraṃ, netaṃ abhavissa kallaṃ vacanāya:‘dukkaraṃ sāmaññaṃ dukkaraṃ brahmaññan’ti.</span></p>
+
+<p lang="vi" class="vi">Một người cư sĩ hay con một người cư sĩ cho đến một người đầy tớ gái đội ghè nước có thể làm theo những hạnh: “Tôi chỉ mặc vải gai thô, mặc vải gai thô trộn lẫn với các vải khác... sống một đêm tắm ba lần, theo hạnh xuống nước tắm (để gột sạch tội lỗi)”,<br>
+<span lang="pi" class="pali">Sakkā ca panetaṃ abhavissa kātuṃ gahapatinā vā gahapatiputtena vā antamaso kumbhadāsiyāpi:‘handāhaṃ sāṇānipi dhāremi, masāṇānipi dhāremi ...pe... sāyatatiyakampi udakorohanānuyogamanuyutto viharāmī’ti.</span></p>
+
+<p lang="vi" class="vi">này Kassapa, vì ngoài khổ hạnh này, ngoài sự thực hành khổ hạnh này, Sa-môn hạnh hay Bà-la-môn hạnh vẫn khó hành trì, vẫn thật khó hành trì, do vậy thật xứng đáng mà nói: “Khó hành thay Sa-môn hạnh! Khó hành thay Bà-la-môn hạnh!”<br>
+<span lang="pi" class="pali">Yasmā ca kho, kassapa, aññatreva imāya mattāya aññatra iminā tapopakkamena sāmaññaṃ vā hoti brahmaññaṃ vā dukkaraṃ sudukkaraṃ, tasmā etaṃ kallaṃ vacanāya:‘dukkaraṃ sāmaññaṃ dukkaraṃ brahmaññan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu,<br>
+<span lang="pi" class="pali">Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipī”ti.</span></p>
+
+<p lang="vi" class="vi">Khi nghe nói vậy, lão thể Kassapa bạch đức Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ vutte, acelo kassapo bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Tôn giả Gotama, khó biết thay một vị Sa-môn! Khó biết thay một Bà-la-môn!<br>
+<span lang="pi" class="pali">“dujjāno, bho gotama, samaṇo, dujjāno brāhmaṇo”ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, đó là lời nói thường tình ở đời: “Khó biết thay một Sa-môn! Khó biết thay một Bà-la-môn!”<br>
+<span lang="pi" class="pali">Pakati kho esā, kassapa, lokasmiṃ ‘dujjāno samaṇo dujjāno brāhmaṇo’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu một người sống lõa thể, sống phóng túng không theo lễ nghi, liếm tay... như vậy sống theo hạnh tiết chế ăn uống, cho đến nửa tháng chỉ ăn một lần.<br>
+<span lang="pi" class="pali">Acelako cepi, kassapa, hoti, muttācāro, hatthāpalekhano ...pe... iti evarūpaṃ addhamāsikampi pariyāyabhattabhojanānuyogamanuyutto viharati.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu trở thành một Sa-môn, nếu trở thành một Bà-la-môn chỉ tùy thuộc khổ hạnh này, và chỉ tùy thuộc sự thi hành khổ hạnh này, thời thật không xứng mà nói:<br>
+<span lang="pi" class="pali">Imāya ca, kassapa, mattāya iminā tapopakkamena samaṇo vā abhavissa brāhmaṇo vā dujjāno sudujjāno, netaṃ abhavissa kallaṃ vacanāya:</span></p>
+
+<p lang="vi" class="vi">“Khó biết thay một Sa-môn! Khó biết thay một Bà-la-môn!”<br>
+<span lang="pi" class="pali">‘dujjāno samaṇo dujjāno brāhmaṇo’ti.</span></p>
+
+<p lang="vi" class="vi">Một người cư sĩ, hay con một người cư sĩ cho đến một người đầy tớ gái đội ghè nước có thể làm theo những hạnh:<br>
+<span lang="pi" class="pali">Sakkā ca paneso abhavissa ñātuṃ gahapatinā vā gahapatiputtena vā antamaso kumbhadāsiyāpi:</span></p>
+
+<p lang="vi" class="vi">“Tôi sống lõa thể, sống phóng túng không theo lễ nghi, liếm tay... như vậy sống theo hạnh tiết chế ăn uống, cho đến nửa tháng chỉ ăn một lần”.<br>
+<span lang="pi" class="pali">‘ayaṃ acelako hoti, muttācāro, hatthāpalekhano ...pe... iti evarūpaṃ addhamāsikampi pariyāyabhattabhojanānuyogamanuyutto viharatī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu trở thành một Sa-môn, nếu trở thành một Bà-la-môn chỉ tùy thuộc khổ hạnh này, chỉ tùy thuộc sự thi hành khổ hạnh này, thời thật không xứng mà nói:<br>
+<span lang="pi" class="pali">Yasmā ca kho, kassapa, aññatreva imāya mattāya aññatra iminā tapopakkamena samaṇo vā hoti brāhmaṇo vā dujjāno sudujjāno, tasmā etaṃ kallaṃ vacanāya:</span></p>
+
+<p lang="vi" class="vi">“Khó biết thay một Sa-môn! Khó biết thay một Bà-la-môn!”<br>
+<span lang="pi" class="pali">‘dujjāno samaṇo dujjāno brāhmaṇo’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu,<br>
+<span lang="pi" class="pali">Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, vị Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">”Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipi.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu một người chỉ ăn cỏ lúa để sống, ăn lúa tắc, gạo lức... ăn trái cây, rễ cây trong rừng, ăn trái cây rụng để sống. Này Kassapa, nếu trở thành một Sa-môn, trở thành một Bà-la-môn chỉ tùy thuộc khổ hạnh này và chỉ tùy thuộc sự thực hành khổ hạnh này, thời thật không xứng đáng mà nói: “Khó biết thay một Sa-môn! Khó biết thay một Bà-la-môn!”<br>
+<span lang="pi" class="pali">Sākabhakkho cepi, kassapa, hoti sāmākabhakkho ...pe... vanamūlaphalāhāro yāpeti pavattaphalabhojī. Imāya ca, kassapa, mattāya iminā tapopakkamena samaṇo vā abhavissa brāhmaṇo vā dujjāno sudujjāno, netaṃ abhavissa kallaṃ vacanāya:‘dujjāno samaṇo dujjāno brāhmaṇo’ti.</span></p>
+
+<p lang="vi" class="vi">Một người cư sĩ, hay con một người cư sĩ, cho đến một người đầy tớ gái đội ghè nước có thể làm theo những hạnh: “Tôi chỉ ăn lúa để sống, ăn lúa tắc, gạo lức... ăn trái cây, rễ cây trong rừng, ăn trái cây rụng để sống”.<br>
+<span lang="pi" class="pali">Sakkā ca paneso abhavissa ñātuṃ gahapatinā vā gahapatiputtena vā antamaso kumbhadāsiyāpi:‘ayaṃ sākabhakkho vā hoti sāmākabhakkho ...pe... vanamūlaphalāhāro yāpeti pavattaphalabhojī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, vì ngoài khổ hạnh này, ngoài sự thực khổ hạnh này, vẫn khó biết một người Sa-môn hay một người Bà-la-môn. Do vậy thật xứng đáng mà nói: “Khó biết thay, một Sa-môn! Khó biết thay, một Bà-la-môn”.<br>
+<span lang="pi" class="pali">Yasmā ca kho, kassapa, aññatreva imāya mattāya aññatra iminā tapopakkamena samaṇo vā hoti brāhmaṇo vā dujjāno sudujjāno, tasmā etaṃ kallaṃ vacanāya:‘dujjāno samaṇo dujjāno brāhmaṇo’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu,<br>
+<span lang="pi" class="pali">Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipi.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu một người mặc vải gai thô, mặc vải gai thô trộn lẫn với các vải khác... sống một đêm tắm ba lần, theo hạnh xuống nước tắm (để gột sạch tội lỗi).<br>
+<span lang="pi" class="pali">Sāṇāni cepi, kassapa, dhāreti, masāṇānipi dhāreti ...pe... sāyatatiyakampi udakorohanānuyogamanuyutto viharati.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu trở thành một Sa-môn, trở thành một Bà-la-môn chỉ tùy thuộc khổ hạnh này, và chỉ tùy thuộc sự thực hành khổ hạnh này thời thật không xứng mà nói: “Khó biết thay một Sa-môn! Khó biết thay một Bà-la-môn!”<br>
+<span lang="pi" class="pali">Imāya ca, kassapa, mattāya iminā tapopakkamena samaṇo vā abhavissa brāhmaṇo vā dujjāno sudujjāno, netaṃ abhavissa kallaṃ vacanāya:‘dujjāno samaṇo dujjāno brāhmaṇo’ti.</span></p>
+
+<p lang="vi" class="vi">Một người cư sĩ hay con một người cư sĩ, cho đến một người đầy tớ gái đội ghè nước có thể làm theo những hạnh: “Tôi mặc vải gai thô, mặc vải gai thô trộn lẫn với các vải khác ... sống một đêm tắm ba lần”.<br>
+<span lang="pi" class="pali">Sakkā ca paneso abhavissa ñātuṃ gahapatinā vā gahapatiputtena vā antamaso kumbhadāsiyāpi:‘ayaṃ sāṇānipi dhāreti, masāṇānipi dhāreti ...pe... sāyatatiyakampi udakorohanānuyogamanuyutto viharatī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, vì ngoài khổ hạnh này vẫn rất khó biết một người Sa-môn hay một người Bà-la-môn. Do vậy thật xứng đáng mà nói: “Khó biết thay một Sa-môn! Khó biết thay một Bà-la-môn!”<br>
+<span lang="pi" class="pali">Yasmā ca kho, kassapa, aññatreva imāya mattāya aññatra iminā tapopakkamena samaṇo vā hoti brāhmaṇo vā dujjāno sudujjāno, tasmā etaṃ kallaṃ vacanāya:‘dujjāno samaṇo dujjāno brāhmaṇo’ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nếu Tỷ-kheo sống tu tập từ bi tâm, không hận thù, không ác hại, và với sự diệt tận các lậu hoặc, tự giác chứng và an trú ngay hiện tại, tâm giải thoát, tuệ giải thoát vô lậu,<br>
+<span lang="pi" class="pali">Yato kho, kassapa, bhikkhu averaṃ abyāpajjaṃ mettacittaṃ bhāveti, āsavānañca khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">này Kassapa, Tỷ-kheo ấy được gọi là Sa-môn, được gọi là Bà-la-môn.<br>
+<span lang="pi" class="pali">Ayaṃ vuccati, kassapa, bhikkhu samaṇo itipi brāhmaṇo itipī”ti.</span></p>
+
+
+<p lang="vi" class="vi">Khi nghe nói vậy, lõa thể Kassapa bạch đức Thế Tôn:<br>
+<span lang="pi" class="pali">Evaṃ vutte, acelo kassapo bhagavantaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Tôn giả Gotama, thế nào là giới cụ túc? Thế là tâm cụ túc? Thế nào là tuệ cụ túc?<br>
+<span lang="pi" class="pali">“katamā pana sā, bho gotama, sīlasampadā, katamā cittasampadā, katamā paññāsampadā”ti?</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nay ở đời, Như Lai xuất hiện, là bậc A-la-hán, Chánh Biến Tri...( DN2 4.3. Kết Quả Thù Thắng Hơn Của Hạnh Sa Môn)<br>
+<span lang="pi" class="pali">Idha, kassapa, tathāgato loke uppajjati arahaṃ, sammāsambuddho ...pe...</span></p>
+
+<p lang="vi" class="vi">... thấy nguy hiểm trong những lỗi nhỏ nhặt, thọ lãnh và tu học trong giới pháp, thân nghiệp, ngữ nghiệp thanh tịnh, sanh hoạt trong sạch, giới hạnh cụ túc, thủ hộ các căn, đầy đủ chánh niệm, chánh trí và biết tri túc.<br>
+<span lang="pi" class="pali">bhayadassāvī samādāya sikkhati sikkhāpadesu, kāyakammavacīkammena samannāgato kusalena parisuddhājīvo sīlasampanno indriyesu guttadvāro satisampajaññena samannāgato santuṭṭho.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, thế nào là Tỷ-kheo giới hạnh cụ túc?<br>
+<span lang="pi" class="pali">Kathañca, kassapa, bhikkhu sīlasampanno hoti?</span></p>
+
+<p lang="vi" class="vi">Ở đây, này Kassapa, Tỷ-kheo từ bỏ sát sanh, tránh xa sát sanh, bỏ trượng, bỏ kiếm, biết tàm quý, có lòng từ, sống thương xót đến hạnh phúc của tất cả chúng sanh và loài hữu tình.<br>
+<span lang="pi" class="pali">Idha, kassapa, bhikkhu pāṇātipātaṃ pahāya pāṇātipātā paṭivirato hoti nihitadaṇḍo nihitasattho lajjī dayāpanno, sabbapāṇabhūtahitānukampī viharati.</span></p>
+
+<p lang="vi" class="vi">Như vậy là giới hạnh của vị ấy trong giới luật ... <br>
+<span lang="pi" class="pali">Idampissa hoti sīlasampadāya ...pe...</span></p>
+
+<p lang="vi" class="vi">Trong khi một số Sa-môn, Bà-la-môn dầu đã dùng các món ăn do tín thí cúng dường vẫn còn tự nuôi sống bằng những tà mạng, như dùng các ảo thuật để được an ổn, để khỏi làm các điều đã hứa... <br>
+<span lang="pi" class="pali">Yathā vā paneke bhonto samaṇabrāhmaṇā saddhādeyyāni bhojanāni bhuñjitvā te evarūpāya tiracchānavijjāya micchājīvena jīvitaṃ kappenti. Seyyathidaṃ—santikammaṃ paṇidhikammaṃ ...pe... osadhīnaṃ patimokkho</span></p>
+
+<p lang="vi" class="vi">.... ngăn ngừa công hiệu của thuốc. Còn vị ấy thì tránh xa các tà mạng kể trên.<br>
+<span lang="pi" class="pali">iti vā iti evarūpāya tiracchānavijjāya micchājīvā paṭivirato hoti.</span></p>
+
+<p lang="vi" class="vi">Như vậy là giới cụ túc của vị ấy.<br>
+<span lang="pi" class="pali">Idampissa hoti sīlasampadāya.</span></p>
+
+<p lang="vi" class="vi">Và như vậy, này Kassapa, vị Tỷ-kheo ấy, nhờ giới luật cụ túc nên không thấy sợ hãi từ một chỗ nào về sự hộ trì giới luật.<br>
+<span lang="pi" class="pali">Sa kho so, kassapa, bhikkhu evaṃ sīlasampanno na kutoci bhayaṃ samanupassati, yadidaṃ sīlasaṃvarato</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, như một Sát-đế-lỵ đã làm lễ quán đảnh, đã hàng phục kẻ thù địch, không còn thấy sợ hãi chỗ nào về sự thù địch.<br>
+<span lang="pi" class="pali">Seyyathāpi, kassapa, rājā khattiyo muddhāvasitto nihatapaccāmitto na kutoci bhayaṃ samanupassati, yadidaṃ paccatthikato;</span></p>
+
+<p lang="vi" class="vi">Cũng vậy, này Kassapa, Tỷ-kheo ấy nhờ giới luật cụ túc, nên không thấy sợ hãi từ một chỗ nào về sự hộ trì giới luật.<br>
+<span lang="pi" class="pali">evameva kho, kassapa, bhikkhu evaṃ sīlasampanno na kutoci bhayaṃ samanupassati, yadidaṃ sīlasaṃvarato.</span></p>
+
+<p lang="vi" class="vi">Vị ấy nhờ cụ túc giới luật cao quý này, nên hưởng lạc thọ, nội tâm thanh tịnh.<br>
+<span lang="pi" class="pali">So iminā ariyena sīlakkhandhena samannāgato ajjhattaṃ anavajjasukhaṃ paṭisaṃvedeti.</span></p>
+
+<p lang="vi" class="vi">Như vậy, này Kassapa, Tỷ-kheo giới luật cụ túc.<br>
+<span lang="pi" class="pali">Evaṃ kho, kassapa, bhikkhu sīlasampanno hoti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, thế nào là vị Tỷ-kheo bảo hộ các căn? Này Kassapa, khi mắt thấy sắc, Tỷ-kheo không nắm giữ tướng chung...những nguyên nhân gì vì ý căn không được chế ngự, khiến tham ái, ưu bi, các ác, bất thiện pháp khởi lên, Tỷ-kheo chế ngự nguyên nhân ấy, hộ trì ý căn, thực hành sự hộ trì ý căn. Vị ấy, nhờ sự hộ trì cao quý các căn ấy, nên hưởng lạc thọ, nội tâm thanh tịnh... Như vậy, này Kassapa Tỷ-kheo hộ trì các căn... khi quán tự thân đã xả ly năm triền cái ấy, hân hoan sanh; do hân hoan nên hỷ sanh; do tâm hoan hỷ, thân được khinh an; do thân khinh an, lạc thọ sanh; do lạc thọ, tâm được định tĩnh. Tỷ-kheo ly dục, ly ác pháp, chứng và trú thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, với tầm với tứ. Tỷ-kheo thấm nhuần, tẩm ướt làm cho sung mãn tràn đầy thân mình với hỷ lạc do ly dục sanh, không một chỗ nào trên toàn thân không do hỷ lạc từ ly dục sanh ấy thấm nhuần. Này Kassapa, như một người hầu tắm lão luyện hay đệ tử người hầu tắm. Sau khi rắc bột tắm trong thau bằng đồng, liền nhồi bột ấy với nước, cục bột tắm ấy được thấm nhuần nước ướt, nhào trộn với nước ướt, thấm ướt cả trong lẫn ngoài với nước nhưng không chảy thành giọt. Cũng vậy, này Kassapa Tỷ-kheo thấm nhuần, tẩm ướt, làm cho sung mãn, tràn đầy thân mình với hỷ lạc do ly dục sanh, không một chỗ nào trên toàn thân không được hỷ lạc do ly dục sanh ấy thấm nhuần. Như vậy là tâm cụ túc của vị ấy. <br>
+<span lang="pi" class="pali">Ayaṃ kho, kassapa, sīlasampadā ...pe... paṭhamaṃ jhānaṃ upasampajja viharati. Idampissa hoti cittasampadāya ...pe...</span></p>
+
+<p lang="vi" class="vi">Lại nữa, này Kassapa, Tỷ-kheo diệt tầm và tứ, chứng và trú thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm, không tứ, nội tĩnh nhất tâm... <br>
+<span lang="pi" class="pali">dutiyaṃ jhānaṃ ...</span></p>
+
+<p lang="vi" class="vi">đệ tam thiền ... <br>
+<span lang="pi" class="pali">tatiyaṃ jhānaṃ ...</span></p>
+
+<p lang="vi" class="vi">chứng và trú vào thiền thứ tư... <br>
+<span lang="pi" class="pali">catutthaṃ jhānaṃ upasampajja viharati.</span></p>
+
+<p lang="vi" class="vi">đó là tâm cụ túc của vị ấy.<br>
+<span lang="pi" class="pali">Idampissa hoti cittasampadāya.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, đó là tâm cụ túc.<br>
+<span lang="pi" class="pali">Ayaṃ kho, kassapa, cittasampadā.</span></p>
+
+<p lang="vi" class="vi">Với tâm định tĩnh, thuần tịnh, không cấu nhiễm, không phiền não, nhu nhuyến, dễ sử dụng, vững chắc bình thản như vậy,<br>
+<span lang="pi" class="pali">So evaṃ samāhite citte ...pe...</span></p>
+
+<p lang="vi" class="vi">Tỷ-kheo dẫn tâm, hướng tâm đến chánh trí, chánh kiến. Vị ấy biết: “Thân này của ta là sắc pháp, do bốn đại thành, do cha mẹ sanh, nhờ cơm cháo nuôi dưỡng, vô thường, biến hoại, phấn toái, đoạn tuyệt, hoại diệt, trong thân ấy thức ta lại nương tựa và bị trói buộc.” Này Kassapa, ví như một hòn lưu ly bảo châu, đẹp đẽ, trong suốt, có tám mặt khéo giũa, khéo mài, sáng chói, không uế trược, đầy đủ tất cả mỹ tướng. Và một sợi dây được xâu qua hòn ngọc ấy, sợi dây màu xanh, màu vàng, màu đỏ, màu trắng hay màu nhạt. Một người có mắt cầm hòn ngọc ấy ở trên tay sẽ thấy: “Hòn ngọc lưu ly bảo châu này, đẹp đẽ, trong suốt, có tám mặt, khéo giũa, khéo mài, sáng chói, không uế trược, đầy đủ tất cả mỹ tướng. Và sợi dây này được xâu qua hòn ngọc ấy, sợi dây màu xanh, màu vàng, màu đỏ, màu trắng, hay màu vàng nhạt”. Cũng vậy, này Kassapa, với tâm định tĩnh, thuần tịnh, không cấu nhiễm, không phiền não, nhu nhuyến, dễ sử dụng, vững chắc, bình thản như vậy, vị Tỷ-kheo dẫn tâm, hướng tâm đến chánh trí, chánh kiến. Vị ấy biết: “Thân này của ta là sắc pháp, do bốn đại thành, do cha mẹ sanh, nhờ cơm cháo nuôi dưỡng, vô thường, biến hoại, phấn toái, đoạn tuyệt, hoại diệt. Trong thân ấy, thức ta lại nương tựa và bị trói buộc”. Ðó là tuệ cụ túc của vị ấy... <br>
+<span lang="pi" class="pali">ñāṇadassanāya cittaṃ abhinīharati abhininnāmeti ... idampissa hoti paññāsampadāya ...pe...</span></p>
+
+<p lang="vi" class="vi">Vị ấy biết: “... không có đời sống nào khác nữa”.<br>
+<span lang="pi" class="pali">nāparaṃ itthattāyāti pajānāti.</span></p>
+
+<p lang="vi" class="vi">Ðó là tuệ cụ túc của vị ấy.<br>
+<span lang="pi" class="pali">Idampissa hoti paññāsampadāya.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, đó là tuệ cụ túc.<br>
+<span lang="pi" class="pali">Ayaṃ kho, kassapa, paññāsampadā.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, và không có một giới cụ túc, tâm cụ túc, tuệ cụ túc nào khác cao thượng hơn, thù thắng hơn giới cụ túc, tâm cụ túc và tuệ cụ túc này.<br>
+<span lang="pi" class="pali">Imāya ca, kassapa, sīlasampadāya cittasampadāya paññāsampadāya aññā sīlasampadā cittasampadā paññāsampadā uttaritarā vā paṇītatarā vā natthi.</span></p>
+
+<p lang="vi" class="vi">6. Sư Tử Hống<br>
+<span lang="pi" class="pali">6. Sīhanādakathā</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, có một số Sa-môn, Bà-la-môn chủ trương giới luật.<br>
+<span lang="pi" class="pali">Santi, kassapa, eke samaṇabrāhmaṇā sīlavādā.</span></p>
+
+<p lang="vi" class="vi">Những vị này dùng nhiều phương tiện tán thán giới luật.<br>
+<span lang="pi" class="pali">Te anekapariyāyena sīlassa vaṇṇaṃ bhāsanti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nói về giới luật tôn kính cao thượng nhất, Ta nhận thấy không có một ai bằng giới luật của Ta, làm sao có ai hơn được.<br>
+<span lang="pi" class="pali">Yāvatā, kassapa, ariyaṃ paramaṃ sīlaṃ, nāhaṃ tattha attano samasamaṃ samanupassāmi, kuto bhiyyo.</span></p>
+
+<p lang="vi" class="vi">Như vậy Ta hơn trên tất cả về giới luật, tức là tăng thượng giới.<br>
+<span lang="pi" class="pali">Atha kho ahameva tattha bhiyyo, yadidaṃ adhisīlaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, có một số Sa-môn, Bà-la-môn chủ trương khổ hạnh, yểm ly.<br>
+<span lang="pi" class="pali">Santi, kassapa, eke samaṇabrāhmaṇā tapojigucchāvādā.</span></p>
+
+<p lang="vi" class="vi">Những vị này dùng nhiều phương tiện tán thán khổ hạnh, yểm ly.<br>
+<span lang="pi" class="pali">Te anekapariyāyena tapojigucchāya vaṇṇaṃ bhāsanti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nói về khổ hạnh yểm ly tôn kính cao thượng nhất, Ta nhận thấy không có một ai bằng được khổ hạnh yểm ly của Ta, làm sao có ai hơn được.<br>
+<span lang="pi" class="pali">Yāvatā, kassapa, ariyā paramā tapojigucchā, nāhaṃ tattha attano samasamaṃ samanupassāmi, kuto bhiyyo.</span></p>
+
+<p lang="vi" class="vi">Như vậy Ta hơn trên tất cả về khổ hạnh yểm ly, tức là tăng thượng yểm ly.<br>
+<span lang="pi" class="pali">Atha kho ahameva tattha bhiyyo, yadidaṃ adhijegucchaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, có một số Sa-môn, Bà-la-môn chủ trương trí tuệ.<br>
+<span lang="pi" class="pali">Santi, kassapa, eke samaṇabrāhmaṇā paññāvādā.</span></p>
+
+<p lang="vi" class="vi">Những vị này dùng nhiều phương tiện tán thán trí tuệ.<br>
+<span lang="pi" class="pali">Te anekapariyāyena paññāya vaṇṇaṃ bhāsanti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nói về trí tuệ tôn kính cao thượng nhất, Ta nhận thấy không có một ai bằng được trí tuệ của Ta, làm sao có ai hơn được.<br>
+<span lang="pi" class="pali">Yāvatā, kassapa, ariyā paramā paññā, nāhaṃ tattha attano samasamaṃ samanupassāmi, kuto bhiyyo.</span></p>
+
+<p lang="vi" class="vi">Như vậy Ta hơn trên tất cả về trí tuệ, tức là tăng thượng trí tuệ.<br>
+<span lang="pi" class="pali">Atha kho ahameva tattha bhiyyo, yadidaṃ adhipaññaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, có một số Sa-môn, Bà-la-môn chủ trương giải thoát.<br>
+<span lang="pi" class="pali">Santi, kassapa, eke samaṇabrāhmaṇā vimuttivādā.</span></p>
+
+<p lang="vi" class="vi">Những vị này dùng nhiều phương tiện tán thán giải thoát.<br>
+<span lang="pi" class="pali">Te anekapariyāyena vimuttiyā vaṇṇaṃ bhāsanti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, nói về giải thoát tôn kính cao thượng nhất, Ta nhận thấy không có một ai bằng được giải thoát của Ta, làm sao có ai hơn được.<br>
+<span lang="pi" class="pali">Yāvatā, kassapa, ariyā paramā vimutti, nāhaṃ tattha attano samasamaṃ samanupassāmi, kuto bhiyyo.</span></p>
+
+<p lang="vi" class="vi">Như vậy, Ta hơn trên tất cả về giải thoát, tức là tăng thượng giải thoát.<br>
+<span lang="pi" class="pali">Atha kho ahameva tattha bhiyyo, yadidaṃ adhivimutti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, sự tình này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">Ṭhānaṃ kho panetaṃ, kassapa, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Sa-môn Gotama rống tiếng rống con sư tử nhưng chỉ tại chỗ vắng người, không ở giữa đại chúng”.<br>
+<span lang="pi" class="pali">’sīhanādaṃ kho samaṇo gotamo nadati, tañca kho suññāgāre nadati, no parisāsū’ti.</span></p>
+
+<p lang="vi" class="vi">Nên nói với chúng: “Chớ có nói như vậy.<br>
+<span lang="pi" class="pali">Te: ‘mā hevan’tissu vacanīyā. Sīhanādañca samaṇo gotamo nadati, parisāsu ca nadatī’ti evamassu, kassapa, vacanīyā.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, sự tình này có thể xảy ra. Các du sĩ ngoại đạo có thể hỏi:<br>
+<span lang="pi" class="pali">Ṭhānaṃ kho panetaṃ, kassapa, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Sa-môn Gotama rống tiếng rống con sư tử giữa đại chúng, nhưng rống không với tinh thần vô úy.”<br>
+<span lang="pi" class="pali">sīhanādañca samaṇo gotamo nadati, parisāsu ca nadati, no ca kho visārado nadatī’ti.</span></p>
+
+<p lang="vi" class="vi">Nên nói với chúng: “Chớ có nói như vậy.<br>
+<span lang="pi" class="pali">Te: ‘mā hevan’tissu vacanīyā.</span></p>
+
+<p lang="vi" class="vi">Sa-môn Gotama rống tiếng rống con sư tử tại chỗ vắng người và cả giữa đại chúng”. Này Kassapa, nên nói với chúng như vậy.<br>
+<span lang="pi" class="pali">Sīhanādañca samaṇo gotamo nadati, parisāsu ca nadati, visārado ca nadatī’ti evamassu, kassapa, vacanīyā.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, sự tình này có thể xảy ra. Các du sĩ ngoại đạo có thể hỏi:<br>
+<span lang="pi" class="pali">Ṭhānaṃ kho panetaṃ, kassapa, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:</span></p>
+
+<p lang="vi" class="vi">“Sa-môn Gotama rống tiếng rống con sư tử giữa đại chúng, nhưng rống không với tinh thần vô úy... với tinh thần vô úy... và “Không có ai hỏi Sa-môn Gotama câu hỏi gì... và “có người hỏi Sa-môn Gotama”... “Khi có người hỏi, Sa-môn Gotama không thể trả lời”... và “Khi có người hỏi, Sa-môn Gotama trả lời cho chúng”... và “Dầu cho có trả lời, câu trả lời không làm tâm người ta thỏa mãn”... và “Câu trả lời làm tâm người ta thỏa mãn”... “Nhưng người ta không xem ý kiến của Sa-môn Gotama là đáng được nghe”.... “Người ta xem ý kiến của Sa-môn Gotama là đáng được nghe”.... “Dầu cho có được nghe, người ta cũng không tin tưởng”... “Người ta nghe có lòng tin tưởng”... “Dầu cho người ta có lòng tin tưởng, người ta không biểu lộ lòng tin tưởng”... “Người ta có lòng tin tưởng và biểu lộ lòng tin tưởng” ... “Dầu cho có biểu lộ lòng tin tưởng, người ta không đạt đến chỗ như thực”.... “Người ta đạt đến chỗ như thực”.... “Dầu cho đạt đến chỗ như thực, người ta không đem ra thực hành được”.<br>
+<span lang="pi" class="pali">‘sīhanādañca samaṇo gotamo nadati, parisāsu ca nadati, visārado ca nadati, no ca kho naṃ pañhaṃ pucchanti ...pe... pañhañca naṃ pucchanti; no ca kho nesaṃ pañhaṃ puṭṭho byākaroti ...pe...pañhañca nesaṃ puṭṭho byākaroti; no ca kho pañhassa veyyākaraṇena cittaṃ ārādheti ...pe...pañhassa ca veyyākaraṇena cittaṃ ārādheti; no ca kho sotabbaṃ maññanti ...pe...sotabbañcassa maññanti; no ca kho sutvā pasīdanti ...pe...sutvā cassa pasīdanti; no ca kho pasannākāraṃ karonti ...pe...pasannākārañca karonti; no ca kho tathattāya paṭipajjanti ...pe...tathattāya ca paṭipajjanti; no ca kho paṭipannā ārādhentī’ti.</span></p>
+
+<p lang="vi" class="vi">Nên nói với chúng: “Chớ có nói như vậy.<br>
+<span lang="pi" class="pali">Te: ‘mā hevan’tissu vacanīyā.</span></p>
+
+<p lang="vi" class="vi">Sa-môn Gotama rống tiếng rống con sư tử, rống ở giữa đại chúng, rống với tinh thần vô úy, có người hỏi Sa-môn Gotama, Sa-môn Gotama trả lời khi được hỏi, câu trả lời làm tâm người ta được thỏa mãn, người ta xem ý kiến của Sa-môn Gotama đáng được nghe, sau khi được nghe người ta tin tưởng, khi có lòng tin tưởng người ta biểu lộ lòng tin tưởng, người ta đạt đến chỗ như thực, đạt đến chỗ như thực, người ta đem ra thực hành”. Này Kassapa, nên nói với chúng như vậy.<br>
+<span lang="pi" class="pali">‘Sīhanādañca samaṇo gotamo nadati, parisāsu ca nadati, visārado ca nadati, pañhañca naṃ pucchanti, pañhañca nesaṃ puṭṭho byākaroti, pañhassa ca veyyākaraṇena cittaṃ ārādheti, sotabbañcassa maññanti, sutvā cassa pasīdanti, pasannākārañca karonti, tathattāya ca paṭipajjanti, paṭipannā ca ārādhentī’ti evamassu, kassapa, vacanīyā.</span></p>
+
+
+<div id="001"><p lang="vi" class="vi">Này Kassapa, một thời Ta ở tại Vương Xá trên núi Linh Thứu.<br>
+<span lang="pi" class="pali">Ekamidāhaṃ, kassapa, samayaṃ rājagahe viharāmi gijjhakūṭe pabbate.</span></p>
+
+<div id="001"><p lang="vi" class="vi">Lúc bấy giờ, có người Phạm chí tu khổ hạnh tên là Nigrodha đến hỏi về tối thắng khổ hạnh yểm ly.<br>
+<span lang="pi" class="pali">Tatra maṃ aññataro tapabrahmacārī nigrodho nāma adhijegucche pañhaṃ apucchi.</span></p>
+
+<p lang="vi" class="vi">Khi được hỏi về tối thắng khổ hạnh yểm ly, Ta đã trả lời.<br>
+<span lang="pi" class="pali">Tassāhaṃ adhijegucche pañhaṃ puṭṭho byākāsiṃ.</span></p>
+
+<p lang="vi" class="vi">Và khi được Ta trả lời, vị ấy phát tâm hoan hỷ như với một hoan lạc tối thượng.<br>
+<span lang="pi" class="pali">”Byākate ca pana me attamano ahosi paraṃ viya mattāyā”ti.</span></p>
+
+<p lang="vi" class="vi">“Bạch Ðại đức, ai có thể sau khi nghe Thế Tôn thuyết pháp, lại không hoan hỷ như với một hoan lạc tối thượng?<br>
+<span lang="pi" class="pali">Ko hi, bhante, bhagavato dhammaṃ sutvā na attamano assa paraṃ viya mattāya?</span></p>
+
+<p lang="vi" class="vi">Con vô cùng hoan hỷ sau khi nghe Thế Tôn thuyết pháp!<br>
+<span lang="pi" class="pali">Ahampi hi, bhante, bhagavato dhammaṃ sutvā attamano paraṃ viya mattāya.</span></p>
+
+<p lang="vi" class="vi">Thật vi diệu thay, Bạch Ðại đức! Thật vi diệu thay, Bạch Ðại đức!<br>
+<span lang="pi" class="pali">Abhikkantaṃ, bhante, abhikkantaṃ, bhante.</span></p>
+
+<p lang="vi" class="vi">Bạch Ðại đức, như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho kẻ lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy, chánh pháp đã được Thế Tôn dùng nhiều phương tiện trình bày giải thích.<br>
+<span lang="pi" class="pali">Seyyathāpi, bhante, nikkujjitaṃ vā ukkujjeyya, paṭicchannaṃ vā vivareyya, mūḷhassa vā maggaṃ ācikkheyya, andhakāre vā telapajjotaṃ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṃ bhagavatā anekapariyāyena dhammo pakāsito.</span></p>
+
+<p lang="vi" class="vi">Và nay con xin quy y Thế Tôn, quy y Pháp, quy y Tỷ-kheo Tăng.<br>
+<span lang="pi" class="pali">Esāhaṃ, bhante, bhagavantaṃ saraṇaṃ gacchāmi, dhammañca bhikkhusaṅghañca.</span></p>
+
+<p lang="vi" class="vi">Bạch Ðại đức, con xin xuất gia với Thế Tôn, con xin thọ đại giới.<br>
+<span lang="pi" class="pali">Labheyyāhaṃ, bhante, bhagavato santike pabbajjaṃ, labheyyaṃ upasampadan”ti.</span></p>
+
+<p lang="vi" class="vi">Này Kassapa, ai trước kia là ngoại đạo, nay muốn xuất gia, muốn thọ đại giới trong pháp và luật này phải sống bốn tháng biệt trú. Sau khi sống bốn tháng biệt trú, chúng Tăng nếu đồng ý sẽ cho xuất gia, cho thọ đại giới để thành vị Tỷ-kheo.<br>
+<span lang="pi" class="pali">Yo kho, kassapa, aññatitthiyapubbo imasmiṃ dhammavinaye ākaṅkhati pabbajjaṃ, ākaṅkhati upasampadaṃ, so cattāro māse parivasati, catunnaṃ māsānaṃ accayena āraddhacittā bhikkhū pabbājenti, upasampādenti bhikkhubhāvāya.</span></p>
+
+<p lang="vi" class="vi">Nhưng ta nhận thấy cá tánh con người sai biệt nhau.<br>
+<span lang="pi" class="pali">”Api ca mettha puggalavemattatā viditā”ti.</span></p>
+
+<p lang="vi" class="vi">Bạch Ðại đức, nếu những người xưa kia là ngoại đạo, nay muốn xuất gia, muốn thọ đại giới trong pháp và luật này phải sống bốn tháng biệt trú, sau khi sống bốn tháng biệt trú chúng Tăng nếu đồng ý sẽ cho xuất gia, cho thọ đại giới, thời con sẽ xin sống biệt trú bốn năm, sau khi sống biệt trú bốn năm, nếu chúng Tăng đồng ý, mong chúng Tăng xuất gia cho con, thọ đại giới cho con để thành vị Tỷ-kheo.<br>
+<span lang="pi" class="pali">“Sace, bhante, aññatitthiyapubbā imasmiṃ dhammavinaye ākaṅkhanti pabbajjaṃ, ākaṅkhanti upasampadaṃ, cattāro māse parivasanti, catunnaṃ māsānaṃ accayena āraddhacittā bhikkhū pabbājenti, upasampādenti bhikkhubhāvāya. Ahaṃ cattāri vassāni parivasissāmi, catunnaṃ vassānaṃ accayena āraddhacittā bhikkhū pabbājentu, upasampādentu bhikkhubhāvāyā”ti.</span></p>
+
+<p lang="vi" class="vi">Và lõa thể Kassapa được xuất gia với Thế Tôn và được thọ đại giới.<br>
+<span lang="pi" class="pali">Alattha kho acelo kassapo bhagavato santike pabbajjaṃ, alattha upasampadaṃ.</span></p>
+
+<p lang="vi" class="vi">Thọ đại giới không bao lâu, Ðại đức Kassapa ở một mình an tịnh, không phóng dật, sống nhiệt tâm, cần mẫn. Và không bao lâu, vị này chứng được mục đích tối cao mà con cháu các lương gia đã xuất gia từ bỏ gia đình, sống không gia đình, hướng đến. Ðó là vô thượng cứu cánh phạm hạnh ngay trong hiện tại, tự mình với thắng trí, chứng ngộ và an trú<br>
+<span lang="pi" class="pali">Acirūpasampanno kho panāyasmā kassapo eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto na cirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, tadanuttaraṃ—brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihāsi.</span></p>
+
+<p lang="vi" class="vi">“Sanh đã tận, phạm hạnh đã thành, những gì nên làm đã làm, sau đời này sẽ không có đời sống khác nữa”. Ðại đức Kassapa liễu tri như vậy.<br>
+<span lang="pi" class="pali">“Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā”ti abbhaññāsi.</span></p>
+
+<p lang="vi" class="vi">Và đại đức Kassapa trở thành một vị A-la-hán nữa.<br>
+<span lang="pi" class="pali">Aññataro kho panāyasmā kassapo arahataṃ ahosīti.</span></p>
+
+<span lang="pi">Mahāsīhanādasuttaṃ niṭṭhitaṃ aṭṭhamaṃ.</p>
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+<!-- COPY SCRIPT NEXT VÀ PREVIOUS Ở ĐÂY -->
+
+
+<div id="nextprev"><a id="previous-sutta" href="./dn7.html#content"></a><a id="next-sutta" href="./dn9.html#content"></a></div>
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>
+
+

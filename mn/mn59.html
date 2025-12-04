@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 59          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 59<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 59<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Nhiều Cảm Thọ<br>
+<span lang="pi" class="pali">
+Bahuvedanīyasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn ở tại Sāvatthī (Xá vệ), Jetavana (Rừng Kỳ đà), tinh xá ông Anāthapiṇḍika (Cấp Cô Ðộc).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người thợ mộc Pañcakaṅga (Ngũ Phần) đến Tôn giả Udāyī (Ưu đà di), sau khi đến, đảnh lễ Ngài rồi ngồi xuống một bên. Sau khi ngồi xuống một bên, người thợ mộc Pañcakaṅga thưa Tôn giả Udāyī:<br>
+<span lang="pi" class="pali">
+Atha kho pañcakaṅgo thapati yenāyasmā udāyī tenupasaṅkami; upasaṅkamitvā āyasmantaṃ udāyiṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho pañcakaṅgo thapati āyasmantaṃ udāyiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Udāyī, Thế Tôn thuyết có bao nhiêu thọ?”<br>
+<span lang="pi" class="pali">
+“kati nu kho, bhante udāyi, vedanā vuttā bhagavatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Gia chủ, Thế Tôn thuyết có ba thọ:<br>
+<span lang="pi" class="pali">
+“Tisso kho, thapati, vedanā vuttā bhagavatā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lạc thọ, khổ thọ, bất khổ bất lạc thọ.<br>
+<span lang="pi" class="pali">
+Sukhā vedanā, dukkhā vedanā, adukkhamasukhā vedanā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, ba thọ này được Thế Tôn nói đến.”<br>
+<span lang="pi" class="pali">
+imā kho, thapati, tisso vedanā vuttā bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, thợ mộc Pañcakaṅga nói với Tôn giả Udāyī,<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, pañcakaṅgo thapati āyasmantaṃ udāyiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Udāyī, Thế Tôn không thuyết ba thọ.<br>
+<span lang="pi" class="pali">
+“na kho, bhante udāyi, tisso vedanā vuttā bhagavatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn chỉ thuyết hai thọ:<br>
+<span lang="pi" class="pali">
+dve vedanā vuttā bhagavatā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lạc thọ, khổ thọ.<br>
+<span lang="pi" class="pali">
+sukhā vedanā, dukkhā vedanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, bất khổ bất lạc thọ này, Thế Tôn thuyết là tối thắng lạc đối với vị đã chứng được tịch tịnh.”<br>
+<span lang="pi" class="pali">
+Yāyaṃ, bhante, adukkhamasukhā vedanā santasmiṃ esā paṇīte sukhe vuttā bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai, Tôn giả Udāyī nói với người thợ mộc Pañcakaṅga:<br>
+<span lang="pi" class="pali">
+Dutiyampi kho āyasmā udāyī pañcakaṅgaṃ thapatiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Gia chủ, Thế Tôn không thuyết hai thọ.<br>
+<span lang="pi" class="pali">
+“na kho, gahapati, dve vedanā vuttā bhagavatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết ba thọ:<br>
+<span lang="pi" class="pali">
+tisso vedanā vuttā bhagavatā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lạc thọ, khổ thọ, bất khổ bất lạc thọ.<br>
+<span lang="pi" class="pali">
+Sukhā vedanā, dukkhā vedanā, adukkhamasukhā vedanā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, ba thọ này được Thế Tôn nói đến.”<br>
+<span lang="pi" class="pali">
+imā kho, thapati, tisso vedanā vuttā bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai, người thợ mộc Pañcakaṅga thưa Tôn giả Udāyī:<br>
+<span lang="pi" class="pali">
+Dutiyampi kho pañcakaṅgo thapati āyasmantaṃ udāyiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Udāyī, Thế Tôn không thuyết ba thọ.<br>
+<span lang="pi" class="pali">
+“na kho, bhante udāyi, tisso vedanā vuttā bhagavatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn chỉ thuyết hai thọ:”<br>
+<span lang="pi" class="pali">
+dve vedanā vuttā bhagavatā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lạc thọ, khổ thọ.<br>
+<span lang="pi" class="pali">
+sukhā vedanā, dukkhā vedanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, bất khổ bất lạc thọ này, Thế Tôn thuyết là tối thắng lạc đối với vị đã chứng được tịch tịnh.”<br>
+<span lang="pi" class="pali">
+Yāyaṃ, bhante, adukkhamasukhā vedanā santasmiṃ esā paṇīte sukhe vuttā bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ ba, Tôn giả Udāyī nói với người thợ mộc Pañcakaṅga:<br>
+<span lang="pi" class="pali">
+Tatiyampi kho āyasmā udāyī pañcakaṅgaṃ thapatiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Gia chủ, Thế Tôn không thuyết hai thọ.<br>
+<span lang="pi" class="pali">
+“na kho, thapati, dve vedanā vuttā bhagavatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết ba thọ:<br>
+<span lang="pi" class="pali">
+tisso vedanā vuttā bhagavatā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lạc thọ, khổ thọ, bất khổ bất lạc thọ.<br>
+<span lang="pi" class="pali">
+Sukhā vedanā, dukkhā vedanā, adukkhamasukhā vedanā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, ba thọ này được Thế Tôn nói đến.”<br>
+<span lang="pi" class="pali">
+imā kho, thapati, tisso vedanā vuttā bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ ba, người thợ mộc Pañcakaṅga thưa Tôn giả Udāyī:<br>
+<span lang="pi" class="pali">
+Tatiyampi kho pañcakaṅgo thapati āyasmantaṃ udāyiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Udāyī, Thế Tôn không thuyết ba thọ.<br>
+<span lang="pi" class="pali">
+“na kho, bhante udāyi, tisso vedanā vuttā bhagavatā,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn chỉ thuyết hai thọ:<br>
+<span lang="pi" class="pali">
+dve vedanā vuttā bhagavatā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+lạc thọ, khổ thọ.<br>
+<span lang="pi" class="pali">
+sukhā vedanā, dukkhā vedanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, bất khổ bất lạc thọ này, Thế Tôn thuyết là tối thắng lạc đối với vị đã chứng được tịch tịnh.”<br>
+<span lang="pi" class="pali">
+Yāyaṃ, bhante, adukkhamasukhā vedanā santasmiṃ esā paṇīte sukhe vuttā bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+BuNhư vậy, Tôn giả Udāyī không thể thuyết phục được thợ mộc Pañcakaṅga. Và thợ mộc Pañcakaṅga cũng không thể thuyết phục được Tôn giả Udāyī.<br>
+<span lang="pi" class="pali">
+Neva kho sakkhi āyasmā udāyī pañcakaṅgaṃ thapatiṃ saññāpetuṃ, na panāsakkhi pañcakaṅgo thapati āyasmantaṃ udāyiṃ saññāpetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Ānanda nghe được cuộc đàm thoại này giữa Tôn giả Udāyī với thợ mộc Panacakanga.<br>
+<span lang="pi" class="pali">
+Assosi kho āyasmā ānando āyasmato udāyissa pañcakaṅgena thapatinā saddhiṃ imaṃ kathāsallāpaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Ānanda đi đến Thế Tôn, sau khi đến đảnh lễ Thế Tôn rồi ngồi xuống một bên, sau khi ngồi xuống một bên,<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Ānanda thuật lại Thế Tôn rõ toàn diện cuộc đàm thoại giữa Tôn giả Udāyī và thợ mộc Pañcakaṅga.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho āyasmā ānando yāvatako ahosi āyasmato udāyissa pañcakaṅgena thapatinā saddhiṃ kathāsallāpo taṃ sabbaṃ bhagavato ārocesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, Thế Tôn nói với Tôn giả Ānanda:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, bhagavā āyasmantaṃ ānandaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Ānanda, dầu cho pháp môn của Udāyī là đúng, nhưng thợ mộc Pañcakaṅga không chấp nhận. Dầu cho pháp môn của người thợ mộc Pañcakaṅga là đúng, nhưng Udāyī không chấp nhận.<br>
+<span lang="pi" class="pali">
+“santaññeva kho, ānanda, pariyāyaṃ pañcakaṅgo thapati udāyissa nābbhanumodi, santaññeva ca pana pariyāyaṃ udāyī pañcakaṅgassa thapatissa nābbhanumodi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, hai thọ được Ta nói đến tùy theo một pháp môn; ba thọ được Ta nói đến tùy theo một pháp môn; năm thọ được Ta nói đến tùy theo một pháp môn; sáu thọ được Ta nói đến tùy theo một pháp môn; mười tám thọ được Ta nói đến tùy theo một pháp môn; ba mươi sáu thọ được Ta nói đến tùy theo một pháp môn; một trăm lẻ tám thọ được Ta nói đến tùy theo một pháp môn.<br>
+<span lang="pi" class="pali">
+Dvepānanda, vedanā vuttā mayā pariyāyena, tissopi vedanā vuttā mayā pariyāyena, pañcapi vedanā vuttā mayā pariyāyena, chapi vedanā vuttā mayā pariyāyena, aṭṭhārasapi vedanā vuttā mayā pariyāyena, chattiṃsapi vedanā vuttā mayā pariyāyena, aṭṭhasatampi vedanā vuttā mayā pariyāyena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda, pháp được Ta thuyết giảng tùy theo pháp môn.<br>
+<span lang="pi" class="pali">
+Evaṃ pariyāyadesito kho, ānanda, mayā dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, vì pháp được Ta thuyết giảng tùy theo pháp môn như vậy, nên đối với những ai không chấp nhận, không tán đồng, không tùy hỷ những điều được khéo nói, khéo thuyết, khéo trình bày cùng nhau, thời sự kiện này sẽ xẩy ra: họ sẽ sống đấu tranh, khẩu tranh, luận tranh, đả thương nhau với những binh khí miệng lưỡi.<br>
+<span lang="pi" class="pali">
+Evaṃ pariyāyadesite kho, ānanda, mayā dhamme ye aññamaññassa subhāsitaṃ sulapitaṃ na samanujānissanti na samanumaññissanti na samanumodissanti tesametaṃ pāṭikaṅkhaṃ—bhaṇḍanajātā kalahajātā vivādāpannā aññamaññaṃ mukhasattīhi vitudantā viharissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Ānanda pháp được Ta thuyết giảng tùy theo pháp môn.<br>
+<span lang="pi" class="pali">
+Evaṃ pariyāyadesito kho, ānanda, mayā dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, vì pháp được Ta thuyết giảng tùy theo pháp môn như vậy, nên đối với những ai chấp nhận, tán đồng, tùy hỷ những điều được khéo nói, khéo thuyết, khéo trình bày cùng nhau, thời sự kiện này sẽ xẩy ra: họ sẽ sống hòa hợp, tán đồng, tùy hỷ với nhau, như nước với sữa, và nhìn nhau với cặp mắt tương ái.<br>
+<span lang="pi" class="pali">
+Evaṃ pariyāyadesite kho, ānanda, mayā dhamme ye aññamaññassa subhāsitaṃ sulapitaṃ samanujānissanti samanumaññissanti samanumodissanti tesametaṃ pāṭikaṅkhaṃ—samaggā sammodamānā avivadamānā khīrodakībhūtā aññamaññaṃ piyacakkhūhi sampassantā viharissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, có năm dục trưởng dưỡng này.<br>
+<span lang="pi" class="pali">
+Pañca kho ime, ānanda, kāmaguṇā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là năm?<br>
+<span lang="pi" class="pali">
+Katame pañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các sắc do mắt nhận thức, khả ái, khả lạc, khả ý, khả hỷ, tương ứng với dục, hấp dẫn,<br>
+<span lang="pi" class="pali">
+Cakkhuviññeyyā rūpā iṭṭhā kantā manāpā piyarūpā kāmūpasaṃhitā rajanīyā,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các tiếng do tai nhận thức…<br>
+<span lang="pi" class="pali">
+sotaviññeyyā saddā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các hương do mũi nhận thức…<br>
+<span lang="pi" class="pali">
+ghānaviññeyyā gandhā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các vị do lưỡi nhận thức…<br>
+<span lang="pi" class="pali">
+jivhāviññeyyā rasā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các xúc do thân cảm xúc, khả ái, khả lạc, khả ý, khả hỷ, tương ứng với dục, hấp dẫn.<br>
+<span lang="pi" class="pali">
+kāyaviññeyyā phoṭṭhabbā iṭṭhā kantā manāpā piyarūpā kāmūpasaṃhitā rajanīyā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, như vậy là năm dục trưởng dưỡng.<br>
+<span lang="pi" class="pali">
+ime kho, ānanda, pañca kāmaguṇā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, duyên năm dục trưởng dưỡng này khởi lên lạc và hỷ, như vậy gọi là dục lạc.<br>
+<span lang="pi" class="pali">
+Yaṃ kho, ānanda, ime pañca kāmaguṇe paṭicca uppajjati sukhaṃ somanassaṃ idaṃ vuccati kāmasukhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng mà các chúng sanh có thể cảm thọ”, Ta không thể chấp nhận như vậy.<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya: ‘etaparamaṃ sattā sukhaṃ somanassaṃ paṭisaṃvedentī’ti, idamassa nānujānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì có một lạc khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Atthānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, lạc ấy khác với lạc kia, vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo ly dục, ly bất thiện pháp, chứng và trú Thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, có tầm, có tứ.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu vivicceva kāmehi vivicca akusalehi dhammehi ...pe... paṭhamaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng mà chúng sanh có thể cảm thọ”, Ta không thể chấp nhận như vậy.<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya: ‘etaparamaṃ sattā sukhaṃ somanassaṃ paṭisaṃvedentī’ti, idamassa nānujānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì có một lạc thọ khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Atthānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, lạc ấy khác với lạc kia, vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỳ-kheo diệt tầm và tứ, chứng và trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm, không tứ, nội tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu vitakkavicārānaṃ vūpasamā ...pe... dutiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng…”,… vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya … pe…. Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là xả niệm lạc trú, chứng và an trú Thiền thứ ba.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu pītiyā ca virāgā ...pe... tatiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng…”,… vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya ...pe.... Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo, xả lạc, xả khổ, diệt hỷ ưu đã cảm thọ từ trước, chứng và trú Thiền thứ tư không khổ không lạc, xả niệm thanh tịnh.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu sukhassa ca pahānā ...pe... catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng…”,… vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya ...pe.... Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo vượt qua toàn diện sắc tưởng, diệt trừ hữu đối tưởng, không tư niệm sai biệt tưởng, nghĩ rằng: “Hư không là vô biên”, chứng và trú Hư không vô biên xứ.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu sabbaso rūpasaññānaṃ samatikkamā, paṭighasaññānaṃ atthaṅgamā, nānattasaññānaṃ amanasikārā ‘ananto ākāso’ti ākāsānañcāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng…”,… vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya ...pe.... Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo vượt qua toàn diện Hư không vô biên xứ, nghĩ rằng: “Thức là vô biên,” chứng và trú Thức vô biên xứ.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu sabbaso ākāsānañcāyatanaṃ samatikkamma ‘anantaṃ viññāṇan’ti viññāṇañcāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng…”,… vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya ...pe.... Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo vượt qua toàn diện Thức vô biên xứ, nghĩ rằng không có vật gì, chứng và trú Vô sở hữu xứ.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu sabbaso viññāṇañcāyatanaṃ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng…”,… vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya ...pe.... Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo vượt qua toàn diện Vô sở hữu xứ, chứng và trú Phi tưởng phi phi tưởng xứ.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu sabbaso ākiñcaññāyatanaṃ samatikkamma nevasaññānāsaññāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, ai nói như sau: “Lạc và hỷ này là tối thượng mà chúng sanh có thể cảm thọ”, Ta không thể chấp nhận như vậy.<br>
+<span lang="pi" class="pali">
+Yo kho, ānanda, evaṃ vadeyya: ‘etaparamaṃ sattā sukhaṃ somanassaṃ paṭisaṃvedentī’ti, idamassa nānujānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì có một lạc thọ khác với lạc thọ kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Atthānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Ānanda, lạc ấy khác với lạc kia, vi diệu hơn và thù thắng hơn là gì?<br>
+<span lang="pi" class="pali">
+Katamañcānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Ānanda, vị Tỷ-kheo vượt qua toàn diện Phi tưởng phi phi tưởng xứ, chứng và trú Diệt thọ tưởng định.<br>
+<span lang="pi" class="pali">
+Idhānanda, bhikkhu sabbaso nevasaññānāsaññāyatanaṃ samatikkamma saññāvedayitanirodhaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, lạc này khác với lạc kia, vi diệu hơn và thù thắng hơn.<br>
+<span lang="pi" class="pali">
+Idaṃ kho, ānanda, etamhā sukhā aññaṃ sukhaṃ abhikkantatarañca paṇītatarañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự kiện này xẩy ra, này Ānanda, những du sĩ ngoại đạo có thể nói như sau:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, ānanda, vijjati yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘”Sa-môn Gotama nói đến Diệt thọ tưởng định, và chủ trương định ấy thuộc về lạc thọ.<br>
+<span lang="pi" class="pali">
+‘saññāvedayitanirodhaṃ samaṇo gotamo āha; tañca sukhasmiṃ paññapeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là gì, như vậy là thế nào?<br>
+<span lang="pi" class="pali">
+Tayidaṃ kiṃsu, tayidaṃ kathaṃsū’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Ānanda, được nói vậy, các du sĩ ngoại đạo cần phải được trả lời như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, ānanda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này chư Hiền, Thế Tôn không chủ trương rằng chỉ có những gì tùy thuộc lạc thọ là thuộc về lạc;<br>
+<span lang="pi" class="pali">
+‘na kho, āvuso, bhagavā sukhaṃyeva vedanaṃ sandhāya sukhasmiṃ paññapeti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vì rằng, chư Hiền, Thế Tôn chủ trương rằng chỗ nào, chỗ nào có được lạc thọ, như vậy chỗ ấy, chỗ ấy thuộc về lạc”.<br>
+<span lang="pi" class="pali">
+api ca, āvuso, yattha yattha sukhaṃ upalabbhati yahiṃ yahiṃ taṃ taṃ tathāgato sukhasmiṃ paññapetī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Ānanda hoan hỷ, tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Attamano āyasmā ānando bhagavato bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Bahuvedanīyasuttaṃ niṭṭhitaṃ navamaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn58.html#content"></a><a id="next-sutta" href="./mn60.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

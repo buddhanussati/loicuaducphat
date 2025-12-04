@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 7.53 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 7.53<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 7.53<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+5. Phẩm Đại Tế Đàn<br>
+<span lang="pi" class="pali">
+5. Mahāyaññavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Mẹ Của Nanda<br>
+<span lang="pi" class="pali">
+Nandamātāsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Như vầy tôi nghe:<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Tôn giả Sāriputta và Tôn giả Mahāmoggallāna đang du hành ở Khu Đồi Phía Nam, cùng với đại chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ āyasmā ca sāriputto āyasmā ca mahāmoggallāno dakkhiṇāgirismiṃ cārikaṃ caranti mahatā bhikkhusaṅghena saddhiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, nữ cư sĩ Veḷukaṇṭakī, mẹ của Nanda thức dậy trước khi mặt trời mọc, và đọc lớn tiếng bài “Pārāyana” (Con đường đưa đến bờ bên kia).<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena veḷukaṇḍakī nandamātā upāsikā rattiyā paccūsasamayaṃ paccuṭṭhāya pārāyanaṃ sarena bhāsati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Ðại vương Vessavaṇa (Tỳ-sa-môn) đang đi từ phương Bắc đến phương Nam vì một vài công việc.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena vessavaṇo mahārājā uttarāya disāya dakkhiṇaṃ disaṃ gacchati kenacideva karaṇīyena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương Vessavaṇa nghe nữ cư sĩ Veḷukaṇṭakī, mẹ của Nanda, sau khi lớn tiếng đọc xong bài Pàràyana, liền đứng lại, chờ đợi cho bài được đọc xong.<br>
+<span lang="pi" class="pali">
+Assosi kho vessavaṇo mahārājā nandamātāya upāsikāya pārāyanaṃ sarena bhāsantiyā, sutvā kathāpariyosānaṃ āgamayamāno aṭṭhāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và nữ cư sĩ, mẹ của Nanda, sau khi lớn tiếng đọc xong bài Pàràyana, liền im lặng.<br>
+<span lang="pi" class="pali">
+Atha kho nandamātā upāsikā pārāyanaṃ sarena bhāsitvā tuṇhī ahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Ðại vương Vessavaṇa biết được nữ cư sĩ, mẹ của Nanda đã đọc xong bài kệ, liền hết sức hoan hỷ và nói:<br>
+<span lang="pi" class="pali">
+Atha kho vessavaṇo mahārājā nandamātāya upāsikāya kathāpariyosānaṃ viditvā abbhānumodi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, này Chị! Lành thay, này Chị!”<br>
+<span lang="pi" class="pali">
+“sādhu, bhagini, sādhu, bhaginī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ngài là ai, hỡi vị có khuôn mặt hiền từ?”<br>
+<span lang="pi" class="pali">
+“Ko paneso, bhadramukhā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Chị, ta là anh của Chị, Ðại vương Vessavaṇa.”<br>
+<span lang="pi" class="pali">
+“Ahaṃ te, bhagini, bhātā vessavaṇo, mahārājā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, hỡi vị có khuôn mặt hiền từ! Hãy lấy pháp môn được tôi nói đến hôm qua, làm quà tặng đón khách cho Ngài.”<br>
+<span lang="pi" class="pali">
+“Sādhu, bhadramukha, tena hi yo me ayaṃ dhammapariyāyo bhaṇito idaṃ te hotu ātitheyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Lành thay, này Chị! Phải, pháp môn này hãy là quà tặng đón khách của tôi.<br>
+<span lang="pi" class="pali">
+“Sādhu, bhagini, etañceva me hotu ātitheyyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngày mai, chúng Tỷ-kheo, với Sāriputta và Moggallāna là các vị dẫn đầu, sẽ đến Velukantaka, nhưng chưa ăn sáng. Sau khi Chị mời chúng Tỷ-kheo dùng xong, hãy tuyên bố chính ta đã cúng dường.<br>
+<span lang="pi" class="pali">
+Sveva sāriputtamoggallānappamukho bhikkhusaṅgho akatapātarāso veḷukaṇḍakaṃ āgamissati, tañca bhikkhusaṅghaṃ parivisitvā mama dakkhiṇaṃ ādiseyyāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đó cũng là quà tặng đón khách của tôi dành cho chị.”<br>
+<span lang="pi" class="pali">
+Etañceva me bhavissati ātitheyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Rồi cư sĩ, mẹ của Nanda, sau khi đêm ấy đã mãn, liền cho sửa soạn tại nhà của mình các món ăn thượng vị loại cứng và loại mềm.<br>
+<span lang="pi" class="pali">
+Atha kho nandamātā upāsikā tassā rattiyā accayena sake nivesane paṇītaṃ khādanīyaṃ bhojanīyaṃ paṭiyādāpesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi chúng Tăng, với Sāriputta và Moggallāna là vị cầm đầu đi đến Velukantaka nhưng chưa ăn sáng.<br>
+<span lang="pi" class="pali">
+Atha kho sāriputtamoggallānappamukho bhikkhusaṅgho akatapātarāso yena veḷukaṇḍako tadavasari.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi nữ cư sĩ, mẹ của Nanda bảo một người đi, nói rằng:<br>
+<span lang="pi" class="pali">
+Atha kho nandamātā upāsikā aññataraṃ purisaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Bạn, hãy đi đến khu vườn và báo thời giờ cho chúng Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, ambho purisa, ārāmaṃ gantvā bhikkhusaṅghassa kālaṃ ārocehi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðã đến giờ, thưa các Tôn giả! Tại nhà của mẹ Nanda, các món ăn đã được sửa soạn.’”<br>
+<span lang="pi" class="pali">
+‘kālo, bhante, ayyāya nandamātuyā nivesane niṭṭhitaṃ bhattan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vâng, thưa bà,” người ấy vâng đáp nữ cư sĩ, mẹ của Nanda, đi đến khu vườn và báo thời giờ cho chúng Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+“Evaṃ, ayye”ti kho so puriso nandamātāya upāsikāya paṭissutvā ārāmaṃ gantvā bhikkhusaṅghassa kālaṃ ārocesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðã đến giờ, thưa các Tôn giả! Tại nhà của mẹ Nanda, các món ăn đã được sửa soạn.”<br>
+<span lang="pi" class="pali">
+“kālo, bhante, ayyāya nandamātuyā nivesane niṭṭhitaṃ bhattan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi chúng Tỷ-kheo, với Sāriputta mà Mahāmoggallāna là vị cầm đầu, vào buổi sáng đắp y, cầm bát, đi đến trú xứ của nữ cư sĩ, mẹ của Nanda, sau khi đến, ngồi xuống trên các chỗ đã soạn sẵn.<br>
+<span lang="pi" class="pali">
+Atha kho sāriputtamoggallānappamukho bhikkhusaṅgho pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya yena nandamātāya upāsikāya nivesanaṃ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi nữ cư sĩ, mẹ của Nanda, mời chúng Tỷ-kheo với Sāriputta và Moggallāna là vị dẫn đầu, với các món ăn thượng vị loại cứng và loại mềm, và làm chúng Tỷ-kheo được hài lòng.<br>
+<span lang="pi" class="pali">
+Atha kho nandamātā upāsikā sāriputtamoggallānappamukhaṃ bhikkhusaṅghaṃ paṇītena khādanīyena bhojanīyena sahatthā santappesi sampavāresi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi nữ cư sĩ, mẹ của Nanda thấy Tôn giả Sāriputta ăn đã xong, tay đã rút lui khỏi bình bát, liền ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho nandamātā upāsikā āyasmantaṃ sāriputtaṃ bhuttāviṃ onītapattapāṇiṃ ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Sāriputta nói với cư sĩ, mẹ của Nanda đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinnaṃ kho nandamātaraṃ upāsikaṃ āyasmā sāriputto etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Mẹ của Nanda, ai bảo cho Bà biết chúng Tỷ-kheo sẽ đi tới nhà?”<br>
+<span lang="pi" class="pali">
+“ko pana te, nandamāte, bhikkhusaṅghassa abbhāgamanaṃ ārocesī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, thưa Tôn giả, con thức dậy trước khi trời sáng, đọc lớn tiếng bài kệ Pàràyana rồi im lặng.<br>
+<span lang="pi" class="pali">
+“Idhāhaṃ, bhante, rattiyā paccūsasamayaṃ paccuṭṭhāya pārāyanaṃ sarena bhāsitvā tuṇhī ahosiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi thưa Tôn giả, Ðại vương Vessavaṇa sau khi biết được con đã đọc xong, liền hết sức hoan hỷ và nói:<br>
+<span lang="pi" class="pali">
+Atha kho, bhante, vessavaṇo mahārājā mama kathāpariyosānaṃ viditvā abbhānumodi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Lành thay, này Chị! Lành thay, này Chị!’<br>
+<span lang="pi" class="pali">
+‘sādhu, bhagini, sādhu, bhaginī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ngài là ai, hỡi vị có khuôn mặt hiền từ?’<br>
+<span lang="pi" class="pali">
+‘Ko paneso, bhadramukhā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Chị, ta là anh của Chị, Ðại vương Vessavaṇa.’<br>
+<span lang="pi" class="pali">
+‘Ahaṃ te, bhagini, bhātā vessavaṇo, mahārājā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Lành thay, hỡi vị có khuôn mặt hiền từ! Hãy lấy pháp môn được tôi nói đến hôm qua, làm quà tặng đón khách cho Ngài.’<br>
+<span lang="pi" class="pali">
+‘Sādhu, bhadramukha, tena hi yo me ayaṃ dhammapariyāyo bhaṇito idaṃ te hotu ātitheyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Lành thay, này Chị! Phải, pháp môn này hãy là quà tặng đón khách của tôi.<br>
+<span lang="pi" class="pali">
+‘Sādhu, bhagini, etañceva me hotu ātitheyyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngày mai, chúng Tỷ-kheo, với Sāriputta và Moggallāna là các vị cầm đầu, sẽ đến Velukantaka, nhưng chưa ăn sáng. Sau khi Chị mời chúng Tỷ-kheo dùng xong, hãy tuyên bố chính ta đã cúng dường.<br>
+<span lang="pi" class="pali">
+Sveva sāriputtamoggallānappamukho bhikkhusaṅgho akatapātarāso veḷukaṇḍakaṃ āgamissati, tañca bhikkhusaṅghaṃ parivisitvā mama dakkhiṇaṃ ādiseyyāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đó cũng là quà tặng đón khách của tôi dành cho chị.’<br>
+<span lang="pi" class="pali">
+Etañceva me bhavissati ātitheyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, mong rằng mọi công đức của buổi cúng dường này sẽ đem lại an lạc cho đại vương Vessavaṇa.”<br>
+<span lang="pi" class="pali">
+Yadidaṃ, bhante, dāne puññañca puññamahī ca taṃ vessavaṇassa mahārājassa sukhāya hotū”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“3. Thật vi diệu thay, Mẹ của Nanda! Thật hy hữu thay, Mẹ của Nanda!<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, nandamāte, abbhutaṃ, nandamāte.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà có thể nói chuyện, mặt tận mặt với một Thiên tử có đại thần lực như vậy, có đại uy lực như vậy.”<br>
+<span lang="pi" class="pali">
+Yatra hi nāma vessavaṇena mahārājena evaṃmahiddhikena evaṃmahesakkhena devaputtena sammukhā sallapissasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, không phải chỉ có sự vi diệu như vậy, sự hy hữu như vậy đối với con.<br>
+<span lang="pi" class="pali">
+“Na kho me, bhante, eseva acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con còn có một sự kiện vi diệu, hy hữu khác!<br>
+<span lang="pi" class="pali">
+Atthi me aññopi acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, thưa Tôn giả, Nanda, đứa con độc nhất của con, khả ái, khả ý.<br>
+<span lang="pi" class="pali">
+Idha me, bhante, nando nāma ekaputtako piyo manāpo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì một lý do gì đó, bị các vua dùng sức mạnh bắt giữ và đoạn mạng sống.<br>
+<span lang="pi" class="pali">
+Taṃ rājāno kismiñcideva pakaraṇe okassa pasayha jīvitā voropesuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, trong khi đứa trẻ bị bắt giữ hay đang bị bắt giữ, khi bị trói hay đang bị trói, khi bị giết hay đang bị giết, con rõ biết tâm của con không có đổi khác.”<br>
+<span lang="pi" class="pali">
+Tasmiṃ kho panāhaṃ, bhante, dārake gahite vā gayhamāne vā vadhe vā vajjhamāne vā hate vā haññamāne vā nābhijānāmi cittassa aññathattan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“4. Thật vi diệu thay, Mẹ của Nanda! Thật hy hữu thay, Mẹ của Nanda!<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, nandamāte, abbhutaṃ nandamāte.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà đã có thể làm cho tâm khởi thanh tịnh như vậy.”<br>
+<span lang="pi" class="pali">
+Yatra hi nāma cittuppādampi parisodhessasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, không phải chỉ có sự vi diệu như vậy, sự hy hữu như vậy đối với con.<br>
+<span lang="pi" class="pali">
+“Na kho me, bhante, eseva acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con còn có một sự kiện vi diệu, hy hữu khác.<br>
+<span lang="pi" class="pali">
+Atthi me aññopi acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, thưa Tôn giả, người chồng của con, khi mạng chung, sanh vào sanh loại Dạ-xoa.<br>
+<span lang="pi" class="pali">
+Idha me, bhante, sāmiko kālaṅkato aññataraṃ yakkhayoniṃ upapanno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy hiện lên trước mặt con, với một tự ngã như lúc trước.<br>
+<span lang="pi" class="pali">
+So me teneva purimena attabhāvena uddassesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng thưa Tôn giả, con rõ biết, không vì nhân duyên ấy, tâm của con có đổi khác.”<br>
+<span lang="pi" class="pali">
+Na kho panāhaṃ, bhante, abhijānāmi tatonidānaṃ cittassa aññathattan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“5. Thật vi diệu thay, Mẹ của Nanda! Thật hy hữu thay, Mẹ của Nanda!<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, nandamāte, abbhutaṃ, nandamāte.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người đã có thể làm cho tâm khởi thanh tịnh như vậy.”<br>
+<span lang="pi" class="pali">
+Yatra hi nāma cittuppādampi parisodhessasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, không phải chỉ có sự vi diệu như vậy, sự hy hữu như vậy đối với con.<br>
+<span lang="pi" class="pali">
+“Na kho me, bhante, eseva acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con còn có một sự kiện vi diệu, hy hữu khác.<br>
+<span lang="pi" class="pali">
+Atthi me aññopi acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, khi còn là thiếu nữ, được đưa đến cho chồng con, con rõ biết con không có một tâm vi phạm đối với chồng con, huống nữa là về thân.”<br>
+<span lang="pi" class="pali">
+Yatohaṃ, bhante, sāmikassa daharasseva daharā ānītā nābhijānāmi sāmikaṃ manasāpi aticaritā, kuto pana kāyenā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“6. Thật vi diệu thay, Mẹ của Nanda! Thật hy hữu thay, Mẹ của Nanda!<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, nandamāte, abbhutaṃ, nandamāte.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà đã có thể làm cho tâm khởi thanh tịnh như vậy.”<br>
+<span lang="pi" class="pali">
+Yatra hi nāma cittuppādampi parisodhessasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, không phải chỉ có sự vi diệu như vậy, sự hy hữu như vậy đối với con.<br>
+<span lang="pi" class="pali">
+“Na kho me, bhante, eseva acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con còn có một sự kiện vi diệu, hy hữu khác.<br>
+<span lang="pi" class="pali">
+Atthi me aññopi acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, khi con tự chấp nhận là một nữ cư sĩ, con rõ biết con chưa từng vi phạm một học pháp nào.”<br>
+<span lang="pi" class="pali">
+Yadāhaṃ, bhante, upāsikā paṭidesitā nābhijānāmi kiñci sikkhāpadaṃ sañcicca vītikkamitā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“7. Thật vi diệu thay, Mẹ của Nanda! Thật hy hữu thay, Mẹ của Nanda!”<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, nandamāte, abbhutaṃ, nandamāte”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, không phải chỉ có sự vi diệu như vậy, sự hy hữu như vậy đối với con.<br>
+<span lang="pi" class="pali">
+“Na kho me, bhante, eseva acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con còn có một sự kiện vi diệu, hy hữu khác.<br>
+<span lang="pi" class="pali">
+Atthi me aññopi acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, thưa Tôn giả, nếu con muốn, con có thể ly dục, ly pháp bất thiện, chứng đạt và an trú sơ Thiền, một trạng thái hỷ lạc do ly dục sanh, không tầm không tứ;<br>
+<span lang="pi" class="pali">
+Idhāhaṃ, bhante, yāvade ākaṅkhāmi vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṃ savicāraṃ vivekajaṃ pītisukhaṃ paṭhamaṃ jhānaṃ upasampajja viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+làm cho tịnh chỉ tầm và tứ, con chứng đạt và an trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm không tứ, nội tĩnh nhất tâm;<br>
+<span lang="pi" class="pali">
+Vitakkavicārānaṃ vūpasamā ajjhattaṃ sampasādanaṃ cetaso ekodibhāvaṃ avitakkaṃ avicāraṃ vivekajaṃ pītisukhaṃ dutiyaṃ jhānaṃ upasampajja viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ly hỷ, con trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là xả niệm lạc trú, con chứng đạt và an trú Thiền thứ ba;<br>
+<span lang="pi" class="pali">
+Pītiyā ca virāgā upekkhikā ca viharāmi satā ca sampajānā sukhañca kāyena paṭisaṃvedemi, yaṃ taṃ ariyā ācikkhanti: ‘upekkhako satimā sukhavihārī’ti tatiyaṃ jhānaṃ upasampajja viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+đoạn lạc và đoạn khổ, chấm dứt các hỷ ưu đã cảm thọ trước, con chứng đạt và an trú Thiền thứ tư, không khổ không lạc, xả niệm thanh tịnh.”<br>
+<span lang="pi" class="pali">
+Sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṃ atthaṅgamā adukkhamasukhaṃ upekkhāsatipārisuddhiṃ catutthaṃ jhānaṃ upasampajja viharāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“8. Thật vi diệu thay, Mẹ của Nanda! Thật hy hữu thay, Mẹ của Nanda!”<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, nandamāte, abbhutaṃ, nandamāte”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, không phải chỉ có sự vi diệu như vậy, sự hy hữu như vậy đối với con.<br>
+<span lang="pi" class="pali">
+“Na kho me, bhante, eseva acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con còn có một sự kiện vi diệu, hy hữu khác.<br>
+<span lang="pi" class="pali">
+Atthi me aññopi acchariyo abbhuto dhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, thưa Tôn giả, năm hạ phần kiết sử được Thế Tôn thuyết giảng, con thấy rõ không còn pháp nào ở nơi con chưa được đoạn tận.”<br>
+<span lang="pi" class="pali">
+Yānimāni, bhante, bhagavatā desitāni pañcorambhāgiyāni saṃyojanāni nāhaṃ tesaṃ kiñci attani appahīnaṃ samanupassāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“9. Thật vi diệu thay, Mẹ của Nanda! Thật hy hữu thay, Mẹ của Nanda!!”<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, nandamāte, abbhutaṃ, nandamāte”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Sāriputta, sau khi với một pháp thoại, nói lên cho nữ cư sĩ mẹ của Nanda, khích lệ làm cho phấn khởi, làm cho hoan hỷ, từ chỗ ngồi đứng dậy rồi ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā sāriputto nandamātaraṃ upāsikaṃ dhammiyā kathāya sandassetvā samādapetvā samuttejetvā sampahaṃsetvā uṭṭhāyāsanā pakkāmīti.<br>
+</span>
+</p>
+
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an7.52.html#content"></a><a id="next-sutta" href="./an7.54.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 90          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 90<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 90<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Kaṇṇakatthala<br>
+<span lang="pi" class="pali">
+Kaṇṇakatthalasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú tại Ujuññā, gần vườn Lộc Uyển ở Kaṇṇakatthala.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā uruññāyaṃ viharati kaṇṇakatthale migadāye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ vua Pasenadi nước Kosala đi đến Ujuññā có công việc.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena rājā pasenadi kosalo uruññaṃ anuppatto hoti kenacideva karaṇīyena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala bảo một người:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo aññataraṃ purisaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðến đây, này Người kia. Hãy đi đến Thế Tôn; sau khi đến, nhân danh ta, cúi đầu đảnh lễ chân Thế Tôn và hỏi thăm có ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú và thưa như sau:<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, ambho purisa, yena bhagavā tenupasaṅkama; upasaṅkamitvā mama vacanena bhagavato pāde sirasā vandāhi, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ puccha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, vua Pasenadi nước Kosala cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm có ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú không’;<br>
+<span lang="pi" class="pali">
+‘rājā, bhante, pasenadi kosalo bhagavato pāde sirasā vandati, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ pucchatī’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và thưa như sau:<br>
+<span lang="pi" class="pali">
+evañca vadehi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, hôm nay vua Pasenadi nước Kosala, sau buổi ăn sáng, sẽ đến yết kiến Thế Tôn‘”.<br>
+<span lang="pi" class="pali">
+‘ajja kira, bhante, rājā pasenadi kosalo pacchābhattaṃ bhuttapātarāso bhagavantaṃ dassanāya upasaṅkamissatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, tâu Ðại vương,” người ấy vâng đáp vua Pasenadi nước Kosala, đi đến chỗ Thế Tôn, sau khi đến, đảnh lễ Thế Tôn và ngồi xuống một bên. Ngồi xuống một bên, người ấy bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+“Evaṃ, devā”ti kho so puriso rañño pasenadissa kosalassa paṭissutvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho so puriso bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, vua Pasenadi nước Kosala cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm có ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú không;<br>
+<span lang="pi" class="pali">
+“rājā, bhante, pasenadi kosalo bhagavato pāde sirasā vandati, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ pucchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và thưa như sau:<br>
+<span lang="pi" class="pali">
+evañca vadeti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, hôm nay vua Pasenadi nước Kosala, sau buổi ăn sáng, sẽ đến yết kiến Thế Tôn‘”.<br>
+<span lang="pi" class="pali">
+‘ajja kira, bhante, rājā pasenadi kosalo pacchābhattaṃ bhuttapātarāso bhagavantaṃ dassanāya upasaṅkamissatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hai chị em Somā và Sakulā được nghe:<br>
+<span lang="pi" class="pali">
+Assosuṃ kho somā ca bhaginī sakulā ca bhaginī:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hôm nay vua Pasenadi nước Kosala sau buổi ăn sáng, sẽ đến yết kiến Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“ajja kira rājā pasenadi kosalo pacchābhattaṃ bhuttapātarāso bhagavantaṃ dassanāya upasaṅkamissatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi hai chị em Somā và Sakulā đi đến vua Pasenadi nước Kosala tại phòng ăn, và thưa như sau:<br>
+<span lang="pi" class="pali">
+Atha kho somā ca bhaginī sakulā ca bhaginī rājānaṃ pasenadiṃ kosalaṃ bhattābhihāre upasaṅkamitvā etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, hãy nhân danh chúng thiếp cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm có được ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú không và thưa giúp:<br>
+<span lang="pi" class="pali">
+“tena hi, mahārāja, amhākampi vacanena bhagavato pāde sirasā vandāhi, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ puccha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bạch Thế Tôn, chị em Somā và Sakulā cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm có được ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú không’”.<br>
+<span lang="pi" class="pali">
+‘somā ca, bhante, bhaginī sakulā ca bhaginī bhagavato pāde sirasā vandati, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ pucchatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala sau buổi ăn sáng đi đến Thế Tôn, sau khi đảnh lễ Thế Tôn rồi, ngồi xuống một bên. Ngồi xuống một bên, vua Pasenadi nước Kosala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo pacchābhattaṃ bhuttapātarāso yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho rājā pasenadi kosalo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, hai chị em Somā và Sakulā cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm Thế Tôn có được ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú không.”<br>
+<span lang="pi" class="pali">
+“somā ca, bhante, bhaginī sakulā ca bhaginī bhagavato pāde sirasā vandati, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ pucchatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, vì sao hai chị em Somā và Sakulā lại không có thể nhờ một vị đưa tin khác?”<br>
+<span lang="pi" class="pali">
+“Kiṃ pana, mahārāja, somā ca bhaginī sakulā ca bhaginī aññaṃ dūtaṃ nālatthun”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, hai chị em Somā và Sakulā có nghe:<br>
+<span lang="pi" class="pali">
+“Assosuṃ kho, bhante, somā ca bhaginī sakulā ca bhaginī:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hôm nay vua Pasenadi nước Kosala sau buổi ăn sáng, sẽ yết kiến Thế Tôn’.<br>
+<span lang="pi" class="pali">
+‘ajja kira rājā pasenadi kosalo pacchābhattaṃ bhuttapātarāso bhagavantaṃ dassanāya upasaṅkamissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi hai chị em Somā và Sakulā đi đến con tại phòng ăn và thưa như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, bhante, somā ca bhaginī sakulā ca bhaginī maṃ bhattābhihāre upasaṅkamitvā etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, hãy nhân danh chúng thiếp cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm có được ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú không và thưa:<br>
+<span lang="pi" class="pali">
+‘tena hi, mahārāja, amhākampi vacanena bhagavato pāde sirasā vandāhi, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ puccha—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, hai chị Somā và Sakulā cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm Thế Tôn có được ít bệnh, ít não, khinh an, có mạnh khỏe, lạc trú không’”.<br>
+<span lang="pi" class="pali">
+somā ca bhaginī sakulā ca bhaginī bhagavato pāde sirasā vandati, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ pucchatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, mong rằng hai chị em Somā và Sakulā được hạnh phúc!”<br>
+<span lang="pi" class="pali">
+“Sukhiniyo hontu tā, mahārāja, somā ca bhaginī sakulā ca bhaginī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, con có nghe như sau, Sa-môn Gotama có nói:<br>
+<span lang="pi" class="pali">
+“sutaṃ metaṃ, bhante, samaṇo gotamo evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Không có một Sa-môn hay một Bà-la-môn nào toàn tri, toàn kiến, có thể tự cho là chứng được tri kiến viên mãn; sự tình như vậy không thể xảy ra’.<br>
+<span lang="pi" class="pali">
+‘natthi so samaṇo vā brāhmaṇo vā yo sabbaññū sabbadassāvī aparisesaṃ ñāṇadassanaṃ paṭijānissati, netaṃ ṭhānaṃ vijjatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, những ai nói như sau: ‘Sa-môn Gotama có nói: ‘Không có một Sa-môn hay Bà-la-môn nào toàn tri, toàn kiến có thể cho là chứng được tri kiến viên mãn; sự tình như vậy không thể xảy ra’, bạch Thế Tôn, có phải những vị ấy nói lời Thế Tôn nói, họ không xuyên tạc Thế Tôn, không đúng như thật; họ giải thích pháp đúng pháp và những ai nói hợp pháp, đúng pháp sẽ không có cơ hội để chỉ trích hay không?”<br>
+<span lang="pi" class="pali">
+Ye te, bhante, evamāhaṃsu: ‘samaṇo gotamo evamāha—natthi so samaṇo vā brāhmaṇo vā yo sabbaññū sabbadassāvī aparisesaṃ ñāṇadassanaṃ paṭijānissati, netaṃ ṭhānaṃ vijjatī’ti; kacci te, bhante, bhagavato vuttavādino, na ca bhagavantaṃ abhūtena abbhācikkhanti, dhammassa cānudhammaṃ byākaronti, na ca koci sahadhammiko vādānuvādo gārayhaṃ ṭhānaṃ āgacchatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, những ai nói như sau: ‘Sa-môn Gotama có nói: Không có một Sa-môn hay Bà-la-môn nào toàn tri, toàn kiến, có thể cho là chứng được tri kiến viên mãn; sự tình như vậy không thể xảy ra’, những vị nói như vậy không nói đúng lời Ta nói, và họ xuyên tạc Ta một cách hư ngụy, không đúng sự thật”.<br>
+<span lang="pi" class="pali">
+“Ye te, mahārāja, evamāhaṃsu: ‘samaṇo gotamo evamāha—natthi so samaṇo vā brāhmaṇo vā yo sabbaññū sabbadassāvī aparisesaṃ ñāṇadassanaṃ paṭijānissati, netaṃ ṭhānaṃ vijjatī’ti; na me te vuttavādino, abbhācikkhanti ca pana maṃ te asatā abhūtenā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala nói với tướng quân Viḍūḍabha:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo viṭaṭūbhaṃ senāpatiṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tướng quân, ai đã đem vấn đề này vào trong nội cung?”<br>
+<span lang="pi" class="pali">
+“ko nu kho, senāpati, imaṃ kathāvatthuṃ rājantepure abbhudāhāsī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, Bà-la-môn Sañjaya, thuộc dòng họ Ākāsa.”<br>
+<span lang="pi" class="pali">
+“Sañjayo, mahārāja, brāhmaṇo ākāsagotto”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala cho gọi một người:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo aññataraṃ purisaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðến đây, này Người kia, hãy nhân danh ta, bảo với Bà-la-môn Sañjaya thuộc dòng họ Ākāsa:<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, ambho purisa, mama vacanena sañjayaṃ brāhmaṇaṃ ākāsagottaṃ āmantehi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa Tôn giả, vua Pasenadi nước Kosala cho gọi Tôn giả’”.<br>
+<span lang="pi" class="pali">
+‘rājā taṃ, bhante, pasenadi kosalo āmantetī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, tâu Ðại vương,” người ấy vâng đáp vua Pasenadi nước Kosala, đi đến Bà-la-môn Sañjaya thuộc dòng họ Ākāsa, sau khi đến, liền thưa với Bà-la-môn Sañjaya, thuộc dòng họ Ākāsa:<br>
+<span lang="pi" class="pali">
+“Evaṃ, devā”ti kho so puriso rañño pasenadissa kosalassa paṭissutvā yena sañjayo brāhmaṇo ākāsagotto tenupasaṅkami; upasaṅkamitvā sañjayaṃ brāhmaṇaṃ ākāsagottaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, vua Pasenadi nước Kosala cho gọi Tôn giả”.<br>
+<span lang="pi" class="pali">
+“rājā taṃ, bhante, pasenadi kosalo āmantetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, rất có thể những điều Thế Tôn nói về một vấn đề khác, được người ta gán vào một vấn đề khác.<br>
+<span lang="pi" class="pali">
+“siyā nu kho, bhante, bhagavatā aññadeva kiñci sandhāya bhāsitaṃ, tañca jano aññathāpi paccāgaccheyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, liên hệ vấn đề gì Thế Tôn tự xem là nói những lời nói ấy?”<br>
+<span lang="pi" class="pali">
+Yathā kathaṃ pana, bhante, bhagavā abhijānāti vācaṃ bhāsitā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ta tự xem là đã nói những lời như sau:<br>
+<span lang="pi" class="pali">
+“Evaṃ kho ahaṃ, mahārāja, abhijānāmi vācaṃ bhāsitā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Không có một Sa-môn hay Bà-la-môn nào có thể trong một lúc, biết hoàn toàn và thấy hoàn toàn, không thể có sự tình như vậy’”.<br>
+<span lang="pi" class="pali">
+‘natthi so samaṇo vā brāhmaṇo vā yo sakideva sabbaṃ ñassati, sabbaṃ dakkhiti, netaṃ ṭhānaṃ vijjatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Thế Tôn thuyết có nhân duyên. Bạch Thế Tôn, Thế Tôn thuyết liên hệ đến nhân duyên và nói như sau:<br>
+<span lang="pi" class="pali">
+“Heturūpaṃ, bhante, bhagavā āha; saheturūpaṃ, bhante, bhagavā āha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Không có một Sa-môn nào hay Bà-la-môn nào có thể trong một lúc, biết hoàn toàn và thấy hoàn toàn, không thể có sự tình như vậy’.<br>
+<span lang="pi" class="pali">
+‘natthi so samaṇo vā brāhmaṇo vā yo sakideva sabbaṃ ñassati, sabbaṃ dakkhiti, netaṃ ṭhānaṃ vijjatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có bốn giai cấp này:<br>
+<span lang="pi" class="pali">
+Cattārome, bhante, vaṇṇā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sát-đế-lị, Bà-la-môn, Phệ-xá và Thủ-đà.<br>
+<span lang="pi" class="pali">
+khattiyā, brāhmaṇā, vessā, suddā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, giữa bốn giai cấp này có những khác biệt nào, sai biệt nào?”<br>
+<span lang="pi" class="pali">
+Imesaṃ nu kho, bhante, catunnaṃ vaṇṇānaṃ siyā viseso siyā nānākaraṇan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, có bốn giai cấp này:<br>
+<span lang="pi" class="pali">
+“Cattārome, mahārāja, vaṇṇā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sát-đế-lị, Bà-la-môn, Phệ-xá và Thủ-đà.<br>
+<span lang="pi" class="pali">
+khattiyā, brāhmaṇā, vessā, suddā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, giữa bốn giai cấp này, hai giai cấp:<br>
+<span lang="pi" class="pali">
+Imesaṃ kho, mahārāja, catunnaṃ vaṇṇānaṃ dve vaṇṇā aggamakkhāyanti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sát-đế-lị và Bà-la-môn được xem là:<br>
+<span lang="pi" class="pali">
+khattiyā ca brāhmaṇā ca—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tối thượng về xưng hô; hai giai cấp kia từ chỗ ngồi đứng dậy, chắp tay và giúp đỡ họ các công việc.”<br>
+<span lang="pi" class="pali">
+yadidaṃ abhivādanapaccuṭṭhānaañjalikammasāmīcikammānī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, con không hỏi về hiện tại.<br>
+<span lang="pi" class="pali">
+“Nāhaṃ, bhante, bhagavantaṃ diṭṭhadhammikaṃ pucchāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, con hỏi về tương lai.<br>
+<span lang="pi" class="pali">
+samparāyikāhaṃ, bhante, bhagavantaṃ pucchāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có bốn giai cấp này:<br>
+<span lang="pi" class="pali">
+Cattārome, bhante, vaṇṇā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sát-đế-lị, Bà-la-môn, Phệ-xá và Thủ-đà.<br>
+<span lang="pi" class="pali">
+khattiyā, brāhmaṇā, vessā, suddā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, trong bốn giai cấp này, có những khác biệt nào, sai biệt nào?”<br>
+<span lang="pi" class="pali">
+Imesaṃ nu kho, bhante, catunnaṃ vaṇṇānaṃ siyā viseso siyā nānākaraṇan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, có năm tinh cần chi này.<br>
+<span lang="pi" class="pali">
+“Pañcimāni, mahārāja, padhāniyaṅgāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là năm?<br>
+<span lang="pi" class="pali">
+Katamāni pañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, thưa Ðại vương, Tỷ-kheo có lòng tin, tin tưởng sự giác ngộ của Như Lai:<br>
+<span lang="pi" class="pali">
+Idha, mahārāja, bhikkhu saddho hoti, saddahati tathāgatassa bodhiṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác, Minh Hạnh Túc, Thiện Thệ, Thế Gian Giải, Vô Thượng Sĩ, Ðiều Ngự Trượng Phu, Thiên Nhân Sư, Phật, Thế Tôn.’<br>
+<span lang="pi" class="pali">
+‘itipi so bhagavā arahaṃ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṃ buddho bhagavā’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy ít bệnh, ít não, sự tiêu hóa được điều hòa, không lạnh quá, không nóng quá, trung bình, hợp với tinh tấn.<br>
+<span lang="pi" class="pali">
+appābādho hoti appātaṅko samavepākiniyā gahaṇiyā samannāgato nātisītāya nāccuṇhāya majjhimāya padhānakkhamāya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không gian trá, không xảo trá, nêu rõ tự mình như chơn đối với bậc Ðạo sư, đối với các vị sáng suốt hay đối với các đồng Phạm hạnh.<br>
+<span lang="pi" class="pali">
+asaṭho hoti amāyāvī yathābhūtaṃ attānaṃ āvikattā satthari vā viññūsu vā sabrahmacārīsu;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy sống siêng năng, tinh tấn, từ bỏ các ác pháp, thành tựu các thiện pháp, kiên cố, kiên trì, không từ bỏ gánh nặng đối với thiện pháp.<br>
+<span lang="pi" class="pali">
+āraddhavīriyo viharati akusalānaṃ dhammānaṃ pahānāya, kusalānaṃ dhammānaṃ upasampadāya, thāmavā daḷhaparakkamo anikkhittadhuro kusalesu dhammesu;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy có trí tuệ, thành tựu trí tuệ về sự sanh diệt các pháp, với sự thể nhập của các bậc Thánh, đưa đến chơn chánh đoạn diệt các khổ đau”.<br>
+<span lang="pi" class="pali">
+paññavā hoti udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammādukkhakkhayagāminiyā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Đại Vương, đây là năm thành tựu tinh cần chi.<br>
+<span lang="pi" class="pali">
+imāni kho, mahārāja, pañca padhāniyaṅgāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương có bốn giai cấp này:<br>
+<span lang="pi" class="pali">
+Cattārome, mahārāja, vaṇṇā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sát-đế-lị, Bà-la-môn, Phệ-xá, Thủ-đà.<br>
+<span lang="pi" class="pali">
+khattiyā, brāhmaṇā, vessā, suddā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và nếu các giai cấp này thành tựu năm tinh cần chi này,<br>
+<span lang="pi" class="pali">
+Te cassu imehi pañcahi padhāniyaṅgehi samannāgatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy sẽ đưa đến hạnh phúc, an lạc lâu dài cho họ.”<br>
+<span lang="pi" class="pali">
+ettha pana nesaṃ assa dīgharattaṃ hitāya sukhāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có bốn giai cấp này:<br>
+<span lang="pi" class="pali">
+“Cattārome, bhante, vaṇṇā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sát-đế-lị, Bà-la-môn, Phệ-xá, Thủ-đà.<br>
+<span lang="pi" class="pali">
+khattiyā, brāhmaṇā, vessā, suddā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu những vị này thành tựu năm tinh cần chi này;<br>
+<span lang="pi" class="pali">
+Te cassu imehi pañcahi padhāniyaṅgehi samannāgatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+bạch Thế Tôn, ở đây có sự khác biệt gì, có sự sai biệt gì?”<br>
+<span lang="pi" class="pali">
+ettha pana nesaṃ, bhante, siyā viseso siyā nānākaraṇan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, ở đây, Ta nói đến sự sai biệt trong tinh cần.<br>
+<span lang="pi" class="pali">
+“Ettha kho nesāhaṃ, mahārāja, padhānavemattataṃ vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa Ðại vương, giữa những con voi đáng được điều phục, hay những con ngựa đáng được điều phục, hay những con bò đáng được điều phục, có hai con voi, hai con ngựa, hay hai con bò được khéo điều phục, được khéo huấn luyện, và có hai con voi, hai con ngựa, hay hai con bò không được khéo điều phục, không được khéo huấn luyện.<br>
+<span lang="pi" class="pali">
+Seyyathāpissu, mahārāja, dve hatthidammā vā assadammā vā godammā vā sudantā suvinītā, dve hatthidammā vā assadammā vā godammā vā adantā avinītā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại Vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hai con voi, hai con ngựa, hay hai con bò được khéo điều phục, được khéo huấn luyện, có phải chúng được điều phục, đạt được khả năng điều phục (dantakaranam), chúng được điều phục, đạt được vị trí điều phục (dantabhumi)?”<br>
+<span lang="pi" class="pali">
+ye te dve hatthidammā vā assadammā vā godammā vā sudantā suvinītā, api nu te dantāva dantakāraṇaṃ gaccheyyuṃ, dantāva dantabhūmiṃ sampāpuṇeyyun”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn.”<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Còn hai con voi, hai con ngựa, hay hai con bò không được khéo điều phục kia, không được khéo huấn luyện kia, không được điều phục mà chúng đạt được khả năng điều phục, không được điều phục mà chúng đạt được vị trí điều phục như hai con voi, hai con ngựa, hay hai con bò được khéo điều phục kia, được khéo huấn luyện kia?”<br>
+<span lang="pi" class="pali">
+“Ye pana te dve hatthidammā vā assadammā vā godammā vā adantā avinītā, api nu te adantāva dantakāraṇaṃ gaccheyyuṃ, adantāva dantabhūmiṃ sampāpuṇeyyuṃ, seyyathāpi te dve hatthidammā vā assadammā vā godammā vā sudantā suvinītā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn.”<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, thưa Ðại vương, những gì đạt được do lòng tin, do ít bệnh tật, do không gian trá, không dối trá, do tinh cần tinh tấn, do trí tuệ, cũng sẽ do bất tín, do nhiều bệnh tật, do xảo trá, do dối trá đạt được, sự tình như vậy không thể xảy ra.”<br>
+<span lang="pi" class="pali">
+“Evameva kho, mahārāja, yaṃ taṃ saddhena pattabbaṃ appābādhena asaṭhena amāyāvinā āraddhavīriyena paññavatā, taṃ vata assaddho bahvābādho saṭho māyāvī kusīto duppañño pāpuṇissatīti—netaṃ ṭhānaṃ vijjatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Thế Tôn thuyết có nhân duyên (heturupam), Thế Tôn thuyết liên hệ đến nhân duyên.<br>
+<span lang="pi" class="pali">
+“Heturūpaṃ, bhante, bhagavā āha; saheturūpaṃ, bhante, bhagavā āha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có bốn giai cấp này:<br>
+<span lang="pi" class="pali">
+Cattārome, bhante, vaṇṇā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sát-đế-lị, Bà-la-môn, Phệ-xá, Thủ-đà.<br>
+<span lang="pi" class="pali">
+khattiyā, brāhmaṇā, vessā, suddā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và nếu các vị này thành tựu năm tinh cần chi này, nếu họ chân chánh tinh cần,<br>
+<span lang="pi" class="pali">
+Te cassu imehi pañcahi padhāniyaṅgehi samannāgatā te cassu sammappadhānā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thì bạch Thế Tôn, có thể có sự khác biệt nào, có thể có sự sai biệt nào giữa các vị này không?”<br>
+<span lang="pi" class="pali">
+ettha pana nesaṃ, bhante, siyā viseso siyā nānākaraṇan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, ta nói không có sự khác biệt gì về phương diện giải thoát đối với giải thoát.<br>
+<span lang="pi" class="pali">
+“Ettha kho nesāhaṃ, mahārāja, na kiñci nānākaraṇaṃ vadāmi—yadidaṃ vimuttiyā vimuttiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa Ðại vương, một người đem củi khô từ cây gỗ tếch lại và nhen lửa, lửa sẽ hiện ra.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, mahārāja, puriso sukkhaṃ sākakaṭṭhaṃ ādāya aggiṃ abhinibbatteyya, tejo pātukareyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa Ðại vương, một người đem củi khô từ cây Thốt Nốt lại và nhen lửa, lửa sẽ hiện ra.<br>
+<span lang="pi" class="pali">
+athāparo puriso sukkhaṃ sālakaṭṭhaṃ ādāya aggiṃ abhinibbatteyya, tejo pātukareyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi có một người khác đem củi khô từ cây xoài lại và nhen lửa, lửa sẽ hiện ra.<br>
+<span lang="pi" class="pali">
+athāparo puriso sukkhaṃ ambakaṭṭhaṃ ādāya aggiṃ abhinibbatteyya, tejo pātukareyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi có một người khác đem củi khô từ cây Sung lại và nhen lửa, lửa sẽ hiện ra.<br>
+<span lang="pi" class="pali">
+athāparo puriso sukkhaṃ udumbarakaṭṭhaṃ ādāya aggiṃ abhinibbatteyya, tejo pātukareyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng các loại củi dùng để nhen lửa sai khác, vậy có những sai khác gì, giữa ngọn lửa với ngọn lửa, giữa màu sắc với màu sắc, giữa ánh sáng với ánh sáng?”<br>
+<span lang="pi" class="pali">
+siyā nu kho tesaṃ aggīnaṃ nānādāruto abhinibbattānaṃ kiñci nānākaraṇaṃ acciyā vā acciṃ, vaṇṇena vā vaṇṇaṃ, ābhāya vā ābhan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn.”<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, thưa Ðại vương, với sức nóng do tinh tấn tạo nên, do tinh cần nhen nhúm lên, ở đây, Ta nói không có một sự sai biệt gì về giải thoát đối với giải thoát.”<br>
+<span lang="pi" class="pali">
+“Evameva kho, mahārāja, yaṃ taṃ tejaṃ vīriyā nimmathitaṃ padhānābhinibbattaṃ, nāhaṃ tattha kiñci nānākaraṇaṃ vadāmi—yadidaṃ vimuttiyā vimuttin”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Thế Tôn thuyết có nhân duyên, Thế Tôn thuyết liên hệ đến nhân duyên.<br>
+<span lang="pi" class="pali">
+“Heturūpaṃ, bhante, bhagavā āha; saheturūpaṃ, bhante, bhagavā āha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, nhưng có chư Thiên không?”<br>
+<span lang="pi" class="pali">
+Kiṃ pana, bhante, atthi devā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, sao Ðại vương có thể nói: “Bạch Thế Tôn, nhưng có chư Thiên không?”<br>
+<span lang="pi" class="pali">
+“Kiṃ pana tvaṃ, mahārāja, evaṃ vadesi: ‘kiṃ pana, bhante, atthi devā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, không biết chư Thiên ấy có sanh lại tại đây không hay không sanh lại tại đây?”<br>
+<span lang="pi" class="pali">
+“Yadi vā te, bhante, devā āgantāro itthattaṃ yadi vā anāgantāro itthattaṃ”?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, chư Thiên nào có não hại tâm, sanh lại tại đây; chư Thiên nào không có não hại tâm, không sanh lại tại đây.”<br>
+<span lang="pi" class="pali">
+“Ye te, mahārāja, devā sabyābajjhā te devā āgantāro itthattaṃ, ye te devā abyābajjhā te devā anāgantāro itthattan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nghe nói vậy, tướng quân Viḍūḍabha bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, viṭaṭūbho senāpati bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, chư Thiên có não hại tâm, sanh lại tại đây có thể đánh đuổi hay trục xuất chư Thiên không có não hại tâm, không sanh lại tại đây không?”<br>
+<span lang="pi" class="pali">
+“ye te, bhante, devā sabyābajjhā āgantāro itthattaṃ te devā, ye te devā abyābajjhā anāgantāro itthattaṃ te deve tamhā ṭhānā cāvessanti vā pabbājessanti vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Ānanda khởi lên ý nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmato ānandassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tướng quân Viḍūḍabha này là con vua Pasenadi nước Kosala;<br>
+<span lang="pi" class="pali">
+“ayaṃ kho viṭaṭūbho senāpati rañño pasenadissa kosalassa putto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ta là con Thế Tôn.<br>
+<span lang="pi" class="pali">
+ahaṃ bhagavato putto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay đã đến thời người con nói chuyện với người con”.<br>
+<span lang="pi" class="pali">
+Ayaṃ kho kālo yaṃ putto puttena manteyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Ānanda nói với tướng quân Viḍūḍabha:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā ānando viṭaṭūbhaṃ senāpatiṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tướng quân, nay ở đây, tôi sẽ hỏi lại Tướng quân vấn đề này. Nếu có thể được, Tướng quân hãy trả lời.<br>
+<span lang="pi" class="pali">
+“tena hi, senāpati, taññevettha paṭipucchissāmi; yathā te khameyya tathā naṃ byākareyyāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tướng quân, Tướng quân nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, senāpati,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Xa rộng cho đến lãnh thổ của vua Pasenadi nước Kosala, và tại chỗ của vua Pasenadi nước Kosala ngự trị, trị vì; tại chỗ ấy, vua Pasenadi nước Kosala có thể đánh đuổi hay trục xuất vị Sa-môn hay Bà-la-môn có công đức tu hành hay không có công đức tu hành, có sống Phạm hạnh hay không sống Phạm hạnh ra khỏi chỗ ấy không?”<br>
+<span lang="pi" class="pali">
+yāvatā rañño pasenadissa kosalassa vijitaṃ yattha ca rājā pasenadi kosalo issariyādhipaccaṃ rajjaṃ kāreti, pahoti tattha rājā pasenadi kosalo samaṇaṃ vā brāhmaṇaṃ vā puññavantaṃ vā apuññavantaṃ vā brahmacariyavantaṃ vā abrahmacariyavantaṃ vā tamhā ṭhānā cāvetuṃ vā pabbājetuṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, xa rộng cho đến lãnh thổ của vua Pasenadi nước Kosala và chỗ nào vua Pasenadi nước Kosala ngự trị, trị vì; tại chỗ ấy, vua Pasenadi nước Kosala có thể đánh đuổi hay trục xuất vị Sa-môn hay Bà-la-môn có công đức tu hành, hay không có công đức tu hành, có sống Phạm hạnh hay không sống Phạm hạnh ra khỏi chỗ ấy.”<br>
+<span lang="pi" class="pali">
+“Yāvatā, bho, rañño pasenadissa kosalassa vijitaṃ yattha ca rājā pasenadi kosalo issariyādhipaccaṃ rajjaṃ kāreti, pahoti tattha rājā pasenadi kosalo samaṇaṃ vā brāhmaṇaṃ vā puññavantaṃ vā apuññavantaṃ vā brahmacariyavantaṃ vā abrahmacariyavantaṃ vā tamhā ṭhānā cāvetuṃ vā pabbājetuṃ vā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tướng quân, Tướng quân nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, senāpati,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Xa rộng ra ngoài lãnh thổ của vua Pasenadi nước Kosala, và tại chỗ của vua Pasenadi nước Kosala không ngự trị, không trị vì; tại chỗ ấy, vua Pasenadi nước Kosala có thể đánh đuổi hay trục xuất vị Sa-môn hay Bà-la-môn có công đức tu hành hay không có công đức tu hành, có sống Phạm hạnh hay không sống Phạm hạnh ra khỏi chỗ ấy không?”<br>
+<span lang="pi" class="pali">
+yāvatā rañño pasenadissa kosalassa avijitaṃ yattha ca rājā pasenadi kosalo na issariyādhipaccaṃ rajjaṃ kāreti, tattha pahoti rājā pasenadi kosalo samaṇaṃ vā brāhmaṇaṃ vā puññavantaṃ vā apuññavantaṃ vā brahmacariyavantaṃ vā abrahmacariyavantaṃ vā tamhā ṭhānā cāvetuṃ vā pabbājetuṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, xa rộng ra ngoài lãnh thổ của vua Pasenadi nước Kosala, và tại chỗ của vua Pasenadi nước Kosala không ngự trị, không trị vì; tại chỗ ấy, vua Pasenadi nước Kosala không có thể đánh đuổi … ra khỏi chỗ ấy.”<br>
+<span lang="pi" class="pali">
+“Yāvatā, bho, rañño pasenadissa kosalassa avijitaṃ yattha ca rājā pasenadi kosalo na issariyādhipaccaṃ rajjaṃ kāreti, na tattha pahoti rājā pasenadi kosalo samaṇaṃ vā brāhmaṇaṃ vā puññavantaṃ vā apuññavantaṃ vā brahmacariyavantaṃ vā abrahmacariyavantaṃ vā tamhā ṭhānā cāvetuṃ vā pabbājetuṃ vā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tướng quân, Tướng quân có nghe nói đến chư Thiên ở cõi trời Ba mươi ba không?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, senāpati, sutā te devā tāvatiṃsā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, Tôn giả.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chúng tôi có nghe nói đến chư Thiên ở cõi trời Ba mươi ba.<br>
+<span lang="pi" class="pali">
+Sutā me devā tāvatiṃsā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và ở đây, vua Pasenadi nước Kosala cũng nghe có nói đến chư Thiên ở cõi trời Ba mươi ba.”<br>
+<span lang="pi" class="pali">
+Idhāpi bhotā raññā pasenadinā kosalena sutā devā tāvatiṃsā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tướng quân, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, senāpati,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vua Pasenadi nước Kosala có thể đánh đuổi hay trục xuất chư Thiên ở cõi trời Ba mươi ba ra khỏi chỗ ấy được không?”<br>
+<span lang="pi" class="pali">
+pahoti rājā pasenadi kosalo deve tāvatiṃse tamhā ṭhānā cāvetuṃ vā pabbājetuṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, vua Pasenadi nước Kosala không thể thấy chư Thiên ở cõi trời Ba mươi ba, làm sao vua lại có thể đánh đuổi hay trục xuất chư Thiên ở cõi trời Ba mươi ba ra khỏi chỗ ấy?”<br>
+<span lang="pi" class="pali">
+“Dassanampi, bho, rājā pasenadi kosalo deve tāvatiṃse nappahoti, kuto pana tamhā ṭhānā cāvessati vā pabbājessati vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, này Tướng quân, chư Thiên có não hại tâm, sanh lại tại đây, không có thể thấy được chư Thiên không có não hại tâm, không sanh lại tại đây, làm sao lại có thể đánh đuổi hay tẩn xuất chư Thiên không có não hại tâm, không sanh lại tại đây ra khỏi chỗ ấy được?”<br>
+<span lang="pi" class="pali">
+“Evameva kho, senāpati, ye te devā sabyābajjhā āgantāro itthattaṃ te devā, ye te devā abyābajjhā anāgantāro itthattaṃ te deve dassanāyapi nappahonti; kuto pana tamhā ṭhānā cāvessanti vā pabbājessanti vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Tỷ-kheo ấy tên gọi là gì?”<br>
+<span lang="pi" class="pali">
+“konāmo ayaṃ, bhante, bhikkhū”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, tên là Ānanda.”<br>
+<span lang="pi" class="pali">
+“Ānando nāma, mahārājā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật hân hoan thay! Thật hoan hỷ thay!<br>
+<span lang="pi" class="pali">
+“Ānando vata bho, ānandarūpo vata bho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Ānanda thuyết có nhân duyên, Ānanda thuyết liên hệ đến nhân duyên.<br>
+<span lang="pi" class="pali">
+Heturūpaṃ, bhante, āyasmā ānando āha; saheturūpaṃ, bhante, āyasmā ānando āha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có Phạm thiên không?”<br>
+<span lang="pi" class="pali">
+Kiṃ pana, bhante, atthi brahmā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, sao Ðại vương có thể nói như vậy: “Bạch Thế Tôn, có Phạm thiên không?”.<br>
+<span lang="pi" class="pali">
+“Kiṃ pana tvaṃ, mahārāja, evaṃ vadesi: ‘kiṃ pana, bhante, atthi brahmā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Phạm thiên có sanh lại tại đây hay không sanh lại tại đây?”<br>
+<span lang="pi" class="pali">
+“Yadi vā so, bhante, brahmā āgantā itthattaṃ, yadi vā anāgantā itthattan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, nếu Phạm thiên có não hại tâm thì Phạm thiên ấy có sanh lại tại đây. Nếu không có não hại tâm, thời Phạm thiên ấy không sanh lại tại đây.”<br>
+<span lang="pi" class="pali">
+“Yo so, mahārāja, brahmā sabyābajjho so brahmā āgantā itthattaṃ, yo so brahmā abyābajjho so brahmā anāgantā itthattan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi một người khác tâu với vua Pasenadi nước Kosala:<br>
+<span lang="pi" class="pali">
+Atha kho aññataro puriso rājānaṃ pasenadiṃ kosalaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, Bà-la-môn Sañjaya, thuộc dòng họ Ākāsa đã đến.”<br>
+<span lang="pi" class="pali">
+“sañjayo, mahārāja, brāhmaṇo ākāsagotto āgato”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala nói với Bà-la-môn Sañjaya, thuộc dòng họ Ākāsa:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo sañjayaṃ brāhmaṇaṃ ākāsagottaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Bà-la-môn, ai phổ biến câu chuyện này trong nội cung?”<br>
+<span lang="pi" class="pali">
+“ko nu kho, brāhmaṇa, imaṃ kathāvatthuṃ rājantepure abbhudāhāsī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, tướng quân Viḍūḍabha.”<br>
+<span lang="pi" class="pali">
+“Viṭaṭūbho, mahārāja, senāpatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tướng quân Viḍūḍabha lại nói:<br>
+<span lang="pi" class="pali">
+Viṭaṭūbho senāpati evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, chính Bà-la-môn Sañjaya, thuộc dòng họ Ākāsa.”<br>
+<span lang="pi" class="pali">
+“sañjayo, mahārāja, brāhmaṇo ākāsagotto”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi có một người tâu với vua Pasenadi nước Kosala:<br>
+<span lang="pi" class="pali">
+Atha kho aññataro puriso rājānaṃ pasenadiṃ kosalaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, nay đã đến thời dùng xe.”<br>
+<span lang="pi" class="pali">
+“yānakālo, mahārājā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, chúng con đã hỏi Thế Tôn về nhất thiết trí. Thế Tôn đã trả lời về nhất thiết trí.<br>
+<span lang="pi" class="pali">
+“sabbaññutaṃ mayaṃ, bhante, bhagavantaṃ apucchimhā, sabbaññutaṃ bhagavā byākāsi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Câu trả lời ấy làm cho chúng con thoải mái, được chúng con chấp nhận, nên chúng con hoan hỷ.<br>
+<span lang="pi" class="pali">
+tañca panamhākaṃ ruccati ceva khamati ca, tena camhā attamanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, chúng con đã hỏi Thế Tôn về sự thanh tịnh của bốn giai cấp. Thế Tôn đã trả lời cho chúng con về sự thanh tịnh của bốn giai cấp. Câu trả lời ấy làm cho chúng con thoải mái, được chúng con chấp nhận, nên chúng con hoan hỷ.<br>
+<span lang="pi" class="pali">
+Cātuvaṇṇisuddhiṃ mayaṃ, bhante, bhagavantaṃ apucchimhā, cātuvaṇṇisuddhiṃ bhagavā byākāsi; tañca panamhākaṃ ruccati ceva khamati ca, tena camhā attamanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, chúng con hỏi Thế Tôn về chư Thiên và Thế Tôn đã trả lời về chư Thiên. Câu trả lời ấy làm cho chúng con thoải mái, được chúng con chấp nhận nên chúng con hoan hỷ.<br>
+<span lang="pi" class="pali">
+Adhideve mayaṃ, bhante, bhagavantaṃ apucchimhā, adhideve bhagavā byākāsi; tañca panamhākaṃ ruccati ceva khamati ca, tena camhā attamanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, chúng con hỏi Thế Tôn về Phạm thiên và Thế Tôn đã trả lời về Phạm thiên. Câu trả lời ấy làm cho chúng con thoải mái, được chúng con chấp nhận nên làm chúng con hoan hỷ.<br>
+<span lang="pi" class="pali">
+Adhibrahmānaṃ mayaṃ, bhante, bhagavantaṃ apucchimhā, adhibrahmānaṃ bhagavā byākāsi; tañca panamhākaṃ ruccati ceva khamati ca, tena camhā attamanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, và những điều gì chúng con hỏi Thế Tôn, vấn đề ấy Thế Tôn đã trả lời; và câu trả lời ấy làm cho chúng con thoải mái, được chúng con chấp nhận nên chúng con hoan hỷ.<br>
+<span lang="pi" class="pali">
+Yaṃ yadeva ca mayaṃ bhagavantaṃ apucchimhā taṃ tadeva bhagavā byākāsi; tañca panamhākaṃ ruccati ceva khamati ca, tena camhā attamanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, nay chúng con phải đi.<br>
+<span lang="pi" class="pali">
+Handa ca dāni mayaṃ, bhante, gacchāma;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chúng con có nhiều công việc, có nhiều phận sự phải làm.”<br>
+<span lang="pi" class="pali">
+bahukiccā mayaṃ bahukaraṇīyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðại vương hãy làm những gì Ðại vương nghĩ là hợp thời.”<br>
+<span lang="pi" class="pali">
+“Yassadāni tvaṃ, mahārāja, kālaṃ maññasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala hoan hỷ, tín thọ lời Thế Tôn dạy, từ chỗ ngồi đứng dậy, đảnh lễ Thế Tôn, thân bên hữu hướng về Ngài rồi ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo bhagavato bhāsitaṃ abhinanditvā anumoditvā uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā pakkāmīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Kaṇṇakatthalasuttaṃ niṭṭhitaṃ dasamaṃ.<br>
+</span>
+</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn89.html#content"></a><a id="next-sutta" href="./mn91.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

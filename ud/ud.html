@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+  	<title>        Udāna          </title>
+
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<h2>Khuddaka Nikāya - Tiểu Bộ Kinh</h2>
+<div id="content">
+	
+		<h3>Udāna - Kinh Phật Tự Thuyết</h3>
+<br>
+<div class="w3-responsive">
+		<table class="suttalist" style="margin: 0 auto;">
+			<tr><th colspan="2" style="text-align: center;">Chương 1 - Phẩm Bồ Ðề</th>
+</tr>
+<tr>
+<td><a href="ud1.1.html#content">Ud 1.1</a></td>
+<td><a href="ud1.1.html#content">Paṭhamabodhisutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.2.html#content">Ud 1.2</a></td>
+<td><a href="ud1.2.html#content">Dutiyabodhisutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.3.html#content">Ud 1.3</a></td>
+<td><a href="ud1.3.html#content">Tatiyabodhisutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.4.html#content">Ud 1.4</a></td>
+<td><a href="ud1.4.html#content">Huṃhuṅkasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.5.html#content">Ud 1.5</a></td>
+<td><a href="ud1.5.html#content">Brāhmaṇasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.6.html#content">Ud 1.6</a></td>
+<td><a href="ud1.6.html#content">Mahākassapasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.7.html#content">Ud 1.7</a></td>
+<td><a href="ud1.7.html#content">Ajakalāpakasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.8.html#content">Ud 1.8</a></td>
+<td><a href="ud1.8.html#content">Saṅgāmajisutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.9.html#content">Ud 1.9</a></td>
+<td><a href="ud1.9.html#content">Jaṭilasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud1.10.html#content">Ud 1.10</a></td>
+<td><a href="ud1.10.html#content">Bāhiyasutta</a></td>
+</tr>
+<tr><th colspan="2" style="text-align: center;">Chương 2 - Phẩm Mucalinda</th>
+</tr>
+<tr>
+<td><a href="ud2.1.html#content">Ud 2.1</a></td>
+<td><a href="ud2.1.html#content">Mucalindasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.2.html#content">Ud 2.2</a></td>
+<td><a href="ud2.2.html#content">Rājasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.3.html#content">Ud 2.3</a></td>
+<td><a href="ud2.3.html#content">Daṇḍasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.4.html#content">Ud 2.4</a></td>
+<td><a href="ud2.4.html#content">Sakkārasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.5.html#content">Ud 2.5</a></td>
+<td><a href="ud2.5.html#content">Upāsakasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.6.html#content">Ud 2.6</a></td>
+<td><a href="ud2.6.html#content">Gabbhinīsutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.7.html#content">Ud 2.7</a></td>
+<td><a href="ud2.7.html#content">Ekaputtakasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.8.html#content">Ud 2.8</a></td>
+<td><a href="ud2.8.html#content">Suppavāsāsutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.9.html#content">Ud 2.9</a></td>
+<td><a href="ud2.9.html#content">Visākhāsutta</a></td>
+</tr>
+<tr>
+<td><a href="ud2.10.html#content">Ud 2.10</a></td>
+<td><a href="ud2.10.html#content">Bhaddiyasutta</a></td>
+</tr>
+<tr><th colspan="2" style="text-align: center;">Chương 3 - Phẩm Nanda</th>
+</tr>
+<tr>
+<td><a href="ud3.1.html#content">Ud 3.1</a></td>
+<td><a href="ud3.1.html#content">Kammavipākajasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.2.html#content">Ud 3.2</a></td>
+<td><a href="ud3.2.html#content">Nandasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.3.html#content">Ud 3.3</a></td>
+<td><a href="ud3.3.html#content">Yasojasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.4.html#content">Ud 3.4</a></td>
+<td><a href="ud3.4.html#content">Sāriputtasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.5.html#content">Ud 3.5</a></td>
+<td><a href="ud3.5.html#content">Mahāmoggallānasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.6.html#content">Ud 3.6</a></td>
+<td><a href="ud3.6.html#content">Pilindavacchasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.7.html#content">Ud 3.7</a></td>
+<td><a href="ud3.7.html#content">Sakkudānasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.8.html#content">Ud 3.8</a></td>
+<td><a href="ud3.8.html#content">Piṇḍapātikasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.9.html#content">Ud 3.9</a></td>
+<td><a href="ud3.9.html#content">Sippasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud3.10.html#content">Ud 3.10</a></td>
+<td><a href="ud3.10.html#content">Lokasutta</a></td>
+</tr>
+<tr><th colspan="2" style="text-align: center;">Chương 4 - Phẩm Meghiya</th>
+</tr>
+<tr>
+<td><a href="ud4.1.html#content">Ud 4.1</a></td>
+<td><a href="ud4.1.html#content">Meghiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.2.html#content">Ud 4.2</a></td>
+<td><a href="ud4.2.html#content">Uddhatasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.3.html#content">Ud 4.3</a></td>
+<td><a href="ud4.3.html#content">Gopālakasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.4.html#content">Ud 4.4</a></td>
+<td><a href="ud4.4.html#content">Yakkhapahārasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.5.html#content">Ud 4.5</a></td>
+<td><a href="ud4.5.html#content">Nāgasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.6.html#content">Ud 4.6</a></td>
+<td><a href="ud4.6.html#content">Piṇḍolasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.7.html#content">Ud 4.7</a></td>
+<td><a href="ud4.7.html#content">Sāriputtasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.8.html#content">Ud 4.8</a></td>
+<td><a href="ud4.8.html#content">Sundarīsutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.9.html#content">Ud 4.9</a></td>
+<td><a href="ud4.9.html#content">Upasenasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud4.10.html#content">Ud 4.10</a></td>
+<td><a href="ud4.10.html#content">Sāriputtaupasamasutta</a></td>
+</tr>
+<tr><th colspan="2" style="text-align: center;">Chương 5 - Phẩm Trưởng Lão Sona</th>
+</tr>
+<tr>
+<td><a href="ud5.1.html#content">Ud 5.1</a></td>
+<td><a href="ud5.1.html#content">Piyatarasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.2.html#content">Ud 5.2</a></td>
+<td><a href="ud5.2.html#content">Appāyukasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.3.html#content">Ud 5.3</a></td>
+<td><a href="ud5.3.html#content">Suppabuddhakuṭṭhisutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.4.html#content">Ud 5.4</a></td>
+<td><a href="ud5.4.html#content">Kumārakasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.5.html#content">Ud 5.5</a></td>
+<td><a href="ud5.5.html#content">Uposathasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.6.html#content">Ud 5.6</a></td>
+<td><a href="ud5.6.html#content">Soṇasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.7.html#content">Ud 5.7</a></td>
+<td><a href="ud5.7.html#content">Kaṅkhārevatasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.8.html#content">Ud 5.8</a></td>
+<td><a href="ud5.8.html#content">Saṅghabhedasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.9.html#content">Ud 5.9</a></td>
+<td><a href="ud5.9.html#content">Sadhāyamānasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud5.10.html#content">Ud 5.10</a></td>
+<td><a href="ud5.10.html#content">Cūḷapanthakasutta</a></td>
+</tr>
+<tr><th colspan="2" style="text-align: center;">Chương 6 - Phẩm Sanh Ra Đã Mù</th>
+</tr>
+<tr>
+<td><a href="ud6.1.html#content">Ud 6.1</a></td>
+<td><a href="ud6.1.html#content">Āyusaṅkhārossajjanasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.2.html#content">Ud 6.2</a></td>
+<td><a href="ud6.2.html#content">Sattajaṭilasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.3.html#content">Ud 6.3</a></td>
+<td><a href="ud6.3.html#content">Paccavekkhaṇasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.4.html#content">Ud 6.4</a></td>
+<td><a href="ud6.4.html#content">Paṭhamanānātitthiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.5.html#content">Ud 6.5</a></td>
+<td><a href="ud6.5.html#content">Dutiyanānātitthiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.6.html#content">Ud 6.6</a></td>
+<td><a href="ud6.6.html#content">Tatiyanānātitthiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.7.html#content">Ud 6.7</a></td>
+<td><a href="ud6.7.html#content">Subhūtisutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.8.html#content">Ud 6.8</a></td>
+<td><a href="ud6.8.html#content">Gaṇikāsutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.9.html#content">Ud 6.9</a></td>
+<td><a href="ud6.9.html#content">Upātidhāvantisutta</a></td>
+</tr>
+<tr>
+<td><a href="ud6.10.html#content">Ud 6.10</a></td>
+<td><a href="ud6.10.html#content">Uppajjantisutta</a></td>
+</tr>
+<tr><th colspan="2" style="text-align: center;">Chương 7 - Phẩm Nhỏ</th>
+</tr>
+<tr>
+<td><a href="ud7.1.html#content">Ud 7.1</a></td>
+<td><a href="ud7.1.html#content">Paṭhamalakuṇḍakabhaddiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.2.html#content">Ud 7.2</a></td>
+<td><a href="ud7.2.html#content">Dutiyalakuṇḍakabhaddiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.3.html#content">Ud 7.3</a></td>
+<td><a href="ud7.3.html#content">Paṭhamasattasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.4.html#content">Ud 7.4</a></td>
+<td><a href="ud7.4.html#content">Dutiyasattasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.5.html#content">Ud 7.5</a></td>
+<td><a href="ud7.5.html#content">Aparalakuṇḍakabhaddiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.6.html#content">Ud 7.6</a></td>
+<td><a href="ud7.6.html#content">Taṇhāsaṅkhayasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.7.html#content">Ud 7.7</a></td>
+<td><a href="ud7.7.html#content">Papañcakhayasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.8.html#content">Ud 7.8</a></td>
+<td><a href="ud7.8.html#content">Kaccānasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.9.html#content">Ud 7.9</a></td>
+<td><a href="ud7.9.html#content">Udapānasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud7.10.html#content">Ud 7.10</a></td>
+<td><a href="ud7.10.html#content">Utenasutta</a></td>
+</tr>
+<tr><th colspan="2" style="text-align: center;">Chương 8 - Phẩm Pāṭaligāmiya</th>
+</tr>
+<tr>
+<td><a href="ud8.1.html#content">Ud 8.1</a></td>
+<td><a href="ud8.1.html#content">Paṭhamanibbānapaṭisaṃyuttasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.2.html#content">Ud 8.2</a></td>
+<td><a href="ud8.2.html#content">Dutiyanibbānapaṭisaṃyuttasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.3.html#content">Ud 8.3</a></td>
+<td><a href="ud8.3.html#content">Tatiyanibbānapaṭisaṃyuttasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.4.html#content">Ud 8.4</a></td>
+<td><a href="ud8.4.html#content">Catutthanibbānapaṭisaṃyuttasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.5.html#content">Ud 8.5</a></td>
+<td><a href="ud8.5.html#content">Cundasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.6.html#content">Ud 8.6</a></td>
+<td><a href="ud8.6.html#content">Pāṭaligāmiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.7.html#content">Ud 8.7</a></td>
+<td><a href="ud8.7.html#content">Dvidhāpathasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.8.html#content">Ud 8.8</a></td>
+<td><a href="ud8.8.html#content">Visākhāsutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.9.html#content">Ud 8.9</a></td>
+<td><a href="ud8.9.html#content">Paṭhamadabbasutta</a></td>
+</tr>
+<tr>
+<td><a href="ud8.10.html#content">Ud 8.10</a></td>
+<td><a href="ud8.10.html#content">Dutiyadabbasutta</a></td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id=next-sutta href="./ud1.1.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

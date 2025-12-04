@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 10.27 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 10.27<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 10.27<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+3. Đại Phẩm<br>
+<span lang="pi" class="pali">
+3. Mahāvagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Những Câu Hỏi Lớn (1)<br>
+<span lang="pi" class="pali">
+Paṭhamamahāpañhāsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Một thời, Thế Tôn trú ở Sāvatthī, tại Jetavana, ở khu vườn ông Anāthapiṇḍika.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bấy giờ có rất nhiều Tỷ-kheo vào buổi sáng đắp y, cầm y bát, vào Sāvatthī để khất thực. Rồi các Tỷ-kheo ấy suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho sambahulā bhikkhū pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiṃ piṇḍāya pavisiṃsu. Atha kho tesaṃ bhikkhūnaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật là quá sớm để đi vào Sāvatthī khất thực.<br>
+<span lang="pi" class="pali">
+“atippago kho tāva sāvatthiyaṃ piṇḍāya carituṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chúng ta hãy đi đến khu vườn của các du sĩ ngoại đạo.”<br>
+<span lang="pi" class="pali">
+yannūna mayaṃ yena aññatitthiyānaṃ paribbājakānaṃ ārāmo tenupasaṅkameyyāmā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các Tỷ-kheo ấy đi đến khu vườn các du sĩ ngoại đạo; sau khi đến, nói lên với những du sĩ ngoại đạo ấy những lời chào đón hỏi thăm, sau khi nói lên những lời chào đón hỏi thăm thân hữu, liền ngồi xuống một bên. Các du sĩ ngoại đạo ấy nói với các Tỷ-kheo đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Atha kho te bhikkhū yena aññatitthiyānaṃ paribbājakānaṃ ārāmo tenupasaṅkamiṃsu; upasaṅkamitvā tehi aññatitthiyehi paribbājakehi saddhiṃ sammodiṃsu. Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdiṃsu. Ekamantaṃ nisinne kho te bhikkhū te aññatitthiyā paribbājakā etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“2. Thưa các Hiền giả, Sa-môn Gotama thuyết pháp như sau cho các đệ tử:<br>
+<span lang="pi" class="pali">
+“Samaṇo, āvuso, gotamo sāvakānaṃ evaṃ dhammaṃ deseti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hãy đến, này các Tỷ-kheo, hãy thắng tri tất cả pháp; sau khi thắng tri, thắng tri tất cả pháp, hãy an trú.’<br>
+<span lang="pi" class="pali">
+‘etha tumhe, bhikkhave, sabbaṃ dhammaṃ abhijānātha, sabbaṃ dhammaṃ abhiññāya viharathā’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa các Hiền giả, chúng tôi cũng thuyết pháp như sau cho các đệ tử:<br>
+<span lang="pi" class="pali">
+mayampi kho, āvuso, sāvakānaṃ evaṃ dhammaṃ desema:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hãy thắng tri tất cả pháp; sau khi thắng tri, thắng tri tất cả pháp, hãy an trú.’<br>
+<span lang="pi" class="pali">
+‘etha tumhe, āvuso, sabbaṃ dhammaṃ abhijānātha, sabbaṃ dhammaṃ abhiññāya viharathā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này chư Hiền, có sự đặc thù gì, có sự thù thắng gì, có sự thù thắng gì, có sự sai biệt gì giữa Sa-môn Gotama và chúng tôi, về thuyết pháp và thuyết pháp, hay về giáo giới và giáo giới?”<br>
+<span lang="pi" class="pali">
+Idha no, āvuso, ko viseso ko adhippayāso kiṃ nānākaraṇaṃ samaṇassa vā gotamassa amhākaṃ vā, yadidaṃ dhammadesanāya vā dhammadesanaṃ anusāsaniyā vā anusāsanin”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Rồi các Tỷ-kheo ấy, không hoan hỷ lời nói của các du sĩ ngoại đạo ấy, cũng không phỉ báng, không hoan hỷ, không phỉ báng.<br>
+<span lang="pi" class="pali">
+Atha kho te bhikkhū tesaṃ aññatitthiyānaṃ paribbājakānaṃ bhāsitaṃ neva abhinandiṃsu nappaṭikkosiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các vị ấy đứng dậy và ra đi, nghĩ rằng: “Chúng ta sẽ hiểu ý nghĩa lời nói này từ Thế Tôn”.<br>
+<span lang="pi" class="pali">
+Anabhinanditvā appaṭikkositvā uṭṭhāyāsanā pakkamiṃsu: “bhagavato santike etassa bhāsitassa atthaṃ ājānissāmā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các Tỷ- kheo ấy, sau khi đi khất thực ở Sāvatthī xong, sau buổi ăn, trên con đường đi khất thực trở về, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, các Tỷ-kheo ấy bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho te bhikkhū sāvatthiyaṃ piṇḍāya caritvā pacchābhattaṃ piṇḍapātapaṭikkantā yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdiṃsu. Ekamantaṃ nisinnā kho te bhikkhū bhagavantaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Ở đây, bạch Thế Tôn, chúng con vào buổi sáng đắp y, cầm y bát đi vào Sāvatthī để khất thực. Rồi chúng con suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+“Idha mayaṃ, bhante, pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiṃ piṇḍāya pavisimhā. Tesaṃ no, bhante, amhākaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thật là quá sớm để vào Sāvatthī khất thực; vậy chúng ta hãy đi đến khu vườn các du sĩ ngoại đạo’.<br>
+<span lang="pi" class="pali">
+‘atippago kho tāva sāvatthiyaṃ piṇḍāya carituṃ; yannūna mayaṃ yena aññatitthiyānaṃ paribbājakānaṃ ārāmo tenupasaṅkameyyāmā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi bạch Thế Tôn, chúng con đi đến khu vườn của các du sĩ ngoại đạo, sau khi đến, chúng con nói với các du sĩ ngoại đạo những lời chào hỏi thăm, sau khi nói lên những lời chào đón hỏi thăm thân hữu, chúng con ngồi xuống một bên. Bạch Thế Tôn, các du sĩ ngoại đạo ấy nói với chúng con đang ngồi xuống một bên:<br>
+<span lang="pi" class="pali">
+Atha kho mayaṃ, bhante, yena aññatitthiyānaṃ paribbājakānaṃ ārāmo tenupasaṅkamimhā; upasaṅkamitvā tehi aññatitthiyehi paribbājakehi saddhiṃ sammodimhā. Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdimhā. Ekamantaṃ nisinne kho, bhante, aññatitthiyā paribbājakā amhe etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa các Hiền giả, Sa-môn Gotama thuyết pháp như sau cho các đệ tử: “Hãy đến, này các Tỷ-kheo, hãy thắng tri tất cả pháp; sau khi thắng tri, thắng tri tất cả pháp, hãy an trú”.<br>
+<span lang="pi" class="pali">
+‘Samaṇo, āvuso, gotamo sāvakānaṃ evaṃ dhammaṃ deseti—etha tumhe, bhikkhave, sabbaṃ dhammaṃ abhijānātha, sabbaṃ dhammaṃ abhiññāya viharathāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa các Hiền giả, chúng tôi cũng thuyết pháp như sau cho các đệ tử: “Hãy đến, này chư Hiền, hãy thắng tri tất cả pháp; sau khi thắng tri, thắng tri tất cả pháp, hãy an trú”.<br>
+<span lang="pi" class="pali">
+mayampi kho, āvuso, sāvakānaṃ evaṃ dhammaṃ desema—etha tumhe, āvuso, sabbaṃ dhammaṃ abhijānātha, sabbaṃ dhammaṃ abhiññāya viharathāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này chư Hiền, có sự đặc thù gì, có sự sai biệt gì giữa Sa-môn Gotama và chúng tôi về thuyết pháp và thuyết pháp, hay về giáo giới và giáo giới?’<br>
+<span lang="pi" class="pali">
+Idha no, āvuso, ko viseso ko adhippayāso kiṃ nānākaraṇaṃ samaṇassa vā gotamassa amhākaṃ vā, yadidaṃ dhammadesanāya vā dhammadesanaṃ anusāsaniyā vā anusāsanin’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi bạch Thế Tôn, chúng con không hoan hỷ lời nói của các du sĩ ngoại đạo ấy, cũng không phỉ báng, không hoan hỷ, không phỉ báng.<br>
+<span lang="pi" class="pali">
+Atha kho mayaṃ, bhante, tesaṃ aññatitthiyānaṃ paribbājakānaṃ bhāsitaṃ neva abhinandimhā nappaṭikkosimhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chúng con đứng dậy và ra đi, nghĩ rằng: “Chúng ta sẽ hiểu ý nghĩa của lời nói này của Thế Tôn”.<br>
+<span lang="pi" class="pali">
+Anabhinanditvā appaṭikkositvā uṭṭhāyāsanā pakkamimhā: ‘bhagavato santike etassa bhāsitassa atthaṃ ājānissāmā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“5. Này các Tỷ-kheo, được nói vậy, các du sĩ ngoại đạo ấy cần phải được nói như sau:<br>
+<span lang="pi" class="pali">
+“Evaṃvādino, bhikkhave, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này chư Hiền, một câu hỏi, một câu tuyên bố, một câu trả lời; hai câu hỏi, hai câu tuyên bố, hai câu trả lời; ba câu hỏi, ba câu tuyên bố, ba câu trả lời; bốn câu hỏi, bốn câu tuyên bố; bốn câu trả lời; năm câu hỏi, năm câu tuyên bố, năm câu trả lời; sáu câu hỏi, sáu câu tuyên bố, sáu câu trả lời; bảy câu hỏi, bảy câu tuyên bố, bảy câu trả lời; tám câu hỏi, tám câu tuyên bố, tám câu trả lời; chín câu hỏi, chín câu tuyên bố, chín câu trả lời; mười câu hỏi, mười câu tuyên bố, mười câu trả lời.’<br>
+<span lang="pi" class="pali">
+‘eko, āvuso, pañho eko uddeso ekaṃ veyyākaraṇaṃ, dve pañhā dve uddesā dve veyyākaraṇāni, tayo pañhā tayo uddesā tīṇi veyyākaraṇāni, cattāro pañhā cattāro uddesā cattāri veyyākaraṇāni, pañca pañhā pañcuddesā pañca veyyākaraṇāni, cha pañhā cha uddesā cha veyyākaraṇāni, satta pañhā sattuddesā satta veyyākaraṇāni, aṭṭha pañhā aṭṭhuddesā aṭṭha veyyākaraṇāni, nava pañhā navuddesā nava veyyākaraṇāni, dasa pañhā dasuddesā dasa veyyākaraṇānī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược hỏi vậy, này các Tỷ-kheo, các du sĩ ngoại đạo ấy, sẽ không thể trả lời, hơn nữa sẽ rơi vào bối rối. Vì sao?<br>
+<span lang="pi" class="pali">
+Evaṃ puṭṭhā, bhikkhave, aññatitthiyā paribbājakā na ceva sampāyissanti, uttari ca vighātaṃ āpajjissanti. Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, vì vấn đề ấy vượt ngoài địa hạt của họ.<br>
+<span lang="pi" class="pali">
+Yathā taṃ, bhikkhave, avisayasmiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Ta không thấy một ai trong thế giới chư Thiên, với chư Thiên, Ma giới, Phạm thiên giới, với quần chúng Sa-môn, Bà-la-môn với chư Thiên và loài Người, với tâm thích thú trả lời những câu hỏi này, trừ Như Lai, hay những ai được nghe từ hai vị này.<br>
+<span lang="pi" class="pali">
+Nāhaṃ taṃ, bhikkhave, passāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya yo imesaṃ pañhānaṃ veyyākaraṇena cittaṃ ārādheyya, aññatra tathāgatena vā tathāgatasāvakena vā ito vā pana sutvā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Một câu hỏi, một câu tuyên bố, một câu trả lời được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Eko pañho eko uddeso ekaṃ veyyākaraṇan’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong một pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong một pháp?<br>
+<span lang="pi" class="pali">
+Ekadhamme, bhikkhave, bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamasmiṃ ekadhamme?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tất cả chúng sanh đều tồn tại nhờ đồ ăn.’<br>
+<span lang="pi" class="pali">
+‘Sabbe sattā āhāraṭṭhitikā’—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong một pháp này, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imasmiṃ kho, bhikkhave, ekadhamme bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Một câu hỏi, một câu tuyên bố, một câu trả lời được nói đến như vậy’. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Eko pañho eko uddeso ekaṃ veyyākaraṇan’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Hai câu hỏi, hai câu tuyên bố, hai câu trả lời được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Dve pañhā dve uddesā dve veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong hai pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong hai pháp?<br>
+<span lang="pi" class="pali">
+Dvīsu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu dvīsu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong danh và trong sắc.<br>
+<span lang="pi" class="pali">
+Nāme ca rūpe ca—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong hai pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, dvīsu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hai câu hỏi, hai câu tuyên bố, hai câu trả lời, được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Dve pañhā dve uddesā dve veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Ba câu hỏi, ba tuyên bố, ba câu trả lời được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Tayo pañhā tayo uddesā tīṇi veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong ba pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong ba pháp?<br>
+<span lang="pi" class="pali">
+Tīsu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu tīsu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong ba thọ.<br>
+<span lang="pi" class="pali">
+Tīsu vedanāsu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong ba pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, tīsu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ba câu hỏi, ba câu tuyên bố, ba câu trả lời, được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Tayo pañhā tayo uddesā tīṇi veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+9. Bốn câu hỏi, bốn câu tuyên bố, bốn câu trả lời, được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Cattāro pañhā cattāro uddesā cattāri veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong bốn pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong bốn pháp?<br>
+<span lang="pi" class="pali">
+Catūsu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu catūsu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong bốn đồ ăn.<br>
+<span lang="pi" class="pali">
+Catūsu āhāresu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong bốn pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, catūsu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn câu hỏi, bốn câu tuyên bố, bốn câu trả lời, được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Cattāro pañhā cattāro uddesā cattāri veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+10. Năm câu hỏi, năm câu tuyên bố, năm câu trả lời, được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Pañca pañhā pañcuddesā pañca veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong năm pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong năm pháp?<br>
+<span lang="pi" class="pali">
+Pañcasu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu pañcasu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong năm thủ uẩn …<br>
+<span lang="pi" class="pali">
+Pañcasu upādānakkhandhesu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong năm pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, pañcasu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Năm câu hỏi, năm câu tuyên bố, năm câu trả lời, được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Pañca pañhā pañcuddesā pañca veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+11. Sáu câu hỏi, sáu câu tuyên bố, sáu câu trả lời, được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Cha pañhā cha uddesā cha veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong sáu pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong sáu pháp?<br>
+<span lang="pi" class="pali">
+Chasu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu chasu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong sáu nội xứ. …<br>
+<span lang="pi" class="pali">
+Chasu ajjhattikesu āyatanesu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong sáu pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, chasu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sáu câu hỏi, sáu câu tuyên bố, sáu câu trả lời, được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Cha pañhā cha uddesā cha veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+12. Bảy câu hỏi, bảy câu tuyên bố, bảy câu trả lời, được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Satta pañhā sattuddesā satta veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong bảy pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong bảy pháp?<br>
+<span lang="pi" class="pali">
+Sattasu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu sattasu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong bảy thức trú. …<br>
+<span lang="pi" class="pali">
+Sattasu viññāṇaṭṭhitīsu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong bảy pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, sattasu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy câu hỏi, bảy câu tuyên bố, bảy câu trả lời được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Satta pañhā sattuddesā satta veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+13. Tám câu hỏi, tám câu tuyên bố, tám câu trả lời, được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Aṭṭha pañhā aṭṭhuddesā aṭṭha veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong tám pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong tám pháp?<br>
+<span lang="pi" class="pali">
+Aṭṭhasu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu aṭṭhasu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong tám thế gian pháp. …<br>
+<span lang="pi" class="pali">
+Aṭṭhasu lokadhammesu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong tám pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, aṭṭhasu dhammesu bhikkhu sammā nibbindamāno ...pe... dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tám câu hỏi, tám câu tuyên bố, tám câu trả lời được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Aṭṭha pañhā aṭṭhuddesā aṭṭha veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+14. Chín câu hỏi, chín câu tuyên bố, chín câu trả lời, được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Nava pañhā navuddesā nava veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong chín pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là trong chín pháp?<br>
+<span lang="pi" class="pali">
+Navasu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu navasu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chín hữu tình cư. …<br>
+<span lang="pi" class="pali">
+Navasu sattāvāsesu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong chín pháp, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, navasu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chín câu hỏi, chín câu tuyên bố, chín câu trả lời được nói đến như vậy. Do duyên này được nói đến như vậy.<br>
+<span lang="pi" class="pali">
+‘Nava pañhā navuddesā nava veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+15. Mười câu hỏi, mười câu tuyên bố, mười câu trả lời được nói đến như vậy. Do duyên gì được nói đến như vậy?<br>
+<span lang="pi" class="pali">
+‘Dasa pañhā dasuddesā dasa veyyākaraṇānī’ti, iti kho panetaṃ vuttaṃ. Kiñcetaṃ paṭicca vuttaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong mười pháp này các Tỷ-kheo, Tỷ-kheo chơn chánh, nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau. Thế nào là mười pháp?<br>
+<span lang="pi" class="pali">
+Dasasu, bhikkhave, dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti. Katamesu dasasu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong mười thiện nghiệp đạo.<br>
+<span lang="pi" class="pali">
+Dasasu akusalesu kammapathesu—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong mười pháp này, này các Tỷ-kheo, Tỷ-kheo chơn chánh nhàm chán, chơn chánh ly tham, chơn chánh giải thoát, chơn chánh thấy được sự cứu cánh, sau khi chơn chánh thắng tri ý nghĩa, ngay trong hiện tại, là người chấm dứt khổ đau.<br>
+<span lang="pi" class="pali">
+imesu kho, bhikkhave, dasasu dhammesu bhikkhu sammā nibbindamāno sammā virajjamāno sammā vimuccamāno sammā pariyantadassāvī sammadatthaṃ abhisamecca diṭṭheva dhamme dukkhassantakaro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mười câu hỏi, mười câu tuyên bố, mười câu trả lời, được nói lên như vậy. Do duyên này, được nói đến như vậy.’<br>
+<span lang="pi" class="pali">
+‘Dasa pañhā dasuddesā dasa veyyākaraṇānī’ti, iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttan”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an10.26.html#content"></a><a id="next-sutta" href="./an10.28.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

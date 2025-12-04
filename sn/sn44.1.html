@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 44.1 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 44.1<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 44.1<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+1. Phẩm Không Thuyết<br>
+<span lang="pi" class="pali">
+1. Abyākatavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Trưởng Lão Ni Khemā<br>
+<span lang="pi" class="pali">
+Khemāsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Sāvatthī, tại Jetavana, vườn ông Anāthapiṇḍika.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Tỷ-kheo-ni Khemā đang đi du hành giữa dân chúng Kosala và trú ở tại Toraṇavatthu, giữa Sāvatthī và Sāketa.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena khemā bhikkhunī kosalesu cārikaṃ caramānā antarā ca sāvatthiṃ antarā ca sāketaṃ toraṇavatthusmiṃ vāsaṃ upagatā hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vua Pasenadi nước Kosala cũng đang đi từ Sāketa đến Sāvatthī và trú một đêm ở Toraṇavatthu, giữa Sāketa và Sāvatthī.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo sāketā sāvatthiṃ gacchanto, antarā ca sāketaṃ antarā ca sāvatthiṃ toraṇavatthusmiṃ ekarattivāsaṃ upagacchi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala gọi một người và nói:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo aññataraṃ purisaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy đến, này Người kia. Ông có biết vị Sa-môn hay Bà-la-môn nào ở tại Toraṇavatthu để hôm nay ta có thể đến yết kiến vị ấy?”<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, ambho purisa, toraṇavatthusmiṃ tathārūpaṃ samaṇaṃ vā brāhmaṇaṃ vā jāna yamahaṃ ajja payirupāseyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, tâu Ðại vương”. Người ấy vâng đáp vua Pasenadi nước Kosala, đi tìm khắp Toraṇavatthu không thấy có vị Sa-môn hay Bà-la-môn nào để vua Pasenadi nước Kosala có thể đến yết kiến.<br>
+<span lang="pi" class="pali">
+“Evaṃ, devā”ti kho so puriso rañño pasenadissa kosalassa paṭissutvā kevalakappaṃ toraṇavatthuṃ āhiṇḍanto nāddasa tathārūpaṃ samaṇaṃ vā brāhmaṇaṃ vā yaṃ rājā pasenadi kosalo payirupāseyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người ấy thấy Tỷ-kheo-ni Khemā đến trú ở Toraṇavatthu; sau khi thấy, người ấy đi đến vua Pasenadi nước Kosala và thưa:<br>
+<span lang="pi" class="pali">
+Addasā kho so puriso khemaṃ bhikkhuniṃ toraṇavatthusmiṃ vāsaṃ upagataṃ. Disvāna yena rājā pasenadi kosalo tenupasaṅkami; upasaṅkamitvā rājānaṃ pasenadiṃ kosalaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâu Ðại vương, tại Toraṇavatthu không có vị Sa-môn hay Bà-la-môn nào để Ðại vương có thể yết kiến. Nhưng tâu Ðại vương, có Tỷ-kheo-ni Khemā là đệ tử của Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác.<br>
+<span lang="pi" class="pali">
+“Natthi kho, deva, toraṇavatthusmiṃ tathārūpo samaṇo vā brāhmaṇo vā yaṃ devo payirupāseyya. Atthi ca kho, deva, khemā nāma bhikkhunī, tassa bhagavato sāvikā arahato sammāsambuddhassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tiếng đồn tốt đẹp sau đây được truyền đi về bậc nữ Tôn giả ấy:<br>
+<span lang="pi" class="pali">
+Tassā kho pana ayyāya evaṃ kalyāṇo kittisaddo abbhuggato:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nữ Tôn giả là bậc hiền trí, thông minh, có trí, nghe nhiều, lời nói đến tâm, ứng đáp lanh lợi’.<br>
+<span lang="pi" class="pali">
+‘paṇḍitā, viyattā medhāvinī bahussutā cittakathā kalyāṇapaṭibhānā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương có thể đến yết kiến vị ấy”.<br>
+<span lang="pi" class="pali">
+Taṃ devo payirupāsatū”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala đi đến Tỷ-kheo-ni Khemā; sau khi đến, đảnh lễ vị ấy rồi ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo yena khemā bhikkhunī tenupasaṅkami; upasaṅkamitvā khemaṃ bhikkhuniṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngồi một bên, vua Pasenadi nước Kosala thưa với Tỷ-kheo-ni Khemā:<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho rājā pasenadi kosalo khemaṃ bhikkhuniṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Nữ Tôn giả, Như Lai có tồn tại sau khi chết không?”<br>
+<span lang="pi" class="pali">
+“kiṃ nu kho, ayye, hoti tathāgato paraṃ maraṇā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, Thế Tôn không trả lời: ‘Như Lai có tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Abyākataṃ kho etaṃ, mahārāja, bhagavatā: ‘hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế là, thưa Nữ Tôn giả, Như Lai không tồn tại sau khi chết?”<br>
+<span lang="pi" class="pali">
+“Kiṃ panayye, na hoti tathāgato paraṃ maraṇā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, Thế Tôn cũng không trả lời: ‘Như Lai không có tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Etampi kho, mahārāja, abyākataṃ bhagavatā: ‘na hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế là, thưa Nữ Tôn giả, Như Lai có tồn tại và không tồn tại sau khi chết?”<br>
+<span lang="pi" class="pali">
+“Kiṃ nu kho, ayye, hoti ca na ca hoti tathāgato paraṃ maraṇā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, Thế Tôn cũng không trả lời: ‘Như Lai có tồn tại và không tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Abyākataṃ kho etaṃ, mahārāja, bhagavatā: ‘hoti ca na ca hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế là, thưa Nữ Tôn giả, Như Lai không tồn tại và không không tồn tại sau khi chết?”<br>
+<span lang="pi" class="pali">
+“Kiṃ panayye, neva hoti na na hoti tathāgato paraṃ maraṇā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, Thế Tôn cũng không trả lời: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Etampi kho, mahārāja, abyākataṃ bhagavatā: ‘neva hoti na na hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðược hỏi: ‘Thưa Nữ Tôn giả, Như Lai có tồn tại sau khi chết không?’, Nữ Tôn giả trả lời:<br>
+<span lang="pi" class="pali">
+“‘Kiṃ nu kho, ayye, hoti tathāgato paraṃ maraṇā’ti, iti puṭṭhā samānā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, Thế Tôn không trả lời: Như Lai có tồn tại sau khi chết’.<br>
+<span lang="pi" class="pali">
+‘abyākataṃ kho etaṃ, mahārāja, bhagavatā— hoti tathāgato paraṃ maraṇā’ti vadesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược hỏi: ‘Thế là, thưa Nữ Tôn giả, có phải Như Lai không tồn tại sau khi chết không?’, Nữ Tôn giả trả lời:<br>
+<span lang="pi" class="pali">
+‘Kiṃ panayye, na hoti tathāgato paraṃ maraṇā’ti iti puṭṭhā samānā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, Thế Tôn cũng không trả lời: Như Lai không có tồn tại sau khi chết’.<br>
+<span lang="pi" class="pali">
+‘etampi kho, mahārāja, abyākataṃ bhagavatā— na hoti tathāgato paraṃ maraṇā’ti vadesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược hỏi: ‘Thế là, thưa Nữ Tôn giả, có phải Như Lai có tồn tại và không tồn tại sau khi chết?’, Nữ Tôn giả trả lời:<br>
+<span lang="pi" class="pali">
+‘Kiṃ nu kho, ayye, hoti ca na ca hoti tathāgato paraṃ maraṇā’ti iti puṭṭhā samānā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, Thế Tôn cũng không trả lời: Như Lai có tồn tại và không tồn tại sau khi chết’.<br>
+<span lang="pi" class="pali">
+‘abyākataṃ kho etaṃ, mahārāja, bhagavatā— hoti ca na ca hoti tathāgato paraṃ maraṇā’ti vadesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược hỏi: ‘Thế là, thưa Nữ Tôn giả, có phải Như Lai không tồn tại và không không tồn tại sau khi chết?’, Nữ Tôn giả trả lời:<br>
+<span lang="pi" class="pali">
+‘Kiṃ panayye, neva hoti na na hoti tathāgato paraṃ maraṇā’ti iti puṭṭhā samānā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, Thế Tôn cũng không trả lời: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’.<br>
+<span lang="pi" class="pali">
+‘etampi kho, mahārāja, abyākataṃ bhagavatā— neva hoti na na hoti tathāgato paraṃ maraṇā’ti vadesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Nữ Tôn giả, do nhân gì, do duyên gì, Thế Tôn lại không trả lời?”<br>
+<span lang="pi" class="pali">
+Ko nu kho, ayye, hetu, ko paccayo yenetaṃ abyākataṃ bhagavatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vậy thưa Ðại vương, ở đây, tôi sẽ hỏi Ðại vương. Ðại vương kham nhẫn như thế nào, hãy trả lời như vậy.<br>
+<span lang="pi" class="pali">
+“Tena hi, mahārāja, taññevettha paṭipucchissāmi. Yathā te khameyya tathā naṃ byākareyyāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương nghĩ thế nào, thưa Ðại vương, Ðại vương có người kế toán nào, chưởng ấn nào, toán số nào có thể đếm được cát sông Hằng có số hột cát như vậy, có số trăm hột cát như vậy, có số ngàn hột cát như vậy, có số trăm ngàn hột cát như vậy?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,atthi te koci gaṇako vā muddiko vā saṅkhāyako vā yo pahoti gaṅgāya vālukaṃ gaṇetuṃ— ettakā vālukā iti vā, ettakāni vālukasatāni iti vā, ettakāni vālukasahassāni iti vā, ettakāni vālukasatasahassāni iti vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Nữ Tôn giả”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, ayye”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðại vương có người kế toán nào, có người chưởng ấn nào, có người toán số nào có thể đong lường được nước của biển lớn có số đấu nước như vậy, có số trăm đấu nước như vậy, có số ngàn đấu nước như vậy, có số trăm ngàn đấu nước như vậy?”<br>
+<span lang="pi" class="pali">
+“Atthi pana te koci gaṇako vā muddiko vā saṅkhāyako vā yo pahoti mahāsamudde udakaṃ gaṇetuṃ— ettakāni udakāḷhakāni iti vā, ettakāni udakāḷhakasatāni iti vā, ettakāni udakāḷhakasahassāni iti vā, ettakāni udakāḷhakasatasahassāni iti vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, thưa Nữ Tôn giả”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, ayye”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vì sao?”<br>
+<span lang="pi" class="pali">
+“Taṃ kissa hetu”?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Nữ Tôn giả, vì rằng biển lớn thâm sâu, vô lường, khó dò đến đáy”.<br>
+<span lang="pi" class="pali">
+“Mahāyye, samuddo gambhīro appameyyo duppariyogāho”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, thưa Ðại vương, nếu có người muốn định nghĩa Như Lai ngang qua sắc thân, nhưng sắc thân ấy, Như Lai đã đoạn tận, cắt đứt tận gốc rễ, làm cho như thân cây ta-la, làm cho không thể tái sanh, làm cho không thể sanh khởi trong tương lai;<br>
+<span lang="pi" class="pali">
+“Evameva kho, mahārāja, yena rūpena tathāgataṃ paññāpayamāno paññāpeyya taṃ rūpaṃ tathāgatassa pahīnaṃ ucchinnamūlaṃ tālāvatthukataṃ anabhāvaṅkataṃ āyatiṃ anuppādadhammaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Được giải thoát khỏi sự ước lượng của sắc thân. Thưa Ðại vương, Như Lai là thâm sâu, vô lường, không thể đến tận đáy, như biển lớn.<br>
+<span lang="pi" class="pali">
+Rūpasaṅkhāyavimutto kho, mahārāja, tathāgato gambhīro appameyyo duppariyogāho— seyyathāpi mahāsamuddo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại sau khi chết’, không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘Hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘na hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại và không tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘hoti ca na ca hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘neva hoti na na hoti tathāgato paraṃ maraṇā’tipi na upeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có người muốn định nghĩa Như Lai ngang qua cảm thọ, nhưng cảm thọ ấy, Như Lai đã đoạn tận, cắt đứt tận gốc rễ, làm cho như thân cây ta-la, làm cho không thể tái sanh, làm cho không thể sanh khởi trong tương lai;<br>
+<span lang="pi" class="pali">
+Yāya vedanāya tathāgataṃ paññāpayamāno paññāpeyya, sā vedanā tathāgatassa pahīnā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṃ anuppādadhammā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Được giải thoát khỏi sự ước lượng của cảm thọ. Thưa Ðại vương, Như Lai là thâm sâu, vô lường, không thể đến tận đáy, như biển lớn.<br>
+<span lang="pi" class="pali">
+Vedanāsaṅkhāyavimutto, mahārāja, tathāgato gambhīro appameyyo duppariyogāho— seyyathāpi mahāsamuddo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại sau khi chết’, không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘Hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘na hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại và không tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘hoti ca na ca hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘neva hoti na na hoti tathāgato paraṃ maraṇā’tipi na upeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có người muốn định nghĩa Như Lai qua các tưởng ... qua các hành; nhưng hành ấy, Như Lai đã đoạn tận, cắt đứt tận gốc rễ, làm cho như thân cây ta-la, làm cho không thể tái sanh, làm cho không thể sanh khởi trong tương lai;<br>
+<span lang="pi" class="pali">
+Yāya saññāya tathāgataṃ ...pe... yehi saṅkhārehi tathāgataṃ paññāpayamāno paññāpeyya, te saṅkhārā tathāgatassa pahīnā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṃ anuppādadhammā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Được giải thoát khỏi sự ước lượng của hành. Thưa Ðại vương, Như Lai là thâm sâu, vô lường, không thể đến tận đáy, như biển lớn.<br>
+<span lang="pi" class="pali">
+Saṅkhārasaṅkhāyavimutto kho, mahārāja, tathāgato gambhīro appameyyo duppariyogāho— seyyathāpi mahāsamuddo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại sau khi chết’, không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘Hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘na hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại và không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘hoti ca na ca hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘neva hoti na na hoti tathāgato paraṃ maraṇā’tipi na upeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có người muốn định nghĩa Như Lai qua các thức; nhưng thức ấy, Như Lai đã đoạn tận, cắt đứt tận gốc rễ, làm cho như thân cây ta-la, làm cho không thể tái sanh, làm cho không thể sanh khởi trong tương lai;<br>
+<span lang="pi" class="pali">
+Yena viññāṇena tathāgataṃ paññāpayamāno paññāpeyya taṃ viññāṇaṃ tathāgatassa pahīnaṃ ucchinnamūlaṃ tālāvatthukataṃ anabhāvaṅkataṃ āyatiṃ anuppādadhammaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Được giải thoát khỏi sự ước lượng của thức. Thưa Ðại vương, Như Lai là thâm sâu, vô lường, không thể đến tận đáy, như biển lớn.<br>
+<span lang="pi" class="pali">
+Viññāṇasaṅkhāyavimutto kho, mahārāja, tathāgato gambhīro appameyyo duppariyogāho— seyyathāpi mahāsamuddo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại sau khi chết’, không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘Hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘na hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại và không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘hoti ca na ca hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’, cũng không thể chấp nhận”.<br>
+<span lang="pi" class="pali">
+‘neva hoti na na hoti tathāgato paraṃ maraṇā’tipi na upetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasanadi nước Kosala hoan hỷ, tín thọ lời của Tỷ-kheo-ni Khemā, từ chỗ ngồi đứng dậy, đảnh lễ Tỷ-kheo-ni Khemā, thân phía hữu hướng về Nữ Tôn giả rồi ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo khemāya bhikkhuniyā bhāsitaṃ abhinanditvā anumoditvā uṭṭhāyāsanā khemaṃ bhikkhuniṃ abhivādetvā padakkhiṇaṃ katvā pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala, sau một thời gian, đi đến Thế Tôn; sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo aparena samayena yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngồi một bên, vua Pasenadi nước Kosala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho rājā pasenadi kosalo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Như Lai có tồn tại sau khi chết không?”<br>
+<span lang="pi" class="pali">
+“kiṃ nu kho, bhante, hoti tathāgato paraṃ maraṇā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ta không trả lời: ‘Như Lai có tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Abyākataṃ kho etaṃ, mahārāja, mayā: ‘hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế là, thưa Thế Tôn, Như Lai không có tồn tại sau khi chết?”<br>
+<span lang="pi" class="pali">
+“Kiṃ pana, bhante, na hoti tathāgato paraṃ maraṇā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ta cũng không trả lời: ‘Như Lai không có tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Etampi kho, mahārāja, abyākataṃ mayā: ‘na hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế là, bạch Thế Tôn, Như Lai có tồn tại và không tồn tại sau khi chết?”<br>
+<span lang="pi" class="pali">
+“Kiṃ nu kho, bhante, hoti ca na ca hoti tathāgato paraṃ maraṇā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Ðại vương, Ta cũng không trả lời: ‘Như Lai có tồn tại và không tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Abyākataṃ kho etaṃ, mahārāja, mayā: ‘hoti ca na ca hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế là, bạch Thế Tôn, Như Lai không tồn tại và không không tồn tại sau khi chết?”<br>
+<span lang="pi" class="pali">
+“Kiṃ pana, bhante, neva hoti na na hoti tathāgato paraṃ maraṇā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Ðại vương, Ta cũng không trả lời: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’.”<br>
+<span lang="pi" class="pali">
+“Etampi kho, mahārāja, abyākataṃ mayā: ‘neva hoti na na hoti tathāgato paraṃ maraṇā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðược hỏi: ‘Bạch Thế Tôn, Như Lai có tồn tại sau khi chết không?’,<br>
+<span lang="pi" class="pali">
+“‘Kiṃ nu kho, bhante, hoti tathāgato paraṃ maraṇā’ti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đức Thế Tôn trả lời: ‘Này Ðại vương, Ta không trả lời: Như Lai có tồn tại sau khi chết’ ...<br>
+<span lang="pi" class="pali">
+iti puṭṭho samāno: ‘abyākataṃ kho etaṃ, mahārāja, mayā—hoti tathāgato paraṃ maraṇā’ti vadesi ...pe....<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“‘Thế là, bạch Thế Tôn, có phải Như Lai không tồn tại và không không tồn tại sau khi chết?’,<br>
+<span lang="pi" class="pali">
+“‘Kiṃ pana, bhante, neva hoti na na hoti tathāgato paraṃ maraṇā’ti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đức Thế Tôn đáp: ‘Này Ðại vương, Ta cũng không trả lời: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’.<br>
+<span lang="pi" class="pali">
+iti puṭṭho samāno: ‘etampi kho, mahārāja, abyākataṃ mayā— neva hoti na na hoti tathāgato paraṃ maraṇā’ti vadesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, do nhân gì, do duyên gì, Thế Tôn lại không trả lời?”<br>
+<span lang="pi" class="pali">
+Ko nu kho, bhante, hetu, ko paccayo, yenetaṃ abyākataṃ bhagavatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Ðại vương, ở đây, Ta sẽ hỏi Ðại vương. Ðại vương kham nhẫn như thế nào, hãy trả lời như vậy.<br>
+<span lang="pi" class="pali">
+“Tena hi, mahārāja, taññevettha paṭipucchissāmi. Yathā te khameyya tathā naṃ byākareyyāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương nghĩ thế nào, này Ðại vương, Ðại vương có người kế toán nào, chưởng ấn nào, toán số nào có thể đếm được cát sông Hằng có số hột cát như vậy, có số trăm hột cát như vậy, có số ngàn hột cát như vậy, có số trăm ngàn hột cát như vậy?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja, atthi te koci gaṇako vā muddiko vā saṅkhāyako vā yo pahoti gaṅgāya vālukaṃ gaṇetuṃ— ettakā vālukā iti vā ...pe... ettakāni vālukasatasahassāni iti vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðại vương có người kế toán nào, có người chưởng ấn nào, có người toán số nào có thể đong lường được nước của biển lớn có số đấu nước như vậy, có số trăm đấu nước như vậy, có số ngàn đấu nước như vậy, có số trăm ngàn đấu nước như vậy?”<br>
+<span lang="pi" class="pali">
+“Atthi pana te koci gaṇako vā muddiko vā saṅkhāyako vā yo pahoti mahāsamudde udakaṃ gaṇetuṃ— ettakāni udakāḷhakāni iti vā ...pe... ettakāni udakāḷhakasatasahassāni iti vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vì sao?”<br>
+<span lang="pi" class="pali">
+“Taṃ kissa hetu”?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, vì rằng biển lớn thâm sâu, vô lường, khó dò đến đáy.<br>
+<span lang="pi" class="pali">
+“Mahā, bhante, samuddo gambhīro appameyyo duppariyogāho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Ðại vương, nếu có người muốn định nghĩa Như Lai ngang qua sắc thân, nhưng sắc thân ấy, Như Lai đã đoạn tận, cắt đứt tận gốc rễ, làm cho như thân cây ta-la, làm cho không thể tái sanh, làm cho không thể sanh khởi trong tương lai;<br>
+<span lang="pi" class="pali">
+Evameva kho, mahārāja, yena rūpena tathāgataṃ paññāpayamāno paññāpeyya, taṃ rūpaṃ tathāgatassa pahīnaṃ ucchinnamūlaṃ tālāvatthukataṃ anabhāvaṅkataṃ āyatiṃ anuppādadhammaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Được giải thoát khỏi sự ước lượng của sắc thân. Này Ðại vương, Như Lai là thâm sâu, vô lường, không thể đến tận đáy, như biển lớn.<br>
+<span lang="pi" class="pali">
+Rūpasaṅkhāyavimutto kho, mahārāja, tathāgato gambhīro appameyyo duppariyogāho— seyyathāpi mahāsamuddo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại sau khi chết’, không thể chấp nhận ... Nói rằng: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘Hoti tathāgato paraṃ maraṇā’tipi na upeti ...pe... ‘neva hoti na na hoti tathāgato paraṃ maraṇā’tipi na upeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có người muốn định nghĩa Như Lai ngang qua cảm thọ ... tưởng ... hành ...<br>
+<span lang="pi" class="pali">
+Yāya vedanāya ...pe... yāya saññāya ...pe... yehi saṅkhārehi ...pe....<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có người muốn định nghĩa Như Lai ngang qua các thức; nhưng thức ấy, Như Lai đã đoạn tận, cắt đứt tận gốc rễ, làm cho như thân cây ta-la, làm cho không thể tái sanh, làm cho không thể sanh khởi trong tương lai;<br>
+<span lang="pi" class="pali">
+Yena viññāṇena tathāgataṃ paññāpayamāno paññāpeyya, taṃ viññāṇaṃ tathāgatassa pahīnaṃ ucchinnamūlaṃ tālāvatthukataṃ anabhāvaṅkataṃ āyatiṃ anuppādadhammaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Được giải thoát khỏi sự ước lượng của thức. Thưa Ðại vương, Như Lai là thâm sâu, vô lường, không thể đến tận đáy, như biển lớn.<br>
+<span lang="pi" class="pali">
+Viññāṇasaṅkhāyavimutto kho, mahārāja, tathāgato gambhīro appameyyo duppariyogāho— seyyathāpi mahāsamuddo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại sau khi chết’, không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘Hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘na hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai có tồn tại và không có tồn tại sau khi chết’, cũng không thể chấp nhận.<br>
+<span lang="pi" class="pali">
+‘hoti ca na ca hoti tathāgato paraṃ maraṇā’tipi na upeti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói rằng: ‘Như Lai không tồn tại và không không tồn tại sau khi chết’, cũng không thể chấp nhận”.<br>
+<span lang="pi" class="pali">
+‘neva hoti na na hoti tathāgato paraṃ maraṇā’tipi na upetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, bạch Thế Tôn! Thật hy hữu thay, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, bhante, abbhutaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng giữa Ðạo sư với nữ đệ tử, ý nghĩa với ý nghĩa, văn ngôn với văn ngôn có sự tương đồng, có sự tương hòa, không có sự mâu thuẫn, tức là tối thượng văn cú.<br>
+<span lang="pi" class="pali">
+Yatra hi nāma satthu ceva sāvikāya ca atthena attho byañjanena byañjanaṃ saṃsandissati, samessati, na virodhayissati yadidaṃ aggapadasmiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, bạch Thế Tôn, con đi đến Tỷ-kheo-ni Khemā và hỏi về ý nghĩa này.<br>
+<span lang="pi" class="pali">
+Ekamidāhaṃ, bhante, samayaṃ khemaṃ bhikkhuniṃ upasaṅkamitvā etamatthaṃ apucchiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nữ Tôn giả ấy đã trả lời cho con về ý nghĩa này với những câu này, với những lời này, giống như Thế Tôn.<br>
+<span lang="pi" class="pali">
+Sāpi me ayyā etehi padehi etehi byañjanehi etamatthaṃ byākāsi, seyyathāpi bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thật là vi diệu, bạch Thế Tôn! Thật là hy hữu, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">
+Acchariyaṃ, bhante, abbhutaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng giữa Ðạo sư với nữ đệ tử, ý nghĩa với ý nghĩa, văn ngôn với văn ngôn có sự tương đồng, có sự tương hòa, không có sự mâu thuẫn, tức là tối thượng văn cú.<br>
+<span lang="pi" class="pali">
+Yatra hi nāma satthu ceva sāvikāya ca atthena attho byañjanena byañjanaṃ saṃsandissati, samessati, na virodhayissati yadidaṃ aggapadasmiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, nay con phải đi, con có nhiều công vụ, nhiều việc phải làm”.<br>
+<span lang="pi" class="pali">
+Handa dāni mayaṃ, bhante, gacchāma. Bahukiccā mayaṃ bahukaraṇīyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, nay Ðại vương hãy làm những gì Ðại vương nghĩ là hợp thời”.<br>
+<span lang="pi" class="pali">
+“Yassadāni tvaṃ, mahārāja, kālaṃ maññasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala hoan hỷ, tín thọ lời Thế Tôn nói, từ chỗ ngồi đứng dậy, đảnh lễ Thế Tôn, thân bên hữu hướng về Ngài rồi ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo bhagavato bhāsitaṃ abhinanditvā anumoditvā uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā pakkāmīti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn44.html#content"></a><a id="next-sutta" href="./sn44.2.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

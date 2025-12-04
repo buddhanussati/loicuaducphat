@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trích Dẫn Kinh Điển Pali</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #fdfbf7;
+            --bg-card: #ffffff;
+            --text-primary: #2c2c2c;
+            --text-secondary: #5f6368;
+            --accent: #d4a373;
+            --btn-bg: #8b5a2b;
+            --btn-text: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(139, 90, 43, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body.dark {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #cca43b;
+            --btn-bg: #cca43b;
+            --btn-text: #121212;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Merriweather', serif;
+            color: var(--accent);
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        /* Controls Grid (Giữ nguyên) */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border-color: var(--btn-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Quote Card (Giữ nguyên) */
+        .quote-card {
+            background: var(--bg-card);
+            padding: 50px 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            margin-bottom: 30px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            color: var(--accent);
+            opacity: 0.2;
+            font-family: serif;
+        }
+
+        #quote-content {
+            font-family: 'Merriweather', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            white-space: pre-line;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        #quote-content.fade-out { opacity: 0; }
+
+        /* Vùng chứa link */
+        #reference-container {
+            font-weight: 600;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        /* Style cho thẻ a (link) */
+        #quote-link {
+            color: var(--accent);
+            font-size: 1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        #quote-link:hover {
+            text-decoration: underline;
+            color: var(--accent-dark, #a97142); /* Sử dụng màu đậm hơn khi hover */
+        }
+        
+        #quote-link::before {
+             content: "— ";
+        }
+
+        /* Actions (Giữ nguyên) */
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #new-quote-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+        }
+        #new-quote-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        #copy-btn {
+            background: transparent;
+            border: 2px solid var(--btn-bg);
+            color: var(--text-primary);
+        }
+        body.dark #copy-btn {
+            color: var(--accent);
+        }
+        #copy-btn:hover {
+            background: rgba(139, 90, 43, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            .theme-toggle { position: relative; display: block; margin: 0 auto 10px auto; }
+            #quote-content { font-size: 1.1rem; }
+            .actions { width: 100%; }
+            .action-btn { width: 100%; justify-content: center; }
+        }
+		
+		/* --- Form Styling --- */
+#submission-form {
+    margin-top: 50px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: var(--bg-card);
+}
+#submission-form h2 {
+    color: var(--btn-bg);
+    margin-bottom: 5px;
+}
+#submission-form .subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+}
+#quote-submission input,
+#quote-submission textarea,
+#quote-submission select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--text-secondary);
+    border-radius: 4px;
+    font-size: 1em;
+    background: var(--bg-body);
+    color: var(--text-primary);
+}
+#quote-submission textarea {
+    resize: vertical;
+    font-family: 'Inter', sans-serif;
+}
+#quote-output-code {
+    display: block;
+    background: var(--bg-body);
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    color: var(--accent);
+    border: 1px dashed var(--accent);
+}
+
+/* Style the buttons in the form area */
+#generate-quote-code, #copy-code-btn {
+    display: block;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <button class="theme-toggle" id="theme-toggle" title="Đổi giao diện">☀️</button>
+            <h1>Trích Lời Phật Dạy</h1>
+        </header>
+
+        <div class="controls">
+            <button class="filter-btn active" data-id="all">Tất cả</button>
+            <button class="filter-btn" data-id="dn">DN (Trường Bộ)</button>
+            <button class="filter-btn" data-id="mn">MN (Trung Bộ)</button>
+            <button class="filter-btn" data-id="sn">SN (Tương Ưng)</button>
+            <button class="filter-btn" data-id="an">AN (Tăng Chi)</button>
+            <button class="filter-btn" data-id="dhp">Dhp (Pháp Cú)</button>
+            <button class="filter-btn" data-id="kp">Kp (Tiểu Tụng)</button>
+            <button class="filter-btn" data-id="ud">Ud (Cảm Hứng)</button>
+            <button class="filter-btn" data-id="iti">Iti (Phật Thuyết)</button>
+            <button class="filter-btn" data-id="snp">Snp (Kinh Tập)</button>
+            <button class="filter-btn" data-id="thag">Thag (Trưởng Lão)</button>
+            <button class="filter-btn" data-id="thig">Thig (Trưởng Lão Ni)</button>
+        </div>
+
+        <main class="quote-card">
+            <div class="quote-icon">“</div>
+            <div id="quote-content">Loading...</div>
+            <div id="reference-container"></div>
+        </main>
+
+        <div class="actions">
+            <button class="action-btn" id="copy-btn">📋 <span id="copy-text">Sao chép</span></button>
+            <button class="action-btn" id="new-quote-btn">Lời dạy khác ➜</button>
+        </div>
+    </div>
+<section id="submission-form" class="quote-card">
+    <h2>Gửi Trích Dẫn Của Bạn</h2>
+    <p class="subtitle">Hãy giúp mở rộng kho lời vàng!</p>
+    <form id="quote-submission">
+        <div class="form-group">
+            <label for="submit-text">Nội dung Trích Dẫn:</label>
+            <textarea id="submit-text" required rows="4" placeholder="Nhập câu trích dẫn...\n(Dùng phím Enter để xuống dòng)"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="submit-ref">Tham Chiếu:</label>
+            <input type="text" id="submit-ref" required placeholder="Ví dụ: MN 22 - Kinh Ví Dụ Con Rắn">
+        </div>
+        <div class="form-group">
+            <label for="submit-url">Link Nguồn (URL):</label>
+            <input type="url" id="submit-url" placeholder="Ví dụ: ../mn/mn22.html">
+        </div>
+        <div class="form-group">
+            <label for="submit-category">Bộ Kinh:</label>
+            <select id="submit-category" required>
+                <option value="" disabled selected>Chọn Bộ Kinh</option>
+                <option value="dn">DN (Trường Bộ)</option>
+                <option value="mn">MN (Trung Bộ)</option>
+                <option value="sn">SN (Tương Ưng)</option>
+                <option value="an">AN (Tăng Chi)</option>
+                <option value="dhp">Dhp (Pháp Cú)</option>
+                <option value="kp">Kp (Tiểu Tụng)</option>
+                <option value="ud">Ud (Cảm Hứng)</option>
+                <option value="iti">Iti (Phật Thuyết)</option>
+                <option value="snp">Snp (Kinh Tập)</option>
+                <option value="thag">Thag (Trưởng Lão)</option>
+                <option value="thig">Thig (Trưởng Lão Ni)</option>
+            </select>
+        </div>
+        <button type="submit" id="generate-quote-code" class="action-btn">Tạo Mã Gửi</button>
+    </form>
+    
+    <div id="result-area" style="display:none; margin-top:20px; text-align: left; width: 100%;">
+        <h3>Mã Dữ Liệu Cần Gửi:</h3>
+        <code id="quote-output-code"></code>
+        <button id="copy-code-btn" class="action-btn" style="margin-top: 10px;">Sao Chép Mã</button>
+        <p style="font-size:0.9em; margin-top: 15px; color: var(--accent);">
+            * Vui lòng gửi mã này qua email hoặc công cụ liên hệ của quản trị viên.
+        </p>
+    </div>
+</section>
+    <script>
+        const quotesData = {
+            dn: [
+                // ĐÃ THÊM TRƯỜNG 'url'
+                { text: "Này các tỳ-kheo, có một pháp mà nếu tu tập... Một pháp ấy là niệm Phật.", ref: "DN 16 – Đại Bát Niết Bàn Kinh", url: "../dn/dn16.html#content" },
+                { text: "Hãy tự mình là ngọn đèn cho chính mình, hãy tự mình nương tựa chính mình, chớ nương tựa một gì khác.", ref: "DN 16 – Đại Bát Niết Bàn Kinh (Ngắn)", url: "../dn/dn16.html#content" }
+            ],
+            mn: [
+                { text: "Xưa cũng như nay, Ta chỉ dạy có hai điều:\nKhổ và sự Diệt khổ.", ref: "MN 22", url: "../mn/mn22.html" }
+            ],
+            sn: [
+                { text: "Phàm cái gì có sinh khởi,\ntất cả cái ấy đều phải bị đoạn diệt.", ref: "SN 56.11", url: "../sn/sn56.11.html" }
+            ],
+            an: [
+                { text: "Có năm chi phần giác ngộ: tín, tấn, niệm, định, tuệ.", ref: "AN 5.14", url: "../an/an5.14.html" }
+            ],
+            dhp: [
+                { text: "Trong các loài hai chân,\nPháp nhãn là tối thượng.", ref: "Kinh Pháp Cú 273", url: "../dhp/dhp273.html" }
+            ],
+            kp: [
+                { text: "Không làm các điều ác,\nThành tựu các hạnh lành,\nGiữ tâm ý trong sạch,\nĐây lời chư Phật dạy.", ref: "Tiểu Tụng", url: "../kp/kp.html" }
+            ],
+            ud: [
+                { text: "Tất cả chúng sinh đều sống nhờ thực phẩm.", ref: "Ud 8.5", url: "../ud/ud8.5.html" }
+            ],
+            iti: [
+                { text: "Tất cả chúng sinh đều có nghiệp là của mình, là thừa tự của nghiệp...", ref: "Iti 22", url: "../iti/iti22.html" }
+            ],
+            snp: [
+                { text: "Như giọt nước không dính vào lá sen...", ref: "Sutta Nipata 812", url: "../snp/snp812.html" }
+            ],
+            thag: [
+                { text: "Ta đã vượt qua dòng thác,\nĐã đoạn tận mọi kiết sử...", ref: "Trưởng Lão Tăng Kệ", url: "../thag/thag.html" }
+            ],
+            thig: [
+                { text: "Ta đã cắt đứt mọi ràng buộc,\nĐã thoát khỏi lưới ma...", ref: "Thig 5.4", url: "../thig/thig5.4.html" }
+            ]
+        };
+
+        // Gộp dữ liệu (Giữ nguyên)
+        let allQuotes = [];
+        Object.keys(quotesData).forEach(key => {
+            allQuotes = allQuotes.concat(quotesData[key]);
+        });
+        quotesData['all'] = allQuotes;
+
+        let currentCategory = 'all';
+        const quoteContentEl = document.getElementById('quote-content');
+        const refContainerEl = document.getElementById('reference-container');
+
+        function getRandomQuote(category) {
+            const list = quotesData[category] || quotesData['all'];
+            if (!list || list.length === 0) return { text: "Chưa có dữ liệu.", ref: "", url: "#" };
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function renderQuote() {
+            quoteContentEl.classList.add('fade-out');
+            
+            setTimeout(() => {
+                const q = getRandomQuote(currentCategory);
+                
+                // 1. Cập nhật nội dung quote
+                quoteContentEl.textContent = q.text;
+                
+                // 2. TẠO VÀ CẬP NHẬT LINK
+                // Xóa nội dung cũ
+                refContainerEl.innerHTML = ''; 
+                
+                // Tạo thẻ <a>
+                const linkEl = document.createElement('a');
+                linkEl.id = 'quote-link';
+                linkEl.href = q.url;
+                linkEl.textContent = q.ref;
+                linkEl.target = "_blank"; // Mở link trong tab mới
+                
+                // Chèn thẻ <a> vào container
+                refContainerEl.appendChild(linkEl);
+                
+                quoteContentEl.classList.remove('fade-out');
+            }, 300);
+        }
+
+        // --- XỬ LÝ SỰ KIỆN (Giữ nguyên) ---
+
+        // Nút New Quote
+        document.getElementById('new-quote-btn').addEventListener('click', renderQuote);
+
+        // Nút Copy
+        const copyBtn = document.getElementById('copy-btn');
+        const copyTextEl = document.getElementById('copy-text');
+
+        copyBtn.addEventListener('click', () => {
+            // Lấy text của link để sao chép cả tham chiếu
+            const refText = document.getElementById('quote-link').textContent;
+            const fullText = `"${quoteContentEl.textContent}"\n— ${refText}`;
+            
+            navigator.clipboard.writeText(fullText).then(() => {
+                const originalText = copyTextEl.textContent;
+                copyTextEl.textContent = "Đã chép!";
+                copyBtn.style.borderColor = "#4caf50";
+                
+                setTimeout(() => {
+                    copyTextEl.textContent = originalText;
+                    copyBtn.style.borderColor = ""; 
+                }, 2000);
+            });
+        });
+
+        // Bộ lọc
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCategory = e.target.dataset.id;
+                renderQuote();
+            });
+        });
+
+        // Dark Mode
+        const themeToggle = document.getElementById('theme-toggle');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+            themeToggle.textContent = '🌙';
+        }
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        renderQuote();
+		
+		// --- QUOTE SUBMISSION LOGIC ---
+const submissionForm = document.getElementById('quote-submission');
+const quoteOutputCode = document.getElementById('quote-output-code');
+const resultArea = document.getElementById('result-area');
+const copyCodeBtn = document.getElementById('copy-code-btn');
+
+submissionForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const textInput = document.getElementById('submit-text').value;
+    const refInput = document.getElementById('submit-ref').value;
+    const urlInput = document.getElementById('submit-url').value;
+    const categoryInput = document.getElementById('submit-category').value;
+
+    // 1. Escape the text for use in JavaScript string (especially newlines and quotes)
+    // The replace(/\n/g, '\\n') converts physical newlines to the JS newline character literal
+    const escapedText = textInput.replace(/\\/g, '\\\\')
+                                 .replace(/"/g, '\\"')
+                                 .replace(/\n/g, '\\n');
+    
+    // 2. Construct the final, ready-to-paste JS object string
+    const quoteObject = `
+    // Category: ${categoryInput.toUpperCase()}
+    { 
+        text: "${escapedText}", 
+        ref: "${refInput}", 
+        url: "${urlInput}" 
+    }`;
+    
+    // 3. Display the result area
+    quoteOutputCode.textContent = quoteObject.trim();
+    resultArea.style.display = 'block';
+
+    // Optional: Scroll to the result
+    resultArea.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Copy button for the generated code
+copyCodeBtn.addEventListener('click', () => {
+    const codeToCopy = quoteOutputCode.textContent;
+    navigator.clipboard.writeText(codeToCopy).then(() => {
+        const originalText = copyCodeBtn.textContent;
+        copyCodeBtn.textContent = "Đã Sao Chép!";
+        copyCodeBtn.style.background = "#4caf50"; // Green color
+        
+        setTimeout(() => {
+            copyCodeBtn.textContent = originalText;
+            copyCodeBtn.style.background = "var(--btn-bg)";
+        }, 1500);
+    });
+});
+    </script>
+</body>
+</html>

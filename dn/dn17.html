@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="pressed w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+  	<title>    Trường Bộ 17     </title>
+
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Dīgha Nikāya – Trường Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+
+<p lang="vi" class="vi"; style="text-align: center">Trường Bộ 17<br>
+<span lang="pi" class="pali">Dīgha Nikāya 17</span></p>
+
+<p lang="vi" class="vi"; style="text-align: center">Kinh Đại Thiện Kiến Vương<br>
+<span lang="pi" class="pali">Mahāsudassanasutta</span></p>
+
+<p lang="vi" class="vi">Tụng phẩm I<br>
+
+<p lang="vi" class="vi">Này Ānanda, thuở xưa có vị vua tên là Mahāsudassana (Ðại Thiện Kiến). Vị này là Chuyển Luân vương trị vì như pháp, là vị Pháp vương, thống lãnh bốn thiên hạ, chinh phục hộ trì quốc dân, đầy đủ bảy báu.<br>
+<span lang="pi" class="pali">Bhūtapubbaṃ, ānanda, rājā mahāsudassano nāma ahosi khattiyo muddhāvasitto cāturanto vijitāvī janapadatthāvariyappatto.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, đô thị Kusinārā này là kinh đô của vua Ðại Thiện Kiến, tên là Kusāvatī (Câu-xá-bà-đề),<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa ayaṃ kusinārā kusāvatī nāma rājadhānī ahosi.</span></p>
+
+<p lang="vi" class="vi">phía Ðông và phía Tây rộng đến mười hai do tuần, phía Bắc và phía Nam rộng đến mười bảy do tuần.<br>
+<span lang="pi" class="pali">Puratthimena ca pacchimena ca dvādasayojanāni āyāmena, uttarena ca dakkhiṇena ca sattayojanāni vitthārena.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, kinh đô Kusāvati này rất phồn thịnh, phú cường, dân cư đông đúc, Thiên chúng sung mãn, thực thẩm phong phú.<br>
+<span lang="pi" class="pali">Kusāvatī, ānanda, rājadhānī iddhā ceva ahosi phītā ca bahujanā ca ākiṇṇamanussā ca subhikkhā ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, cũng như kinh đô Āḷakamandā của chư Thiên rất phồn thịnh, phú cường, dân cư đông đúc, Thiên chúng sung mãn, thực phẩm phong phú.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, devānaṃ āḷakamandā nāma rājadhānī iddhā ceva hoti phītā ca bahujanā ca ākiṇṇayakkhā ca subhikkhā ca;</span></p>
+
+<p lang="vi" class="vi">Cũng vậy này Ānanda, kinh đô Kusāvatī này cũng rất phồn thịnh, phú cường, dân cư đông đúc, Thiên chúng sung mãn.<br>
+<span lang="pi" class="pali">evameva kho, ānanda, kusāvatī rājadhānī iddhā ceva ahosi phītā ca bahujanā ca ākiṇṇamanussā ca subhikkhā ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, kinh đô Kusāvatī này ngày đêm vang dậy mười loại tiếng, tức là:<br>
+<span lang="pi" class="pali">Kusāvatī, ānanda, rājadhānī dasahi saddehi avivittā ahosi divā ceva rattiñca, seyyathidaṃ—</span></p>
+
+<p lang="vi" class="vi">Tiếng voi, tiếng ngựa, tiếng xe, tiếng trống lớn, tiếng trống nhỏ, tiếng tỳ bà, tiếng hát, tiếng xập xỏa, tiếng chuông và tiếng thứ mười là lời kêu gọi: “Hãy uống đi, hãy ăn đi!”.<br>
+<span lang="pi" class="pali">hatthisaddena assasaddena rathasaddena bherisaddena mudiṅgasaddena vīṇāsaddena gītasaddena saṅkhasaddena sammasaddena pāṇitāḷasaddena ‘asnātha pivatha khādathā’ti dasamena saddena.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, kinh đô Kusāvatī có bảy bức thành bao bọc:<br>
+<span lang="pi" class="pali">Kusāvatī, ānanda, rājadhānī sattahi pākārehi parikkhittā ahosi.</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh, một loại bằng san hô, một loại bằng xa cừ, một loại bằng mọi thứ báu.<br>
+<span lang="pi" class="pali">Eko pākāro sovaṇṇamayo, eko rūpiyamayo, eko veḷuriyamayo, eko phalikamayo, eko lohitaṅkamayo, eko masāragallamayo, eko sabbaratanamayo.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, kinh đô Kusāvatā có bốn loại cửa:<br>
+<span lang="pi" class="pali">Kusāvatiyā, ānanda, rājadhāniyā catunnaṃ vaṇṇānaṃ dvārāni ahesuṃ.</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">Ekaṃ dvāraṃ sovaṇṇamayaṃ, ekaṃ rūpiyamayaṃ, ekaṃ veḷuriyamayaṃ, ekaṃ phalikamayaṃ.</span></p>
+
+<p lang="vi" class="vi">Tại mỗi cửa, có dựng bảy cột trụ, bề cao khoảng ba hay bốn lần thân người.<br>
+<span lang="pi" class="pali">Ekekasmiṃ dvāre satta satta esikā nikhātā ahesuṃ tiporisaṅgā tiporisanikhātā dvādasaporisā ubbedhena.</span></p>
+
+<p lang="vi" class="vi">Một cột trụ bằng vàng, một cột trụ bằng bạc, một cột trụ bằng lưu ly, một cột trụ bằng thủy tinh, một cột trụ bằng san hô, một cột trụ bằng xa cừ, một cột trụ bằng mọi thứ báu.<br>
+<span lang="pi" class="pali">Ekā esikā sovaṇṇamayā, ekā rūpiyamayā, ekā veḷuriyamayā, ekā phalikamayā, ekā lohitaṅkamayā, ekā masāragallamayā, ekā sabbaratanamayā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, kinh đô Kasāvatī có bảy hàng cây Tāla bao học,<br>
+<span lang="pi" class="pali">Kusāvatī, ānanda, rājadhānī sattahi tālapantīhi parikkhittā ahosi.</span></p>
+
+<p lang="vi" class="vi">một hàng bằng vàng, một hàng bằng bạc, một hàng bằng lưu ly, một hàng bằng thủy tinh, một hàng bằng san hô, một hàng bằng xa cừ, một hàng bằng mọi thứ báu.<br>
+<span lang="pi" class="pali">Ekā tālapanti sovaṇṇamayā, ekā rūpiyamayā, ekā veḷuriyamayā, ekā phalikamayā, ekā lohitaṅkamayā, ekā masāragallamayā, ekā sabbaratanamayā.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng vàng, có thân cây bằng vàng, có lá và trái cây bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayassa tālassa sovaṇṇamayo khandho ahosi, rūpiyamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng bạc có thân cây bằng bạc, có lá và trái cây bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayassa tālassa rūpiyamayo khandho ahosi, sovaṇṇamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng lưu ly, có thân cây bằng lưu ly, có lá và trái cây bằng thủy tinh.<br>
+<span lang="pi" class="pali">Veḷuriyamayassa tālassa veḷuriyamayo khandho ahosi, phalikamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng thủy tinh, có thân cây bằng thủy tinh, có lá và trái cây bằng lưu ly.<br>
+<span lang="pi" class="pali">Phalikamayassa tālassa phalikamayo khandho ahosi, veḷuriyamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng san hô, có thân cây bằng san hô, có lá và trái cây bằng xa cừ.<br>
+<span lang="pi" class="pali">Lohitaṅkamayassa tālassa lohitaṅkamayo khandho ahosi, masāragallamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng xa cừ, có thân cây bằng xa cừ, có lá và trái cây bằng san hô.<br>
+<span lang="pi" class="pali">Masāragallamayassa tālassa masāragallamayo khandho ahosi, lohitaṅkamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng mọi loại báu, có thân cây bằng mọi loại báu, có lá và trái cây bằng mọi loại báu.<br>
+<span lang="pi" class="pali">Sabbaratanamayassa tālassa sabbaratanamayo khandho ahosi, sabbaratanamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi những cây Tāla này được gió rung chuyển, một âm thanh vi diệu, khả ái, đẹp ý, mê lý khởi lên,<br>
+<span lang="pi" class="pali">Tāsaṃ kho panānanda, tālapantīnaṃ vāteritānaṃ saddo ahosi vaggu ca rajanīyo ca khamanīyo ca madanīyo ca.</span></p>
+
+<p lang="vi" class="vi">cũng như năm loại nhạc khí, khi được một nhạc sĩ thiện xảo tấu nhạc, phát ra một âm thanh vi diệu, khả ái, đẹp ý, mê ly.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, pañcaṅgikassa tūriyassa suvinītassa suppaṭitāḷitassa sukusalehi samannāhatassa saddo hoti vaggu ca rajanīyo ca khamanīyo ca madanīyo ca;</span></p>
+
+<p lang="vi" class="vi">Cũng vậy, Ānanda, khi những hàng cây Tāla này được gió rung chuyển, một âm thanh vi diệu, khả ái, đẹp ý, mê ly khởi lên.<br>
+<span lang="pi" class="pali">evameva kho, ānanda, tāsaṃ tālapantīnaṃ vāteritānaṃ saddo ahosi vaggu ca rajanīyo ca khamanīyo ca madanīyo ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lúc bấy giờ, nếu ở tại kinh đô Kusāvatī có những kẻ cờ bạc, rượu chè, họ sẽ nhảy múa theo những âm điệu của những hàng cây Tāla này khi được gió thổi.<br>
+<span lang="pi" class="pali">Ye kho panānanda, tena samayena kusāvatiyā rājadhāniyā dhuttā ahesuṃ soṇḍā pipāsā, te tāsaṃ tālapantīnaṃ vāteritānaṃ saddena paricāresuṃ.</span></p>
+
+
+<p lang="vi" class="vi">Này Ānanda, vua Mahāsudassano (Ðại Thiện Kiến), có đủ bảy món báu và bốn Như ý đức.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano sattahi ratanehi samannāgato ahosi catūhi ca iddhīhi.</span></p>
+
+<p lang="vi" class="vi">Thế nào là bảy?<br>
+<span lang="pi" class="pali">Katamehi sattahi?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến, vào ngày Bố-tát trăng rằm sau khi tắm rửa, lên cao điện để trai giới,<br>
+<span lang="pi" class="pali">Idhānanda, rañño mahāsudassanassa tadahuposathe pannarase sīsaṃnhātassa uposathikassa uparipāsādavaragatassa</span></p>
+
+<p lang="vi" class="vi">thời Thiên luân báu hiện ra, đủ một ngàn cọng xe, với vành xe, trục xe, đủ mọi bộ phận.<br>
+<span lang="pi" class="pali">dibbaṃ cakkaratanaṃ pāturahosi sahassāraṃ sanemikaṃ sanābhikaṃ sabbākāraparipūraṃ.</span></p>
+
+<p lang="vi" class="vi">Thấy vậy, vua Ðại Thiện Kiến suy nghĩ:<br>
+<span lang="pi" class="pali">Disvā rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Ta nghe như vầy: Khi một vị vua Sát-đế-lỵ, đã làm lễ quán đảnh vào ngày Bố-tát trăng rằm, sau khi tắm rửa, lên cao điện trai giới, nếu có Thiên luân báu hiện ra, đủ một ngàn cọng xe, với vành xe và trục xe, đầy đủ mọi bộ phận, thời vị vua ấy là Chuyển Luân vương.<br>
+<span lang="pi" class="pali">‘sutaṃ kho pana metaṃ: “yassa rañño khattiyassa muddhāvasittassa tadahuposathe pannarase sīsaṃnhātassa uposathikassa uparipāsādavaragatassa dibbaṃ cakkaratanaṃ pātubhavati sahassāraṃ sanemikaṃ sanābhikaṃ sabbākāraparipūraṃ, so hoti rājā cakkavattī”ti.</span></p>
+
+<p lang="vi" class="vi">Như vậy ta có thể là Chuyển Luân vương”.<br>
+<span lang="pi" class="pali">Assaṃ nu kho ahaṃ rājā cakkavattī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến từ chỗ ngồi đứng dậy, đắp thượng y trên một vai, tay trái cầm bình nước và với tay phải rưới nước trên xe báu và nói:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano uṭṭhāyāsanā ekaṃsaṃ uttarāsaṅgaṃ karitvā vāmena hatthena suvaṇṇabhiṅkāraṃ gahetvā dakkhiṇena hatthena cakkaratanaṃ abbhukkiri:</span></p>
+
+<p lang="vi" class="vi">Này xe báu hãy lăn khắp, này xe báu hãy chinh phục!”<br>
+<span lang="pi" class="pali">‘pavattatu bhavaṃ cakkaratanaṃ, abhivijinātu bhavaṃ cakkaratanan’ti.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, xe báu lăn về hướng Ðông và vua Ðại Thiện Kiến cùng với bốn loại binh chủng đi theo sau. Và này Ānanda, chỗ nào xe báu dừng lại, chỗ ấy vua Ðại Thiện Kiến an trú cùng với bốn loại binh chủng.<br>
+<span lang="pi" class="pali">Atha kho taṃ, ānanda, cakkaratanaṃ puratthimaṃ disaṃ pavatti, anvadeva rājā mahāsudassano saddhiṃ caturaṅginiyā senāya, yasmiṃ kho panānanda, padese cakkaratanaṃ patiṭṭhāsi, tattha rājā mahāsudassano vāsaṃ upagacchi saddhiṃ caturaṅginiyā senāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các địch vương ở phương Ðông đến yết kiến vua Ðại Thiện Kiến và nói:<br>
+<span lang="pi" class="pali">Ye kho panānanda, puratthimāya disāya paṭirājāno, te rājānaṃ mahāsudassanaṃ upasaṅkamitvā evamāhaṃsu:</span></p>
+
+<p lang="vi" class="vi">“Hãy đến đây, Ðại vương! Hoan nghênh, đón mừng Ðại vương! Tâu Ðại vương, tất cả đều thuộc của Ngài. Ðại vương hãy giáo huấn cho chúng tôi!”.<br>
+<span lang="pi" class="pali">‘ehi kho, mahārāja, svāgataṃ te, mahārāja, sakaṃ te, mahārāja, anusāsa, mahārājā’ti.</span></p>
+
+<p lang="vi" class="vi">Vua Ðại Thiện Kiến nói rằng:<br>
+<span lang="pi" class="pali">Rājā mahāsudassano evamāha:</span></p>
+
+<p lang="vi" class="vi">“Không được sát sanh. Không được lấy của không cho. Không được tà dâm. Không được nói láo. Không được uống rượu. Hãy ăn uống cho thích nghi”.<br>
+<span lang="pi" class="pali">‘pāṇo na hantabbo, adinnaṃ na ādātabbaṃ, kāmesu micchā na caritabbā, musā na bhaṇitabbā, majjaṃ na pātabbaṃ, yathābhuttañca bhuñjathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, tất cả địch vương ở phương Ðông đều trở thành chư hầu vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Ye kho panānanda, puratthimāya disāya paṭirājāno, te rañño mahāsudassanassa anuyantā ahesuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi xe báu lăn xuống biển lớn ở phương Ðông rồi nổi lên rồi lăn về phương Nam...<br>
+<span lang="pi" class="pali">Atha kho taṃ, ānanda, cakkaratanaṃ puratthimaṃ samuddaṃ ajjhogāhetvā paccuttaritvā dakkhiṇaṃ disaṃ pavatti ...pe...</span></p>
+
+<p lang="vi" class="vi">lặn xuống biển lớn ở phương Nam, rồi nổi lên và lặn về phương Tây...<br>
+<span lang="pi" class="pali">dakkhiṇaṃ samuddaṃ ajjhogāhetvā paccuttaritvā pacchimaṃ disaṃ pavatti ...pe...</span></p>
+
+<p lang="vi" class="vi">lặn xuống biển lớn ở phương Tây, rồi nổi lên và lặn về phương Bắc và vua Ðại Thiện Kiến cùng với bốn loại binh chủng đi theo sau.<br>
+<span lang="pi" class="pali">pacchimaṃ samuddaṃ ajjhogāhetvā paccuttaritvā uttaraṃ disaṃ pavatti, anvadeva rājā mahāsudassano saddhiṃ caturaṅginiyā senāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, chỗ nào xe báu dừng lại chỗ ấy vua Ðại Thiện Kiến an trú cùng với bốn loại binh chủng.<br>
+<span lang="pi" class="pali">Yasmiṃ kho panānanda, padese cakkaratanaṃ patiṭṭhāsi, tattha rājā mahāsudassano vāsaṃ upagacchi saddhiṃ caturaṅginiyā senāya.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các địch vương ở phương Bắc đến yết kiến vua Ðại Thiện Kiến và nói:<br>
+<span lang="pi" class="pali">Ye kho panānanda, uttarāya disāya paṭirājāno, te rājānaṃ mahāsudassanaṃ upasaṅkamitvā evamāhaṃsu:</span></p>
+
+<p lang="vi" class="vi">“Hãy đến đây, Ðại vương! Hoan nghênh đón mừng Ðại vương! Tâu Ðại vương tất cả thuộc của Ngài. Ðại vương hãy giáo huấn cho chúng tôi!”.<br>
+<span lang="pi" class="pali">‘ehi kho, mahārāja, svāgataṃ te, mahārāja, sakaṃ te, mahārāja, anusāsa, mahārājā’ti.</span></p>
+
+<p lang="vi" class="vi">Vua Ðại Thiện Kiến nói rằng:<br>
+<span lang="pi" class="pali">Rājā mahāsudassano evamāha:</span></p>
+
+<p lang="vi" class="vi">“Không được sát sanh. Không được lấy của không cho. Không được tà dâm. Không được nói láo. Không được uống rượu. Hãy ăn uống cho thích nghi”.<br>
+<span lang="pi" class="pali">‘pāṇo na hantabbo, adinnaṃ na ādātabbaṃ, kāmesu micchā na caritabbā, musā na bhaṇitabbā, majjaṃ na pātabbaṃ, yathābhuttañca bhuñjathā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, tất cả địch vương ở phương Bắc đều trở thành chư hầu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Ye kho panānanda, uttarāya disāya paṭirājāno, te rañño mahāsudassanassa anuyantā ahesuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, xe báu ấy sau khi chinh phục trái đất cho đến hải biên, liền trở về kinh đô Kusāvatī, và đứng trước pháp đình, trên cửa nội cung như một trang bảo cho nội cung của vua Ðại Thiện Kiến”.<br>
+<span lang="pi" class="pali">Atha kho taṃ, ānanda, cakkaratanaṃ samuddapariyantaṃ pathaviṃ abhivijinitvā kusāvatiṃ rājadhāniṃ paccāgantvā rañño mahāsudassanassa antepuradvāre atthakaraṇapamukhe akkhāhataṃ maññe aṭṭhāsi rañño mahāsudassanassa antepuraṃ upasobhayamānaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là sự xuất hiện xe báu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa evarūpaṃ cakkaratanaṃ pāturahosi.</span></p>
+
+
+
+<p lang="vi" class="vi">Lại nữa này Ānanda, voi báu xuất hiện cho vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rañño mahāsudassanassa hatthiratanaṃ pāturahosi</span></p>
+
+<p lang="vi" class="vi">thuần trắng, bảy xứ kiên cường, có thần lực, phi hành trên hư không và tên là Uposatha (Bố-tát).<br>
+<span lang="pi" class="pali">sabbaseto sattappatiṭṭho iddhimā vehāsaṅgamo uposatho nāma nāgarājā.</span></p>
+
+<p lang="vi" class="vi">Thấy voi báu, vua Ðại Thiện Kiến sanh tâm hoan hỷ và nghĩ:<br>
+<span lang="pi" class="pali">Taṃ disvā rañño mahāsudassanassa cittaṃ pasīdi:</span></p>
+
+<p lang="vi" class="vi">‘”Lành thay được cỡi con voi này nếu nó chịu sự điều ngự”.<br>
+<span lang="pi" class="pali">‘bhaddakaṃ vata bho hatthiyānaṃ, sace damathaṃ upeyyā’ti.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, như một con hiền tượng quí phái chịu sự điều ngự lâu ngày, con voi báu ấy tự đến để chịu sự điều ngự.<br>
+<span lang="pi" class="pali">Atha kho taṃ, ānanda, hatthiratanaṃ—seyyathāpi nāma gandhahatthājāniyo dīgharattaṃ suparidanto; evameva damathaṃ upagacchi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, thuở xưa, vua Ðại Thiện Kiến để thử voi báu này, sáng sớm cỡi voi đi khắp quả đất cho đến hải biên rồi về lại kinh đô Kusāvatī kịp giờ ăn sáng.<br>
+<span lang="pi" class="pali">Bhūtapubbaṃ, ānanda, rājā mahāsudassano tameva hatthiratanaṃ vīmaṃsamāno pubbaṇhasamayaṃ abhiruhitvā samuddapariyantaṃ pathaviṃ anuyāyitvā kusāvatiṃ rājadhāniṃ paccāgantvā pātarāsamakāsi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là sự xuất hiện voi báu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa evarūpaṃ hatthiratanaṃ pāturahosi.</span></p>
+
+
+<p lang="vi" class="vi">Lại nữa này Ānanda, ngựa báu xuất hiện cho vua Ðại Thiện Kiến<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rañño mahāsudassanassa assaratanaṃ pāturahosi</span></p>
+
+<p lang="vi" class="vi">thuần trắng, đầu đen như quạ, bờm ngựa màu đen, có thần lực, phi hành trên hư không và tên là Valāhaka.<br>
+<span lang="pi" class="pali">sabbaseto kāḷasīso muñjakeso iddhimā vehāsaṅgamo valāhako nāma assarājā.</span></p>
+
+<p lang="vi" class="vi">Thấy ngựa báu, vua Ðại Thiện Kiến sanh tâm hoan hỷ và nghĩ:<br>
+<span lang="pi" class="pali">Taṃ disvā rañño mahāsudassanassa cittaṃ pasīdi:</span></p>
+
+<p lang="vi" class="vi">“Tốt đẹp thay được cỡi con ngựa này nếu nó chịu sự điều ngự”.<br>
+<span lang="pi" class="pali">‘bhaddakaṃ vata bho assayānaṃ sace damathaṃ upeyyā’ti.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, như một con hiền mã quý phái, chịu sự điều ngự lâu ngày, con ngựa báu ấy tự đến để chịu sự điều ngự.<br>
+<span lang="pi" class="pali">Atha kho taṃ, ānanda, assaratanaṃ seyyathāpi nāma bhaddo assājāniyo dīgharattaṃ suparidanto; evameva damathaṃ upagacchi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, thuở xưa, vua Ðại Thiện Kiến để thử ngựa báu này, sáng sớm cỡi ngựa, đi khắp quả đất cho đến hải biên rồi về lại kinh đô Kusāvatī kịp giờ ăn sáng.<br>
+<span lang="pi" class="pali">Bhūtapubbaṃ, ānanda, rājā mahāsudassano tameva assaratanaṃ vīmaṃsamāno pubbaṇhasamayaṃ abhiruhitvā samuddapariyantaṃ pathaviṃ anuyāyitvā kusāvatiṃ rājadhāniṃ paccāgantvā pātarāsamakāsi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là sự xuất hiện ngựa báu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa evarūpaṃ assaratanaṃ pāturahosi.</span></p>
+
+
+<p lang="vi" class="vi">Lại nữa, này Ānanda, châu báu lại xuất hiện cho vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rañño mahāsudassanassa maṇiratanaṃ pāturahosi.</span></p>
+
+<p lang="vi" class="vi">Châu báu ấy là lưu ly châu, sáng suốt, thuần chất, có tám mặt, khó dũa, khó mài, thanh tịnh, trong suốt, hoàn hảo mọi phương diện.<br>
+<span lang="pi" class="pali">So ahosi maṇi veḷuriyo subho jātimā aṭṭhaṃso suparikammakato accho vippasanno anāvilo sabbākārasampanno.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hào quang châu báu này chiếu sáng cùng khắp một do tuần.<br>
+<span lang="pi" class="pali">Tassa kho panānanda, maṇiratanassa ābhā samantā yojanaṃ phuṭā ahosi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, thuở xưa, vua Ðại Thiện Kiến để thử châu báu này đã cho dàn bày bốn binh chủng, đặt bảo châu cao trên quân kỳ và có thể tiến quân trong đêm tối âm u.<br>
+<span lang="pi" class="pali">Bhūtapubbaṃ, ānanda, rājā mahāsudassano tameva maṇiratanaṃ vīmaṃsamāno caturaṅginiṃ senaṃ sannayhitvā maṇiṃ dhajaggaṃ āropetvā rattandhakāratimisāya pāyāsi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, mọi người trong làng ở xung quanh đều bắt đầu làm việc, tưởng rằng trời đã sáng rồi.<br>
+<span lang="pi" class="pali">Ye kho panānanda, samantā gāmā ahesuṃ, te tenobhāsena kammante payojesuṃ divāti maññamānā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda như vậy là sự xuất hiện châu báu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa evarūpaṃ maṇiratanaṃ pāturahosi.</span></p>
+
+
+<p lang="vi" class="vi">Này Ānanda, nữ báu lại xuất hiện cho vua Ðại Thiện Kiến,<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rañño mahāsudassanassa itthiratanaṃ pāturahosi</span></p>
+
+<p lang="vi" class="vi">mỹ miều, khả ái, cử chỉ đoan trang, màu da tuyệt mỹ, không quá cao, không quá thấp, không béo, không gầy, không quá đen, không quá trắng, vượt trên dung sắc loài Người, sánh đến dung sắc chư Thiên.<br>
+<span lang="pi" class="pali">abhirūpā dassanīyā pāsādikā paramāya vaṇṇapokkharatāya samannāgatā nātidīghā nātirassā nātikisā nātithūlā nātikāḷikā nāccodātā atikkantā mānusivaṇṇaṃ appattā dibbavaṇṇaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, thân xúc nữ báu này êm mịn như bông, như nhung.<br>
+<span lang="pi" class="pali">Tassa kho panānanda, itthiratanassa evarūpo kāyasamphasso hoti, seyyathāpi nāma tūlapicuno vā kappāsapicuno vā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi trời lạnh, chân tay nữ báu này trở thành ấm áp, khi trời nóng, trở thành lạnh mát.<br>
+<span lang="pi" class="pali">Tassa kho panānanda, itthiratanassa sīte uṇhāni gattāni honti, uṇhe sītāni.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, thân nữ báu tỏa mùi thơm chiên đàn, miệng tỏa mùi thơm hoa sen.<br>
+<span lang="pi" class="pali">Tassa kho panānanda, itthiratanassa kāyato candanagandho vāyati, mukhato uppalagandho.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nữ báu này dậy trước và đi ngủ sau vua Ðại Thiện Kiến, mọi hành động làm vua thỏa thích, yên lành khả ái.<br>
+<span lang="pi" class="pali">Taṃ kho panānanda, itthiratanaṃ rañño mahāsudassanassa pubbuṭṭhāyinī ahosi pacchānipātinī kiṅkārapaṭissāvinī manāpacārinī piyavādinī.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nữ báu này không có một tư tưởng nào bất tín đối với vua Ðại Thiện Kiến huống nữa là về thân thể.<br>
+<span lang="pi" class="pali">Taṃ kho panānanda, itthiratanaṃ rājānaṃ mahāsudassanaṃ manasāpi no aticari, kuto pana kāyena.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là sự xuất hiện nữ báu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa evarūpaṃ itthiratanaṃ pāturahosi.</span></p>
+
+
+
+<p lang="vi" class="vi">Lại nữa, này Ānanda, gia chủ báu xuất hiện cho vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rañño mahāsudassanassa gahapatiratanaṃ pāturahosi.</span></p>
+
+<p lang="vi" class="vi">chứng được thiên nhãn, do nghiệp dị thục sanh và nhờ thiên nhãn này có thể thấy châu báu chôn cất có chủ hay không có chủ.<br>
+<span lang="pi" class="pali">Tassa kammavipākajaṃ dibbacakkhu pāturahosi yena nidhiṃ passati sassāmikampi assāmikampi.</span></p>
+
+<p lang="vi" class="vi">Gia chủ báu này đến vua Ðại Thiện Kiến và nói:<br>
+<span lang="pi" class="pali">So rājānaṃ mahāsudassanaṃ upasaṅkamitvā evamāha:</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, Ðại vương chớ có lo âu, thần sẽ xử lý thích nghi tài sản Ðại vương”.<br>
+<span lang="pi" class="pali">‘appossukko tvaṃ, deva, hohi, ahaṃ te dhanena dhanakaraṇīyaṃ karissāmī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, thuở xưa vua Ðại Thiện Kiến muốn thử gia chủ báu này, liền cỡi thuyền, chèo ra giữa sông Hằng và bảo gia chủ báu:<br>
+<span lang="pi" class="pali">Bhūtapubbaṃ, ānanda, rājā mahāsudassano tameva gahapatiratanaṃ vīmaṃsamāno nāvaṃ abhiruhitvā majjhe gaṅgāya nadiyā sotaṃ ogāhitvā gahapatiratanaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Này Gia chủ, ta cần vàng.<br>
+<span lang="pi" class="pali">‘attho me, gahapati, hiraññasuvaṇṇenā’ti.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, Ðại vương hãy cho chèo thuyền gần bờ nào cũng được.<br>
+<span lang="pi" class="pali">‘Tena hi, mahārāja, ekaṃ tīraṃ nāvā upetū’ti.</span></p>
+
+<p lang="vi" class="vi">Này Gia chủ, Ta cần vàng ngay tại đây.<br>
+<span lang="pi" class="pali">‘Idheva me, gahapati, attho hiraññasuvaṇṇenā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi ấy gia chủ báu thọc hai tay xuống nước nhắc lên một ghè đầy cả vàng ròng rồi tâu với vua Ðại Thiện Kiến:<br>
+<span lang="pi" class="pali">Atha kho taṃ, ānanda, gahapatiratanaṃ ubhohi hatthehi udakaṃ omasitvā pūraṃ hiraññasuvaṇṇassa kumbhiṃ uddharitvā rājānaṃ mahāsudassanaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, như vậy đã đủ chưa. Tâu Ðại vương, làm như vậy đã được chưa?<br>
+<span lang="pi" class="pali">‘alamettāvatā, mahārāja, katamettāvatā, mahārāja, pūjitamettāvatā, mahārājā’ti?</span></p>
+
+<p lang="vi" class="vi">Vua Ðại Thiện Kiến trả lời:<br>
+<span lang="pi" class="pali">Rājā mahāsudassano evamāha:</span></p>
+
+<p lang="vi" class="vi">Này Gia chủ, như vậy là đủ. Này Gia chủ, làm như vậy là được rồi. Này Gia chủ, cúng dường như vậy là được rồi.<br>
+<span lang="pi" class="pali">‘alamettāvatā, gahapati, katamettāvatā, gahapati, pūjitamettāvatā, gahapatī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là sự xuất hiện gia chủ báu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa evarūpaṃ gahapatiratanaṃ pāturahosi.</span></p>
+
+
+
+<p lang="vi" class="vi">Lại nữa, này Ānanda, tướng quân báu xuất hiện cho vua Ðại Thiện Kiến<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rañño mahāsudassanassa pariṇāyakaratanaṃ pāturahosi</span></p>
+
+<p lang="vi" class="vi">có học thức, thông minh, sáng suốt, có khả năng khuyến cáo. Vua Ðại Thiện Kiến khi đáng tiến thì tiến, khi đáng lui thì lui, khi đáng dừng thì dừng lại.<br>
+<span lang="pi" class="pali">paṇḍito viyatto medhāvī paṭibalo rājānaṃ mahāsudassanaṃ upayāpetabbaṃ upayāpetuṃ, apayāpetabbaṃ apayāpetuṃ, ṭhapetabbaṃ ṭhapetuṃ.</span></p>
+
+<p lang="vi" class="vi">Vị này đến tâu vua Ðại Thiện Kiến:<br>
+<span lang="pi" class="pali">So rājānaṃ mahāsudassanaṃ upasaṅkamitvā evamāha:</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, Ðại vương chớ có âu lo, Thần sẽ cố vấn Ðại vương.<br>
+<span lang="pi" class="pali">‘appossukko tvaṃ, deva, hohi, ahamanusāsissāmī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là sự xuất hiện tướng quân báu của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa evarūpaṃ pariṇāyakaratanaṃ pāturahosi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến có đầy đủ bảy báu như vậy.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano imehi sattahi ratanehi samannāgato ahosi.</span></p>
+
+<p lang="vi" class="vi">3. Bốn Như Ý Đức<br>
+<span lang="pi" class="pali">3. Catuiddhisamannāgata</span></p>
+
+<p lang="vi" class="vi">Lại nữa, này Ānanda, vua Ðại Thiện Kiến, có đầy đủ bốn Như ý đức.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano catūhi iddhīhi samannāgato ahosi.</span></p>
+
+<p lang="vi" class="vi">Thế nào là bốn?<br>
+<span lang="pi" class="pali">Katamāhi catūhi iddhīhi?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến đẹp trai, khả ái, cử chỉ thanh lịch, sắc diện tuyệt luân, thấy xa hơn mọi người.<br>
+<span lang="pi" class="pali">Idhānanda, rājā mahāsudassano abhirūpo ahosi dassanīyo pāsādiko paramāya vaṇṇapokkharatāya samannāgato ativiya aññehi manussehi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, đó là Như ý đức thứ nhất của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano imāya paṭhamāya iddhiyā samannāgato ahosi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lại nữa, vua Ðại Thiện Kiến sống lâu, tuổi thọ thắng xa các người khác.<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rājā mahāsudassano dīghāyuko ahosi ciraṭṭhitiko ativiya aññehi manussehi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, đó là Như ý đức thứ hai của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano imāya dutiyāya iddhiyā samannāgato ahosi.</span></p>
+
+<p lang="vi" class="vi">Lại nữa này Ānanda, vua Ðại Thiện Kiến ít bệnh tật, ít tai ương, thể nhiệt không quá lạnh, không quá nóng, được quân phân để điều hòa sự tiêu hóa, thắng xa các người khác.<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rājā mahāsudassano appābādho ahosi appātaṅko samavepākiniyā gahaṇiyā samannāgato nātisītāya nāccuṇhāya ativiya aññehi manussehi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, đó là Như ý đức thứ ba của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano imāya tatiyāya iddhiyā samannāgato ahosi.</span></p>
+
+<p lang="vi" class="vi">Lại nữa, này Ānanda, vua Ðại Thiện Kiến được các vị Bà-la-môn và Gia chủ ái kính và yêu mến.<br>
+<span lang="pi" class="pali">Puna caparaṃ, ānanda, rājā mahāsudassano brāhmaṇagahapatikānaṃ piyo ahosi manāpo.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như người cha được các người con ái kính và yêu mến; cũng vậy này Ānanda, vua Ðại Thiện Kiến được các vị Bà-la-môn và Gia chủ ái kính và yêu mến.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, pitā puttānaṃ piyo hoti manāpo; evameva kho, ānanda, rājā mahāsudassano brāhmaṇagahapatikānaṃ piyo ahosi manāpo.</span></p>
+
+<p lang="vi" class="vi">Lại nữa, này Ānanda, các vị Bà-la-môn và Gia chủ được vua Ðại Thiện Kiến ái kính và yêu mến.<br>
+<span lang="pi" class="pali">Raññopi, ānanda, mahāsudassanassa brāhmaṇagahapatikā piyā ahesuṃ manāpā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như những người con được người cha ái kính và yêu mến, cũng vậy này Ānanda, các vị Bà-la-môn và Gia chủ được vua Ðại Thiện Kiến ái kính và yêu mến.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, pitu puttā piyā honti manāpā; evameva kho, ānanda, raññopi mahāsudassanassa brāhmaṇagahapatikā piyā ahesuṃ manāpā.</span></p>
+
+<p lang="vi" class="vi">Thuở xưa, này Ānanda, vua Ðại Thiện Kiến đi đến hoa viên cùng với bốn loại binh chủng.<br>
+<span lang="pi" class="pali">Bhūtapubbaṃ, ānanda, rājā mahāsudassano caturaṅginiyā senāya uyyānabhūmiṃ niyyāsi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các vị Bà-la-môn và Gia chủ đến vua Ðại Thiện Kiến và tâu rằng:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, brāhmaṇagahapatikā rājānaṃ mahāsudassanaṃ upasaṅkamitvā evamāhaṃsu:</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, hãy cho đi chậm chậm để chúng tôi có thể chiêm ngưỡng lâu dài hơn.”<br>
+<span lang="pi" class="pali">‘ataramāno, deva, yāhi, yathā taṃ mayaṃ cirataraṃ passeyyāmā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nhưng vua Ðại Thiện Kiến lại ra lệnh cho người đánh xe:<br>
+<span lang="pi" class="pali">Rājāpi, ānanda, mahāsudassano sārathiṃ āmantesi:</span></p>
+
+<p lang="vi" class="vi">“Này anh đánh xe, hãy đánh xe chậm chậm để ta có thể thấy các vị Bà-la-môn và Gia chủ lâu dài hơn”.<br>
+<span lang="pi" class="pali">‘ataramāno, sārathi, rathaṃ pesehi, yathā ahaṃ brāhmaṇagahapatike cirataraṃ passeyyan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là Như ý đức thứ tư của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano imāya catutthiyā iddhiyā samannāgato ahosi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như vậy là bốn như ý đức của vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano imāhi catūhi iddhīhi samannāgato ahosi.</span></p>
+
+
+<p lang="vi" class="vi">Và này Ānada, vua Ðại Thiện Kiến suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Nay ta hãy cho xây những hồ sen giữa các hàng cây Tāla, cứ cách khoảng một trăm cung tầm!”<br>
+<span lang="pi" class="pali">‘yannūnāhaṃ imāsu tālantarikāsu dhanusate dhanusate pokkharaṇiyo māpeyyan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến cho xây các hồ sen giữa các hàng cây Tāla, cứ cách khoảng một trăm cung tầm.<br>
+<span lang="pi" class="pali">Māpesi kho, ānanda, rājā mahāsudassano tāsu tālantarikāsu dhanusate dhanusate pokkharaṇiyo.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, những hồ sen ấy được lát bằng bốn loại gạch—<br>
+<span lang="pi" class="pali">Tā kho panānanda, pokkharaṇiyo catunnaṃ vaṇṇānaṃ iṭṭhakāhi citā ahesuṃ—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekā iṭṭhakā sovaṇṇamayā, ekā rūpiyamayā, ekā veḷuriyamayā, ekā phalikamayā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong bốn loại hồ sen ấy có bốn loại tầm cấp,<br>
+<span lang="pi" class="pali">Tāsu kho panānanda, pokkharaṇīsu cattāri cattāri sopānāni ahesuṃ catunnaṃ vaṇṇānaṃ,</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekaṃ sopānaṃ sovaṇṇamayaṃ ekaṃ rūpiyamayaṃ ekaṃ veḷuriyamayaṃ ekaṃ phalikamayaṃ.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng vàng có cột trụ bằng vàng, có chắn ngang và đầu trụ bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayassa sopānassa sovaṇṇamayā thambhā ahesuṃ, rūpiyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng bạc có cột trụ bằng bạc, có chắn ngang và đầu trụ bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayassa sopānassa rūpiyamayā thambhā ahesuṃ, sovaṇṇamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng lưu ly có cột trụ bằng lưu ly, có chắn ngang và đầu trụ bằng thủy tinh.<br>
+<span lang="pi" class="pali">Veḷuriyamayassa sopānassa veḷuriyamayā thambhā ahesuṃ, phalikamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng thủy tinh có cột trụ bằng thủy tinh, có chắn ngang và đầu trụ bằng lưu ly.<br>
+<span lang="pi" class="pali">Phalikamayassa sopānassa phalikamayā thambhā ahesuṃ, veḷuriyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, những hồ sen ấy được hai hàng lan can bao bọc, một hàng bằng vàng, một hàng bằng bạc.<br>
+<span lang="pi" class="pali">Tā kho panānanda, pokkharaṇiyo dvīhi vedikāhi parikkhittā ahesuṃ ekā vedikā sovaṇṇamayā, ekā rūpiyamayā.</span></p>
+
+<p lang="vi" class="vi">Hàng lan can bằng vàng có cột trụ bằng vàng, có chắn ngang và đầu trụ bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayāya vedikāya sovaṇṇamayā thambhā ahesuṃ, rūpiyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Hàng lan can bằng bạc có cột trụ bằng bạc, có chắn ngang và đầu trụ bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayāya vedikāya rūpiyamayā thambhā ahesuṃ, sovaṇṇamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, vua Ðại Thiện Kiến lại suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Trong những hồ sen này ta sẽ cho đem trồng các loại sen xanh, sen hồng, sen vàng, sen trắng khắp bốn mùa để những ai muốn làm tràng hoa có thể lấy dùng?”<br>
+<span lang="pi" class="pali">‘yannūnāhaṃ imāsu pokkharaṇīsu evarūpaṃ mālaṃ ropāpeyyaṃ uppalaṃ padumaṃ kumudaṃ puṇḍarīkaṃ sabbotukaṃ sabbajanassa anāvaṭan’ti.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, vua Ðại Thiện Kiến cho đem trồng các loại sen xanh, sen hồng, sen vàng, sen trắng khắp bốn mùa để làm những tràng hoa bằng các thứ bông ấy.<br>
+<span lang="pi" class="pali">Ropāpesi kho, ānanda, rājā mahāsudassano tāsu pokkharaṇīsu evarūpaṃ mālaṃ uppalaṃ padumaṃ kumudaṃ puṇḍarīkaṃ sabbotukaṃ sabbajanassa anāvaṭaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến lại suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Trên bờ những hồ sen này, ta sẽ cho đặt những người hầu tắm cho những người qua kẻ lại?”.<br>
+<span lang="pi" class="pali">‘yannūnāhaṃ imāsaṃ pokkharaṇīnaṃ tīre nhāpake purise ṭhapeyyaṃ, ye āgatāgataṃ janaṃ nhāpessantī’ti.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, vua Ðại Thiện Kiến cho đặt những người hầu tắm trên bờ những hồ sen này để tắm cho những người qua kẻ lại.<br>
+<span lang="pi" class="pali">Ṭhapesi kho, ānanda, rājā mahāsudassano tāsaṃ pokkharaṇīnaṃ tīre nhāpake purise, ye āgatāgataṃ janaṃ nhāpesuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến lại suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Trên bờ những hồ sen này,<br>
+<span lang="pi" class="pali">‘yannūnāhaṃ imāsaṃ pokkharaṇīnaṃ tīre evarūpaṃ dānaṃ paṭṭhapeyyaṃ—</span></p>
+
+<p lang="vi" class="vi">ta sẽ cho đặt những vật bố thí, đồ ăn cho những ai đói, đồ uống cho những ai khát, áo quần cho những ai cần áo quần, xe cộ cho những ai cần xe, đồ nằm cho những ai cần nằm, đàn bà cho những ai cần đàn bà, bạc cho những ai cần bạc và vàng cho những ai cần vàng?”<br>
+<span lang="pi" class="pali">annaṃ annaṭṭhikassa, pānaṃ pānaṭṭhikassa, vatthaṃ vatthaṭṭhikassa, yānaṃ yānaṭṭhikassa, sayanaṃ sayanaṭṭhikassa, itthiṃ itthiṭṭhikassa, hiraññaṃ hiraññaṭṭhikassa, suvaṇṇaṃ suvaṇṇaṭṭhikassā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến, trên bờ những hồ sen ấy — cho đặt những vật bố thí, đồ ăn cho những ai đói, đồ uống cho những ai khát, áo quần cho những ai cần áo quần, xe cộ cho những ai cần xe, đồ nằm cho những ai cần nằm, đàn bà cho những ai cần đàn bà, bạc cho những ai cần bạc, và vàng cho những ai cần vàng.<br>
+<span lang="pi" class="pali">Paṭṭhapesi kho, ānanda, rājā mahāsudassano tāsaṃ pokkharaṇīnaṃ tīre evarūpaṃ dānaṃ—annaṃ annaṭṭhikassa, pānaṃ pānaṭṭhikassa, vatthaṃ vatthaṭṭhikassa, yānaṃ yānaṭṭhikassa, sayanaṃ sayanaṭṭhikassa, itthiṃ itthiṭṭhikassa, hiraññaṃ hiraññaṭṭhikassa, suvaṇṇaṃ suvaṇṇaṭṭhikassa.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các Gia chủ, Bà-la-môn đem theo nhiều tiền bạc đến vua Ðại Thiện Kiến và tâu vua:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, brāhmaṇagahapatikā pahūtaṃ sāpateyyaṃ ādāya rājānaṃ mahāsudassanaṃ upasaṅkamitvā evamāhaṃsu:</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, chúng tôi có đem nhiều tiền của này để Ðại vương dùng. Mong đại vương hãy thâu nhận lấy.<br>
+<span lang="pi" class="pali">‘idaṃ, deva, pahūtaṃ sāpateyyaṃ devaññeva uddissa ābhataṃ, taṃ devo paṭiggaṇhatū’ti.</span></p>
+
+<p lang="vi" class="vi">Này các Khanh, ta có đầy đủ nhiều tiền bạc do đánh thuế đúng pháp đem lại. Hãy giữ tiền bạc của Khanh lại, và đem theo nhiều nữa cho các Khanh!<br>
+<span lang="pi" class="pali">‘Alaṃ, bho, mamapidaṃ pahūtaṃ sāpateyyaṃ dhammikena balinā abhisaṅkhataṃ, tañca vo hotu, ito ca bhiyyo harathā’ti.</span></p>
+
+<p lang="vi" class="vi">Các vị này khi bị vua từ chối, liền đứng qua một bên và suy nghĩ:<br>
+<span lang="pi" class="pali">Te raññā paṭikkhittā ekamantaṃ apakkamma evaṃ samacintesuṃ:</span></p>
+
+<p lang="vi" class="vi">“Nếu nay chúng ta đem tiền của này về nhà chúng ta thời thật không phải.<br>
+<span lang="pi" class="pali">‘na kho etaṃ amhākaṃ patirūpaṃ, yaṃ mayaṃ imāni sāpateyyāni punadeva sakāni gharāni paṭihareyyāma.</span></p>
+
+<p lang="vi" class="vi">Chúng ta hãy xây dựng nhà cửa cho vua Ðại Thiện Kiến”.<br>
+<span lang="pi" class="pali">Yannūna mayaṃ rañño mahāsudassanassa nivesanaṃ māpeyyāmā’ti.</span></p>
+
+<p lang="vi" class="vi">Các vị ấy liền đến vua Ðại Thiện Kiến và tâu:<br>
+<span lang="pi" class="pali">Te rājānaṃ mahāsudassanaṃ upasaṅkamitvā evamāhaṃsu:</span></p>
+
+<p lang="vi" class="vi">Ðại vương, chúng tôi định xây dựng nhà cửa cho Ðại vương.<br>
+<span lang="pi" class="pali">‘nivesanaṃ te, deva, māpessāmā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến im lặng nhận lời.<br>
+<span lang="pi" class="pali">Adhivāsesi kho, ānanda, rājā mahāsudassano tuṇhībhāvena.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, Thiên chủ Sakka biết được tư tưởng của vua Ðại Thiện Kiến với tư tưởng của mình, liền gọi Thiên tử Vissakamma (Tỳ-thủ-yết-ma) và nói:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, sakko devānamindo rañño mahāsudassanassa cetasā cetoparivitakkamaññāya vissakammaṃ devaputtaṃ āmantesi:</span></p>
+
+<p lang="vi" class="vi">Này Vissakamma, hãy đến đây và xây dựng một lâu đài cho vua Ðại Thiện Kiến, đặt tên là Dhamma (Pháp).<br>
+<span lang="pi" class="pali">‘ehi tvaṃ, samma vissakamma, rañño mahāsudassanassa nivesanaṃ māpehi dhammaṃ nāma pāsādan’ti.</span></p>
+
+<p lang="vi" class="vi">‘Xin vâng, Tôn giả’. Thiên tử Vissakamma đáp. Này Ānanda, Thiên tử Vissakamma vâng lời Thiên chủ Sakka, như người lực sĩ duỗi ra cánh tay đang co, hay co lại cánh tay duỗi ra, Thiên tử Vissakamma biến mất từ chư Thiên ở Tavatimsa và hiện ra trước mặt vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">‘Evaṃ, bhaddantavā’ti kho, ānanda, vissakammo devaputto sakkassa devānamindassa paṭissutvā seyyathāpi nāma balavā puriso samiñjitaṃ vā bāhaṃ pasāreyya pasāritaṃ vā bāhaṃ samiñjeyya; evameva—devesu tāvatiṃsesu antarahito rañño mahāsudassanassa purato pāturahosi.</span></p>
+
+<p lang="vi" class="vi">Rồi này Ānanda, Thiên tử Vissakamma tâu với vua Ðại Thiện Kiến:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, vissakammo devaputto rājānaṃ mahāsudassanaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Ðại vương, tôi sẽ xây dựng một lâu đài tên là Dhamma cho Ðại vương!<br>
+<span lang="pi" class="pali">‘nivesanaṃ te, deva, māpessāmi dhammaṃ nāma pāsādan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến im lặng nhận lời.<br>
+<span lang="pi" class="pali">Adhivāsesi kho, ānanda, rājā mahāsudassano tuṇhībhāvena.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, Thiên tử Vissakamma xây dựng lâu đài tên là Dhamma cho vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Māpesi kho, ānanda, vissakammo devaputto rañño mahāsudassanassa nivesanaṃ dhammaṃ nāma pāsādaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma này, về hướng Ðông và hướng Tây bề dài đến một do tuần, và về hướng Bắc và hướng Nam, bề rộng đến nửa do-tuần.<br>
+<span lang="pi" class="pali">Dhammo, ānanda, pāsādo puratthimena pacchimena ca yojanaṃ āyāmena ahosi. Uttarena dakkhiṇena ca aḍḍhayojanaṃ vitthārena.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nền nhà của lâu đài Dhamma cao cho đến ba thân người và làm bằng ba loại gạch,<br>
+<span lang="pi" class="pali">Dhammassa, ānanda, pāsādassa tiporisaṃ uccatarena vatthu citaṃ ahosi catunnaṃ vaṇṇānaṃ iṭṭhakāhi—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekā iṭṭhakā sovaṇṇamayā, ekā rūpiyamayā, ekā veḷuriyamayā, ekā phalikamayā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma có đến 84,000 cột trụ bằng bốn loại,<br>
+<span lang="pi" class="pali">Dhammassa, ānanda, pāsādassa caturāsītithambhasahassāni ahesuṃ catunnaṃ vaṇṇānaṃ—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">eko thambho sovaṇṇamayo, eko rūpiyamayo, eko veḷuriyamayo, eko phalikamayo.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma được bao phủ bằng bốn loại,<br>
+<span lang="pi" class="pali">Dhammo, ānanda, pāsādo catunnaṃ vaṇṇānaṃ phalakehi santhato ahosi—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekaṃ phalakaṃ sovaṇṇamayaṃ, ekaṃ rūpiyamayaṃ, ekaṃ veḷuriyamayaṃ, ekaṃ phalikamayaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma có hai mươi bốn tầm cấp bằng bốn loại,<br>
+<span lang="pi" class="pali">Dhammassa, ānanda, pāsādassa catuvīsati sopānāni ahesuṃ catunnaṃ vaṇṇānaṃ—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekaṃ sopānaṃ sovaṇṇamayaṃ, ekaṃ rūpiyamayaṃ, ekaṃ veḷuriyamayaṃ, ekaṃ phalikamayaṃ.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng vàng có cột trụ bằng vàng, có chắn ngang và đầu trụ bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayassa sopānassa sovaṇṇamayā thambhā ahesuṃ rūpiyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng bạc có cột trụ bằng bạc, có chắn ngang và đầu trụ bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayassa sopānassa rūpiyamayā thambhā ahesuṃ sovaṇṇamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng lưu ly có cột trụ bằng lưu ly, có chắn ngang và đầu trụ bằng thủy tinh.<br>
+<span lang="pi" class="pali">Veḷuriyamayassa sopānassa veḷuriyamayā thambhā ahesuṃ phalikamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng thủy tinh có cột trụ bằng thủy tinh, có chắn ngang và đầu trụ bằng lưu ly.<br>
+<span lang="pi" class="pali">Phalikamayassa sopānassa phalikamayā thambhā ahesuṃ veḷuriyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma có 84,000 phòng ốc bằng bốn loại,<br>
+<span lang="pi" class="pali">Dhamme, ānanda, pāsāde caturāsītikūṭāgārasahassāni ahesuṃ catunnaṃ vaṇṇānaṃ—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekaṃ kūṭāgāraṃ sovaṇṇamayaṃ, ekaṃ rūpiyamayaṃ, ekaṃ veḷuriyamayaṃ, ekaṃ phalikamayaṃ.</span></p>
+
+<p lang="vi" class="vi">Trong phòng ốc bằng vàng có chỗ nằm bằng bạc được trải ra. Trong phòng ốc bằng bạc, có chỗ nằm bằng vàng được trải ra. Trong phòng ốc bằng lưu ly có chỗ nằm bằng ngà được trải ra. Trong phòng ốc bằng thủy tinh, có chỗ nằm bằng san hô được trải ra.<br>
+<span lang="pi" class="pali">Sovaṇṇamaye kūṭāgāre rūpiyamayo pallaṅko paññatto ahosi, rūpiyamaye kūṭāgāre sovaṇṇamayo pallaṅko paññatto ahosi, veḷuriyamaye kūṭāgāre dantamayo pallaṅko paññatto ahosi, phalikamaye kūṭāgāre sāramayo pallaṅko paññatto ahosi.</span></p>
+
+<p lang="vi" class="vi">Tại cửa phòng ốc bằng vàng, có dựng lên một cây Tāla bằng bạc, với thân cây bằng bạc, với lá và trái cây bằng vàng.<br>
+<span lang="pi" class="pali">Sovaṇṇamayassa kūṭāgārassa dvāre rūpiyamayo tālo ṭhito ahosi, tassa rūpiyamayo khandho sovaṇṇamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Tại cửa phòng ốc bằng bạc, có dựng lên một cây Tāla bằng vàng, với thân cây bằng vàng, với lá và trái bằng bạc.<br>
+<span lang="pi" class="pali">Rūpiyamayassa kūṭāgārassa dvāre sovaṇṇamayo tālo ṭhito ahosi, tassa sovaṇṇamayo khandho, rūpiyamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Tại cửa phòng ốc bằng lưu ly, có dựng lên một cây Tāla bằng thủy tinh, với thân cây bằng thủy tinh, với lá và trái cây bằng lưu ly.<br>
+<span lang="pi" class="pali">Veḷuriyamayassa kūṭāgārassa dvāre phalikamayo tālo ṭhito ahosi, tassa phalikamayo khandho, veḷuriyamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Tại cửa phòng ốc bằng thủy tinh, có dựng lên một cây Tāla bằng lưu ly, với thân cây bằng lưu ly, với lá và trái cây bằng thủy tinh.<br>
+<span lang="pi" class="pali">Phalikamayassa kūṭāgārassa dvāre veḷuriyamayo tālo ṭhito ahosi, tassa veḷuriyamayo khandho, phalikamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến lại suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Trước cửa phòng lầu Ðại Trang Nghiêm, ta hãy cho dựng lên một rừng cây Tāla toàn bằng vàng, và tại đây ta sẽ an tọa ban ngày?<br>
+<span lang="pi" class="pali">‘yannūnāhaṃ mahāviyūhassa kūṭāgārassa dvāre sabbasovaṇṇamayaṃ tālavanaṃ māpeyyaṃ, yattha divāvihāraṃ nisīdissāmī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến trước cửa phòng lầu Ðại Trang Nghiêm, cho dựng lên một rừng cây Tāla toàn bằng vàng và tại đây, vua ngồi an tọa ban ngày.<br>
+<span lang="pi" class="pali">Māpesi kho, ānanda, rājā mahāsudassano mahāviyūhassa kūṭāgārassa dvāre sabbasovaṇṇamayaṃ tālavanaṃ, yattha divāvihāraṃ nisīdi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma được hai dãy lan can bao bọc, một dãy bằng vàng, một dãy bằng bạc.<br>
+<span lang="pi" class="pali">Dhammo, ānanda, pāsādo dvīhi vedikāhi parikkhitto ahosi, ekā vedikā sovaṇṇamayā, ekā rūpiyamayā.</span></p>
+
+<p lang="vi" class="vi">Lan can bằng vàng có cột trụ bằng vàng, có chắn ngang và đầu trụ bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayāya vedikāya sovaṇṇamayā thambhā ahesuṃ, rūpiyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Lan can bằng bạc có cột trụ bằng bạc, có chắn ngang và đầu trụ bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayāya vedikāya rūpiyamayā thambhā ahesuṃ, sovaṇṇamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma có hai màn lưới chuông linh,<br>
+<span lang="pi" class="pali">Dhammo, ānanda, pāsādo dvīhi kiṅkiṇikajālehi parikkhitto ahosi—</span></p>
+
+<p lang="vi" class="vi">một màn bằng vàng, một màn bằng bạc.<br>
+<span lang="pi" class="pali">ekaṃ jālaṃ sovaṇṇamayaṃ ekaṃ rūpiyamayaṃ.</span></p>
+
+<p lang="vi" class="vi">Màn lưới bằng vàng có chuông linh bằng bạc, màn lưới bằng bạc có chuông linh bằng vàng.<br>
+<span lang="pi" class="pali">Sovaṇṇamayassa jālassa rūpiyamayā kiṅkiṇikā ahesuṃ, rūpiyamayassa jālassa sovaṇṇamayā kiṅkiṇikā ahesuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi những màn lưới chuông linh này được gió rung chuyển, thời một âm thanh vi diệu, khả ái, đẹp ý, mê ly khởi lên.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, kiṅkiṇikajālānaṃ vāteritānaṃ saddo ahosi vaggu ca rajanīyo ca khamanīyo ca madanīyo ca.</span></p>
+
+<p lang="vi" class="vi">Cũng như năm loại nhạc khí, khi được một nhạc sĩ thiện xảo tấu nhạc, phát ra âm thanh vi diệu, khả ái, đẹp ý, mê ly.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, pañcaṅgikassa tūriyassa suvinītassa suppaṭitāḷitassa sukusalehi samannāhatassa saddo hoti, vaggu ca rajanīyo ca khamanīyo ca madanīyo ca;</span></p>
+
+<p lang="vi" class="vi">Cũng vậy này Ānanda, khi những màn lưới chuông linh này được gió rung chuyển, thời một âm thanh vi diệu, khả ái, đẹp ý, mê ly khởi lên.<br>
+<span lang="pi" class="pali">evameva kho, ānanda, tesaṃ kiṅkiṇikajālānaṃ vāteritānaṃ saddo ahosi vaggu ca rajanīyo ca khamanīyo ca madanīyo ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lúc bấy giờ nếu tại kinh đô Kusāvatī có những kẻ cờ bạc, rượu chè, chúng sẽ nhảy múa theo âm điệu của những màn lưới chuông linh này khi được gió thổi.<br>
+<span lang="pi" class="pali">Ye kho panānanda, tena samayena kusāvatiyā rājadhāniyā dhuttā ahesuṃ soṇḍā pipāsā, te tesaṃ kiṅkiṇikajālānaṃ vāteritānaṃ saddena paricāresuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lâu đài Dhamma khi xây xong, thật khó mà nhìn xem, hai mắt bị chói lòa (vì quá nguy nga tráng lệ).<br>
+<span lang="pi" class="pali">Niṭṭhito kho panānanda, dhammo pāsādo duddikkho ahosi musati cakkhūni.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, như trong tháng cuối mùa mưa, khi bầu trời quang đảng, không bị mây che lấp, mặt trời mọc lên giữa hư không, khó mà nhìn xem vì hai mắt bị chói lòa.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, vassānaṃ pacchime māse saradasamaye viddhe vigatavalāhake deve ādicco nabhaṃ abbhussakkamāno duddikkho hoti musati cakkhūni;</span></p>
+
+<p lang="vi" class="vi">Cũng vậy, này Ānanda, thật khó mà nhìn xem, hai mắt bị chói lòa khi lâu đài Dhamma xây xong.<br>
+<span lang="pi" class="pali">evameva kho, ānanda, dhammo pāsādo duddikkho ahosi musati cakkhūni.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến lại suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Trước mặt lâu đài Dhamma, ta hãy cho xây hồ sen tên gọi là Dhamma!”<br>
+<span lang="pi" class="pali">‘yannūnāhaṃ dhammassa pāsādassa purato dhammaṃ nāma pokkharaṇiṃ māpeyyan’ti.</span></p>
+
+<p lang="vi" class="vi">Và này Ānanda, vua Ðại Thiện Kiến cho xây một hồ sen tên là Dhamma trước mặt lâu đài Dhamma.<br>
+<span lang="pi" class="pali">Māpesi kho, ānanda, rājā mahāsudassano dhammassa pāsādassa purato dhammaṃ nāma pokkharaṇiṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hồ sen Dhamma, về hướng Ðông và hướng Tây bề dài đến một do tuần, và về hướng Bắc và hướng Nam bề rộng đến nửa do tuần.<br>
+<span lang="pi" class="pali">Dhammā, ānanda, pokkharaṇī puratthimena pacchimena ca yojanaṃ āyāmena ahosi, uttarena dakkhiṇena ca aḍḍhayojanaṃ vitthārena.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hồ sen Dhamma có bốn loại gạch,—<br>
+<span lang="pi" class="pali">Dhammā, ānanda, pokkharaṇī catunnaṃ vaṇṇānaṃ iṭṭhakāhi citā ahosi—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekā iṭṭhakā sovaṇṇamayā, ekā rūpiyamayā, ekā veḷuriyamayā, ekā phalikamayā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hồ sen Dhamma có hai mươi bốn tầm cấp bằng bốn loại,—<br>
+<span lang="pi" class="pali">Dhammāya, ānanda, pokkharaṇiyā catuvīsati sopānāni ahesuṃ catunnaṃ vaṇṇānaṃ—</span></p>
+
+<p lang="vi" class="vi">một loại bằng vàng, một loại bằng bạc, một loại bằng lưu ly, một loại bằng thủy tinh.<br>
+<span lang="pi" class="pali">ekaṃ sopānaṃ sovaṇṇamayaṃ, ekaṃ rūpiyamayaṃ, ekaṃ veḷuriyamayaṃ, ekaṃ phalikamayaṃ.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng vàng có cột trụ bằng vàng, có chắn ngang và đầu trụ bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayassa sopānassa sovaṇṇamayā thambhā ahesuṃ rūpiyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng bạc có cột trụ và đầu trụ bằng bạc, có chắn ngang và đầu trụ bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayassa sopānassa rūpiyamayā thambhā ahesuṃ sovaṇṇamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng lưu ly có cột trụ bằng lưu ly, có chắn ngang và đầu trụ bằng thủy tinh.<br>
+<span lang="pi" class="pali">Veḷuriyamayassa sopānassa veḷuriyamayā thambhā ahesuṃ phalikamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Tầm cấp bằng thủy tinh có cột trụ bằng thủy tinh, có chắn ngang và đầu trụ bằng lưu ly!<br>
+<span lang="pi" class="pali">Phalikamayassa sopānassa phalikamayā thambhā ahesuṃ veḷuriyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hồ sen Dhamma có hai loại lan can bao bọc, một loại bằng vàng, một loại bằng bạc.<br>
+<span lang="pi" class="pali">Dhammā, ānanda, pokkharaṇī dvīhi vedikāhi parikkhittā ahosi—ekā vedikā sovaṇṇamayā, ekā rūpiyamayā.</span></p>
+
+<p lang="vi" class="vi">Lan can bằng vàng có cột trụ bằng vàng, có chắn ngang và đầu trụ bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayāya vedikāya sovaṇṇamayā thambhā ahesuṃ rūpiyamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Lan can bằng bạc có cột trụ bằng bạc, có chắn ngang và đầu trụ bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayāya vedikāya rūpiyamayā thambhā ahesuṃ sovaṇṇamayā sūciyo ca uṇhīsañca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hồ sen Dhamma có bảy hàng cây Tāla bao bọc,<br>
+<span lang="pi" class="pali">Dhammā, ānanda, pokkharaṇī sattahi tālapantīhi parikkhittā ahosi—</span></p>
+
+<p lang="vi" class="vi">một hàng cây bằng vàng, một hàng cây bằng bạc, một hàng cây bằng lưu ly, một hàng cây bằng thủy tinh, một hàng cây bằng san hô, một hàng cây bằng xa cừ, một hàng cây bằng mọi thứ báu.<br>
+<span lang="pi" class="pali">ekā tālapanti sovaṇṇamayā, ekā rūpiyamayā, ekā veḷuriyamayā, ekā phalikamayā, ekā lohitaṅkamayā, ekā masāragallamayā, ekā sabbaratanamayā.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng vàng có thân cây bằng vàng, có lá và trái cây bằng bạc.<br>
+<span lang="pi" class="pali">Sovaṇṇamayassa tālassa sovaṇṇamayo khandho ahosi rūpiyamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng bạc có thân cây bằng bạc, có lá và trái cây bằng vàng.<br>
+<span lang="pi" class="pali">Rūpiyamayassa tālassa rūpiyamayo khandho ahosi sovaṇṇamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng lưu ly có thân cây bằng lưu ly, có lá và trái cây bằng thủy tinh.<br>
+<span lang="pi" class="pali">Veḷuriyamayassa tālassa veḷuriyamayo khandho ahosi phalikamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng thủy tinh, có thân cây bằng thủy tinh, có lá và trái cây bằng lưu ly.<br>
+<span lang="pi" class="pali">Phalikamayassa tālassa phalikamayo khandho ahosi veḷuriyamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng san hô có thân cây bằng san hô, có lá và trái cây bằng xa cừ.<br>
+<span lang="pi" class="pali">Lohitaṅkamayassa tālassa lohitaṅkamayo khandho ahosi masāragallamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng xa cừ có thân cây bằng xa cừ, có lá và trái cây bằng san hô.<br>
+<span lang="pi" class="pali">Masāragallamayassa tālassa masāragallamayo khandho ahosi lohitaṅkamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Cây Tāla bằng mọi thứ báu có thân cây bằng mọi thứ báu, có lá và trái cây bằng mọi thứ báu.<br>
+<span lang="pi" class="pali">Sabbaratanamayassa tālassa sabbaratanamayo khandho ahosi, sabbaratanamayāni pattāni ca phalāni ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi những hàng cây Tāla này được gió rung chuyển, thời một âm thanh vi diệu, khả ái, đẹp ý, mê ly khởi lên.<br>
+<span lang="pi" class="pali">Tāsaṃ kho panānanda, tālapantīnaṃ vāteritānaṃ saddo ahosi, vaggu ca rajanīyo ca khamanīyo ca madanīyo ca.</span></p>
+
+<p lang="vi" class="vi">Cũng như năm loại nhạc khí, khi được một nhạc sĩ thiện xảo tấu nhạc, phát ra một âm thanh vi diệu, khả ái, đẹp ý, mê ly.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, pañcaṅgikassa tūriyassa suvinītassa suppaṭitāḷitassa sukusalehi samannāhatassa saddo hoti vaggu ca rajanīyo ca khamanīyo ca madanīyo ca;</span></p>
+
+<p lang="vi" class="vi">Cũng vậy này Ānanda, khi những hàng cây Tāla này được gió rung chuyển thời một âm thanh vi diệu, khả ái, đẹp ý, mê ly khởi lên.<br>
+<span lang="pi" class="pali">evameva kho, ānanda, tāsaṃ tālapantīnaṃ vāteritānaṃ saddo ahosi vaggu ca rajanīyo ca khamanīyo ca madanīyo ca.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, lúc bấy giờ nếu ở kinh đô Kusāvatī có những kẻ cờ bạc rượu chè, chúng sẽ nhảy múa theo âm điệu của những hàng cây này khi được gió thổi.<br>
+<span lang="pi" class="pali">Ye kho panānanda, tena samayena kusāvatiyā rājadhāniyā dhuttā ahesuṃ soṇḍā pipāsā, te tāsaṃ tālapantīnaṃ vāteritānaṃ saddena paricāresuṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi lâu đài Dhamma và hồ sen Dhamma được xây xong, lúc bấy giờ vua Ðại Thiện Kiến cúng dường cho các vị Sa-môn được tôn kính và các vị Bà-la-môn được tôn kính mọi sự dục lạc cần thiết rồi vua lên lâu đài Dhamma.<br>
+<span lang="pi" class="pali">Niṭṭhite kho panānanda, dhamme pāsāde niṭṭhitāya dhammāya ca pokkharaṇiyā rājā mahāsudassano ‘ye tena samayena samaṇesu vā samaṇasammatā brāhmaṇesu vā brāhmaṇasammatā’, te sabbakāmehi santappetvā dhammaṃ pāsādaṃ abhiruhi.</span></p>
+
+<span lang="vi" class="vi">Tụng Phẩm II</p>
+
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Quả này của ta do nghiệp gì, báo này của ta là do nghiệp gì mà hiện tại ta có thần lực như vậy, có oai lực như vậy?”<br>
+<span lang="pi" class="pali">‘kissa nu kho me idaṃ kammassa phalaṃ kissa kammassa vipāko, yenāhaṃ etarahi evaṃmahiddhiko evaṃmahānubhāvo’ti?</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Quả này là do ba loại nghiệp, báo này là do ba loại nghiệp mà hiện tại ta có thần lực như vậy.—<br>
+<span lang="pi" class="pali">‘tiṇṇaṃ kho me idaṃ kammānaṃ phalaṃ tiṇṇaṃ kammānaṃ vipāko, yenāhaṃ etarahi evaṃmahiddhiko evaṃmahānubhāvo, seyyathidaṃ—</span></p>
+
+<p lang="vi" class="vi">Ðó là Bố thí, Tự điều, Tự chế”.<br>
+<span lang="pi" class="pali">dānassa damassa saṃyamassā’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến đi đến cao đường Ðại Trang Nghiêm, đứng trước cửa và nói lớn tiếng cao hứng ngữ sau đây:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano yena mahāviyūhaṃ kūṭāgāraṃ tenupasaṅkami; upasaṅkamitvā mahāviyūhassa kūṭāgārassa dvāre ṭhito udānaṃ udānesi:</span></p>
+
+<p lang="vi" class="vi">
+Hãy dừng lại, tư tưởng dục vọng!<br>
+Hãy dừng lại, tư tưởng sân hận!<br>
+Hãy dừng lại, tư tưởng não hại!<br>
+Ðến đây thôi, tư tưởng dục vọng!<br>
+Ðến đây thôi, tư tưởng sân hận!<br>
+Ðến đây thôi, tư tưởng não hại!<br>
+<span lang="pi" class="pali">
+‘tiṭṭha, kāmavitakka,<br>
+tiṭṭha, byāpādavitakka,<br>
+tiṭṭha, vihiṃsāvitakka.<br>
+Ettāvatā, kāmavitakka,<br>
+ettāvatā, byāpādavitakka,<br>
+ettāvatā, vihiṃsāvitakkā’ti.<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến bước vào cao đường Ðại Trang Nghiêm, ngồi trên sàng tọa bằng vàng, ly dục, ly ác pháp, chứng và an trú trong thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, với tầm với tứ.<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano mahāviyūhaṃ kūṭāgāraṃ pavisitvā sovaṇṇamaye pallaṅke nisinno vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṃ savicāraṃ vivekajaṃ pītisukhaṃ paṭhamaṃ jhānaṃ upasampajja vihāsi.</span></p>
+
+<p lang="vi" class="vi">Rồi diệt tầm và tứ, chứng và an trú trong thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm không tứ, nội tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">Vitakkavicārānaṃ vūpasamā ajjhattaṃ sampasādanaṃ cetaso ekodibhāvaṃ avitakkaṃ avicāraṃ samādhijaṃ pītisukhaṃ dutiyaṃ jhānaṃ upasampajja vihāsi.</span></p>
+
+<p lang="vi" class="vi">Rồi ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là xả niệm lạc trú, chứng và an trú vào thiền thứ ba.<br>
+<span lang="pi" class="pali">Pītiyā ca virāgā upekkhako ca vihāsi, sato ca sampajāno sukhañca kāyena paṭisaṃvedesi, yaṃ taṃ ariyā ācikkhanti: ‘upekkhako satimā sukhavihārī’ti tatiyaṃ jhānaṃ upasampajja vihāsi.</span></p>
+
+<p lang="vi" class="vi">Rồi xả lạc xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và an trú vào thiền thứ tư không khổ, không lạc, xả niệm thanh tịnh.<br>
+<span lang="pi" class="pali">Sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṃ atthaṅgamā adukkhamasukhaṃ upekkhāsatipārisuddhiṃ catutthaṃ jhānaṃ upasampajja vihāsi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến ra khỏi cao đường Ðại Trang Nghiêm, bước vào cao đường bằng vàng, ngồi trên sàng tọa bằng bạc,<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano mahāviyūhā kūṭāgārā nikkhamitvā sovaṇṇamayaṃ kūṭāgāraṃ pavisitvā rūpiyamaye pallaṅke nisinno</span></p>
+
+<p lang="vi" class="vi">an trú biến mãn một phương với tâm câu hữu với từ, cũng vậy phương thứ hai, cũng vậy phương thứ ba, cũng vậy phương thứ tư. Như vậy cùng khắp thế giới, trên, dưới, bề ngang, hết thảy phương xứ, cùng khắp vô biên giới, vị ấy an trú biến mãn với tâm câu hữu với từ, quảng đại vô biên, không hận không sân...<br>
+<span lang="pi" class="pali">mettāsahagatena cetasā ekaṃ disaṃ pharitvā vihāsi. Tathā dutiyaṃ tathā tatiyaṃ tathā catutthaṃ. Iti uddhamadho tiriyaṃ sabbadhi sabbattatāya sabbāvantaṃ lokaṃ mettāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā vihāsi.</span></p>
+
+<p lang="vi" class="vi">an trú biến mãn một phương với tâm câu hữu với bi, cũng vậy phương thứ hai, cũng vậy phương thứ ba, cũng vậy phương thứ tư. Như vậy cùng khắp thế giới, trên, dưới, bề ngang, hết thảy phương xứ, cùng khắp vô biên giới, vị ấy an trú biến mãn với tâm câu hữu với từ, quảng đại vô biên, không hận không sân.<br>
+<span lang="pi" class="pali">Karuṇāsahagatena cetasā ekaṃ disaṃ pharitvā vihāsi. Tathā dutiyaṃ tathā tatiyaṃ tathā catutthaṃ. Iti uddhamadho tiriyaṃ sabbadhi sabbattatāya sabbāvantaṃ lokaṃ mettāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā vihāsi.</span></p>
+
+<p lang="vi" class="vi">an trú biến mãn một phương với tâm câu hữu với hỷ, cũng vậy phương thứ hai, cũng vậy phương thứ ba, cũng vậy phương thứ tư. Như vậy cùng khắp thế giới, trên, dưới, bề ngang, hết thảy phương xứ, cùng khắp vô biên giới, vị ấy an trú biến mãn với tâm câu hữu với từ, quảng đại vô biên, không hận không sân.<br>
+<span lang="pi" class="pali">muditāsahagatena cetasā ekaṃ disaṃ pharitvā vihāsi. Tathā dutiyaṃ tathā tatiyaṃ tathā catutthaṃ. Iti uddhamadho tiriyaṃ sabbadhi sabbattatāya sabbāvantaṃ lokaṃ mettāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā vihāsi.</span></p>
+
+<p lang="vi" class="vi">an trú biến mãn một phương với tâm câu hữu với xả, cũng vậy phương thứ hai, cũng vậy phương thứ ba, cũng vậy phương thứ tư. Như vậy cùng khắp thế giới, trên, dưới, bề ngang, hết thảy phương xứ, cùng khắp vô biên giới, vị ấy an trú biến mãn với tâm câu hữu với từ, quảng đại vô biên, không hận không sân.<br>
+<span lang="pi" class="pali">upekkhāsahagatena cetasā ekaṃ disaṃ pharitvā vihāsi. Tathā dutiyaṃ tathā tatiyaṃ tathā catutthaṃ. Iti uddhamadho tiriyaṃ sabbadhi sabbattatāya sabbāvantaṃ lokaṃ upekkhāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā vihāsi.</span></p>
+
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến có 84,000 kinh thành, và kinh thành Kusāvatī (Câu-xá-bà-đề) là đệ nhất.<br>
+<span lang="pi" class="pali">Rañño, ānanda, mahāsudassanassa caturāsīti nagarasahassāni ahesuṃ kusāvatīrājadhānippamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 lâu đài, và lâu đài Dhamma là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti pāsādasahassāni ahesuṃ dhammapāsādappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 cao đường, và cao đường Ðại Trang Nghiêm là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti kūṭāgārasahassāni ahesuṃ mahāviyūhakūṭāgārappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 sàng tọa, bằng vàng, bằng bạc, bằng ngà, bằng gỗ kiên cố, được trải với những tấm nệm lông dài, với vải có thêu bông hoa, và với những tấm da thú trắng của con sơn dương được che bởi những tán che cao và hai đầu có gối màu đỏ.<br>
+<span lang="pi" class="pali">caturāsīti pallaṅkasahassāni ahesuṃ sovaṇṇamayāni rūpiyamayāni dantamayāni sāramayāni gonakatthatāni paṭikatthatāni paṭalikatthatāni kadalimigapavarapaccattharaṇāni sauttaracchadāni ubhatolohitakūpadhānāni;</span></p>
+
+<p lang="vi" class="vi">84,000 con voi, với những trang sức bằng vàng, được che chở bằng lưới vàng, và tượng vương Uposatha (Bố-tát-đà) là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti nāgasahassāni ahesuṃ sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni uposathanāgarājappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 con ngựa, với những trang sức bằng vàng, cờ vàng, được che chở với lưới vàng, và mã vương Valāhaka (Vân Mã vương) là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti assasahassāni ahesuṃ sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni valāhakaassarājappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 cỗ xe, với những tấm thảm bằng da sư tử, bằng da cọp, bằng da báo, bằng vai vàng, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng và cỗ xe tên Vejayanta (Nhạc thanh xa hay Chiến thắng kỳ) là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti rathasahassāni ahesuṃ sīhacammaparivārāni byagghacammaparivārāni dīpicammaparivārāni paṇḍukambalaparivārāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni vejayantarathappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 châu ngọc và bảo châu là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti maṇisahassāni ahesuṃ maṇiratanappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 phụ nữ và hoàng hậu Subhaddā (Thiện Hiền phi) là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti itthisahassāni ahesuṃ subhaddādevippamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 gia chủ và gia chủ báu là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti gahapatisahassāni ahesuṃ gahapatiratanappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 người giòng Sát-đế-lỵ và tướng quân báu là đệ nhất.<br>
+<span lang="pi" class="pali">caturāsīti khattiyasahassāni ahesuṃ anuyantāni pariṇāyakaratanappamukhāni;</span></p>
+
+<p lang="vi" class="vi">84,000 nhũ ngưu với trang sức bằng vải cây đay (Dukūla), với sừng đầu nhọn bịt đồng.<br>
+<span lang="pi" class="pali">caturāsīti dhenusahassāni ahesuṃ duhasandanāni kaṃsūpadhāraṇāni;</span></p>
+
+<p lang="vi" class="vi">84,000 vải Koti (Cu-chi) với sắc chất tinh diệu, như vải gai, vải bông, vải lụa và vải nhung.<br>
+<span lang="pi" class="pali">caturāsīti vatthakoṭisahassāni ahesuṃ khomasukhumānaṃ kappāsikasukhumānaṃ koseyyasukhumānaṃ kambalasukhumānaṃ;</span></p>
+
+<p lang="vi" class="vi">84,000 loại cháo sữa (Thālipāka), buổi sáng buổi chiều có cúng dường cơm.<br>
+<span lang="pi" class="pali">rañño, ānanda, mahāsudassanassa caturāsīti thālipākasahassāni ahesuṃ sāyaṃ pātaṃ bhattābhihāro abhihariyittha.</span></p>
+
+<p lang="vi" class="vi">Lúc bấy giờ, này Ānanda, có 84,000 voi sáng chiều đến phục vụ cho vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Tena kho panānanda, samayena rañño mahāsudassanassa caturāsīti nāgasahassāni sāyaṃ pātaṃ upaṭṭhānaṃ āgacchanti.</span></p>
+
+<p lang="vi" class="vi">Rồi vua Ðại Thiện Kiến suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Nay 84,000 con voi này sáng chiều đến phục vụ cho ta. Nay ta hãy để cho chúng đến, cứ cách 100 năm thời 42,000 con đến”.<br>
+<span lang="pi" class="pali">‘imāni kho me caturāsīti nāgasahassāni sāyaṃ pātaṃ upaṭṭhānaṃ āgacchanti, yannūna vassasatassa vassasatassa accayena dvecattālīsaṃ dvecattālīsaṃ nāgasahassāni sakiṃ sakiṃ upaṭṭhānaṃ āgaccheyyun’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến bảo Tướng quân báu:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano pariṇāyakaratanaṃ āmantesi:</span></p>
+
+<p lang="vi" class="vi">Này Hiền giả, nay 84,000 con voi này, sáng chiều đến phục vụ ta. Nay hãy để cho chúng đến, cứ cách 100 năm, mỗi lần cho 42,000 con đến.<br>
+<span lang="pi" class="pali">‘imāni kho me, samma pariṇāyakaratana, caturāsīti nāgasahassāni sāyaṃ pātaṃ upaṭṭhānaṃ āgacchanti, tena hi, samma pariṇāyakaratana, vassasatassa vassasatassa accayena dvecattālīsaṃ dvecattālīsaṃ nāgasahassāni sakiṃ sakiṃ upaṭṭhānaṃ āgacchantū’ti.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, vâng! Này Ānanda, vị tướng quân báu vâng lời vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">‘Evaṃ, devā’ti kho, ānanda, pariṇāyakaratanaṃ rañño mahāsudassanassa paccassosi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, từ đó về sau, cứ mỗi 100 năm, 42,000 con voi lần lượt đến với vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rañño mahāsudassanassa aparena samayena vassasatassa vassasatassa accayena dvecattālīsaṃ dvecattālīsaṃ nāgasahassāni sakiṃ sakiṃ upaṭṭhānaṃ āgamaṃsu.</span></p>
+
+
+
+<p lang="vi" class="vi">Này Ānanda, sau nhiều năm, nhiều trăm năm, nhiều trăm ngàn năm, hoàng hậu Subhaddā suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, subhaddāya deviyā bahunnaṃ vassānaṃ bahunnaṃ vassasatānaṃ bahunnaṃ vassasahassānaṃ accayena etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Cách đây đã lâu, ta được thấy vua Ðại Thiện Kiến. Vậy nay ta hãy đi để thăm vua Ðại Thiện Kiến”.<br>
+<span lang="pi" class="pali">‘ciraṃ diṭṭho kho me rājā mahāsudassano. Yannūnāhaṃ rājānaṃ mahāsudassanaṃ dassanāya upasaṅkameyyan’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi hoàng hậu Subhaddā nói với các cung nữ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, subhaddā devī itthāgāraṃ āmantesi:</span></p>
+
+<p lang="vi" class="vi">Các Ngươi hãy gội đầu, mặc áo vàng.<br>
+<span lang="pi" class="pali">‘etha tumhe sīsāni nhāyatha pītāni vatthāni pārupatha.</span></p>
+
+<p lang="vi" class="vi">Cách đây đã lâu, chúng ta được thấy vua Ðại Thiện Kiến. Vậy nay chúng ta sẽ đi yết kiến vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">Ciraṃ diṭṭho no rājā mahāsudassano, rājānaṃ mahāsudassanaṃ dassanāya upasaṅkamissāmā’ti.</span></p>
+
+<p lang="vi" class="vi">Tâu Hoàng hậu, vâng! Này Ānanda, các cung nữ vâng lời hoàng hậu Subhaddā (Thiện Hiền phi), gội đầu, mặc áo vàng và đi đến hoàng hậu Subhaddā.<br>
+<span lang="pi" class="pali">‘Evaṃ, ayye’ti kho, ānanda, itthāgāraṃ subhaddāya deviyā paṭissutvā sīsāni nhāyitvā pītāni vatthāni pārupitvā yena subhaddā devī tenupasaṅkami.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi hoàng hậu Subhaddā cho gọi Tướng quân báu:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, subhaddā devī pariṇāyakaratanaṃ āmantesi:</span></p>
+
+<p lang="vi" class="vi">Này Khanh, hãy cho sắp đặt bốn loại binh chủng. Cách đây đã lâu chúng ta được thấy vua Ðại Thiện Kiến. Vậy nay chúng ta sẽ đi yết kiến vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">‘kappehi, samma pariṇāyakaratana, caturaṅginiṃ senaṃ, ciraṃ diṭṭho no rājā mahāsudassano, rājānaṃ mahāsudassanaṃ dassanāya upasaṅkamissāmā’ti.</span></p>
+
+<p lang="vi" class="vi">Tâu Hoàng hậu, vâng! Này Ānanda, tướng quân báu vâng lời hoàng hậu Subhaddā, cho sắp đặt bốn loại binh chủng và tâu Hoàng hậu:<br>
+<span lang="pi" class="pali">‘Evaṃ, devī’ti kho, ānanda, pariṇāyakaratanaṃ subhaddāya deviyā paṭissutvā caturaṅginiṃ senaṃ kappāpetvā subhaddāya deviyā paṭivedesi:</span></p>
+
+<p lang="vi" class="vi">‘Tâu Hoàng hậu, bốn loại binh chủng đã sắp đặt xong.<br>
+<span lang="pi" class="pali">‘kappitā kho, devi, caturaṅginī senā,</span></p>
+
+<p lang="vi" class="vi">Hãy làm gì Hoàng hậu nghĩ là phải thời.<br>
+<span lang="pi" class="pali">yassadāni kālaṃ maññasī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoàng hậu Subhaddā cùng với bốn loại binh chủng và các cung nữ đi đến lâu đài Dhamma, leo lên lâu đài ấy, đến tại cao đường Ðại Trang Nghiêm<br>
+<span lang="pi" class="pali">Atha kho, ānanda, subhaddā devī caturaṅginiyā senāya saddhiṃ itthāgārena yena dhammo pāsādo tenupasaṅkami; upasaṅkamitvā dhammaṃ pāsādaṃ abhiruhitvā yena mahāviyūhaṃ kūṭāgāraṃ tenupasaṅkami.</span></p>
+
+<p lang="vi" class="vi">và đứng dựa vào cánh cửa của cao đường này.<br>
+<span lang="pi" class="pali">Upasaṅkamitvā mahāviyūhassa kūṭāgārassa dvārabāhaṃ ālambitvā aṭṭhāsi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano saddaṃ sutvā:</span></p>
+
+<p lang="vi" class="vi">“Nay tiếng gì ồn ào như vậy, như cả một quần chúng đông đảo?” Vua bèn bước ra khỏi cao đường Ðại Trang Nghiêm và thấy hoàng hậu Subhaddā đang đứng dựa vào cửa. Thấy vậy, vua liền nói với hoàng hậu Subhaddā:<br>
+<span lang="pi" class="pali">‘kiṃ nu kho mahato viya janakāyassa saddo’ti mahāviyūhā kūṭāgārā nikkhamanto addasa subhaddaṃ deviṃ dvārabāhaṃ ālambitvā ṭhitaṃ, disvāna subhaddaṃ deviṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Hoàng hậu hãy đứng ở đây, chớ có vào!<br>
+<span lang="pi" class="pali">‘ettheva, devi, tiṭṭha mā pāvisī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến liền bảo một người hầu cận:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano aññataraṃ purisaṃ āmantesi:</span></p>
+
+<p lang="vi" class="vi">Ngươi hãy nhắc giường bằng vàng ra khỏi cao đường Ðại Trang Nghiêm và đặt trong khu rừng cây Tāla bằng vàng.<br>
+<span lang="pi" class="pali">‘ehi tvaṃ, ambho purisa, mahāviyūhā kūṭāgārā sovaṇṇamayaṃ pallaṅkaṃ nīharitvā sabbasovaṇṇamaye tālavane paññapehī’ti.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, vâng! Này Ānanda, người ấy vâng lời dạy của vua Ðại Thiện Kiến, nhắc sàng tọa bằng vàng ra khỏi cao đường Ðại Trang Nghiêm và đặt trong khu rừng cây sàla bằng vàng.<br>
+<span lang="pi" class="pali">‘Evaṃ, devā’ti kho, ānanda, so puriso rañño mahāsudassanassa paṭissutvā mahāviyūhā kūṭāgārā sovaṇṇamayaṃ pallaṅkaṃ nīharitvā sabbasovaṇṇamaye tālavane paññapesi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, rồi vua Ðại Thiện Kiến nằm xuống, trong dáng điệu con sư tử, về phía bên hữu, một chân đặt dài trên chân kia, chánh niệm tỉnh giác.<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano dakkhiṇena passena sīhaseyyaṃ kappesi pāde pādaṃ accādhāya sato sampajāno.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, hoàng hậu Subhaddā suy nghĩ:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, subhaddāya deviyā etadahosi:</span></p>
+
+<p lang="vi" class="vi">Các căn của vua Ðại Thiện Kiến thật là sáng suốt, màu da thật là thanh tịnh, trong sáng. Mong rằng vua Ðại Thiện Kiến chớ có mệnh chung!”. Rồi hoàng hậu tâu với vua Ðại Thiện Kiến:<br>
+<span lang="pi" class="pali">‘vippasannāni kho rañño mahāsudassanassa indriyāni, parisuddho chavivaṇṇo pariyodāto, mā heva kho rājā mahāsudassano kālamakāsī’ti rājānaṃ mahāsudassanaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84,000 kinh thành này với kinh thành Kusāvatī là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">‘Imāni te, deva, caturāsīti nagarasahassāni kusāvatīrājadhānippamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 lâu đài này với lâu đài Dhamma là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti pāsādasahassāni dhammapāsādappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84,000 cao đường này với cao đường Ðại Trang Nghiêm là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti kūṭāgārasahassāni mahāviyūhakūṭāgārappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84,000 sàng tọa này, bằng vàng, bằng bạc, bằng ngà, bằng gỗ kiên cố, được trải với những tấm nệm lông dài, với vải có thêu bông hoa và với những tấm da thù thắng của con sơn dương, được che với những tán che cao và hai đầu có gối màu đỏ, những sàng tọa này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti pallaṅkasahassāni sovaṇṇamayāni rūpiyamayāni dantamayāni sāramayāni gonakatthatāni paṭikatthatāni paṭalikatthatāni kadalimigapavarapaccattharaṇāni sauttaracchadāni ubhatolohitakūpadhānāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi, jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 con voi này, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng, và tượng vương Uposatha là đệ nhất, những con voi này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti nāgasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni uposathanāgarājappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 con ngựa này, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng, và mã vương Valàhaka là đệ nhất, những con ngựa này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti assasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni valāhakaassarājappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 cỗ xe này, với những tấm thảm bằng da sư tử, bằng da cọp, bằng da báo, bằng vải vàng với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng, và cỗ xe tên Vejayanta là đệ nhất. Những cỗ xe này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti rathasahassāni sīhacammaparivārāni byagghacammaparivārāni dīpicammaparivārāni paṇḍukambalaparivārāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni vejayantarathappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 châu ngọc này với bảo châu là đệ nhất, đều thuộc Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti maṇisahassāni maṇiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 gia chủ này và gia chủ báu là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti itthisahassāni itthiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với họ. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 người giòng họ Sát-đế-lỵ này và tướng quân báu là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti gahapatisahassāni gahapatiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với họ. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 nhũ ngưu với trang sức bằng vải cây đay, với sừng đầu nhọn bịt đồng này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti khattiyasahassāni anuyantāni pariṇāyakaratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 vải Koti với sắc chất tinh diệu như vải gai, vải bông, vải lụa và vải nhung đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti dhenusahassāni duhasandanāni kaṃsūpadhāraṇāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 loại cháo sữa, và buổi sáng có cúng dường cơm này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti vatthakoṭisahassāni khomasukhumānaṃ kappāsikasukhumānaṃ koseyyasukhumānaṃ kambalasukhumānaṃ.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi, jīvite apekkhaṃ karohi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 loại cơm này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti thālipākasahassāni sāyaṃ pātaṃ bhattābhihāro abhihariyati.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy khởi tâm ái dục đối với chúng. Ðại vương hãy ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ janehi jīvite apekkhaṃ karohī’ti.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, vua Ðại Thiện Kiến nghe hoàng hậu Subhaddā nói vậy liền trả lời:<br>
+<span lang="pi" class="pali">Evaṃ vutte, ānanda, rājā mahāsudassano subhaddaṃ deviṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Ðã từ lâu Hoàng hậu nói với ta với những lời dễ chịu, hòa ái và dịu dàng.<br>
+<span lang="pi" class="pali">‘Dīgharattaṃ kho maṃ tvaṃ, devi, iṭṭhehi kantehi piyehi manāpehi samudācarittha;</span></p>
+
+<p lang="vi" class="vi">Thế mà nay, trong lần cuối cùng này, Hoàng hậu lại nói với ta bằng những lời không dễ chịu, không hòa ái, không dịu dàng!<br>
+<span lang="pi" class="pali">atha ca pana maṃ tvaṃ pacchime kāle aniṭṭhehi akantehi appiyehi amanāpehi samudācarasī’ti.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, thiếp phải nói với Ðại vương thế nào?<br>
+<span lang="pi" class="pali">‘Kathaṃ carahi taṃ, deva, samudācarāmī’ti?</span></p>
+
+<p lang="vi" class="vi">Này Hoàng hậu, Hoàng hậu phải nói với ta như thế này:<br>
+<span lang="pi" class="pali">‘Evaṃ kho maṃ tvaṃ, devi, samudācara:</span></p>
+
+<p lang="vi" class="vi">“Tất cả mọi sự vật khả ái, khả lạc đều thay đổi, không có thực thể, chịu sự biến hóa. Ðại vương chớ có mệnh chung với tâm quyến luyến chúng. Ðau khổ thay, sự mệnh chung với tâm còn ái luyến. Ðáng trách thay, sự mệnh chung còn ái luyến.<br>
+<span lang="pi" class="pali">“sabbeheva, deva, piyehi manāpehi nānābhāvo vinābhāvo aññathābhāvo, mā kho tvaṃ, deva, sāpekkho kālamakāsi, dukkhā sāpekkhassa kālaṅkiriyā, garahitā ca sāpekkhassa kālaṅkiriyā.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 kinh thành này với kinh thành Kusāvati là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti nagarasahassāni kusāvatīrājadhānippamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 lâu đài này với lâu đài Dhamma là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti pāsādasahassāni dhammapāsādappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 cao đường này với cao đường Ðại Trang Nghiêm là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti kūṭāgārasahassāni mahāviyūhakūṭāgārappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 sàng tọa này, bằng vàng, bằng bạc, bằng ngà, bằng gỗ kiên cố, được trải với những tấm nệm lông dài, với vải có thêu bông hoa, và với những tấm da thù thắng của con sơn dương, được che chở bởi những tán che cao và hai đầu có gối màu đỏ, những sàng toạ này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti pallaṅkasahassāni sovaṇṇamayāni rūpiyamayāni dantamayāni sāramayāni gonakatthatāni paṭikatthatāni paṭalikatthatāni kadalimigapavarapaccattharaṇāni sauttaracchadāni ubhatolohitakūpadhānāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ tâm ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 con voi này, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng và tượng vương Uposatha là đệ nhất, những con voi này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti nāgasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni uposathanāgarājappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 con ngựa này với những trang sức bằng vàng, được che chở với lưới bằng vàng và mã vương Valāhaka là đệ nhất, những con ngựa này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti assasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni valāhakaassarājappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 cỗ xe, với những tấm thảm bằng da sư tử, bằng da cọp, bằng da báo, với những đồ trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng và cỗ xe tên Vejayanta là đệ nhất. Những cỗ xe này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti rathasahassāni sīhacammaparivārāni byagghacammaparivārāni dīpicammaparivārāni paṇḍukambalaparivārāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni vejayantarathappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 châu ngọc này với bảo châu là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti maṇisahassāni maṇiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 phụ nữ này là phụ nữ báu đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti itthisahassāni subhaddādevippamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với họ. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 người thuộc giòng họ Sát-đế-lỵ này là tướng quân báu là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti gahapatisahassāni gahapatiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với họ. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 nhũ ngưu với trang sức bằng vải cây đay, với sừng đầu nhọn bịt đồng này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti khattiyasahassāni anuyantāni pariṇāyakaratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 vải Koti với sắc chất tinh diệu như vải gai, vải bông, vải lụa và vải nhung này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti dhenusahassāni duhasandanāni kaṃsūpadhāraṇāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 loại cháo sữa, và buối sáng buổi chiều có cúng dường cơm này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti vatthakoṭisahassāni khomasukhumānaṃ kappāsikasukhumānaṃ koseyyasukhumānaṃ kambalasukhumānaṃ.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 loại cơm này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti thālipākasahassāni sāyaṃ pātaṃ bhattābhihāro abhihariyati.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsī”’ti.</span></p>
+
+<p lang="vi" class="vi">Này, Ānanda, khi nghe nói vậy, hoàng hậu Subhaddā buồn khóc, rơi nước mắt.<br>
+<span lang="pi" class="pali">Evaṃ vutte, ānanda, subhaddā devī parodi assūni pavattesi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, khi nghe nói vậy, hoàng hậu Subhaddā buồn khóc, rơi nước mắt và tâu với vua Ðại Thiện Kiến:<br>
+<span lang="pi" class="pali">Atha kho, ānanda, subhaddā devī assūni puñchitvā rājānaṃ mahāsudassanaṃ etadavoca:</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, tất cả mọi sự vật khả ái, khả lạc đều thay đổi, không có thực thể, thực sự biến hóa. Ðại vương chớ có mệnh chung với tâm quyến luyến chúng. Ðau khổ thay, sự mệnh chung với tâm còn ái luyến! Ðáng trách thay, sự mệnh chung với tâm còn ái luyến!<br>
+<span lang="pi" class="pali">‘Sabbeheva, deva, piyehi manāpehi nānābhāvo vinābhāvo aññathābhāvo, mā kho tvaṃ, deva, sāpekkho kālamakāsi, dukkhā sāpekkhassa kālaṅkiriyā, garahitā ca sāpekkhassa kālaṅkiriyā.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 kinh thành này với kinh thành Kusāvati là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti nagarasahassāni kusāvatīrājadhānippamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 lâu đài này với lâu đài Dhamma là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti pāsādasahassāni dhammapāsādappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 cao đường này với cao đường Ðại Trang Nghiêm là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti kūṭāgārasahassāni mahāviyūhakūṭāgārappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 sàng tọa này, bằng vàng, bằng bạc, bằng ngà, bằng gỗ kiên cố, được trải với những tấm nệm lông dài, với vải có thêu bông hoa và với những tấm da thù thắng của con sơn dương, được che với những tán che cao và hai đầu có gối màu đỏ, những sàng tọa này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti pallaṅkasahassāni sovaṇṇamayāni rūpiyamayāni dantamayāni sāramayāni gonakatthatāni paṭikatthatāni paṭalikatthatāni kadalimigapavarapaccattharaṇāni sauttaracchadāni ubhatolohitakūpadhānāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 con voi này, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng và tượng vương Uposatha là đệ nhất. Những con voi này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti nāgasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni uposathanāgarājappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 con ngựa này, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vang và mã vương Valāhaka là đệ nhất. Những con ngựa này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti assasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni valāhakaassarājappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy tử bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha, jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 cỗ xe này, với những tấm thảm bằng da sư tử, bằng da cọp, bằng da báo, với những đồ trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng và cỗ xe tên Vejayanta là đệ nhất. Những cỗ xe này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti rathasahassāni sīhacammaparivārāni byagghacammaparivārāni dīpicammaparivārāni paṇḍukambalaparivārāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni vejayantarathappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 châu ngọc này với bảo châu là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti maṇisahassāni maṇiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 phụ nữ này và phụ nữ báu là đệ nhất đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti itthisahassāni itthiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với họ. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha, jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 gia chủ này và gia chủ báu là đệ nhất đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti gahapatisahassāni gahapatiratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với họ. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">“Tâu Ðại vương, 84.000 người giòng họ Sát-đế-lỵ này với tướng quân báu là đệ nhất, đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti khattiyasahassāni anuyantāni pariṇāyakaratanappamukhāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 nhũ ngưu với trang sức bằng vải cây đay, với sừng đầu nhọn bịt đồng này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti dhenusahassāni duhasandanāni kaṃsūpadhāraṇāni.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 vải Koti với sắc chất tinh diệu, như vải gai, vải bông, vải lụa, vải nhung này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti vatthakoṭisahassāni khomasukhumānaṃ kappāsikasukhumānaṃ koseyyasukhumānaṃ kambalasukhumānaṃ.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsi.</span></p>
+
+<p lang="vi" class="vi">Tâu Ðại vương, 84.000 loại cháo sữa, và buổi sáng buổi chiều có cúng dường cơm này đều thuộc của Ðại vương.<br>
+<span lang="pi" class="pali">Imāni te, deva, caturāsīti thālipākasahassāni sāyaṃ pātaṃ bhattābhihāro abhihariyati.</span></p>
+
+<p lang="vi" class="vi">Ðại vương hãy từ bỏ lòng ái dục đối với chúng. Ðại vương chớ có ái luyến đời sống!<br>
+<span lang="pi" class="pali">Ettha, deva, chandaṃ pajaha jīvite apekkhaṃ mākāsī’ti.</span></p>
+
+
+
+<p lang="vi" class="vi">Này Ānanda, không bao lâu, vua Ðại Thiện Kiến mệnh chung.<br>
+<span lang="pi" class="pali">Atha kho, ānanda, rājā mahāsudassano na cirasseva kālamakāsi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, giống như một người gia chủ hay con một người gia chủ, sau một bữa cơm thịnh soạn trở nên buồn ngủ, cũng tương tự như vậy cảm giác của vua Ðại Thiện Kiến khi mệnh chung.<br>
+<span lang="pi" class="pali">Seyyathāpi, ānanda, gahapatissa vā gahapatiputtassa vā manuññaṃ bhojanaṃ bhuttāvissa bhattasammado hoti; evameva kho, ānanda, rañño mahāsudassanassa māraṇantikā vedanā ahosi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, sau khi mệnh chung, vua Ðại Thiện Kiến sanh lên thiên phú cõi Phạm thiên.<br>
+<span lang="pi" class="pali">Kālaṅkato ca, ānanda, rājā mahāsudassano sugatiṃ brahmalokaṃ upapajji.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trải qua 84.000 năm, vua Ðại Thiện Kiến sống sung sướng đời sống của một hoàng tử<br>
+<span lang="pi" class="pali">Rājā, ānanda, mahāsudassano caturāsīti vassasahassāni kumārakīḷaṃ kīḷi.</span></p>
+
+<p lang="vi" class="vi">trải qua 84.000 năm làm một phó vương,<br>
+<span lang="pi" class="pali">Caturāsīti vassasahassāni oparajjaṃ kāresi.</span></p>
+
+<p lang="vi" class="vi">trải qua 84.000 năm làm một vị quốc vương,<br>
+<span lang="pi" class="pali">Caturāsīti vassasahassāni rajjaṃ kāresi.</span></p>
+
+<p lang="vi" class="vi">trải qua 84.000 năm làm gia chủ, sống phạm hạnh trong lâu đài Dhamma.<br>
+<span lang="pi" class="pali">Caturāsīti vassasahassāni gihibhūto dhamme pāsāde brahmacariyaṃ cari.</span></p>
+
+<p lang="vi" class="vi">Ngài tu tập bốn Thần túc như vậy, sau khi thân hoại mạng chung. Ngài được sanh lên cõi Phạm thiên.<br>
+<span lang="pi" class="pali">So cattāro brahmavihāre bhāvetvā kāyassa bhedā paraṃ maraṇā brahmalokūpago ahosi.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các ngươi có thể nghĩ:<br>
+<span lang="pi" class="pali">Siyā kho panānanda, evamassa:</span></p>
+
+<p lang="vi" class="vi">“Thời ấy, vua Ðại Thiện Kiến là một vị khác”.<br>
+<span lang="pi" class="pali">‘añño nūna tena samayena rājā mahāsudassano ahosī’ti,</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, chớ có quan niệm như vậy. Thời ấy chính Ta là vua Ðại Thiện Kiến.<br>
+<span lang="pi" class="pali">na kho panetaṃ, ānanda, evaṃ daṭṭhabbaṃ. Ahaṃ tena samayena rājā mahāsudassano ahosiṃ.</span></p>
+
+<p lang="vi" class="vi">84,000 kinh thành với kinh thành Kusāvatī là đệ nhất ấy thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti nagarasahassāni kusāvatīrājadhānippamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 lâu đài với lâu đài Dhamma là đệ nhất ấy thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti pāsādasahassāni dhammapāsādappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 cao đường với cao đường Ðại Trang Nghiêm là đệ nhất ấy thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti kūṭāgārasahassāni mahāviyūhakūṭāgārappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 sàng tọa ấy bằng vàng, bằng bạc, bằng ngà, bằng gỗ kiên cố, được trải với những tấm nệm lông dài, với vải có thêu bông hoa, và với những tấm da thù thắng của con sơn dương, được che chở với những tán che cao và hai đầu có gối màu đỏ, những sàng tọa ấy đều thuộc của ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti pallaṅkasahassāni sovaṇṇamayāni rūpiyamayāni dantamayāni sāramayāni gonakatthatāni paṭikatthatāni paṭalikatthatāni kadalimigapavarapaccattharaṇāni sauttaracchadāni ubhatolohitakūpadhānāni,</span></p>
+
+<p lang="vi" class="vi">84,000 con voi này, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng, và tượng vương Uposatha là đệ nhất. Những con voi ấy đều thuộc của ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti nāgasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni uposathanāgarājappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 con ngựa với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng và mã vương Valahaka là đệ nhất. Những con ngựa này đều thuộc của ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti assasahassāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni valāhakaassarājappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 cỗ xe này, với những tấm thảm bằng da sư tử, bằng da cọp, bằng da báo, với những trang sức bằng vàng, cờ vàng, được che chở với lưới bằng vàng, và cỗ xe tên Vijayanta là đệ nhất. Những cỗ xe này đều thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti rathasahassāni sīhacammaparivārāni byagghacammaparivārāni dīpicammaparivārāni paṇḍukambalaparivārāni sovaṇṇālaṅkārāni sovaṇṇadhajāni hemajālapaṭicchannāni vejayantarathappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 châu ngọc này với bảo châu là đệ nhất đều thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti maṇisahassāni maṇiratanappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 phụ nữ này với phụ nữ báu là đệ nhất đều thuộc của ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti itthisahassāni subhaddādevippamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 gia chủ này với gia chủ báu là đệ nhất đều thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti gahapatisahassāni gahapatiratanappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 người giòng họ Sát-đế-lỵ này với tướng quân báu là đệ nhất đều thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti khattiyasahassāni anuyantāni pariṇāyakaratanappamukhāni,</span></p>
+
+<p lang="vi" class="vi">84,000 nhũ ngưu với trang sức bằng vải cây đay, với sừng đầu nhọn bịt đồng đều thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti dhenusahassāni duhasandanāni kaṃsūpadhāraṇāni,</span></p>
+
+<p lang="vi" class="vi">84,000 vải Koti với sắc chất tinh diệu như vải gai, vải bông, vải lụa và vải nhung này đều thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti vatthakoṭisahassāni khomasukhumānaṃ kappāsikasukhumānaṃ koseyyasukhumānaṃ kambalasukhumānaṃ,</span></p>
+
+<p lang="vi" class="vi">84,000 loại cháo sữa, và buổi sáng buổi chiều có cúng dường cơm này đều thuộc của Ta.<br>
+<span lang="pi" class="pali">Mama tāni caturāsīti thālipākasahassāni sāyaṃ pātaṃ bhattābhihāro abhihariyittha.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 kinh thành ấy, chỉ có một kinh thành mà Ta ở vào thời ấy, đó là kinh thành Kusāvatī.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsītinagarasahassānaṃ ekaññeva taṃ nagaraṃ hoti, yaṃ tena samayena ajjhāvasāmi yadidaṃ kusāvatī rājadhānī.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 lâu đài ấy, chỉ có một lâu đài mà Ta ở thời ấy, đó là lâu đài Dhamma.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti pāsādasahassānaṃ ekoyeva so pāsādo hoti, yaṃ tena samayena ajjhāvasāmi yadidaṃ dhammo pāsādo.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 cao đường ấy, chỉ có một cao đường mà Ta ở thời ấy, đó là cao đường Ðại Trang Nghiêm.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti kūṭāgārasahassānaṃ ekaññeva taṃ kūṭāgāraṃ hoti, yaṃ tena samayena ajjhāvasāmi yadidaṃ mahāviyūhaṃ kūṭāgāraṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 sàng tọa ấy, chỉ có một sàng tọa mà Ta dùng thời ấy, đó là sàng tọa bằng vàng, hay bằng bạc, hay bằng ngà, hay bằng gỗ kiên cố.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti pallaṅkasahassānaṃ ekoyeva so pallaṅko hoti, yaṃ tena samayena paribhuñjāmi yadidaṃ sovaṇṇamayo vā rūpiyamayo vā dantamayo vā sāramayo vā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 con voi ấy, chỉ có một con voi mà Ta cỡi thời ấy, đó là tượng vương Uposatha.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti nāgasahassānaṃ ekoyeva so nāgo hoti, yaṃ tena samayena abhiruhāmi yadidaṃ uposatho nāgarājā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 con ngựa ấy, chỉ có một con ngựa mà Ta cỡi thời ấy, đó là con mã vương Valāhaka.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti assasahassānaṃ ekoyeva so asso hoti, yaṃ tena samayena abhiruhāmi yadidaṃ valāhako assarājā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 cỗ xe ấy, chỉ có một cỗ xe mà Ta cỡi thời ấy, đó là cỗ xe Vejayanta.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti rathasahassānaṃ ekoyeva so ratho hoti, yaṃ tena samayena abhiruhāmi yadidaṃ vejayantaratho.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 phụ nữ ấy, chỉ có một phụ nữ hầu hạ Ta thời ấy, đó là phụ nữ của dòng Sát-đế-lỵ hay dòng Velāmikāni.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti itthisahassānaṃ ekāyeva sā itthī hoti, yā tena samayena paccupaṭṭhāti khattiyānī vā vessinī vā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 loại vải Koti ấy, chỉ có một loại vải sắc chất tế nhị mà Ta mặc thời ấy, đó là vải gai, vải bông, vải lụa hay vai nhung.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti vatthakoṭisahassānaṃ ekaṃyeva taṃ dussayugaṃ hoti, yaṃ tena samayena paridahāmi khomasukhumaṃ vā kappāsikasukhumaṃ vā koseyyasukhumaṃ vā kambalasukhumaṃ vā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, trong 84,000 loại cháo sữa ấy, chỉ có một loại cháo sữa mà Ta dùng thời ấy, đó là cơm và đồ ăn.<br>
+<span lang="pi" class="pali">Tesaṃ kho panānanda, caturāsīti thālipākasahassānaṃ ekoyeva so thālipāko hoti, yato nāḷikodanaparamaṃ bhuñjāmi tadupiyañca sūpeyyaṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, tất cả các pháp hữu vi ấy nay đã vào quá khứ, hoại diệt và biến hóa.<br>
+<span lang="pi" class="pali">Passānanda, sabbete saṅkhārā atītā niruddhā vipariṇatā.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các pháp hữu vi, vô thường là như vậy,<br>
+<span lang="pi" class="pali">Evaṃ aniccā kho, ānanda, saṅkhārā;</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các pháp hữu vi, không kiên cố là như vậy,<br>
+<span lang="pi" class="pali">evaṃ addhuvā kho, ānanda, saṅkhārā;</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, các pháp hữu vi, không đáng tin tưởng là như vậy;<br>
+<span lang="pi" class="pali">evaṃ anassāsikā kho, ānanda, saṅkhārā.</span></p>
+
+<p lang="vi" class="vi">Vì rằng, này Ānanda, tất cả các pháp hữu vi cần phải nhàm chán, cần phải thoát ly, cần phải giải thoát.<br>
+<span lang="pi" class="pali">Yāvañcidaṃ, ānanda, alameva sabbasaṅkhāresu nibbindituṃ, alaṃ virajjituṃ, alaṃ vimuccituṃ.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, nay Ta nhớ lại, như thế nào tại chỗ này thân Ta đã được chôn tất cả là sáu lần; và khi Ta sống làm một vị Chuyển Luân vương, dùng chánh pháp trị nước, một vị pháp vương, trị vì bốn thiên hạ, vị chinh phục, che chở cho quần chúng, đầy đủ bảy món báu, đó là lần thứ bảy.<br>
+<span lang="pi" class="pali">Chakkhattuṃ kho panāhaṃ, ānanda, abhijānāmi imasmiṃ padese sarīraṃ nikkhipitaṃ, tañca kho rājāva samāno cakkavattī dhammiko dhammarājā cāturanto vijitāvī janapadatthāvariyappatto sattaratanasamannāgato, ayaṃ sattamo sarīranikkhepo.</span></p>
+
+<p lang="vi" class="vi">Này Ānanda, Ta không thấy một địa phương nào, trong thế giới loài Người và chư Thiên, trong thế giới Ma vương hay thế giới Phạm thiên, trong giòng họ Sa-môn hay Bà-la-môn mà trong địa phương ấy, Như Lai sẽ bỏ thân này lần thứ tám.<br>
+<span lang="pi" class="pali">Na kho panāhaṃ, ānanda, taṃ padesaṃ samanupassāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya yattha tathāgato aṭṭhamaṃ sarīraṃ nikkhipeyyā”ti.</span></p>
+
+<p lang="vi" class="vi">Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">Idamavoca bhagavā.</span></p>
+
+<p lang="vi" class="vi">Sau khi thuyết xong, Thiện Thệ, bậc Ðạo Sư nói lại bài kệ như sau:<br>
+<span lang="pi" class="pali">Idaṃ vatvāna sugato athāparaṃ etadavoca satthā:</span></p>
+
+<p lang="vi" class="vi">
+Tất cả pháp hữu vi,<br>
+Thật sự là vô thường,<br>
+Khởi lên rồi diệt mất,<br>
+Hạnh phúc thay khi chúng<br>
+Ðược tịnh chỉ an lạc.<br>
+<span lang="pi" class="pali">
+“Aniccā vata saṅkhārā,<br>
+uppā­davaya­dham­mino;<br>
+Uppajjitvā nirujjhanti,<br>
+tesaṃ vūpasamo sukho”ti.<br>
+</span>
+</p>
+
+
+<span lang="pi" class="vi">Mahāsudassanasuttaṃ niṭṭhitaṃ catutthaṃ.</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./dn16.html#content"></a><a id="next-sutta" href="./dn18.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

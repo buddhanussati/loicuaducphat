@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 93          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 93<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 93<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Assalāyana<br>
+<span lang="pi" class="pali">
+Assalāyanasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Sāvatthī, Jetavana, tại tinh xá ông Anāthapiṇḍika (Cấp-Cô-Ðộc).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ khoảng năm trăm Bà-la-môn từ nhiều quốc độ khác nhau trú tại Sāvatthī vì một vài công việc.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena nānāverajjakānaṃ brāhmaṇānaṃ pañcamattāni brāhmaṇasatāni sāvatthiyaṃ paṭivasanti kenacideva karaṇīyena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những vị Bà-la-môn ấy suy nghĩ:<br>
+<span lang="pi" class="pali">
+Atha kho tesaṃ brāhmaṇānaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sa-môn Gotama này chủ trương bốn giai cấp đều thanh tịnh.<br>
+<span lang="pi" class="pali">
+“ayaṃ kho samaṇo gotamo cātuvaṇṇiṃ suddhiṃ paññapeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai có thể cùng với Sa-môn Gotama thảo luận vấn đề này?”<br>
+<span lang="pi" class="pali">
+Ko nu kho pahoti samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetun”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ thanh niên Assalāyana trú ở Sāvatthī, trẻ tuổi, đầu cạo trọc, chỉ có mười sáu tuổi, tinh thông ba tập Veda, với tự vựng, lễ nghi, ngữ nguyên và thứ năm là các cổ truyện, thông hiểu từ ngữ và văn phạm, thâm hiểu Thuận thế luận và Ðại nhân tướng.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena assalāyano nāma māṇavo sāvatthiyaṃ paṭivasati daharo, vuttasiro, soḷasavassuddesiko jātiyā, tiṇṇaṃ vedānaṃ pāragū sanighaṇḍukeṭubhānaṃ sākkharappabhedānaṃ itihāsapañcamānaṃ, padako, veyyākaraṇo, lokāyatamahāpurisalakkhaṇesu anavayo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các Bà-la-môn ấy suy nghĩ:<br>
+<span lang="pi" class="pali">
+Atha kho tesaṃ brāhmaṇānaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thanh niên Assalāyana này trú ở Sāvatthī, trẻ tuổi, đầu cạo trọc, chỉ có mười sáu tuổi, tinh thông ba tập Veda, với tự vựng, lễ nghi, ngữ nguyên và thứ năm là các cổ truyện, thông hiểu từ ngữ và văn phạm, thâm hiểu Thuận thế luận và Ðại nhân tướng.<br>
+<span lang="pi" class="pali">
+“ayaṃ kho assalāyano māṇavo sāvatthiyaṃ paṭivasati daharo, vuttasiro, soḷasavassuddesiko jātiyā, tiṇṇaṃ vedānaṃ pāragū ...pe... anavayo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy có thể thảo luận với Sa-môn Gotama về vấn đề này”.<br>
+<span lang="pi" class="pali">
+So kho pahoti samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi những Bà-la-môn ấy đi đến thanh niên Assalāyana, sau khi đến nói với thanh niên Assalāyana:<br>
+<span lang="pi" class="pali">
+Atha kho te brāhmaṇā yena assalāyano māṇavo tenupasaṅkamiṃsu; upasaṅkamitvā assalāyanaṃ māṇavaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Assalāyana, Sa-môn Gotama chủ trương bốn giai cấp đều thanh tịnh.<br>
+<span lang="pi" class="pali">
+“ayaṃ, bho assalāyana, samaṇo gotamo cātuvaṇṇiṃ suddhiṃ paññapeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Assalāyana hãy đến thảo luận với Sa-môn Gotama về vấn đề này.”<br>
+<span lang="pi" class="pali">
+Etu bhavaṃ assalāyano samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetū”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, thanh niên Assalāyana nói với các Bà-la-môn ấy:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, assalāyano māṇavo te brāhmaṇe etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sa-môn Gotama là vị nói đúng pháp.<br>
+<span lang="pi" class="pali">
+“samaṇo khalu, bho, gotamo dhammavādī;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những ai nói đúng pháp thật rất khó thảo luận.<br>
+<span lang="pi" class="pali">
+dhammavādino ca pana duppaṭimantiyā bhavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôi không có thể thảo luận với Sa-môn Gotama về vấn đề này.”<br>
+<span lang="pi" class="pali">
+Nāhaṃ sakkomi samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai các Bà-la-môn nói với thanh niên Assalāyana:<br>
+<span lang="pi" class="pali">
+Dutiyampi kho te brāhmaṇā assalāyanaṃ māṇavaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Assalāyana, Sa-môn Gotama này chủ trương bốn giai cấp đều thanh tịnh.<br>
+<span lang="pi" class="pali">
+“ayaṃ, bho assalāyana, samaṇo gotamo cātuvaṇṇiṃ suddhiṃ paññapeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Assalāyana hãy đến thảo luận với Sa-môn Gotama về vấn đề này.<br>
+<span lang="pi" class="pali">
+Etu bhavaṃ assalāyano samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Assalāyana đã sống đời sống của vị du hành khất sĩ.”<br>
+<span lang="pi" class="pali">
+Caritaṃ kho pana bhotā assalāyanena paribbājakan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai, thanh niên Assalāyana nói với các vị Bà-la-môn ấy:<br>
+<span lang="pi" class="pali">
+Dutiyampi kho assalāyano māṇavo te brāhmaṇe etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sa-môn Gotama là bậc nói đúng pháp.<br>
+<span lang="pi" class="pali">
+“samaṇo khalu, bho, gotamo dhammavādī;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những người nói đúng pháp thật rất khó thảo luận.<br>
+<span lang="pi" class="pali">
+dhammavādino ca pana duppaṭimantiyā bhavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôi không có thể thảo luận với Sa-môn Gotama về vấn đề này.”<br>
+<span lang="pi" class="pali">
+Nāhaṃ sakkomi samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ ba, những vị Bà-la-môn ấy nói với thanh niên Assalāyana:<br>
+<span lang="pi" class="pali">
+Tatiyampi kho te brāhmaṇā assalāyanaṃ māṇavaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Assalāyana, Sa-môn Gotama này chủ trương bốn giai cấp đều thanh tịnh.<br>
+<span lang="pi" class="pali">
+“ayaṃ, bho assalāyana, samaṇo gotamo cātuvaṇṇiṃ suddhiṃ paññapeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Assalāyana, hãy đến thảo luận với Sa-môn Gotama về vấn đề này.<br>
+<span lang="pi" class="pali">
+Etu bhavaṃ assalāyano samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Assalāyana đã sống đời sống của vị du hành khất sĩ.<br>
+<span lang="pi" class="pali">
+Caritaṃ kho pana bhotā assalāyanena paribbājakaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Assalāyana chớ có bị chiến bại trong một cuộc chiến bại không có binh khí chống cự.”<br>
+<span lang="pi" class="pali">
+Mā bhavaṃ assalāyano ayuddhaparājitaṃ parājayī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Assalāyana chớ có bị chiến bại trong một cuộc chiến bại không có binh khí chống cự.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, assalāyano māṇavo te brāhmaṇe etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thật sự tôi không chấp nhận được (lời yêu cầu) chư Tôn giả.<br>
+<span lang="pi" class="pali">
+“addhā kho ahaṃ bhavanto na labhāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Gotama là bậc nói đúng pháp.<br>
+<span lang="pi" class="pali">
+Samaṇo khalu, bho, gotamo dhammavādī;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những ai nói đúng pháp thật rất khó thảo luận.<br>
+<span lang="pi" class="pali">
+dhammavādino ca pana duppaṭimantiyā bhavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôi không có thể thảo luận với Sa-môn Gotama về vấn đề này.<br>
+<span lang="pi" class="pali">
+Nāhaṃ sakkomi samaṇena gotamena saddhiṃ asmiṃ vacane paṭimantetunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tuy vậy tôi cũng sẽ đi, như lời chư Tôn giả yêu cầu.”<br>
+<span lang="pi" class="pali">
+Api cāhaṃ bhavantānaṃ vacanena gamissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi thanh niên Assalāyana cùng với đại chúng Bà-la-môn đi đến Thế Tôn, sau khi đến nói lên với Thế Tôn những lời chào đón hỏi thăm, sau khi nói lên những lời chào đón hỏi thăm thân hữu, liền ngồi xuống một bên. Ngồi xuống một bên, thanh niên Assalāyana bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho assalāyano māṇavo mahatā brāhmaṇagaṇena saddhiṃ yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṃ sammodi. Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho assalāyano māṇavo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Gotama, các vị Bà-la-môn nói như sau:<br>
+<span lang="pi" class="pali">
+“brāhmaṇā, bho gotama, evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt;<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là màu da trắng, giai cấp khác là màu da đen;<br>
+<span lang="pi" class="pali">
+brāhmaṇova sukko vaṇṇo, kaṇho añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là thanh tịnh, các giai cấp phi Bà-la-môn không được như vậy.<br>
+<span lang="pi" class="pali">
+brāhmaṇova sujjhanti, no abrāhmaṇā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn mới là con chính thống Phạm thiên, sanh từ miệng Phạm thiên, do Phạm thiên sanh, do Phạm thiên tạo ra, là con cháu thừa tự Phạm thiên”.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva brahmuno puttā orasā mukhato jātā brahmajā brahmanimmitā brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Tôn giả Gotama nói thế nào?”<br>
+<span lang="pi" class="pali">
+Idha bhavaṃ gotamo kimāhā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nhưng này Assalāyana, các nữ Bà-la-môn, vợ các Bà-la-môn được thấy là có kinh nguyệt, có mang thai, có sanh con, có cho con bú.<br>
+<span lang="pi" class="pali">
+“Dissanti kho pana, assalāyana, brāhmaṇānaṃ brāhmaṇiyo utuniyopi gabbhiniyopi vijāyamānāpi pāyamānāpi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dầu vậy, các vị Bà-la-môn ấy sanh ra từ nữ căn lại nói:<br>
+<span lang="pi" class="pali">
+Te ca brāhmaṇiyonijāva samānā evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt.<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn là màu da trắng, giai cấp khác là màu da đen;<br>
+<span lang="pi" class="pali">
+brāhmaṇova sukko vaṇṇo, kaṇho añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là thanh tịnh, các giai cấp phi Bà-la-môn không được như vậy.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva sujjhanti, no abrāhmaṇā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn mới là con chính thống Phạm thiên, sanh từ miệng Phạm thiên, do Phạm thiên sanh, do Phạm thiên tạo ra, là con cháu thừa tự Phạm thiên”.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva brahmuno puttā orasā mukhato jātā brahmajā brahmanimmitā brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dầu Tôn giả Gotama có nói như vậy, nhưng các vị Bà-la-môn vẫn tự nghĩ rằng:<br>
+<span lang="pi" class="pali">
+“Kiñcāpi bhavaṃ gotamo evamāha, atha khvettha brāhmaṇā evametaṃ maññanti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt… là con cháu thừa tự Phạm thiên’”.<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ông có nghe chăng? Tại các biên địa quốc độ khác như Yona và Kamboja, chỉ có hai giai cấp: chủ nhân và đầy tớ. Sau khi làm chủ nhân, lại trở thành đầy tớ; sau khi làm đầy tớ, lại trở thành chủ nhân?”<br>
+<span lang="pi" class="pali">
+sutaṃ te: ‘yonakambojesu aññesu ca paccantimesu janapadesu dveva vaṇṇā—ayyo ceva dāso ca; ayyo hutvā dāso hoti, dāso hutvā ayyo hotī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, con có nghe. Trong các quốc độ biên địa như Yona, Kamboja, chỉ có hai giai cấp: chủ nhân và đầy tớ. Sau khi làm chủ nhân, lại trở thành đầy tớ, sau khi làm đầy tớ, lại trở thành chủ nhân.”<br>
+<span lang="pi" class="pali">
+“Evaṃ, bho, sutaṃ taṃ me: ‘yonakambojesu aññesu ca paccantimesu janapadesu dveva vaṇṇā—ayyo ceva dāso ca; ayyo hutvā dāso hoti, dāso hutvā ayyo hotī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Assalāyana, do sức mạnh gì, do xác tín gì của các Bà-la-môn, mà ở đây các vị Bà-la-môn lại nói: “Chỉ có giai cấp Bà-la-môn là tối thượng, giai cấp khác là hạ liệt … là con cháu thừa tự Phạm thiên”?<br>
+<span lang="pi" class="pali">
+“Ettha, assalāyana, brāhmaṇānaṃ kiṃ balaṃ, ko assāso yadettha brāhmaṇā evamāhaṃsu: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dầu Tôn giả Gotama có nói như vậy, nhưng ở đây vị Bà-la-môn vẫn nghĩ như sau: “Chỉ có giai cấp Bà-la-môn là tối thượng, giai cấp khác là hạ liệt … là con cháu thừa tự Phạm thiên”.<br>
+<span lang="pi" class="pali">
+“Kiñcāpi bhavaṃ gotamo evamāha, atha khvettha brāhmaṇā evametaṃ maññanti: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có người Khattiya (Sát-đế-lỵ) sát sanh, lấy của không cho, có tà hạnh trong các dục, nói láo, nói hai lưỡi, nói ác khẩu, nói lời phù phiếm, có tâm tham, có tâm sân, có tà kiến: sau khi thân hoại mạng chung mới bị sanh vào cõi dữ, ác thú, đọa xứ, địa ngục. Bà-la-môn không phải như vậy?<br>
+<span lang="pi" class="pali">
+khattiyova nu kho pāṇātipātī adinnādāyī kāmesumicchācārī musāvādī pisuṇavāco pharusavāco samphappalāpī abhijjhālu byāpannacitto micchādiṭṭhi kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyya, no brāhmaṇo?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và chỉ có người Vessa và người Sudda sát sanh, lấy của không cho, có tà hạnh trong các dục, nói láo, nói hai lưỡi, nói ác khẩu, nói lời phù phiếm, có tham tâm, có sân tâm, có tà kiến, sau khi thân hoại mang chung, mới bị sanh vào cõi dữ, ác thú, đọa xứ, địa ngục. Các Bà-la-môn không phải như vậy?”<br>
+<span lang="pi" class="pali">
+Vessova nu kho ...pe... suddova nu kho pāṇātipātī adinnādāyī kāmesumicchācārī musāvādī pisuṇavāco pharusavāco samphappalāpī abhijjhālu byāpannacitto micchādiṭṭhi kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyya, no brāhmaṇo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Không phải như vậy, Tôn giả Gotama.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, bho gotama.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người Khattiya cũng vậy, Tôn giả Gotama, nếu sát sanh, lấy của không cho, có tà hạnh trong các dục, nói láo, nói hai lưỡi, nói ác khẩu, nói lời phù phiếm, có tham tâm, có sân tâm, có tà kiến, sau khi thân hoại mạng chung, cũng bị sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+Khattiyopi hi, bho gotama, pāṇātipātī adinnādāyī kāmesumicchācārī musāvādī pisuṇavāco pharusavāco samphappalāpī abhijjhālu byāpannacitto micchādiṭṭhi kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà-la-môn cũng vậy, Tôn giả Gotama, …<br>
+<span lang="pi" class="pali">
+Brāhmaṇopi hi, bho gotama ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vessa cũng vậy, Tôn giả Gotama, …<br>
+<span lang="pi" class="pali">
+vessopi hi, bho gotama ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sudda cũng vậy, Tôn giả Gotama …<br>
+<span lang="pi" class="pali">
+suddopi hi, bho gotama ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tất cả bốn giai cấp, Tôn giả Gotama, nếu sát sanh, lấy của không cho, có tà hạnh trong các dục, nói láo, nói hai lưỡi, nói ác khẩu, nói lời phù phiếm, có tham tâm, có sân tâm, có tà kiến, sau khi thân hoại mạng chung đều sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.”<br>
+<span lang="pi" class="pali">
+sabbepi hi, bho gotama, cattāro vaṇṇā pāṇātipātino adinnādāyino kāmesumicchācārino musāvādino pisuṇavācā pharusavācā samphappalāpino abhijjhālū byāpannacittā micchādiṭṭhī kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyyun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Assalāyana, do sức mạnh gì, do xác tín gì của Bà-la-môn, mà các Bà-la-môn lại nói: ‘Chỉ có giai cấp Bà-la-môn là tối thượng, giai cấp khác là hạ liệt… là con cháu thừa tự Phạm thiên’”?<br>
+<span lang="pi" class="pali">
+“Ettha, assalāyana, brāhmaṇānaṃ kiṃ balaṃ, ko assāso yadettha brāhmaṇā evamāhaṃsu: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dầu Tôn giả Sa-môn có nói như vậy, nhưng ở đây, các Bà-la-môn vẫn nghĩ như sau: ‘Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt … là con cháu thừa tự Phạm thiên’”.<br>
+<span lang="pi" class="pali">
+“Kiñcāpi bhavaṃ gotamo evamāha, atha khvettha brāhmaṇā evametaṃ maññanti: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ tà hạnh trong các dục, từ bỏ nói láo, từ bỏ nói hai lưỡi, từ bỏ ác khẩu, từ bỏ nói lời phù phiếm, không có tham tâm, không có sân tâm, có chánh kiến, sau khi thân hoại mạng chung được sanh vào thiện thú, Thiên giới, cõi đời này. Khattiya không được vậy, Vessa không được vậy, Sudda không được vậy?”<br>
+<span lang="pi" class="pali">
+brāhmaṇova nu kho pāṇātipātā paṭivirato adinnādānā paṭivirato kāmesumicchācārā paṭivirato musāvādā paṭivirato pisuṇāya vācāya paṭivirato pharusāya vācāya paṭivirato samphappalāpā paṭivirato anabhijjhālu abyāpannacitto sammādiṭṭhi kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjeyya, no khattiyo, no vesso, no suddo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Không phải vậy, Tôn giả Gotama.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, bho gotama.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khattiya cũng vậy, Tôn giả Gotama, nếu từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ tà hạnh trong các dục, từ bỏ nói láo, từ bỏ nói hai lưỡi, từ bỏ ác khẩu, từ bỏ nói lời phù phiếm, không có tham tâm, không có sân tâm, có chánh kiến, thì sau khi thân hoại mạng chung cũng được sanh vào thiện thú, Thiên giới; cõi đời này.<br>
+<span lang="pi" class="pali">
+Khattiyopi hi, bho gotama, pāṇātipātā paṭivirato adinnādānā paṭivirato kāmesumicchācārā paṭivirato musāvādā paṭivirato pisuṇāya vācāya paṭivirato pharusāya vācāya paṭivirato samphappalāpā paṭivirato anabhijjhālu abyāpannacitto sammādiṭṭhi kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà-la-môn cũng vậy, Tôn giả Gotama; …<br>
+<span lang="pi" class="pali">
+Brāhmaṇopi hi, bho gotama ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vessa cũng vậy, Tôn giả Gotama; …<br>
+<span lang="pi" class="pali">
+vessopi hi, bho gotama ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sudda cũng vậy, Tôn giả Gotama …<br>
+<span lang="pi" class="pali">
+suddopi hi, bho gotama ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tất cả bốn giai cấp, Tôn giả Gotama, nếu từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ tà hạnh trong các dục, từ bỏ nói láo, từ bỏ nói hai lưỡi, từ bỏ ác khẩu, từ bỏ nói lời phù phiếm, không có tham tâm, không có sân tâm, có chánh kiến, thì sau khi thân hoại mạng chung, đều được sanh vào thiện thú, Thiên giới, cõi đời này.”<br>
+<span lang="pi" class="pali">
+sabbepi hi, bho gotama, cattāro vaṇṇā pāṇātipātā paṭiviratā adinnādānā paṭiviratā kāmesumicchācārā paṭiviratā musāvādā paṭiviratā pisuṇāya vācāya paṭiviratā pharusāya vācāya paṭiviratā samphappalāpā paṭiviratā anabhijjhālū abyāpannacittā sammādiṭṭhī kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjeyyun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Assalāyana, do sức mạnh gì, do xác tín gì của Bà-la-môn, mà các Bà-la-môn lại nói: ‘Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt … là con cháu thừa tự Phạm thiên’?”<br>
+<span lang="pi" class="pali">
+“Ettha, assalāyana, brāhmaṇānaṃ kiṃ balaṃ, ko assāso yadettha brāhmaṇā evamāhaṃsu: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dầu Tôn giả Gotama có nói như vậy, nhưng ở đây, các Bà-la-môn vẫn nghĩ rằng: ‘Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt… là con cháu thừa tự Phạm thiên’”.<br>
+<span lang="pi" class="pali">
+“Kiñcāpi bhavaṃ gotamo evamāha, atha khvettha brāhmaṇā evametaṃ maññanti: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn mới có thể trong quốc độ này tu tập từ tâm, không hận, không sân, Khattiya không thể được, Vessa không thể được, Sudda không thể được?”<br>
+<span lang="pi" class="pali">
+brāhmaṇova nu kho pahoti asmiṃ padese averaṃ abyābajjhaṃ mettacittaṃ bhāvetuṃ, no khattiyo, no vesso, no suddo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Không phải vậy, Tôn giả Gotama.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, bho gotama.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khattiya, Tôn giả Gotama, cũng có thể trong quốc độ này tu tập từ tâm, không hận, không sân.<br>
+<span lang="pi" class="pali">
+Khattiyopi hi, bho gotama, pahoti asmiṃ padese averaṃ abyābajjhaṃ mettacittaṃ bhāvetuṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà-la-môn cũng vậy, Tôn giả Gotama;<br>
+<span lang="pi" class="pali">
+brāhmaṇopi hi, bho gotama …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vessa cũng vậy, Tôn giả Gotama;<br>
+<span lang="pi" class="pali">
+vessopi hi, bho gotama …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sudda cũng vậy, Tôn giả Gotama.<br>
+<span lang="pi" class="pali">
+suddopi hi, bho gotama …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tất cả bốn giai cấp, Tôn giả Gotama, đều có thể trong quốc độ này tu tập từ tâm, không hận, không sân.”<br>
+<span lang="pi" class="pali">
+sabbepi hi, bho gotama, cattāro vaṇṇā pahonti asmiṃ padese averaṃ abyābajjhaṃ mettacittaṃ bhāvetun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Assalāyana, do sức mạnh gì, do xác tín gì của Bà-la-môn, mà ở đây các Bà-la-môn lại nói như sau: ‘Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt… là con cháu thừa tự Phạm thiên’?”<br>
+<span lang="pi" class="pali">
+“Ettha, assalāyana, brāhmaṇānaṃ kiṃ balaṃ, ko assāso yadettha brāhmaṇā evamāhaṃsu: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dầu Tôn giả Gotama có nói như vậy, nhưng ở đây các Bà-la-môn vẫn nghĩ rằng: ‘Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt… là con cháu thừa tự Phạm thiên’.”<br>
+<span lang="pi" class="pali">
+“Kiñcāpi bhavaṃ gotamo evamāha, atha khvettha brāhmaṇā evametaṃ maññanti: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn mới có thể, sau khi cầm cào lưng và bột tắm đi đến sông tắm sạch bụi bặm, Khattiya không thể được, Vessa không thể được, Sudda không thể được?”<br>
+<span lang="pi" class="pali">
+brāhmaṇova nu kho pahoti sottisināniṃ ādāya nadiṃ gantvā rajojallaṃ pavāhetuṃ, no khattiyo, no vesso, no suddo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Không phải vậy, thưa Tôn giả Gotama.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, bho gotama.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Gotama, Khattiya cũng có thể, sau khi cầm cào lưng và bột tắm, đi đến sông tắm sạch bụi bặm. Bà-la-môn cũng vậy, Tôn giả Gotama;<br>
+<span lang="pi" class="pali">
+Khattiyopi hi, bho gotama, pahoti sottisināniṃ ādāya nadiṃ gantvā rajojallaṃ pavāhetuṃ, brāhmaṇopi hi, bho gotama …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vessa cũng vậy, Tôn giả Gotama; …<br>
+<span lang="pi" class="pali">
+vessopi hi, bho gotama …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sudda cũng vậy, Tôn giả Gotama.<br>
+<span lang="pi" class="pali">
+suddopi hi, bho gotama …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tất cả bốn giai cấp, Tôn giả Gotama, đều có thể, sau khi cầm cào lưng và bột tắm, đi đến sông tắm sạch bụi bặm.”<br>
+<span lang="pi" class="pali">
+sabbepi hi, bho gotama, cattāro vaṇṇā pahonti sottisināniṃ ādāya nadiṃ gantvā rajojallaṃ pavāhetun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Assalāyana, do sức mạnh gì, xác tín gì của các Bà-la-môn, mà ở đây các Bà-la-môn lại nói như sau: ‘Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt… là con cháu thừa tự Phạm thiên’?”<br>
+<span lang="pi" class="pali">
+“Ettha, assalāyana, brāhmaṇānaṃ kiṃ balaṃ, ko assāso yadettha brāhmaṇā evamāhaṃsu: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dầu Tôn giả Gotama có nói như vậy, nhưng ở đây các Bà-la-môn vẫn nghĩ như sau: ‘Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt… là con cháu thừa tự Phạm thiên’.”<br>
+<span lang="pi" class="pali">
+“Kiñcāpi bhavaṃ gotamo evamāha, atha khvettha brāhmaṇā evametaṃ maññanti: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, nếu có vua Khattiya đã làm lễ quán đảnh, cho hội họp một trăm người thuộc nhiều chủng tánh khác nhau và nói:<br>
+<span lang="pi" class="pali">
+idha rājā khattiyo muddhāvasitto nānājaccānaṃ purisānaṃ purisasataṃ sannipāteyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Quý vị hãy đến đây, quý vị nào thuộc gia đình Khattiya, thuộc gia đình Bà-la-môn, sanh ra từ hoàng tộc, hãy đem đến phần trên của đồ quay lửa, bằng cây sala, hay cây salala, hay cây chiên-đàn, hay cây sen, quay cho lửa và sức nóng hiện ra.<br>
+<span lang="pi" class="pali">
+‘āyantu bhonto ye tattha khattiyakulā brāhmaṇakulā rājaññakulā uppannā, sākassa vā sālassa vā salaḷassa vā candanassa vā padumakassa vā uttarāraṇiṃ ādāya, aggiṃ abhinibbattentu, tejo pātukarontu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn những người thuộc gia đình Chiên-đà-la (hạ tiện), thuộc gia đình săn bắn, thuộc gia đình làm đồ tre, thuộc gia đình làm xe cộ, thuộc gia đình đổ phân, hãy đem đến bộ phận trên của đồ quay lửa làm bằng gỗ máng chó ăn, hay máng heo ăn, hay máng giặt đồ, hay củi khô từ cây y lan (elanda: cây thu đủ thầu dầu), và quay cho bậc lửa và sức nóng hiện ra’.<br>
+<span lang="pi" class="pali">
+Āyantu pana bhonto ye tattha caṇḍālakulā nesādakulā venakulā rathakārakulā pukkusakulā uppannā, sāpānadoṇiyā vā sūkaradoṇiyā vā rajakadoṇiyā vā eraṇḍakaṭṭhassa vā uttarāraṇiṃ ādāya, aggiṃ abhinibbattentu, tejo pātukarontū’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có phải chỉ có ngọn lửa được nhen lên và sức nóng được tạo ra từ người thuộc gia đình Khattiya, thuộc gia đình Bà-la-môn sanh từ hoàng tộc, sau khi đem đến bộ phận trên của đồ quay lửa, làm bằng cây sala, hay cây salala, hay cây chiên-đàn, hay cây sen, chỉ có lửa ấy mới có ngọn, mới có màu sắc, mới có ánh sáng, và chỉ có ngọn lửa ấy mới dùng được vào các công việc do lửa đem lại. Còn ngọn lửa được nhen lên và sức nóng được tạo ra từ người thuộc gia đình hạ tiện, thuộc gia đình săn bắn, thuộc gia đình làm đồ tre, thuộc gia đình làm xe cộ, thuộc gia đình làm đổ phân, sau khi đem đến bộ phận trên của đồ quay lửa làm bằng gỗ máng chó ăn, hay máng heo ăn, hay máng giặt đồ, hay củi khô từ cây y-lan, lửa ấy không có ngọn, không có màu sắc, không có ánh sáng, và ngọn lửa ấy không có thể dùng được vào các công việc do lửa đem lại?”<br>
+<span lang="pi" class="pali">
+yo evaṃ nu kho so khattiyakulā brāhmaṇakulā rājaññakulā uppannehi sākassa vā sālassa vā salaḷassa vā candanassa vā padumakassa vā uttarāraṇiṃ ādāya aggi abhinibbatto, tejo pātukato, so eva nu khvāssa aggi accimā ceva vaṇṇavā ca pabhassaro ca, tena ca sakkā agginā aggikaraṇīyaṃ kātuṃ; yo pana so caṇḍālakulā nesādakulā venakulā rathakārakulā pukkusakulā uppannehi sāpānadoṇiyā vā sūkaradoṇiyā vā rajakadoṇiyā vā eraṇḍakaṭṭhassa vā uttarāraṇiṃ ādāya aggi abhinibbatto, tejo pātukato svāssa aggi na ceva accimā na ca vaṇṇavā na ca pabhassaro, na ca tena sakkā agginā aggikaraṇīyaṃ kātun”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Không phải vậy, thưa Tôn giả Gotama.<br>
+<span lang="pi" class="pali">
+“No hidaṃ, bho gotama.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngọn lửa được nhen lên, sức nóng được tạo ra, Tôn giả Gotama, từ người thuộc gia đình Khattiya, thuộc gia đình Bà-la-môn sanh từ hoàng tộc, sau khi đem đến bộ phận trên của đồ quay lửa, làm bằng cây sala, hay cây salala, hay cây chiên-đàn, hay cây sen, lửa ấy có ngọn, có màu sắc, có ánh sáng, ngọn lửa ấy dùng được vào các công việc do lửa đem lại.<br>
+<span lang="pi" class="pali">
+Yopi hi so, bho gotama, khattiyakulā brāhmaṇakulā rājaññakulā uppannehi sākassa vā sālassa vā salaḷassa vā candanassa vā padumakassa vā uttarāraṇiṃ ādāya aggi abhinibbatto, tejo pātukato svāssa aggi accimā ceva vaṇṇavā ca pabhassaro ca, tena ca sakkā agginā aggikaraṇīyaṃ kātuṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và ngọn lửa được nhen lên, và sức nóng được tạo ra từ người thuộc gia đình hạ tiện, thuộc gia đình săn bắn, thuộc gia đình làm đồ tre, thuộc gia đình làm xe cộ, thuộc gia đình đổ phân, sau khi đem đến bộ phận trên của đồ quay lửa, làm bằng gỗ máng chó ăn, hay máng heo ăn, hay máng giặt đồ, hay củi khô từ cây y-lan, lửa ấy cũng có ngọn, cũng có màu sắc, cũng có ánh sáng, và ngọn lửa ấy có thể dùng được vào công việc do lửa đem lại.<br>
+<span lang="pi" class="pali">
+yopi so caṇḍālakulā nesādakulā venakulā rathakārakulā pukkusakulā uppannehi sāpānadoṇiyā vā sūkaradoṇiyā vā rajakadoṇiyā vā eraṇḍakaṭṭhassa vā uttarāraṇiṃ ādāya aggi abhinibbatto, tejo pātukato, svāssa aggi accimā ceva vaṇṇavā ca pabhassaro ca, tena ca sakkā agginā aggikaraṇīyaṃ kātuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Gotama, tất cả loại lửa đều có ngọn, đều có màu sắc, đều có ánh sáng; tất cả loại lửa đều có thể được dùng vào các công việc do lửa đem lại.”<br>
+<span lang="pi" class="pali">
+Sabbopi hi, bho gotama, aggi accimā ceva vaṇṇavā ca pabhassaro ca, sabbenapi sakkā agginā aggikaraṇīyaṃ kātun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Assalāyana, do sức mạnh gì, do xác tín gì của các Bà-la-môn mà các Bà-la-môn ở đây lại nói:<br>
+<span lang="pi" class="pali">
+“Ettha, assalāyana, brāhmaṇānaṃ kiṃ balaṃ, ko assāso yadettha brāhmaṇā evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt.<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn là da trắng, giai cấp khác là da đen.<br>
+<span lang="pi" class="pali">
+brāhmaṇova sukko vaṇṇo, kaṇho añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn là thanh tịnh, các giai cấp phi Bà-la-môn không phải như vậy.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva sujjhanti, no abrāhmaṇā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn mới là con chính thống Phạm thiên, sanh ra từ miệng Phạm thiên, do Phạm thiên sanh, do Phạm thiên tạo ra, là con cháu thừa tự Phạm thiên”?<br>
+<span lang="pi" class="pali">
+brāhmaṇāva brahmuno puttā orasā mukhato jātā brahmajā brahmanimmitā brahmadāyādā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dầu Tôn giả Gotama có nói như vậy, nhưng ở đây các Bà-la-môn vẫn nghĩ như sau: ‘Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt … là con cháu thừa tự Phạm thiên’.”<br>
+<span lang="pi" class="pali">
+“Kiñcāpi bhavaṃ gotamo evamāha, atha khvettha brāhmaṇā evametaṃ maññanti: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây một nam tử Khattiya cưới một nữ nhân Bà-la-môn làm vợ. Do hôn phối này, họ sanh được đứa con trai.<br>
+<span lang="pi" class="pali">
+idha khattiyakumāro brāhmaṇakaññāya saddhiṃ saṃvāsaṃ kappeyya, tesaṃ saṃvāsamanvāya putto jāyetha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðứa con trai ấy sanh ra từ nam tử Khattiya và nữ nhân Bà-la-môn. Nó giống mẹ nó hay giống cha nó; nó được gọi là Khattiya hay được gọi là Ba La Môn?”<br>
+<span lang="pi" class="pali">
+yo so khattiyakumārena brāhmaṇakaññāya putto uppanno, siyā so mātupi sadiso pitupi sadiso, ‘khattiyo’tipi vattabbo ‘brāhmaṇo’tipi vattabbo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Gotama, đứa con trai ấy sanh ra từ nam tử Khattiya và nữ nhân Bà-la-môn; nó giống mẹ nó và cũng giống cha nó, và được gọi là Khattiya và cũng được gọi là Bà-la-môn.”<br>
+<span lang="pi" class="pali">
+“Yo so, bho gotama, khattiyakumārena brāhmaṇakaññāya putto uppanno, siyā so mātupi sadiso pitupi sadiso, ‘khattiyo’tipi vattabbo ‘brāhmaṇo’tipi vattabbo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, một nam tử Bà-la-môn cưới một nữ nhân Khattiya và do hôn phối này, họ sanh được đứa con trai.<br>
+<span lang="pi" class="pali">
+idha brāhmaṇakumāro khattiyakaññāya saddhiṃ saṃvāsaṃ kappeyya, tesaṃ saṃvāsamanvāya putto jāyetha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người con trai ấy được sanh từ nam tử Bà-la-môn và nữ nhân Khattiya; nó giống mẹ nó, hay giống cha nó; nó được gọi là Khattiya, (hay) cũng được gọi là Bà-la-môn?”<br>
+<span lang="pi" class="pali">
+yo so brāhmaṇakumārena khattiyakaññāya putto uppanno, siyā so mātupi sadiso pitupi sadiso, ‘khattiyo’tipi vattabbo ‘brāhmaṇo’tipi vattabbo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Gotama, người con trai sanh ra từ nam tử Bà-la-môn và nữ nhân Khattiya; nó giống mẹ nó; và giống cha nó, và nó được gọi là Khattiya, và cũng được gọi là Bà-la-môn.”<br>
+<span lang="pi" class="pali">
+“Yo so, bho gotama, brāhmaṇakumārena khattiyakaññāya putto uppanno, siyā so mātupi sadiso pitupi sadiso, ‘khattiyo’tipi vattabbo ‘brāhmaṇo’tipi vattabbo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, có con ngựa cái giao phối với con lừa. Do sự giao phối này, chúng sanh được con la.<br>
+<span lang="pi" class="pali">
+idha vaḷavaṃ gadrabhena sampayojeyyuṃ, tesaṃ sampayogamanvāya kisoro jāyetha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con la ấy sanh ra từ con ngựa cái và con lừa; nó giống mẹ nó, hay giống cha nó; nó được gọi là ngựa, hay nó được gọi là lừa?”<br>
+<span lang="pi" class="pali">
+yo so vaḷavāya gadrabhena kisoro uppanno, siyā so mātupi sadiso pitupi sadiso, ‘asso’tipi vattabbo ‘gadrabho’tipi vattabbo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Gotama, do sự giao phối khác giống như vậy, nó là con la.<br>
+<span lang="pi" class="pali">
+“Kuṇḍañhi so, bho gotama, assataro hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðó là sự sai khác, thưa Tôn giả Gotama, mà tôi thấy ở đây.<br>
+<span lang="pi" class="pali">
+Idaṃ hissa, bho gotama, nānākaraṇaṃ passāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng ở chỗ khác, đối với sự vật khác, tôi không thấy sai biệt gì.”<br>
+<span lang="pi" class="pali">
+amutra ca panesānaṃ na kiñci nānākaraṇaṃ passāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, có hai anh em thanh niên, đồng mẹ khác cha; một người đọc tụng, thông hiểu Thánh điển; một người không đọc tụng, không hiểu Thánh điển.<br>
+<span lang="pi" class="pali">
+idhāssu dve māṇavakā bhātaro sodariyā, eko ajjhāyako upanīto eko anajjhāyako anupanīto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, giữa hai vị này, các Bà-la-môn sẽ cúng dường ai trước các vật cúng cho người chết, các thực vật tế đàn, các món ăn trong các lễ hy sinh, các đồ ăn đãi khách?”<br>
+<span lang="pi" class="pali">
+Kamettha brāhmaṇā paṭhamaṃ bhojeyyuṃ saddhe vā thālipāke vā yaññe vā pāhune vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Gotama, vị thanh niên nào đọc tụng, thông hiểu Thánh điển, các Bà-la-môn sẽ cúng dường người ấy trước, các vật cúng cho người chết, các thực vật tế đàn, các món ăn trong các lễ hy sinh, các đồ ăn đãi khách.<br>
+<span lang="pi" class="pali">
+“Yo so, bho gotama, māṇavako ajjhāyako upanīto tamettha brāhmaṇā paṭhamaṃ bhojeyyuṃ saddhe vā thālipāke vā yaññe vā pāhune vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bởi vì, thưa Tôn giả Gotama, cúng dường cho người không đọc tụng, không thông hiểu Thánh điển làm sao có quả lớn được?”<br>
+<span lang="pi" class="pali">
+Kiñhi, bho gotama, anajjhāyake anupanīte dinnaṃ mahapphalaṃ bhavissatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, nhà ngươi nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, assalāyana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, có hai anh em thanh niên (Bà-la-môn) đồng mẹ khác cha; một người đọc tụng thông hiểu Thánh điển, theo ác giới, hành ác pháp; một người không đọc tụng, không thông hiểu Thánh điển, trì giới, hành thiện pháp.<br>
+<span lang="pi" class="pali">
+idhāssu dve māṇavakā bhātaro sodariyā, eko ajjhāyako upanīto dussīlo pāpadhammo, eko anajjhāyako anupanīto sīlavā kalyāṇadhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, các người Bà-la-môn cúng dường cho ai trước các vật cúng cho người chết, các thực vật tế đàn, các món ăn trong các lễ hy sinh, hay các đồ ăn đãi khách?”<br>
+<span lang="pi" class="pali">
+Kamettha brāhmaṇā paṭhamaṃ bhojeyyuṃ saddhe vā thālipāke vā yaññe vā pāhune vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Gotama, vị thanh niên nào không đọc tụng, không thông hiểu Thánh điển, nhưng trì giới, hành thiện pháp; ở đây, các Bà-la-môn cúng dường cho người ấy trước, các vật cúng cho người chết, các thực vật tế đàn, các món ăn trong các lễ hy sinh, hay các đồ ăn đãi khách.<br>
+<span lang="pi" class="pali">
+“Yo so, bho gotama, māṇavako anajjhāyako anupanīto sīlavā kalyāṇadhammo tamettha brāhmaṇā paṭhamaṃ bhojeyyuṃ saddhe vā thālipāke vā yaññe vā pāhune vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bởi vì, thưa Tôn giả Gotama, cúng dường cho người theo ác giới, hành ác pháp làm sao có quả lớn được?”<br>
+<span lang="pi" class="pali">
+Kiñhi, bho gotama, dussīle pāpadhamme dinnaṃ mahapphalaṃ bhavissatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Assalāyana, trước hết Ông đi về sanh chủng.<br>
+<span lang="pi" class="pali">
+“Pubbe kho tvaṃ, assalāyana, jātiṃ agamāsi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bỏ sanh chủng, Ông đi về Thánh điển.<br>
+<span lang="pi" class="pali">
+jātiṃ gantvā mante agamāsi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bỏ Thánh điển, Ông đi về sự thanh tịnh.<br>
+<span lang="pi" class="pali">
+mante gantvā tape agamāsi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bây giờ, Ông đi về sự thanh tịnh của bốn giai cấp mà Ta đã chủ trương.”<br>
+<span lang="pi" class="pali">
+tape gantvā cātuvaṇṇiṃ suddhiṃ paccāgato, yamahaṃ paññapemī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nghe nói vậy, thanh niên Assalāyana ngồi im lặng, ủ rũ, co vai, cúi đầu, sửng sờ, mở miệng không ra lời.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, assalāyano māṇavo tuṇhībhūto maṅkubhūto pattakkhandho adhomukho pajjhāyanto appaṭibhāno nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn sau khi biết được thanh niên Assalāyana im lặng ủ rũ, co vai, cúi đầu, sửng sờ, mở miệng không ra lời, liền nói với thanh niên Assalāyana:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā assalāyanaṃ māṇavaṃ tuṇhībhūtaṃ maṅkubhūtaṃ pattakkhandhaṃ adhomukhaṃ pajjhāyantaṃ appaṭibhānaṃ viditvā assalāyanaṃ māṇavaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thuở xưa, này Assalāyana, trong khi bảy ẩn sĩ Bà-la-môn thảo luận trong những am thất bằng lá tại một khu rừng, ác kiến sau đây được khởi lên:<br>
+<span lang="pi" class="pali">
+“bhūtapubbaṃ, assalāyana, sattannaṃ brāhmaṇisīnaṃ araññāyatane paṇṇakuṭīsu sammantānaṃ evarūpaṃ pāpakaṃ diṭṭhigataṃ uppannaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt … là con cháu thừa tự Phạm thiên”.<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo … brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Assalāyana, ẩn sĩ Asita Devala được nghe:<br>
+<span lang="pi" class="pali">
+Assosi kho, assalāyana, asito devalo isi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Trong khi bảy ẩn sĩ Bà-la-môn thảo luận trong những am thất bằng lá, tại một khu rừng, ác kiến sau đây được khởi lên:<br>
+<span lang="pi" class="pali">
+‘sattannaṃ kira brāhmaṇisīnaṃ araññāyatane paṇṇakuṭīsu sammantānaṃ evarūpaṃ pāpakaṃ diṭṭhigataṃ uppannaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt … con cháu thừa tự Phạm thiên’?<br>
+<span lang="pi" class="pali">
+brāhmaṇova seṭṭho vaṇṇo ...pe... brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ẩn sĩ Asita Devala, sau khi sửa soạn râu tóc, đắp y vải màu đỏ tía, đi dép với nhiều lớp (đường viền) kiên cố, cầm một cây gậy bằng vàng, liền hiện ra trong hành lang am thất của bảy vị ẩn sĩ Bà-la-môn.<br>
+<span lang="pi" class="pali">
+Atha kho, assalāyana, asito devalo isi kesamassuṃ kappetvā mañjiṭṭhavaṇṇāni dussāni nivāsetvā paṭaliyo upāhanā āruhitvā jātarūpamayaṃ daṇḍaṃ gahetvā sattannaṃ brāhmaṇisīnaṃ patthaṇḍile pāturahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Assalāyana, ẩn sĩ Asita Devala đi qua, đi lại trong hành lang am thất của bảy vị ẩn sĩ Bà-la-môn và nói:<br>
+<span lang="pi" class="pali">
+Atha kho, assalāyana, asito devalo isi sattannaṃ brāhmaṇisīnaṃ patthaṇḍile caṅkamamāno evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nay những Tôn giả ẩn sĩ Bà-la-môn này đi đâu?<br>
+<span lang="pi" class="pali">
+‘handa ko nu kho ime bhavanto brāhmaṇisayo gatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay những Tôn giả ẩn sĩ Bà-la-môn này đi đâu?’<br>
+<span lang="pi" class="pali">
+handa ko nu kho ime bhavanto brāhmaṇisayo gatā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Assalāyana, bảy vị ẩn sĩ Bà-la-môn suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, assalāyana, sattannaṃ brāhmaṇisīnaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Kẻ kia là ai đang đi qua lại trong hành lang am thất bảy vị ẩn sĩ Bà-la-môn như một con bò đi vòng tròn, lại nói như sau:<br>
+<span lang="pi" class="pali">
+‘ko nāyaṃ gāmaṇḍalarūpo viya sattannaṃ brāhmaṇisīnaṃ patthaṇḍile caṅkamamāno evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nay những vị ẩn sĩ Bà-la-môn này đi đâu?<br>
+<span lang="pi" class="pali">
+“handa ko nu kho ime bhavanto brāhmaṇisayo gatā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay những vị ẩn sĩ Bà-la-môn này đi đâu?”<br>
+<span lang="pi" class="pali">
+handa ko nu kho ime bhavanto brāhmaṇisayo gatāti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chúng ta hãy dùng chú thuật trù yếm Ông ta”.<br>
+<span lang="pi" class="pali">
+Handa naṃ abhisapāmā”’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Assalāyana, bảy ẩn sĩ Bà-la-môn dùng chú thuật trù yếm ẩn sĩ Asita Devala:<br>
+<span lang="pi" class="pali">
+Atha kho, assalāyana, satta brāhmaṇisayo asitaṃ devalaṃ isiṃ abhisapiṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hãy trở thành tro tàn hạ liệt”.<br>
+<span lang="pi" class="pali">
+‘bhasmā, vasala, hohi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hãy trở thành tro tàn hạ liệt.<br>
+<span lang="pi" class="pali">
+bhasmā, vasala, hohī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này Assalāyana, bảy ẩn sĩ càng dùng chú thuật trù yếm, ẩn sĩ Asita Devala càng trở thành đẹp đẽ, trở thành dễ nhìn, trở thành khả ái.<br>
+<span lang="pi" class="pali">
+Yathā yathā kho, assalāyana, satta brāhmaṇisayo asitaṃ devalaṃ isiṃ abhisapiṃsu tathā tathā asito devalo isi abhirūpataro ceva hoti dassanīyataro ca pāsādikataro ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Assalāyana, bảy vị ẩn sĩ Bà-la-môn suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Atha kho, assalāyana, sattannaṃ brāhmaṇisīnaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thật trống rỗng thay, khổ hạnh của chúng ta! Phạm hạnh của chúng ta không có hiệu quả.<br>
+<span lang="pi" class="pali">
+‘moghaṃ vata no tapo, aphalaṃ brahmacariyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trước kia, khi chúng ta dùng chú thuật trù yếm người nào:<br>
+<span lang="pi" class="pali">
+Mayañhi pubbe yaṃ abhisapāma—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hãy trở thành tro tàn hạ liệt.<br>
+<span lang="pi" class="pali">
+bhasmā, vasala, hohi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy trở thành tro tàn ngay.<br>
+<span lang="pi" class="pali">
+bhasmā, vasala, hohīti bhasmāva bhavati ekacco.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nay chúng ta càng dùng chú thuật trù yếm người này, người này lại càng trở nên đẹp đẽ, trở thành dễ nhìn, trở thành khả ái’.<br>
+<span lang="pi" class="pali">
+Imaṃ pana mayaṃ yathā yathā abhisapāma tathā tathā abhirūpataro ceva hoti dassanīyataro ca pāsādikataro cā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Khổ hạnh, chư Tôn giả, không phải trống rỗng, Phạm hạnh (quý vị) không phải không hiệu quả.<br>
+<span lang="pi" class="pali">
+‘Na bhavantānaṃ moghaṃ tapo, nāphalaṃ brahmacariyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tôn giả, hãy từ bỏ tâm oán hận đối với ta’.<br>
+<span lang="pi" class="pali">
+Iṅgha bhavanto, yo mayi manopadoso taṃ pajahathā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có tâm oán hận nào đối với Tôn giả, chúng tôi sẽ bỏ.<br>
+<span lang="pi" class="pali">
+‘Yo bhavati manopadoso taṃ pajahāma.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả là ai?’<br>
+<span lang="pi" class="pali">
+Ko nu bhavaṃ hotī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chư Tôn giả có nghe nói đến ẩn sĩ Asita Devala không?<br>
+<span lang="pi" class="pali">
+‘Suto nu bhavataṃ—asito devalo isī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa có nghe, Tôn giả.’<br>
+<span lang="pi" class="pali">
+‘Evaṃ, bho’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chư Tôn giả, vị ấy là ta.’<br>
+<span lang="pi" class="pali">
+‘So khvāhaṃ, bho, homī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi này Assalāyana, bảy ẩn sĩ Bà-la-môn đến đảnh lễ ẩn sĩ Asita Devala.<br>
+<span lang="pi" class="pali">
+Atha kho, assalāyana, satta brāhmaṇisayo asitaṃ devalaṃ isiṃ abhivādetuṃ upakkamiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi ẩn sĩ Asita Devala nói với bảy ẩn sĩ Bà-la-môn:<br>
+<span lang="pi" class="pali">
+Atha kho, assalāyana, asito devalo isi satta brāhmaṇisayo etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chư Tôn giả, tôi có nghe như sau: Trong khi bảy vị ẩn sĩ Bà-la-môn thảo luận tại am thất bằng lá trong khu rừng, ác tà kiến như sau khởi lên:<br>
+<span lang="pi" class="pali">
+‘sutaṃ metaṃ, bho, sattannaṃ kira brāhmaṇisīnaṃ araññāyatane paṇṇakuṭīsu sammantānaṃ evarūpaṃ pāpakaṃ diṭṭhigataṃ uppannaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn là giai cấp tối thượng, giai cấp khác là hạ liệt.<br>
+<span lang="pi" class="pali">
+brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn màu da trắng, giai cấp khác màu da đen.<br>
+<span lang="pi" class="pali">
+brāhmaṇova sukko vaṇṇo, kaṇho añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn là thanh tịnh, các giai cấp phi Bà-la-môn không được như vậy.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva sujjhanti, no abrāhmaṇā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chỉ có Bà-la-môn là con chính thống Phạm thiên, sanh ra từ miệng Phạm thiên, do Phạm thiên sanh, do Phạm thiên tạo ra, là con cháu thừa tự Phạm thiên’.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva brahmuno puttā orasā mukhato jātā brahmajā brahmanimmitā brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa vâng, Tôn giả.’<br>
+<span lang="pi" class="pali">
+‘Evaṃ, bho’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nhưng chư Tôn giả, chư tôn giả có biết mẹ sanh của họ chỉ giao hợp với các Bà-la-môn, không với phi Bà-la-môn?’<br>
+<span lang="pi" class="pali">
+‘Jānanti pana bhonto—yā janikā mātā brāhmaṇaṃyeva agamāsi, no abrāhmaṇan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa không vậy, Tôn giả.’<br>
+<span lang="pi" class="pali">
+‘No hidaṃ, bho’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nhưng chư Tôn giả, chư Tôn giả có biết mẹ sanh của họ, cho đến bảy đời tổ mẫu của họ chỉ giao hợp với các Bà-la-môn, không với phi Bà-la-môn?’<br>
+<span lang="pi" class="pali">
+‘Jānanti pana bhonto—yā janikāmātu mātā yāva sattamā mātumātāmahayugā brāhmaṇaṃyeva agamāsi, no abrāhmaṇan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa không vậy, Tôn giả.’<br>
+<span lang="pi" class="pali">
+‘No hidaṃ, bho’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nhưng chư Tôn giả, chư Tôn giả có biết cha sanh của họ chỉ giao hợp với các nữ Bà-la-môn, không với phi nữ Bà-la-môn?’<br>
+<span lang="pi" class="pali">
+‘Jānanti pana bhonto—yo janako pitā brāhmaṇiṃyeva agamāsi, no abrāhmaṇin’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa không vậy, Tôn giả.’<br>
+<span lang="pi" class="pali">
+‘No hidaṃ, bho’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nhưng chư Tôn giả, chư Tôn giả có biết cha sanh của họ, cho đến bảy đời tổ phụ của họ chỉ giao hợp với các nữ Bà-la-môn, không với phi Bà-la-môn?’<br>
+<span lang="pi" class="pali">
+‘Jānanti pana bhonto—yo janakapitu pitā yāva sattamā pitupitāmahayugā brāhmaṇiṃyeva agamāsi, no abrāhmaṇin’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Không phải vậy, Tôn giả.’<br>
+<span lang="pi" class="pali">
+‘No hidaṃ, bho’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chư Tôn giả, chư Tôn giả có biết nhập thai là như thế nào?’<br>
+<span lang="pi" class="pali">
+‘Jānanti pana bhonto—yathā gabbhassa avakkanti hotī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa Tôn giả, chúng con biết nhập thai như thế này.<br>
+<span lang="pi" class="pali">
+‘Jānāma mayaṃ, bho—yathā gabbhassa avakkanti hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, mẹ cha phải giao hợp, người mẹ phải trong thời (có thể thọ sanh), thức tái sanh (gandhabha) phải hiện hữu, ba sự như vậy có hòa hợp, nhập thai mới thành tựu.’<br>
+<span lang="pi" class="pali">
+Idha mātāpitaro ca sannipatitā honti, mātā ca utunī hoti, gandhabbo ca paccupaṭṭhito hoti; evaṃ tiṇṇaṃ sannipātā gabbhassa avakkanti hotī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chư Tôn giả, chư Tôn giả có biết thức tái sanh ấy là Khattiya, hay Bà-la-môn, hay Vessa, hay Sudda?’<br>
+<span lang="pi" class="pali">
+‘Jānanti pana bhonto—taggha, so gandhabbo khattiyo vā brāhmaṇo vā vesso vā suddo vā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa Tôn giả, chúng tôi không biết hương ấm ấy là Khattiya, hay Bà-la-môn, hay Vessa, hay Sudda.’<br>
+<span lang="pi" class="pali">
+‘Na mayaṃ, bho, jānāma—taggha so gandhabbo khattiyo vā brāhmaṇo vā vesso vā suddo vā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chư Tôn giả, sự tình là như vậy, chư Tôn giả có biết chư Tôn giả là ai không?’<br>
+<span lang="pi" class="pali">
+‘Evaṃ sante, bho, jānātha—ke tumhe hothā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa Tôn giả, sự tình là như vậy, chúng tôi không có biết chúng tôi là ai.’<br>
+<span lang="pi" class="pali">
+‘Evaṃ sante, bho, na mayaṃ jānāma—ke mayaṃ homā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Assalāyana, bảy vị ẩn sĩ Bà-la-môn ấy bị ẩn sĩ Asita Devala, chất vấn, cật vấn, nạn vấn về vấn đề sanh chủng (jativada) của họ, không có thể ứng đáp được.<br>
+<span lang="pi" class="pali">
+Te hi nāma, assalāyana, satta brāhmaṇisayo asitena devalena isinā sake jātivāde samanuyuñjīyamānā samanuggāhīyamānā samanubhāsīyamānā na sampāyissanti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Làm sao nay Ông bị ta chất vấn, cật vấn, nạn vấn về vấn đề sanh chủng của Ông lại có thể ứng đáp được, khi Ông cùng một Ðạo sư với họ và không có Puṇṇa, người biết sử dụng thìa đổ sữa (làm lễ tế tự).”<br>
+<span lang="pi" class="pali">
+kiṃ pana tvaṃ etarahi mayā sakasmiṃ jātivāde samanuyuñjīyamāno samanuggāhīyamāno samanubhāsīyamāno sampāyissasi, yesaṃ tvaṃ sācariyako na puṇṇo dabbigāho”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, thanh niên Assalāyana bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, assalāyano māṇavo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, Tôn giả Gotama! Thật vi diệu thay, Tôn giả Gotama! Như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho người bị lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc; cũng vậy, Chánh pháp đã được Tôn giả Gotama dùng nhiều phương tiện trình bày, giải thích. Con xin quy y Thế Tôn, quy y Pháp và quy y chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">
+“abhikkantaṃ, bho gotama ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong Tôn giả Gotama nhận con làm đệ tử, từ nay cho đến mạng chung, con xin trọn đời quy ngưỡng.”<br>
+<span lang="pi" class="pali">
+upāsakaṃ maṃ bhavaṃ gotamo dhāretu ajjatagge pāṇupetaṃ saraṇaṃ gatan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Assalāyanasuttaṃ niṭṭhitaṃ tatiyaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn92.html#content"></a><a id="next-sutta" href="./mn94.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

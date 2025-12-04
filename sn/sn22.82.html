@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 22.82 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 22.82<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 22.82<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Phẩm Những Gì Được Ăn<br>
+<span lang="pi" class="pali">
+8. Khajjanīyavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Trăng Rằm<br>
+<span lang="pi" class="pali">
+Puṇṇamasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở Sāvatthī (Xá-vệ), Ðông Viên, Lộc Mẫu giảng đường, cùng với đại chúng Tỷ-kheo. Lúc bấy giờ, Thế Tôn nhân ngày lễ Bố-tát, ngày rằm, đêm trăng tròn, giữa trời, có chúng Tỷ-kheo đoanh vây.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati pubbārāme migāramātupāsāde mahatā bhikkhusaṅghena saddhiṃ. Tena kho pana samayena bhagavā tadahuposathe pannarase puṇṇāya puṇṇamāya rattiyā bhikkhusaṅghaparivuto ajjhokāse nisinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi có Tỷ-kheo, từ chỗ ngồi đứng dậy, đắp thượng y vào một bên vai, chấp tay hướng đến Thế Tôn và bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho aññataro bhikkhu uṭṭhāyāsanā ekaṃsaṃ uttarāsaṅgaṃ karitvā yena bhagavā tenañjaliṃ paṇāmetvā bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, con muốn hỏi Thế Tôn một vấn đề, nếu Thế Tôn cho phép, và trả lời câu hỏi của con?”<br>
+<span lang="pi" class="pali">
+“puccheyyāhaṃ, bhante, bhagavantaṃ kiñcideva desaṃ, sace me bhagavā okāsaṃ karoti pañhassa veyyākaraṇāyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tỷ-kheo, hãy ngồi tại chỗ và hỏi theo ý Ông muốn”.<br>
+<span lang="pi" class="pali">
+“Tena hi tvaṃ, bhikkhu, sake āsane nisīditvā puccha yadākaṅkhasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Tỷ-kheo ấy vâng đáp Thế Tôn, ngồi tại chỗ ngồi của mình và bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho so bhikkhu bhagavato paṭissutvā sake āsane nisīditvā bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có phải có năm thủ uẩn này: tức là sắc thủ uẩn, thọ thủ uẩn, tưởng thủ uẩn, hành thủ uẩn, thức thủ uẩn”.<br>
+<span lang="pi" class="pali">
+“ime nu kho, bhante, pañcupādānakkhandhā, seyyathidaṃ—rūpupādānakkhandho, vedanupādānakkhandho, saññupādānakkhandho, saṅkhārupādānakkhandho, viññāṇupādānakkhandho”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tỷ-kheo, có năm thủ uẩn, tức là sắc thủ uẩn ... thức thủ uẩn”.<br>
+<span lang="pi" class="pali">
+“Ime kho, bhikkhu, pañcupādānakkhandhā; Seyyathidaṃ—rūpupādānakkhandho ...pe... viññāṇupādānakkhandho”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy hoan hỷ, tín thọ lời Thế Tôn dạy, rồi hỏi thêm Thế Tôn một câu khác:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu bhagavato bhāsitaṃ abhinanditvā anumoditvā bhagavantaṃ uttariṃ pañhaṃ apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, năm thủ uẩn này lấy gì làm căn bản?”<br>
+<span lang="pi" class="pali">
+“Ime kho pana, bhante, pañcupādānakkhandhā kiṃmūlakā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tỷ-kheo, năm thủ uẩn này lấy dục làm căn bản”. Lành thay, bạch Thế Tôn ... Bạch Thế Tôn, chấp thủ ấy là năm thủ uẩn ấy hay chấp thủ ngoài năm thủ uẩn”?<br>
+<span lang="pi" class="pali">
+“Ime kho, bhikkhu, pañcupādānakkhandhā chandamūlakā”ti ...pe... taññeva nu kho, bhante, upādānaṃ te pañcupādānakkhandhā udāhu aññatra pañcahi upādānakkhandhehi upādānan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tỷ-kheo, chấp thủ ấy không tức là năm thủ uẩn ấy và chấp thủ cũng không phải ngoài năm thủ uẩn. Nhưng chỗ nào có tham và dục, chỗ ấy có chấp thủ”.<br>
+<span lang="pi" class="pali">
+“Na kho, bhikkhu, taññeva upādānaṃ te pañcupādānakkhandhā nāpi aññatra pañcahi upādānakkhandhehi upādānaṃ, api ca yo tattha chandarāgo taṃ tattha upādānan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy... hỏi Thế Tôn một câu hỏi khác:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu ...pe... uttariṃ pañhaṃ apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Có thể chăng, bạch Thế Tôn, trong năm thủ uẩn, có sự sai khác về dục và tham?”<br>
+<span lang="pi" class="pali">
+“Siyā pana, bhante, pañcupādānakkhandhesu chandarāgavemattatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn đáp: “Có thể có, này Tỷ-kheo”.<br>
+<span lang="pi" class="pali">
+“Siyā, bhikkhū”ti bhagavā avoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Tỷ-kheo, có người nghĩ như sau:<br>
+<span lang="pi" class="pali">
+“idha, bhikkhu, ekaccassa evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng trong tương lai, ta sẽ có sắc như vậy! Mong rằng trong tương lai ta sẽ có thọ như vậy! Mong rằng trong tương lai, ta sẽ có tưởng như vậy! Mong rằng trong tương lai ta sẽ có các hành như vậy! Mong rằng trong tương lai ta sẽ có thức như vậy!’<br>
+<span lang="pi" class="pali">
+‘evaṃrūpo siyaṃ anāgatamaddhānaṃ, evaṃvedano siyaṃ anāgatamaddhānaṃ, evaṃsañño siyaṃ anāgatamaddhānaṃ, evaṃsaṅkhāro siyaṃ anāgatamaddhānaṃ, evaṃviññāṇo siyaṃ anāgatamaddhānan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Tỷ-kheo, có thể có sự sai khác về dục và tham trong năm thủ uẩn”.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhu, siyā pañcupādānakkhandhesu chandarāgavemattatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy... hỏi thêm câu hỏi nữa:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu ...pe... uttariṃ pañhaṃ apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Dưới hình thức nào, bạch Thế Tôn, có định nghĩa về uẩn của các uẩn?”<br>
+<span lang="pi" class="pali">
+“Kittāvatā nu kho, bhante, khandhānaṃ khandhādhivacanan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Phàm sắc gì, này Tỷ-kheo, thuộc quá khứ, vị lai, hiện tại, hoặc nội hay ngoại, hoặc thô hay tế, hoặc liệt hay thắng, hoặc xa hay gần; đây gọi là sắc uẩn.<br>
+<span lang="pi" class="pali">
+“Yaṃ kiñci, bhikkhu, rūpaṃ atītānāgatapaccuppannaṃ ajjhattaṃ vā bahiddhā vā oḷārikaṃ vā sukhumaṃ vā hīnaṃ vā paṇītaṃ vā yaṃ dūre santike vā, ayaṃ vuccati rūpakkhandho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm thọ gì... Phàm tưởng gì... Phàm các hành gì... Phàm thức gì thuộc quá khứ, vị lai, hiện tại, hoặc nội hay ngoại, hoặc thô hay tế, hoặc liệt hay thắng, hoặc xa hay gần; đây gọi là thức uẩn.<br>
+<span lang="pi" class="pali">
+Yā kāci vedanā ... yā kāci saññā ... ye keci saṅkhārā ... yaṃ kiñci viññāṇaṃ atītānāgatapaccuppannaṃ ajjhattaṃ vā bahiddhā vā oḷārikaṃ vā sukhumaṃ vā hīnaṃ vā paṇītaṃ vā yaṃ dūre santike vā, ayaṃ vuccati viññāṇakkhandho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dưới hình thức như vậy, này Tỷ-kheo, có định nghĩa về uẩn của các uẩn”.<br>
+<span lang="pi" class="pali">
+Ettāvatā kho, bhikkhu, khandhānaṃ khandhādhivacanan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy... hỏi thêm câu hỏi nữa:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu ...pe... apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, do nhân gì, do duyên gì, được gọi là sắc uẩn? Do nhân gì, do duyên gì, được gọi là thọ uẩn? Do nhân gì, do duyên gì, được gọi là tưởng uẩn? Do nhân gì, do duyên gì, được gọi là hành uẩn? Do nhân gì, do duyên gì, được gọi là thức uẩn?”<br>
+<span lang="pi" class="pali">
+“Ko nu kho, bhante, hetu ko paccayo rūpakkhandhassa paññāpanāya; ko hetu ko paccayo vedanākkhandhassa paññāpanāya; ko hetu ko paccayo saññākkhandhassa paññāpanāya; ko hetu ko paccayo saṅkhārakkhandhassa paññāpanāya; ko hetu ko paccayo viññāṇakkhandhassa paññāpanāyā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do nhân bốn đại, này Tỷ-kheo, do duyên bốn đại, được gọi là sắc uẩn. Do nhân xúc, do duyên xúc, được gọi là thọ uẩn. Do nhân xúc, do duyên xúc, được gọi là tưởng uẩn. Do nhân xúc, do duyên xúc, được gọi là hành uẩn. Do nhân danh sắc, do duyên danh sắc, được gọi là thức uẩn”.<br>
+<span lang="pi" class="pali">
+“Cattāro kho, bhikkhu, mahābhūtā hetu, cattāro mahābhūtā paccayo rūpakkhandhassa paññāpanāya. Phasso hetu phasso paccayo vedanākkhandhassa paññāpanāya. Phasso hetu phasso paccayo saññākkhandhassa paññāpanāya. Phasso hetu, phasso paccayo saṅkhārakkhandhassa paññāpanāya. Nāmarūpaṃ hetu, nāmarūpaṃ paccayo viññāṇakkhandhassa paññāpanāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy... hỏi thêm câu khác:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu ...pe... apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như thế nào, bạch Thế Tôn, là có thân kiến?”<br>
+<span lang="pi" class="pali">
+“Kathaṃ nu kho, bhante, sakkāyadiṭṭhi hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Tỷ-kheo, kẻ vô văn phàm phu không thấy rõ bậc Thánh, không thuần thục pháp các bậc Thánh, không tu tập pháp các bậc Thánh; không thấy rõ các bậc Chân nhân, không thuần thục pháp các bậc Chân nhân, không tu tập pháp các bậc Chân nhân, quán sắc như là tự ngã, hay quán tự ngã như là có sắc, hay quán sắc ở trong tự ngã, hay quán tự ngã ở trong sắc... thọ... tưởng.. hành... quán thức như là tự ngã, hay quán tự ngã như là có thức,hay quán thức ở trong tự ngã, hay quán tự ngã ở trong thức.<br>
+<span lang="pi" class="pali">
+“Idha, bhikkhu, assutavā puthujjano ariyānaṃ adassāvī ariyadhammassa akovido ariyadhamme avinīto, sappurisānaṃ adassāvī sappurisadhammassa akovido sappurisadhamme avinīto rūpaṃ attato samanupassati, rūpavantaṃ vā attānaṃ; attani vā rūpaṃ, rūpasmiṃ vā attānaṃ; vedanaṃ ... saññaṃ ... saṅkhāre ... viññāṇaṃ attato samanupassati, viññāṇavantaṃ vā attānaṃ; attani vā viññāṇaṃ, viññāṇasmiṃ vā attānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Tỷ-kheo, là có thân kiến”.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhu, sakkāyadiṭṭhi hotī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy... hỏi thêm câu nữa:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu ...pe... apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như thế nào, bạch Thế Tôn, là không có thân kiến?”<br>
+<span lang="pi" class="pali">
+“Kathaṃ pana, bhante, sakkāyadiṭṭhi na hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này Tỷ-kheo, vị Ða văn Thánh đệ tử thấy rõ các bậc Thánh, khéo thuần thục pháp các bậc Thánh, khéo tu tập pháp các bậc Thánh; thấy rõ các bậc Chân nhân, khéo thuần thục pháp các bậc Chân nhân, khéo tu tập pháp các bậc Chân nhân, không quán sắc như là tự ngã, hay không quán tự ngã như là có sắc, hay không quán sắc ở trong tự ngã, hay không quán tự ngã ở trong sắc, không quán thọ... không quán tưởng... không quán các hành... không quán thức như là tự ngã, hay không quán tự ngã như là có thức, hay không quán thức ở trong tự ngã, hay không quán tự ngã ở trong thức.<br>
+<span lang="pi" class="pali">
+“Idha, bhikkhu, sutavā ariyasāvako ariyānaṃ dassāvī ariyadhammassa kovido ariyadhamme suvinīto, sappurisānaṃ dassāvī sappurisadhammassa kovido sappurisadhamme suvinīto na rūpaṃ attato samanupassati, na rūpavantaṃ vā attānaṃ; na attani vā rūpaṃ, na rūpasmiṃ vā attānaṃ; na vedanaṃ ... na saññaṃ ... na saṅkhāre ... na viññāṇaṃ attato samanupassati, na viññāṇavantaṃ vā attānaṃ; na attani vā viññāṇaṃ, na viññāṇasmiṃ vā attānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Tỷ-kheo, là không có thân kiến”.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhu, sakkāyadiṭṭhi na hotī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy... hỏi thêm một câu nữa:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu ...pe... apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, cái gì là vị ngọt, là sự nguy hiểm, là sự xuất ly của sắc ... của thọ ... của tưởng ... của các hành ... cái gì là vị ngọt, là sự nguy hiểm, là sự xuất ly của thức?”<br>
+<span lang="pi" class="pali">
+“Ko nu kho, bhante, rūpassa assādo, ko ādīnavo, kiṃ nissaraṇaṃ; ko vedanāya ... ko saññāya ... ko saṅkhārānaṃ ... ko viññāṇassa assādo, ko ādīnavo, kiṃ nissaraṇan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tỷ-kheo, do duyên sắc, khởi lên lạc hỷ gì, đó là vị ngọt của sắc.<br>
+<span lang="pi" class="pali">
+“Yaṃ kho, bhikkhu, rūpaṃ paṭicca uppajjati sukhaṃ somanassaṃ—ayaṃ rūpassa assādo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự vô thường, khổ, chịu sự biến hoại của sắc, đó là sự nguy hiểm của sắc.<br>
+<span lang="pi" class="pali">
+Yaṃ rūpaṃ aniccaṃ dukkhaṃ vipariṇāmadhammaṃ—ayaṃ rūpassa ādīnavo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự nhiếp phục dục và tham, sự đoạn tận dục và tham đối với sắc, đó là sự xuất ly của sắc.<br>
+<span lang="pi" class="pali">
+Yo rūpasmiṃ chandarāgavinayo chandarāgappahānaṃ—idaṃ rūpassa nissaraṇaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên thọ... Do duyên tưởng... Do duyên các hành... Do duyên thức khởi lên lạc hỷ gì, đó là vị ngọt của thức.<br>
+<span lang="pi" class="pali">
+Yaṃ vedanaṃ paṭicca ... yaṃ saññaṃ paṭicca ... ye saṅkhāre paṭicca ... yaṃ viññāṇaṃ paṭicca uppajjati sukhaṃ somanassaṃ—ayaṃ viññāṇassa assādo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự vô thường, khổ, chịu sự biến hoại của thức, đó là sự nguy hiểm của thức. Sự nhiếp phục dục và tham, sự đoạn tận dục và tham đối với thức, đó là sự xuất ly của thức”.<br>
+<span lang="pi" class="pali">
+Yaṃ viññāṇaṃ aniccaṃ dukkhaṃ vipariṇāmadhammaṃ—ayaṃ viññāṇassa ādīnavo. Yo viññāṇasmiṃ chandarāgavinayo chandarāgappahānaṃ—idaṃ viññāṇassa nissaraṇan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, bạch Thế Tôn”. Tỷ-kheo ấy hoan hỷ, tín thọ lời Thế Tôn dạy, lại hỏi Thế Tôn thêm câu nữa:<br>
+<span lang="pi" class="pali">
+“Sādhu, bhante”ti kho so bhikkhu bhagavato bhāsitaṃ abhinanditvā anumoditvā bhagavantaṃ uttariṃ pañhaṃ apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, do biết như thế nào, do thấy như thế nào, đối với thân có thức này và đối với tất cả tướng ở ngoài, không có (quan điểm): ngã kiến, ngã sở kiến, mạn tùy miên”?<br>
+<span lang="pi" class="pali">
+“Kathaṃ nu kho, bhante, jānato, kathaṃ passato imasmiñca saviññāṇake kāye bahiddhā ca sabbanimittesu ahaṅkāramamaṅkāramānānusayā na hontī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Tỷ-kheo, phàm sắc gì thuộc quá khứ, vị lai, hiện tại, hoặc nội hay ngoại, hoặc thô hay tế, hoặc liệt hay thắng, hoặc xa hay gần; tất cả sắc, Tỷ-kheo như thật quán với chánh trí tuệ như sau:<br>
+<span lang="pi" class="pali">
+“Yaṃ kiñci, bhikkhu, rūpaṃ atītānāgatapaccuppannaṃ ajjhattaṃ vā bahiddhā vā oḷārikaṃ vā sukhumaṃ vā hīnaṃ vā paṇītaṃ vā yaṃ dūre santike vā, sabbaṃ rūpaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây không phải của tôi, đây không phải là tôi, đây không phải tự ngã của tôi’.<br>
+<span lang="pi" class="pali">
+‘netaṃ mama, nesohamasmi, na meso attā’ti evametaṃ yathābhūtaṃ sammappaññāya passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm thọ gì... Phàm tưởng gì... Phàm các hành gì... Phàm thức gì thuộc quá khứ, vị lai, hiện tại, hoặc nội hay ngoại, hoặc thô hay tế, hoặc liệt hay thắng, hoặc xa hay gần; tất cả thức, Tỷ-kheo như thật quán với chánh trí tuệ như sau:<br>
+<span lang="pi" class="pali">
+Yā kāci vedanā ... yā kāci saññā ... ye keci saṅkhārā ... yaṃ kiñci viññāṇaṃ atītānāgatapaccuppannaṃ ajjhattaṃ vā bahiddhā vā oḷārikaṃ vā sukhumaṃ vā hīnaṃ vā paṇītaṃ vā yaṃ dūre santike vā, sabbaṃ viññāṇaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây không phải của tôi, đây không phải là tôi, đây không phải tự ngã của tôi!’<br>
+<span lang="pi" class="pali">
+‘netaṃ mama, nesohamasmi, na meso attā’ti evametaṃ yathābhūtaṃ sammappaññāya passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tỷ-kheo, do biết như vậy, thấy như vậy, đối với thân có thức này và đối với tất cả tướng ở ngoài, không có (quan điểm): ngã kiến, ngã sở kiến, mạn tùy miên”.<br>
+<span lang="pi" class="pali">
+Evaṃ kho, bhikkhu, jānato evaṃ passato imasmiñca saviññāṇake kāye bahiddhā ca sabbanimittesu ahaṅkāramamaṅkāramānānusayā na hontī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, một Tỷ-kheo khác khởi lên suy nghĩ sau đây:<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena aññatarassa bhikkhuno evaṃ cetaso parivitakko udapādi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nếu Ngài nói sắc là vô ngã, thọ... tưởng... các hành... thức là vô ngã, thời các nghiệp do vô ngã tạo ra, thời ngã nào lãnh thọ?”<br>
+<span lang="pi" class="pali">
+“iti kira bho rūpaṃ anattā, vedanā ... saññā ... saṅkhārā ... viññāṇaṃ anattā; anattakatāni kammāni kathamattānaṃ phusissantī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn với tâm tư của mình biết rõ suy nghĩ của Tỷ-kheo ấy, liền nói với các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tassa bhikkhuno cetasā ceto parivitakkamaññāya bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự kiện này xảy ra, này các Tỷ-kheo, là có kẻ ngu si, vô trí, chìm đắm trong vô minh, tâm bị khát ái chi phối, nghĩ rằng có thể vượt qua lời dạy bậc Ðạo Sư, nghĩ rằng:<br>
+<span lang="pi" class="pali">
+“Ṭhānaṃ kho panetaṃ, bhikkhave, vijjati yaṃ idhekacco moghapuriso avidvā avijjāgato taṇhādhipateyyena cetasā satthusāsanaṃ atidhāvitabbaṃ maññeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nếu Ngài dạy rằng sắc là vô ngã, thọ... tưởng... các hành... thức là vô ngã, thời các nghiệp do vô ngã làm, các nghiệp ấy do ngã nào lãnh thọ?’<br>
+<span lang="pi" class="pali">
+‘Iti kira, bho, rūpaṃ anattā, vedanā ... saññā ... saṅkhārā ... viññāṇaṃ anattā. Anattakatāni kammāni kathamattānaṃ phusissantī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các câu vấn nạn đã được Ta khéo dạy cho các Ông, chỗ này, chỗ kia trong các pháp ấy.<br>
+<span lang="pi" class="pali">
+Paṭipucchāvinītā kho me tumhe, bhikkhave, tatra tatra tesu tesu dhammesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các Ông nghĩ thế nào, sắc là thường hay vô thường?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññatha, bhikkhave, rūpaṃ niccaṃ vā aniccaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là vô thường, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“Aniccaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thọ... tưởng... các hành... Thức là thường hay vô thường?”<br>
+<span lang="pi" class="pali">
+“Vedanā ... saññā ... saṅkhārā ... viññāṇaṃ niccaṃ vā aniccaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là vô thường, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“Aniccaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cái gì vô thường là khổ hay lạc?”<br>
+<span lang="pi" class="pali">
+“Yaṃ panāniccaṃ dukkhaṃ vā taṃ sukhaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là khổ, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“Dukkhaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cái gì vô thường, khổ, chịu sự biến hoại, có hợp lý chăng, nếu quán cái ấy là: ‘Cái này là của tôi, cái này là tôi, cái này là tự ngã của tôi’?”<br>
+<span lang="pi" class="pali">
+“Yaṃ panāniccaṃ dukkhaṃ vipariṇāmadhammaṃ, kallaṃ nu taṃ samanupassituṃ: ‘etaṃ mama, esohamasmi, eso me attā’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy... thấy vậy... vị ấy biết: sanh đã tận... không còn trở lui trạng thái này nữa”.<br>
+<span lang="pi" class="pali">
+Tasmātiha ...pe... evaṃ passaṃ ...pe... nāparaṃ itthattāyāti pajānātī”ti.<br>
+</span>
+</p>
+
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn22.81.html#content"></a><a id="next-sutta" href="./sn22.83.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

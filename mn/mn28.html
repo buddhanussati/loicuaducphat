@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 28          </title>
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 28<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 28<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Đại Kinh Ví Dụ Dấu Chân Voi<br>
+<span lang="pi" class="pali">
+Mahāhatthipadopamasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn trú ở Sāvatthi (Xá-vệ), tại Jetavana (Kỳ-đà Lâm), vườn ông Anāthapiṇḍika (Cấp Cô Ðộc). Ở đây, Tôn giả Sāriputta (Xá-lợi-phất) gọi các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho āyasmā sāriputto bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Hiền giả Tỷ-kheo!”<br>
+<span lang="pi" class="pali">
+“āvuso bhikkhave”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, Hiền giả,” Các Tỷ-kheo ấy vâng đáp Tôn giả Sāriputta. Tôn giả Sāriputta nói như sau:<br>
+<span lang="pi" class="pali">
+“Āvuso”ti kho te bhikkhū āyasmato sāriputtassa paccassosuṃ. Āyasmā sāriputto etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Hiền giả, ví như tất cả dấu chân của mọi loại động vật đều thâu nhiếp trong dấu chân voi, vì dấu chân này được xem là lớn nhất trong tất cả dấu chân về phương diện to lớn.<br>
+<span lang="pi" class="pali">
+“Seyyathāpi, āvuso, yāni kānici jaṅgalānaṃ pāṇānaṃ padajātāni sabbāni tāni hatthipade samodhānaṃ gacchanti, hatthipadaṃ tesaṃ aggamakkhāyati yadidaṃ mahantattena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, chư Hiền giả, tất cả các Thiện pháp đều tập trung trong Bốn Thánh đế.<br>
+<span lang="pi" class="pali">
+evameva kho, āvuso, ye keci kusalā dhammā sabbete catūsu ariyasaccesu saṅgahaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là trong Bốn Thánh đế?<br>
+<span lang="pi" class="pali">
+Katamesu catūsu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong Khổ Thánh đế, trong Khổ tập Thánh đế, trong Khổ diệt Thánh đế, trong Khổ diệt đạo Thánh đế.<br>
+<span lang="pi" class="pali">
+Dukkhe ariyasacce, dukkhasamudaye ariyasacce, dukkhanirodhe ariyasacce, dukkhanirodhagāminiyā paṭipadāya ariyasacce.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là Khổ Thánh đế?<br>
+<span lang="pi" class="pali">
+Katamañcāvuso, dukkhaṃ ariyasaccaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sanh là khổ, già là khổ, chết là khổ, sầu, bi, khổ, ưu, não là khổ, điều gì cầu không được là khổ, tóm lại Năm thủ uẩn là khổ.<br>
+<span lang="pi" class="pali">
+Jātipi dukkhā, jarāpi dukkhā, maraṇampi dukkhaṃ, sokaparidevadukkhadomanassupāyāsāpi dukkhā, yampicchaṃ na labhati tampi dukkhaṃ; saṅkhittena, pañcupādānakkhandhā dukkhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là Năm thủ uẩn?<br>
+<span lang="pi" class="pali">
+Katame cāvuso, pañcupādānakkhandhā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chính là sắc thủ uẩn, thọ thủ uẩn, tưởng thủ uẩn, hành thủ uẩn, thức thủ uẩn.<br>
+<span lang="pi" class="pali">
+Seyyathidaṃ—rūpupādānakkhandho, vedanupādānakkhandho, saññupādānakkhandho, saṅkhārupādānakkhandho, viññāṇupādānakkhandho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là sắc thủ uẩn?<br>
+<span lang="pi" class="pali">
+Katamo cāvuso, rūpupādānakkhandho?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn đại và sắc khởi lên từ bốn đại.<br>
+<span lang="pi" class="pali">
+Cattāri ca mahābhūtāni, catunnañca mahābhūtānaṃ upādāya rūpaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là bốn đại?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, cattāro mahābhūtā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chính là địa giới, thủy giới, hỏa giới, phong giới.<br>
+<span lang="pi" class="pali">
+Pathavīdhātu, āpodhātu, tejodhātu, vāyodhātu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là địa giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, pathavīdhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có nội địa giới, có ngoại địa giới.<br>
+<span lang="pi" class="pali">
+Pathavīdhātu siyā ajjhattikā, siyā bāhirā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là nội địa giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, ajjhattikā pathavīdhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cái gì thuộc nội thân, thuộc cá nhân, thô phù, kiên cứng, bị chấp thủ, như<br>
+<span lang="pi" class="pali">
+Yaṃ ajjhattaṃ paccattaṃ kakkhaḷaṃ kharigataṃ upādinnaṃ, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tóc, lông, móng, răng, da, thịt, gân, xương, tủy, thận, tim, gan, hoành cách mô, lá lách, phổi, ruột, màng ruột, bao tử, phân, và bất cứ vật gì khác thuộc nội thân, thuộc cá nhân, thô phù, kiên cứng, bị chấp thủ.<br>
+<span lang="pi" class="pali">
+kesā lomā nakhā dantā taco maṃsaṃ nhāru aṭṭhi aṭṭhimiñjaṃ vakkaṃ hadayaṃ yakanaṃ kilomakaṃ pihakaṃ papphāsaṃ antaṃ antaguṇaṃ udariyaṃ karīsaṃ, yaṃ vā panaññampi kiñci ajjhattaṃ paccattaṃ kakkhaḷaṃ kharigataṃ upādinnaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, như vậy gọi là nội địa giới.<br>
+<span lang="pi" class="pali">
+Ayaṃ vuccatāvuso, ajjhattikā pathavīdhātu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những gì thuộc nội địa giới và những gì thuộc ngoại địa giới đều thuộc về địa giới.<br>
+<span lang="pi" class="pali">
+Yā ceva kho pana ajjhattikā pathavīdhātu, yā ca bāhirā pathavīdhātu, pathavīdhāturevesā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cần phải như thật quán sát địa giới với chánh trí tuệ như sau: “Cái này không phải của tôi, cái này không phải là tôi, cái này không phải tự ngã của tôi”.<br>
+<span lang="pi" class="pali">
+‘Taṃ netaṃ mama, nesohamasmi, na meso attā’ti—evametaṃ yathābhūtaṃ sammappaññāya daṭṭhabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi như thật quán sát địa giới với chánh trí tuệ như vậy, vị ấy sanh yểm ly đối với địa giới, tâm từ bỏ địa giới.<br>
+<span lang="pi" class="pali">
+Evametaṃ yathābhūtaṃ sammappaññāya disvā pathavīdhātuyā nibbindati, pathavīdhātuyā cittaṃ virājeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi ngoại địa giới dao động,<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ bāhirā āpodhātu pakuppati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+trong thời ấy ngoại địa giới bị biến mất.<br>
+<span lang="pi" class="pali">
+Antarahitā tasmiṃ samaye bāhirā pathavīdhātu hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, tánh vô thường của ngoại địa giới xưa ấy có thể nêu rõ, tánh hủy hoại có thể nêu rõ, tánh đoạn diệt có thể nêu rõ, tánh biến dịch có thể nêu rõ.<br>
+<span lang="pi" class="pali">
+Tassā hi nāma, āvuso, bāhirāya pathavīdhātuyā tāva mahallikāya aniccatā paññāyissati, khayadhammatā paññāyissati, vayadhammatā paññāyissati, vipariṇāmadhammatā paññāyissati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy còn nói gì đến thân thể yểu thọ do khát ái chấp thủ này? Ở đây không có gì để có thể nói là tôi, là của tôi, hay tôi là.<br>
+<span lang="pi" class="pali">
+Kiṃ panimassa mattaṭṭhakassa kāyassa taṇhupādinnassa ‘ahanti vā mamanti vā asmī’ti vā? Atha khvāssa notevettha hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu có những người khác mắng nhiếc, chỉ trích, chọc tức, nhiễu não Tỷ-kheo, vị ấy biết rõ như sau: …<br>
+<span lang="pi" class="pali">
+Tañce, āvuso, bhikkhuṃ pare akkosanti paribhāsanti rosenti vihesenti, so evaṃ pajānāti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Khổ thọ khởi lên nơi tôi, thọ này thuộc tai xúc chạm,<br>
+<span lang="pi" class="pali">
+‘uppannā kho me ayaṃ sotasamphassajā dukkhavedanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thọ này do nhân duyên, không phải không do nhân duyên.<br>
+<span lang="pi" class="pali">
+Sā ca kho paṭicca, no apaṭicca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nhân duyên gì?<br>
+<span lang="pi" class="pali">
+Kiṃ paṭicca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nhân duyên xúc”.<br>
+<span lang="pi" class="pali">
+Phassaṃ paṭicca’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy thấy xúc là vô thường, thấy thọ là vô thường, thấy tưởng là vô thường, thấy hành là vô thường, thấy thức là vô thường.<br>
+<span lang="pi" class="pali">
+So phasso aniccoti passati, vedanā aniccāti passati, saññā aniccāti passati, saṅkhārā aniccāti passati, viññāṇaṃ aniccanti passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm của vị này hoan hỷ, thích thú, tịnh chỉ, quyết định, tùy thuộc giới đối tượng.<br>
+<span lang="pi" class="pali">
+Tassa dhātārammaṇameva cittaṃ pakkhandati pasīdati santiṭṭhati adhimuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu những người khác xử sự với Tỷ-kheo không có hoàn hảo, không có tốt đẹp, không có khả ái, hoặc dùng tay xúc chạm, hoặc dùng đá xúc chạm, hoặc dùng gậy xúc chạm, hoặc dùng gươm xúc chạm,<br>
+<span lang="pi" class="pali">
+Tañce, āvuso, bhikkhuṃ pare aniṭṭhehi akantehi amanāpehi samudācaranti—pāṇisamphassenapi leḍḍusamphassenapi daṇḍasamphassenapi satthasamphassenapi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vị ấy tuệ tri như sau:<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự thể của thân này là như vậy, nên tay có thể xúc chạm, đá có thể xúc chạm, gậy có thể xúc chạm, gươm có thể xúc chạm.<br>
+<span lang="pi" class="pali">
+‘tathābhūto kho ayaṃ kāyo yathābhūtasmiṃ kāye pāṇisamphassāpi kamanti, leḍḍusamphassāpi kamanti, daṇḍasamphassāpi kamanti, satthasamphassāpi kamanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn đã dạy như sau trong ví dụ cái cưa:<br>
+<span lang="pi" class="pali">
+Vuttaṃ kho panetaṃ bhagavatā kakacūpamovāde:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chư Tỷ-kheo, nếu có kẻ trộm cướp hạ tiện lấy cái cưa hai lưỡi cắt từng phần tay và chân. Nếu ai ở đây sanh ý phẫn nộ, người ấy không làm đúng lời Ta dạy”.<br>
+<span lang="pi" class="pali">
+“ubhatodaṇḍakena cepi, bhikkhave, kakacena corā ocarakā aṅgamaṅgāni okanteyyuṃ, tatrāpi yo mano padūseyya na me so tena sāsanakaro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy sẽ tinh cần, tinh tấn, không giải đãi. Niệm được an trú, không có loạn niệm, thân thể được khinh an, không dao động, tâm được định tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">
+Āraddhaṃ kho pana me vīriyaṃ bhavissati asallīnaṃ, upaṭṭhitā sati asammuṭṭhā, passaddho kāyo asāraddho, samāhitaṃ cittaṃ ekaggaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay mặc cho tay xúc chạm thân này, mặc cho đá xúc chạm thân này, mặc cho gậy xúc chạm thân này, mặc cho gươm xúc chạm thân này, lời dạy chư Phật cần phải được thực hành.<br>
+<span lang="pi" class="pali">
+Kāmaṃ dāni imasmiṃ kāye pāṇisamphassāpi kamantu, leḍḍusamphassāpi kamantu, daṇḍasamphassāpi kamantu, satthasamphassāpi kamantu, karīyati hidaṃ buddhānaṃ sāsanan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, Tỷ-kheo ấy, niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú.<br>
+<span lang="pi" class="pali">
+Tassa ce, āvuso, bhikkhuno evaṃ buddhaṃ anussarato evaṃ dhammaṃ anussarato evaṃ saṅghaṃ anussarato upekkhā kusalanissitā na saṇṭhāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, vị ấy có sự thôi thúc mạnh mẽ:<br>
+<span lang="pi" class="pali">
+So tena saṃvijjati saṃvegaṃ āpajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật bất hạnh cho ta, thật không may cho ta, thật rủi ro cho ta, thật không tốt đẹp cho ta.<br>
+<span lang="pi" class="pali">
+‘alābhā vata me, na vata me lābhā; dulladdhaṃ vata me, na vata me suladdhaṃ,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dầu ta có niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú”.<br>
+<span lang="pi" class="pali">
+yassa me evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato, upekkhā kusalanissitā na saṇṭhātī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, ví như một người dâu, khi thấy ông nhạc, có sự thôi thúc mạnh mẽ (để làm vui lòng ông ấy).<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, suṇisā sasuraṃ disvā saṃvijjati saṃvegaṃ āpajjati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, chư Hiền, nếu Tỷ-kheo ấy niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú. Do vậy, vị ấy có sự thôi thúc mạnh mẽ:<br>
+<span lang="pi" class="pali">
+evameva kho, āvuso, tassa ce bhikkhuno evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato, upekkhā kusalanissitā na saṇṭhāti, so tena saṃvijjati saṃvegaṃ āpajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật bất hạnh cho ta, thật không may cho ta, thật rủi ro cho ta, thật không tốt đẹp cho ta. Dầu ta có niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú”.<br>
+<span lang="pi" class="pali">
+‘alābhā vata me, na vata me lābhā; dulladdhaṃ vata me, na vata me suladdhaṃ, yassa me evaṃ buddhaṃ anussarato evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato, upekkhā kusalanissitā na saṇṭhātī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu Tỷ-kheo ấy, niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, và xả tương ưng với thiện được an trú, thì Tỷ-kheo ấy được hoan hỷ.<br>
+<span lang="pi" class="pali">
+Tassa ce, āvuso, bhikkhuno evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato upekkhā kusalanissitā saṇṭhāti, so tena attamano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, đến mức độ này, Tỷ-kheo đã làm thật nhiều.<br>
+<span lang="pi" class="pali">
+Ettāvatāpi kho, āvuso, bhikkhuno bahukataṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là thủy giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, āpodhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có nội thủy giới, có ngoại thủy giới.<br>
+<span lang="pi" class="pali">
+Āpodhātu siyā ajjhattikā, siyā bāhirā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền thế nào là nội thủy giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, ajjhattikā āpodhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cái gì thuộc về nội thân, thuộc cá nhân, thuộc nước, thuộc chất lỏng, bị chấp thủ, như mật, đàm, mủ, máu, mồ hôi, mỡ, nước mắt, mỡ da, nước miếng, niêm dịch, nước ở khớp xương, nước tiểu, và bất cứ vật gì khác thuộc nội thân, thuộc cá nhân, thuộc nước, thuộc chất lỏng, bị chấp thủ.<br>
+<span lang="pi" class="pali">
+Yaṃ ajjhattaṃ paccattaṃ āpo āpogataṃ upādinnaṃ, seyyathidaṃ—pittaṃ semhaṃ pubbo lohitaṃ sedo medo assu vasā kheḷo siṅghāṇikā lasikā muttaṃ, yaṃ vā panaññampi kiñci ajjhattaṃ paccattaṃ āpo āpogataṃ upādinnaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, như vậy gọi là nội thủy giới.<br>
+<span lang="pi" class="pali">
+ayaṃ vuccatāvuso, ajjhattikā āpodhātu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những gì thuộc nội thủy giới và những gì thuộc ngoại thủy giới, đều thuộc về thủy giới.<br>
+<span lang="pi" class="pali">
+Yā ceva kho pana ajjhattikā āpodhātu yā ca bāhirā āpodhātu, āpodhāturevesā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cần phải như thật quán sát thủy giới với chánh trí tuệ như sau: “Cái này không phải của tôi, cái này không phải là tôi, cái này không phải tự ngã của tôi”.<br>
+<span lang="pi" class="pali">
+‘Taṃ netaṃ mama, nesohamasmi, na meso attā’ti evametaṃ yathābhūtaṃ sammappaññāya daṭṭhabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi như thật quán sát thủy giới với chánh trí tuệ như vậy, vị ấy sanh yểm ly đối với thủy giới, tâm từ bỏ thủy giới.<br>
+<span lang="pi" class="pali">
+Evametaṃ yathābhūtaṃ sammappaññāya disvā āpodhātuyā nibbindati, āpodhātuyā cittaṃ virājeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi ngoại thủy giới dao động,<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ bāhirā āpodhātu pakuppati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nước cuốn trôi làng, cuốn trôi thị trấn, cuốn trôi thành phố, cuốn trôi xứ, cuốn trôi quốc độ.<br>
+<span lang="pi" class="pali">
+Sā gāmampi vahati, nigamampi vahati, nagarampi vahati, janapadampi vahati, janapadapadesampi vahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi nước biển đại dương hạ thấp một trăm do-tuần, hạ thấp hai trăm do-tuần, hạ thấp ba trăm do-tuần, hạ thấp bốn trăm do-tuần, hạ thấp năm trăm do-tuần, hạ thấp sáu trăm do-tuần, hạ thấp bảy trăm do-tuần.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ mahāsamudde yojanasatikānipi udakāni ogacchanti, dviyojanasatikānipi udakāni ogacchanti, tiyojanasatikānipi udakāni ogacchanti, catuyojanasatikānipi udakāni ogacchanti, pañcayojanasatikānipi udakāni ogacchanti, chayojanasatikānipi udakāni ogacchanti, sattayojanasatikānipi udakāni ogacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi nước biển đại dương dâng cao đến bảy cây ta-la, dâng cao đến sáu cây ta-la, dâng cao đến năm cây ta-la, dâng cao đến bốn cây ta-la, dâng cao đến ba cây ta-la, dâng cao đến hai cây ta-la, dâng cao chỉ đến một cây ta-la.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ mahāsamudde sattatālampi udakaṃ saṇṭhāti, chattālampi udakaṃ saṇṭhāti, pañcatālampi udakaṃ saṇṭhāti, catuttālampi udakaṃ saṇṭhāti, titālampi udakaṃ saṇṭhāti, dvitālampi udakaṃ saṇṭhāti, tālamattampi udakaṃ saṇṭhāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi nước biển đại dương cao đến bảy đầu người, dâng cao đến sáu đầu người, dâng cao đến năm đầu người, dâng cao đến bốn đầu người, dâng cao đến ba đầu người, dâng cao đến hai đầu người, dâng cao chỉ đến một đầu người.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ mahāsamudde sattaporisampi udakaṃ saṇṭhāti, chapporisampi udakaṃ saṇṭhāti, pañcaporisampi udakaṃ saṇṭhāti, catupporisampi udakaṃ saṇṭhāti, tiporisampi udakaṃ saṇṭhāti, dviporisampi udakaṃ saṇṭhāti, porisamattampi udakaṃ saṇṭhāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi nước biển đại dương dâng cao đến nửa thân người, dâng cao chỉ đến hông, dâng cao chỉ đến đầu gối, dâng cao chỉ đến gót chân.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ mahāsamudde aḍḍhaporisampi udakaṃ saṇṭhāti, kaṭimattampi udakaṃ saṇṭhāti, jāṇukamattampi udakaṃ saṇṭhāti, gopphakamattampi udakaṃ saṇṭhāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi nước biển đại dương không có để thấm ướt đốt ngón chân.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo, yaṃ mahāsamudde aṅgulipabbatemanamattampi udakaṃ na hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, tánh vô thường của ngoại thủy giới xưa ấy có thể nêu rõ, tánh hủy hoại có thể nêu rõ, tánh đoạn diệt có thể nêu rõ, tánh biến dịch có thể nêu rõ.<br>
+<span lang="pi" class="pali">
+Tassā hi nāma, āvuso, bāhirāya āpodhātuyā tāva mahallikāya aniccatā paññāyissati, khayadhammatā paññāyissati, vayadhammatā paññāyissati, vipariṇāmadhammatā paññāyissati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy còn nói gì đến thân thể yểu thọ do khát ái chấp thủ này? Ở đây không có gì để có thể nói là tôi, là của tôi, hay tôi là. Chư Hiền, nếu có những người khác mắng nhiếc, chỉ trích, chọc tức, nhiễu não Tỷ-kheo, vị ấy biết rõ như sau: …<br>
+<span lang="pi" class="pali">
+Kiṃ panimassa mattaṭṭhakassa kāyassa taṇhupādinnassa ‘ahanti vā mamanti vā asmī’ti vā? Atha khvāssa notevettha hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, chư Hiền, nếu Tỷ-kheo ấy niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú. Do vậy, vị ấy có sự thôi thúc mạnh mẽ:<br>
+<span lang="pi" class="pali">
+tassa ce, āvuso, bhikkhuno evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato upekkhā kusalanissitā saṇṭhāti. So tena attamano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, cho đến mức độ này, vị Tỷ-kheo đã làm thật nhiều.<br>
+<span lang="pi" class="pali">
+Ettāvatāpi kho, āvuso, bhikkhuno bahukataṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là hỏa giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, tejodhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có nội hỏa giới, có ngoại hỏa giới.<br>
+<span lang="pi" class="pali">
+Tejodhātu siyā ajjhattikā, siyā bāhirā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là nội hỏa giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, ajjhattikā tejodhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cái gì thuộc về nội thân, thuộc về cá nhân, thuộc lửa, thuộc chất nóng, bị chấp thủ.<br>
+<span lang="pi" class="pali">
+Yaṃ ajjhattaṃ paccattaṃ tejo tejogataṃ upādinnaṃ, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như cái gì khiến cho hâm nóng, khiến cho hủy hoại, khiến cho thiêu cháy; cái gì khiến cho những vật được ăn uống, nhai, nếm, có thể khéo tiêu hóa, hay tất cả những vật gì khác thuộc nội thân, thuộc cá nhân, thuộc lửa, thuộc chất nóng, bị chấp thủ.<br>
+<span lang="pi" class="pali">
+yena ca santappati, yena ca jīrīyati, yena ca pariḍayhati, yena ca asitapītakhāyitasāyitaṃ sammā pariṇāmaṃ gacchati, yaṃ vā panaññampi kiñci ajjhattaṃ paccattaṃ tejo tejogataṃ upādinnaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, như vậy gọi là nội hỏa giới.<br>
+<span lang="pi" class="pali">
+ayaṃ vuccatāvuso, ajjhattikā tejodhātu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những gì thuộc nội hỏa giới và những gì thuộc ngoại hỏa giới, đều thuộc về hỏa giới.<br>
+<span lang="pi" class="pali">
+Yā ceva kho pana ajjhattikā tejodhātu yā ca bāhirā tejodhātu, tejodhāturevesā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cần phải như thật quán sát hỏa giới với chánh trí tuệ như sau: “Cái này không phải của tôi, cái này không phải là tôi, cái này không phải tự ngã của tôi”.<br>
+<span lang="pi" class="pali">
+‘Taṃ netaṃ mama, nesohamasmi, na meso attā’ti evametaṃ yathābhūtaṃ sammappaññāya daṭṭhabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi như thật quán sát hỏa giới với chánh trí tuệ như vậy, vị ấy sanh yểm ly đối với hỏa giới, tâm từ bỏ hỏa giới.<br>
+<span lang="pi" class="pali">
+Evametaṃ yathābhūtaṃ sammappaññāya disvā tejodhātuyā nibbindati, tejodhātuyā cittaṃ virājeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi hỏa giới dao động.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ bāhirā tejodhātu pakuppati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lửa thiêu cháy làng, thiêu cháy thị trấn, thiêu cháy thành phố, thiêu cháy xứ, thiêu cháy quốc độ.<br>
+<span lang="pi" class="pali">
+Sā gāmampi dahati, nigamampi dahati, nagarampi dahati, janapadampi dahati, janapadapadesampi dahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lửa cháy cho đến cuối hàng cây cối, cho đến cuối hàng đường lớn, cho đến cuối hàng chân núi, cho đến cuối hàng thủy biên, hay cho đến cuối hàng khu đất khả ái, rồi lửa bị tắt vì không nhiên liệu.<br>
+<span lang="pi" class="pali">
+Sā haritantaṃ vā panthantaṃ vā selantaṃ vā udakantaṃ vā ramaṇīyaṃ vā bhūmibhāgaṃ āgamma anāhārā nibbāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi loài người đi kiếm lửa phải dùng lông gà và dây gân.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ kukkuṭapattenapi nhārudaddulenapi aggiṃ gavesanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, tánh vô thường của ngoại hỏa giới xưa ấy có thể nêu rõ; tánh hủy hoại có thể nêu rõ, tánh đoạn diệt có thể nêu rõ, tánh biến dịch có thể nêu rõ.<br>
+<span lang="pi" class="pali">
+Tassā hi nāma, āvuso, bāhirāya tejodhātuyā tāva mahallikāya aniccatā paññāyissati, khayadhammatā paññāyissati, vayadhammatā paññāyissati, vipariṇāmadhammatā paññāyissati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy còn nói gì đến thân thể yểu thọ do khát ái chấp thủ này? Ở đây không có gì để có thể nói là tôi, là của tôi, hay tôi là. Chư Hiền, nếu có những người khác mắng nhiếc, chỉ trích, chọc tức, nhiễu não Tỷ-kheo, vị ấy biết rõ như sau: …<br>
+<span lang="pi" class="pali">
+Kiṃ panimassa mattaṭṭhakassa kāyassa taṇhupādinnassa ‘ahanti vā mamanti vā asmī’ti vā? Atha khvāssa notevettha hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, chư Hiền, nếu Tỷ-kheo ấy niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú. Do vậy, vị ấy có sự thôi thúc mạnh mẽ:<br>
+<span lang="pi" class="pali">
+tassa ce, āvuso, bhikkhuno evaṃ buddhaṃ anussarato evaṃ dhammaṃ anussarato evaṃ saṅghaṃ anussarato upekkhā kusalanissitā saṇṭhāti, so tena attamano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, cho đến mức độ này, vị Tỷ-kheo đã làm thật nhiều.<br>
+<span lang="pi" class="pali">
+Ettāvatāpi kho, āvuso, bhikkhuno bahukataṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là phong giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, vāyodhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có nội phong giới, có ngoại phong giới.<br>
+<span lang="pi" class="pali">
+Vāyodhātu siyā ajjhattikā, siyā bāhirā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, thế nào là nội phong giới?<br>
+<span lang="pi" class="pali">
+Katamā cāvuso, ajjhattikā vāyodhātu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cái gì thuộc về nội thân, thuộc cá nhân, thuộc gió, thuộc động tánh, bị chấp thủ, như<br>
+<span lang="pi" class="pali">
+Yaṃ ajjhattaṃ paccattaṃ vāyo vāyogataṃ upādinnaṃ, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+gió thổi lên, gió thổi xuống, gió trong ruột, gió trong bụng dưới, gió thổi ngang tay chân, hơi thở vô, hơi thở ra, và bất cứ vật gì khác thuộc nội thân, thuộc cá nhân, thuộc gió, thuộc tánh động, bị chấp thủ.<br>
+<span lang="pi" class="pali">
+uddhaṅgamā vātā, adhogamā vātā, kucchisayā vātā, koṭṭhāsayā vātā, aṅgamaṅgānusārino vātā, assāso passāso iti, yaṃ vā panaññampi kiñci ajjhattaṃ paccattaṃ vāyo vāyogataṃ upādinnaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, như vậy gọi là nội phong giới.<br>
+<span lang="pi" class="pali">
+ayaṃ vuccatāvuso, ajjhattikā vāyodhātu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những gì thuộc nội phong giới và những gì thuộc ngoại phong giới đều thuộc về phong giới.<br>
+<span lang="pi" class="pali">
+Yā ceva kho pana ajjhattikā vāyodhātu, yā ca bāhirā vāyodhātu, vāyodhāturevesā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cần phải như thật quán sát phong giới với chánh trí tuệ như sau: “Cái này không phải của tôi, cái này không phải là tôi, cái này không phải tự ngã của tôi”.<br>
+<span lang="pi" class="pali">
+‘Taṃ netaṃ mama nesohamasmi na meso attā’ti evametaṃ yathābhūtaṃ sammappaññāya daṭṭhabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi thấy như thật phong giới với chánh trí tuệ như vậy, vị ấy sanh yểm ly đối với phong giới, tâm từ bỏ phong giới.<br>
+<span lang="pi" class="pali">
+Evametaṃ yathābhūtaṃ sammappaññāya disvā vāyodhātuyā nibbindati vāyodhātuyā cittaṃ virājeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi ngoại phong giới dao động,<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ bāhirā vāyodhātu pakuppati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+gió thổi bay làng, thổi bay thị trấn, thổi bay thành phố, thổi bay xứ, thổi bay quốc độ.<br>
+<span lang="pi" class="pali">
+Sā gāmampi vahati, nigamampi vahati, nagarampi vahati, janapadampi vahati, janapadapadesampi vahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, một thời xảy ra khi trong tháng cuối mùa hạ, loài người tìm cầu gió nhờ lá cây ta-la, nhờ cây quạt, và người ta không mong tìm được cỏ tại chỗ có rạch nước chảy.<br>
+<span lang="pi" class="pali">
+Hoti kho so, āvuso, samayo yaṃ gimhānaṃ pacchime māse tālavaṇṭenapi vidhūpanenapi vātaṃ pariyesanti, ossavanepi tiṇāni na icchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, tánh vô thường của ngoại phong giới xưa ấy có thể nêu rõ; tánh hủy hoại có thể nêu rõ; tánh đoạn diệt có thể nêu rõ; tánh biến dịch có thể nêu rõ.<br>
+<span lang="pi" class="pali">
+Tassā hi nāma, āvuso, bāhirāya vāyodhātuyā tāva mahallikāya aniccatā paññāyissati, khayadhammatā paññāyissati, vayadhammatā paññāyissati, vipariṇāmadhammatā paññāyissati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy còn nói gì đến thân thể yểu thọ do khát ái chấp thủ này? Ở đây không có gì để có thể nói là tôi, là của tôi, hay tôi là.<br>
+<span lang="pi" class="pali">
+Kiṃ panimassa mattaṭṭhakassa kāyassa taṇhupādinnassa ‘ahanti vā mamanti vā asmī’ti vā? Atha khvāssa notevettha hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu có những người khác mắng nhiếc, chỉ trích, chọc tức, nhiễu não Tỷ-kheo, vị ấy biết rõ như sau:<br>
+<span lang="pi" class="pali">
+Tañce, āvuso, bhikkhuṃ pare akkosanti paribhāsanti rosenti vihesenti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Khổ thọ khởi lên nơi tôi này thuộc tai xúc chạm;<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti, uppannā kho me ayaṃ sotasamphassajā dukkhā vedanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thọ này do nhân duyên, không phải không do nhân duyên.<br>
+<span lang="pi" class="pali">
+Sā ca kho paṭicca, no apaṭicca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nhân duyên gì?<br>
+<span lang="pi" class="pali">
+Kiṃ paṭicca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nhân duyên xúc vậy”.<br>
+<span lang="pi" class="pali">
+Phassaṃ paṭicca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy thấy xúc là vô thường; vị ấy thấy thọ là vô thường; vị ấy thấy tưởng là vô thường; vị ấy thấy hành là vô thường; vị ấy thấy thức là vô thường;<br>
+<span lang="pi" class="pali">
+Sopi phasso aniccoti passati, vedanā aniccāti passati, saññā aniccāti passati, saṅkhārā aniccāti passati, viññāṇaṃ aniccanti passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tâm của vị này hoan hỷ, thích thú, tịnh chỉ, quyết định, tùy thuộc giới đối tượng.<br>
+<span lang="pi" class="pali">
+Tassa dhātārammaṇameva cittaṃ pakkhandati pasīdati santiṭṭhati adhimuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu những người khác xử sự với Tỷ-kheo, không có hoàn hảo, không có tốt đẹp, không có khả ái, hoặc dùng tay xúc chạm, hoặc dùng đá xúc chạm, hoặc dùng gậy xúc chạm, hoặc dùng gươm xúc chạm,<br>
+<span lang="pi" class="pali">
+Tañce, āvuso, bhikkhuṃ pare aniṭṭhehi akantehi amanāpehi samudācaranti, pāṇisamphassenapi leḍḍusamphassenapi daṇḍasamphassenapi satthasamphassenapi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vị ấy biết như sau: “Sự thể của thân này là như vậy nên tay có thể xúc chạm, đá có thể xúc chạm, gậy có thể xúc chạm, gươm có thể xúc chạm”.<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti ‘tathābhūto kho ayaṃ kāyo yathābhūtasmiṃ kāye pāṇisamphassāpi kamanti, leḍḍusamphassāpi kamanti, daṇḍasamphassāpi kamanti, satthasamphassāpi kamanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn đã dạy như sau trong ví dụ cái cưa: “Chư Tỷ-kheo, nếu có kẻ trộm cướp hạ tiện lấy cái cưa hai lưỡi cắt từng phần tay và chân, nếu ai ở đây sanh ý phẫn nộ thì người ấy không làm đúng lời Ta dạy”.<br>
+<span lang="pi" class="pali">
+Vuttaṃ kho panetaṃ bhagavatā kakacūpamovāde “ubhatodaṇḍakena cepi, bhikkhave, kakacena corā ocarakā aṅgamaṅgāni okanteyyuṃ. Tatrāpi yo mano padūseyya, na me so tena sāsanakaro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta sẽ tinh cần, tinh tấn, không giải đãi, niệm được an trú, không có loạn niệm, thân thể được khinh an, không dao động, tâm được định tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">
+Āraddhaṃ kho pana me vīriyaṃ bhavissati asallīnaṃ, upaṭṭhitā sati asammuṭṭhā, passaddho kāyo asāraddho, samāhitaṃ cittaṃ ekaggaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay mặc cho tay xúc chạm thân này, mặc cho đá xúc chạm, mặc cho gậy xúc chạm, mặc cho gươm xúc chạm thân này. Lời dạy chư Phật cần phải được thực hành”.<br>
+<span lang="pi" class="pali">
+Kāmaṃ dāni imasmiṃ kāye pāṇisamphassāpi kamantu, leḍḍusamphassāpi kamantu, daṇḍasamphassāpi kamantu, satthasamphassāpi kamantu. Karīyati hidaṃ buddhānaṃ sāsanan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, Tỷ-kheo ấy, niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú.<br>
+<span lang="pi" class="pali">
+Tassa ce, āvuso, bhikkhuno evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato upekkhā kusalanissitā na saṇṭhāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, vị ấy có sự thôi thúc mạnh mẽ:<br>
+<span lang="pi" class="pali">
+So tena saṃvijjati saṃvegaṃ āpajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật bất hạnh cho ta, thật không may cho ta, thật rủi ro cho ta, thật không tốt đẹp cho ta.<br>
+<span lang="pi" class="pali">
+‘alābhā vata me, na vata me lābhā; dulladdhaṃ vata me, na vata me suladdhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dầu ta có niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú”.<br>
+<span lang="pi" class="pali">
+Yassa me evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato upekkhā kusalanissitā na saṇṭhātī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, ví như một người dâu, khi thấy ông nhạc, có sự thôi thúc mạnh mẽ (để làm vui lòng ông ấy).<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, suṇisā sasuraṃ disvā saṃvijjati saṃvegaṃ āpajjati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, chư Hiền, nếu Tỷ-kheo ấy niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú.<br>
+<span lang="pi" class="pali">
+evameva kho, āvuso, tassa ce bhikkhuno evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato, upekkhā kusalanissitā na saṇṭhāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, vị ấy có sự thôi thúc mạnh mẽ:<br>
+<span lang="pi" class="pali">
+So tena saṃvijjati saṃvegaṃ āpajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật bất hạnh cho ta, thật không may cho ta, thật rủi ro cho ta, thật không tốt đẹp cho ta.<br>
+<span lang="pi" class="pali">
+‘alābhā vata me, na vata me lābhā; dulladdhaṃ vata me, na vata me suladdhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dầu ta có niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, nhưng xả tương ưng với thiện không được an trú”.<br>
+<span lang="pi" class="pali">
+Yassa me evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato, upekkhā kusalanissitā na saṇṭhātī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu Tỷ- Kheo ấy niệm Phật như vậy, niệm Pháp như vậy, niệm Tăng như vậy, và xả tương ưng với thiện được an trú. Do vậy, Tỷ-kheo ấy được hoan hỷ.<br>
+<span lang="pi" class="pali">
+Tassa ce, āvuso, bhikkhuno evaṃ buddhaṃ anussarato, evaṃ dhammaṃ anussarato, evaṃ saṅghaṃ anussarato, upekkhā kusalanissitā saṇṭhāti, so tena attamano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, cho đến mức độ này, Tỷ-kheo đã làm thật nhiều.<br>
+<span lang="pi" class="pali">
+Ettāvatāpi kho, āvuso, bhikkhuno bahukataṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, như một khoảng trống được bao vây bởi cây gậy, bởi dây leo, bởi cỏ, bởi bùn, được biết là một nhà ở.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, kaṭṭhañca paṭicca valliñca paṭicca tiṇañca paṭicca mattikañca paṭicca ākāso parivārito agārantveva saṅkhaṃ gacchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, Chư Hiền, một khoảng trống được bao vây bởi xương, bởi dây gân, bởi thịt, bởi da, được biết là một sắc pháp.<br>
+<span lang="pi" class="pali">
+evameva kho, āvuso, aṭṭhiñca paṭicca nhāruñca paṭicca maṃsañca paṭicca cammañca paṭicca ākāso parivārito rūpantveva saṅkhaṃ gacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội mắt không bị hư hại, nhưng ngoại sắc không vào trong tầm mắt, không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi.<br>
+<span lang="pi" class="pali">
+Ajjhattikañceva, āvuso, cakkhuṃ aparibhinnaṃ hoti, bāhirā ca rūpā na āpāthaṃ āgacchanti, no ca tajjo samannāhāro hoti, neva tāva tajjassa viññāṇabhāgassa pātubhāvo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội mắt không bị hư hại, ngoại sắc vào trong tầm mắt, nhưng không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi.<br>
+<span lang="pi" class="pali">
+Ajjhattikañceva, āvuso, cakkhuṃ aparibhinnaṃ hoti bāhirā ca rūpā āpāthaṃ āgacchanti, no ca tajjo samannāhāro hoti, neva tāva tajjassa viññāṇabhāgassa pātubhāvo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, chỉ khi nào nội mắt không bị hư hại, ngoại sắc vào trong tầm mắt, có sự quy tục xúc chạm thích hợp, thì thức phần thích hợp có hiện khởi.<br>
+<span lang="pi" class="pali">
+Yato ca kho, āvuso, ajjhattikañceva cakkhuṃ aparibhinnaṃ hoti, bāhirā ca rūpā āpāthaṃ āgacchanti, tajjo ca samannāhāro hoti. Evaṃ tajjassa viññāṇabhāgassa pātubhāvo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bất cứ sắc pháp gì được hiện khởi như vậy đều quy tụ trong sắc thủ uẩn; bất cứ cảm thọ gì được hiện khởi như vậy đều quy tụ trong thọ thủ uẩn; bất cứ tưởng gì được hiện khởi như vậy đều được quy tụ trong tưởng thủ uẩn; bất cứ hành gì được hiện khởi như vậy đều quy tụ trong hành thủ uẩn; bất cứ thức gì được hiện khởi như vậy đều quy tụ trong thức thủ uẩn.<br>
+<span lang="pi" class="pali">
+Yaṃ tathābhūtassa rūpaṃ taṃ rūpupādānakkhandhe saṅgahaṃ gacchati, yā tathābhūtassa vedanā sā vedanupādānakkhandhe saṅgahaṃ gacchati, yā tathābhūtassa saññā sā saññupādānakkhandhe saṅgahaṃ gacchati, ye tathābhūtassa saṅkhārā te saṅkhārupādānakkhandhe saṅgahaṃ gacchanti, yaṃ tathābhūtassa viññāṇaṃ taṃ viññāṇupādānakkhandhe saṅgahaṃ gacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tuệ tri như sau:<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như vậy, như người ta nói, có sự quy tụ, sự tập hợp, sự hòa hợp của năm thủ uẩn này.<br>
+<span lang="pi" class="pali">
+‘evañhi kira imesaṃ pañcannaṃ upādānakkhandhānaṃ saṅgaho sannipāto samavāyo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn đã nói như sau:<br>
+<span lang="pi" class="pali">
+Vuttaṃ kho panetaṃ bhagavatā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ai thấy được lý duyên khởi, người ấy thấy được pháp;<br>
+<span lang="pi" class="pali">
+“yo paṭiccasamuppādaṃ passati so dhammaṃ passati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ai thấy được pháp, người ấy thấy được lý duyên khởi”.<br>
+<span lang="pi" class="pali">
+yo dhammaṃ passati so paṭiccasamuppādaṃ passatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những pháp này do duyên khởi lên chính là năm thủ uẩn.<br>
+<span lang="pi" class="pali">
+Paṭiccasamuppannā kho panime yadidaṃ pañcupādānakkhandhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự tham dục, chấp trước, tham đắm, mê say trong năm thủ uẩn này tức là khổ tập;<br>
+<span lang="pi" class="pali">
+Yo imesu pañcasu upādānakkhandhesu chando ālayo anunayo ajjhosānaṃ so dukkhasamudayo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sự nhiếp phục tham dục, sự từ bỏ tham dục tức là sự khổ diệt”.<br>
+<span lang="pi" class="pali">
+Yo imesu pañcasu upādānakkhandhesu chandarāgavinayo chandarāgappahānaṃ, so dukkhanirodho’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cho đến mức độ này, Chư Hiền, Tỷ-kheo đã làm rất nhiều.<br>
+<span lang="pi" class="pali">
+Ettāvatāpi kho, āvuso, bhikkhuno bahukataṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội tai không bị hư hại, nhưng ngoại thanh không vào trong tầm tai, không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi. … Cho đến mức độ này, Chư Hiền, Tỷ-kheo đã làm rất nhiều.<br>
+<span lang="pi" class="pali">
+Ajjhattikañceva, āvuso, sotaṃ aparibhinnaṃ hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội lỗ mũi không bị hư hại, nhưng ngoại hương không vào trong tầm mũi, không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi. … Cho đến mức độ này, Chư Hiền, Tỷ-kheo đã làm rất nhiều.<br>
+<span lang="pi" class="pali">
+ghānaṃ aparibhinnaṃ hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội lưỡi không bị hư hại, nhưng ngoại vị không vào trong tầm lưỡi, không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi. … Cho đến mức độ này, Chư Hiền, Tỷ-kheo đã làm rất nhiều.<br>
+<span lang="pi" class="pali">
+jivhā aparibhinnā hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội thân không bị hư hại, nhưng ngoại xúc không vào trong tầm của thân, không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi. … Cho đến mức độ này, Chư Hiền, Tỷ-kheo đã làm rất nhiều.<br>
+<span lang="pi" class="pali">
+kāyo aparibhinno hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội ý căn không bị hư hại, ngoại pháp không vào trong tầm của ý căn, nhưng không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi.<br>
+<span lang="pi" class="pali">
+mano aparibhinno hoti, bāhirā ca dhammā na āpāthaṃ āgacchanti no ca tajjo samannāhāro hoti, neva tāva tajjassa viññāṇabhāgassa pātubhāvo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, nếu nội ý căn không bị hư hại, ngoại ý vào trong tầm của ý căn, nhưng không có sự quy tụ xúc chạm thích hợp, thì thức phần thích hợp không có hiện khởi.<br>
+<span lang="pi" class="pali">
+Ajjhattiko ceva, āvuso, mano aparibhinno hoti, bāhirā ca dhammā āpāthaṃ āgacchanti, no ca tajjo samannāhāro hoti, neva tāva tajjassa viññāṇabhāgassa pātubhāvo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Hiền, chỉ khi nào nội ý căn không bị hư hại, ngoại ý vào trong tầm của ý căn, có sự quy tục xúc chạm thích hợp, thì thức phần thích hợp có hiện khởi.<br>
+<span lang="pi" class="pali">
+Yato ca kho, āvuso, ajjhattiko ceva mano aparibhinno hoti, bāhirā ca dhammā āpāthaṃ āgacchanti, tajjo ca samannāhāro hoti, evaṃ tajjassa viññāṇabhāgassa pātubhāvo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bất cứ sắc gì được hiện khởi như vậy đều quy tụ trong sắc thủ uẩn; bất cứ cảm thọ gì được hiện khởi như vậy đều quy tụ trong thọ thủ uẩn; bất cứ tưởng gì được hiện khởi như vậy đều quy tụ trong tưởng thủ uẩn; bất cứ hành gì được hiện khởi như vậy đều quy tụ trong hành thủ uẩn; bất cứ thức gì được hiện khởi như vậy đều quy tụ trong thức thủ uẩn.<br>
+<span lang="pi" class="pali">
+Yaṃ tathābhūtassa rūpaṃ taṃ rūpupādānakkhandhe saṅgahaṃ gacchati, yā tathābhūtassa vedanā sā vedanupādānakkhandhe saṅgahaṃ gacchati, yā tathābhūtassa saññā sā saññupādānakkhandhe saṅgahaṃ gacchati, ye tathābhūtassa saṅkhārā te saṅkhārupādānakkhandhe saṅgahaṃ gacchanti, yaṃ tathābhūtassa viññāṇaṃ taṃ viññāṇupādānakkhandhe saṅgahaṃ gacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tuệ tri như sau:<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như vậy, như người ta nói, có sự quy tụ, sự tập họp, sự hòa hợp của năm thủ uẩn này.<br>
+<span lang="pi" class="pali">
+‘evañhi kira imesaṃ pañcannaṃ upādānakkhandhānaṃ saṅgaho sannipāto samavāyo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn đã nói như sau:<br>
+<span lang="pi" class="pali">
+Vuttaṃ kho panetaṃ bhagavatā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ai thấy được lý duyên khởi, người ấy thấy được pháp;<br>
+<span lang="pi" class="pali">
+“yo paṭiccasamuppādaṃ passati so dhammaṃ passati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ai thấy được pháp, người ấy thấy được lý duyên khởi”.<br>
+<span lang="pi" class="pali">
+yo dhammaṃ passati so paṭiccasamuppādaṃ passatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những pháp này do duyên khởi lên chính là năm thủ uẩn.<br>
+<span lang="pi" class="pali">
+Paṭiccasamuppannā kho panime yadidaṃ pañcupādānakkhandhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự tham dục, chấp trước, tham đắm, mê say trong năm thủ uẩn này tức là khổ tập;<br>
+<span lang="pi" class="pali">
+Yo imesu pañcasu upādānakkhandhesu chando ālayo anunayo ajjhosānaṃ so dukkhasamudayo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sự nhiếp phục tham dục, sự từ bỏ tham dục tức là sự khổ diệt”.<br>
+<span lang="pi" class="pali">
+Yo imesu pañcasu upādānakkhandhesu chandarāgavinayo chandarāgappahānaṃ so dukkhanirodho’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cho đến mức độ này, chư Hiền, Tỷ-kheo đã làm rất nhiều.”<br>
+<span lang="pi" class="pali">
+Ettāvatāpi kho, āvuso, bhikkhuno bahukataṃ hotī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Sāriputta thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca āyasmā sāriputto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tỷ-kheo ấy hoan hỷ, tín thọ lời Tôn giả Sāriputta dạy.<br>
+<span lang="pi" class="pali">
+Attamanā te bhikkhū āyasmato sāriputtassa bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Mahāhatthipadopamasuttaṃ niṭṭhitaṃ aṭṭhamaṃ.<br>
+</span>
+</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn27.html#content"></a><a id="next-sutta" href="./mn29.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

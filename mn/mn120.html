@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 120          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 120<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 120<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Hành Sanh<br>
+<span lang="pi" class="pali">
+Saṅkhārupapattisutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Sāvatthī (Xá-vệ), Jetavana (Kỳ-đà Lâm), tại tịnh xá ông Anāthapiṇḍika (Cấp-Cô-Ðộc). Ở đấy Thế Tôn gọi các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.Tatra kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo”<br>
+<span lang="pi" class="pali">
+“bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo, Ta sẽ giảng cho các Ông sự tái sanh do hành đưa lại. Hãy nghe và suy nghiệm kỹ. Ta sẽ giảng”.<br>
+<span lang="pi" class="pali">
+“saṅkhārupapattiṃ vo, bhikkhave, desessāmi, taṃ suṇātha, sādhukaṃ manasi karotha, bhāsissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn (suta), đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+“Idha, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena samannāgato hoti, sutena samannāgato hoti, cāgena samannāgato hoti, paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ như sau: ‘Mong rằng sau khi thân hoại mạng chung, ta sẽ sanh cộng trú trong đại gia tộc Sát đế lỵ!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā khattiyamahāsālānaṃ sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy, an trú tâm ấy, tu tập tâm ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những hành ấy của Tỷ-kheo được an trú, tu tập, làm cho sung mãn như vậy đưa vị ấy thọ sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là đạo, đây là lộ trình đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena samannāgato hoti, sutena samannāgato hoti, cāgena samannāgato hoti, paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng, sau khi thân hoại mạng chung, ta sẽ sanh cộng trú trong đại gia tộc Bà-la-môn … hay trong đại gia tộc cư sĩ!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā brāhmaṇamahāsālānaṃ ...pe... gahapatimahāsālānaṃ sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy, an trú tâm ấy, tu tập tâm ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những hành ấy của Tỷ-kheo được an trú, tu tập, làm cho sung mãn như vậy đưa vị ấy thọ sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là đạo, đây là lộ trình đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena samannāgato hoti, sutena samannāgato hoti, cāgena samannāgato hoti, paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe: ‘Bốn Ðại Thiên vương có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ’.<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti: ‘cātumahārājikā devā dīghāyukā vaṇṇavanto sukhabahulā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng sau khi thân hoại mạng chung, ta được sanh cộng trú với chư Thiên ở cõi trời Tứ thiên!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā cātumahārājikānaṃ devānaṃ sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy, an trú tâm ấy, tu tập tâm ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những hành ấy của Tỷ-kheo được an trú, tu tập, … đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena samannāgato hoti, sutena samannāgato hoti, cāgena samannāgato hoti, paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe:<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên Tavatimsa (Tam-thập-tam-thiên) …<br>
+<span lang="pi" class="pali">
+tāvatiṃsā devā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chư Thiên Yama (Dạ-ma) …<br>
+<span lang="pi" class="pali">
+yāmā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chư Thiên Tusita (Ðâu-suất-đà) …<br>
+<span lang="pi" class="pali">
+tusitā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chư Thiên Nimmanarati (Hóa-Lạc) …<br>
+<span lang="pi" class="pali">
+nimmānaratī devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chư Thiên Paramimmitavasavatti (Tha-Hóa-Tự-Tại) có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ.<br>
+<span lang="pi" class="pali">
+paranimmitavasavattī devā dīghāyukā vaṇṇavanto sukhabahulāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng sau khi thân hoại mạng chung, ta được sanh cộng trú với chư Thiên ở Tha-Hóa-Tự-Tại-Thiên!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā paranimmitavasavattīnaṃ devānaṃ sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy … đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là đạo, đây là lộ trình đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena samannāgato hoti, sutena samannāgato hoti, cāgena samannāgato hoti, paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe: ‘Ngàn Phạm thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ’.<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti: ‘sahasso brahmā dīghāyuko vaṇṇavā sukhabahulo’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, ngàn Phạm thiên sống thấm nhuần, biến mãn một ngàn thế giới.<br>
+<span lang="pi" class="pali">
+Sahasso, bhikkhave, brahmā sahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy sống thấm nhuần, biến mãn các chúng sanh được sanh lên thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Tỷ-kheo, một người có mắt cầm một trái Āmaṇḍa (a-ma-lặc) trong tay và nhìn trái ấy;<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, cakkhumā puriso ekaṃ āmaṇḍaṃ hatthe karitvā paccavekkheyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cũng vậy, này các Tỷ-kheo, ngàn Phạm thiên sống thấm nhuần, biến mãn một ngàn thế giới.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, sahasso brahmā sahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy sống thấm nhuần, biến mãn các chúng sanh được sanh lên thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng sau khi thân hoại mạng chung, ta sẽ được sanh cộng trú với ngàn Phạm thiên!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā sahassassa brahmuno sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy … đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena samannāgato hoti, sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe:<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hai ngàn Phạm thiên giới…<br>
+<span lang="pi" class="pali">
+dvisahasso brahmā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ba ngàn Phạm thiên..<br>
+<span lang="pi" class="pali">
+tisahasso brahmā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+bốn ngàn Phạm thiên…<br>
+<span lang="pi" class="pali">
+catusahasso brahmā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+năm ngàn Phạm thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ.<br>
+<span lang="pi" class="pali">
+pañcasahasso brahmā dīghāyuko vaṇṇavā sukhabahuloti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, năm ngàn Phạm thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ.<br>
+<span lang="pi" class="pali">
+Pañcasahasso, bhikkhave, brahmā pañcasahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy sống thấm nhuần, biến mãn các chúng sanh được sanh lên thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như này, các Tỷ-kheo, một người có mắt cầm năm trái amanda (a-ma-lặc) trong tay và nhìn các trái ấy.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, cakkhumā puriso pañca āmaṇḍāni hatthe karitvā paccavekkheyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, năm ngàn Phạm thiên sống thấm nhuần, biến mãn năm ngàn thế giới.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, pañcasahasso brahmā pañcasahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy sống thấm nhuần, biến mãn các chúng sanh được sanh lên các thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng sau khi thân hoại mạng chung, ta sẽ được sanh cộng trú với năm ngàn Phạm thiên!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā pañcasahassassa brahmuno sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy … đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena samannāgato hoti, sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe: ‘Mười ngàn Phạm thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ’.<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti: ‘dasasahasso brahmā dīghāyuko vaṇṇavā sukhabahulo’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, mười ngàn Phạm thiên giới sống thấm nhuần, biến mãn mười ngàn thế giới.<br>
+<span lang="pi" class="pali">
+Dasasahasso, bhikkhave, brahmā dasasahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy sống thấm nhuần, biến mãn các chúng sanh được sanh lên các thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Tỷ-kheo, một hòn lưu ly bảo châu, đẹp đẽ trong suốt, có tám mặt, khéo dũa, khéo mài, đặt trên một tấm màn màu lạt, sẽ chiếu sáng, sáng chói;<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, maṇi veḷuriyo subho jātimā aṭṭhaṃso suparikammakato paṇḍukambale nikkhitto bhāsate ca tapate ca virocati ca;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cũng vậy, này các Tỷ-kheo, mười ngàn Phạm thiên sống thấm nhuần, biến mãn mười ngàn thế giới ấy.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, dasasahasso brahmā dasasahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy sống thấm nhuần, biến mãn các chúng sanh được sanh lên các thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng sau khi thân hoại mạng chung, ta được sanh cộng trú với mười ngàn Phạm thiên!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā dasasahassassa brahmuno sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy … đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe: ‘Trăm ngàn Phạm thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ’.<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti: ‘satasahasso brahmā dīghāyuko vaṇṇavā sukhabahulo’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, trăm ngàn Phạm thiên sống thấm nhuần, biến mãn trăm ngàn thế giới.<br>
+<span lang="pi" class="pali">
+Satasahasso, bhikkhave, brahmā satasahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy cũng thấm nhuần, biến mãn các chúng sanh được sanh lên các thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như một đồ trang sức làm bằng vàng ròng (jambonada), được khéo tôi luyện trong lò của một thợ vàng thiện xảo, nếu được đặt trên một tấm màn màu lạt sẽ chiếu sáng, rực sáng, chói sáng;<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, nikkhaṃ jambonadaṃ dakkha-kammāraputta-ukkāmukha-sukusala-sampahaṭṭhaṃ paṇḍukambale nikkhittaṃ bhāsate ca tapate ca virocati ca;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cũng vậy, này các Tỷ-kheo, trăm ngàn Phạm thiên an trú thấm nhuần biến mãn trăm ngàn thế giới.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, satasahasso brahmā satasahassilokadhātuṃ pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị ấy sống thấm nhuần, biến mãn các chúng sanh được sanh lên các thế giới ấy.<br>
+<span lang="pi" class="pali">
+Yepi tattha sattā upapannā tepi pharitvā adhimuccitvā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng sau khi thân hoại mạng chung, ta được sanh cộng trú với trăm ngàn Phạm thiên!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā satasahassassa brahmuno sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy … đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe:<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Quang thiên…<br>
+<span lang="pi" class="pali">
+ābhā devā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thiểu Quang thiên …<br>
+<span lang="pi" class="pali">
+parittābhā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vô Lượng Quang thiên …<br>
+<span lang="pi" class="pali">
+appamāṇābhā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Quang Âm thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ.<br>
+<span lang="pi" class="pali">
+ābhassarā devā dīghāyukā vaṇṇavanto sukhabahulāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng …’… đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā ābhassarānaṃ devānaṃ sahabyataṃ upapajjeyyan’ti. So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe:<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thiểu Tịnh thiên …<br>
+<span lang="pi" class="pali">
+parittasubhā devā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vô lượng Tịnh thiên…<br>
+<span lang="pi" class="pali">
+appamāṇasubhā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Biến Tịnh thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ.<br>
+<span lang="pi" class="pali">
+subhakiṇhā devā dīghāyukā vaṇṇavanto sukhabahulāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng …’…  đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā subhakiṇhānaṃ devānaṃ sahabyataṃ upapajjeyyan’ti. So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe:<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Quảng Quả thiên…<br>
+<span lang="pi" class="pali">
+vehapphalā devā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vô Phiền thiên…<br>
+<span lang="pi" class="pali">
+avihā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vô Nhiệt thiên…<br>
+<span lang="pi" class="pali">
+atappā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thiện Hiện thiên …<br>
+<span lang="pi" class="pali">
+sudassā devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thiện Kiến thiên …<br>
+<span lang="pi" class="pali">
+sudassī devā …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sắc cứu cánh thiên có thọ mạng lâu dài, có mỹ tướng, có nhiều lạc thọ.<br>
+<span lang="pi" class="pali">
+akaniṭṭhā devā dīghāyukā vaṇṇavanto sukhabahulāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng sau khi thân hoại mạng chung, ta được sanh cộng trú với Sắc cứu cánh thiên’.<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā akaniṭṭhānaṃ devānaṃ sahabyataṃ upapajjeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chuyên định tâm ấy … đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe: ‘Chư Thiên đã đạt được Hư không vô biên xứ, có thọ mạng lâu dài, cửu trú, có nhiều lạc thọ’.<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti: ‘ākāsānañcāyatanūpagā devā dīghāyukā ciraṭṭhitikā sukhabahulā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng… ‘… đưa đến tái sanh chỗ ấy.<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā ākāsānañcāyatanūpagānaṃ devānaṃ sahabyataṃ upapajjeyyan’ti. So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe:<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chư Thiên đã đạt được Thức vô biên xứ …<br>
+<span lang="pi" class="pali">
+‘viññāṇañcāyatanūpagā devā dīghāyukā ciraṭṭhitikā sukhabahulā’ti. Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā viññāṇañcāyatanūpagānaṃ devānaṃ sahabyataṃ upapajjeyyan’ti. So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy được nghe:<br>
+<span lang="pi" class="pali">
+Tassa sutaṃ hoti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên đã đạt được Vô sở hữu xứ…<br>
+<span lang="pi" class="pali">
+ākiñcaññāyatanūpagā devā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên đã đạt được Phi tưởng phi phi tưởng xứ, có thọ mạng lâu dài, cửu trú, có nhiều lạc thọ’.<br>
+<span lang="pi" class="pali">
+nevasaññānāsaññāyatanūpagā devā dīghāyukā ciraṭṭhitikā sukhabahulāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng … ‘… đưa đến tái sanh tại chỗ ấy.<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ kāyassa bhedā paraṃ maraṇā nevasaññānāsaññāyatanūpagānaṃ devānaṃ sahabyataṃ upapajjeyyan’ti. So taṃ cittaṃ dahati, taṃ cittaṃ adhiṭṭhāti, taṃ cittaṃ bhāveti. Tassa te saṅkhārā ca vihārā ca evaṃ bhāvitā evaṃ bahulīkatā tatrupapattiyā saṃvattanti. Ayaṃ, bhikkhave, maggo ayaṃ paṭipadā tatrupapattiyā saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Tỷ-kheo đầy đủ tín, đầy đủ giới, đầy đủ văn, đầy đủ thí, đầy đủ trí tuệ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, bhikkhu saddhāya samannāgato hoti, sīlena … sutena … cāgena … paññāya samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nghĩ: ‘Mong rằng, với sự đoạn trừ các lậu hoặc, với thắng trí, ta chứng ngộ, chứng đạt và an trú ngay trong hiện tại tâm giải thoát, tuệ giải thoát vô lậu!’<br>
+<span lang="pi" class="pali">
+Tassa evaṃ hoti: ‘aho vatāhaṃ āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihareyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy với sự đoạn trừ các lậu hoặc, với thắng trí, chứng ngộ, chứng đạt và an trú ngay trong hiện tại tâm giải thoát, tuệ giải thoát vô lậu.<br>
+<span lang="pi" class="pali">
+So āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Tỷ-kheo này không sinh ra một nơi nào, không sinh ra một chỗ nào.”<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, bhikkhu na katthaci upapajjatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy. Các Tỷ-kheo ấy hoan hỷ tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā. Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Saṅkhārupapattisuttaṃ niṭṭhitaṃ dasamaṃ.<br>
+</span>
+</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn119.html#content"></a><a id="next-sutta" href="./mn121.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

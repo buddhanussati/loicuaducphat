@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="pressed w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Dīgha Nikāya – Trường Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>         Trường Bộ 32          </title>
+
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trường Bộ 32<br>
+<span lang="pi" class="pali">
+Dīgha Nikāya 32<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh A-Sá-Nang-Chi<br>
+<span lang="pi" class="pali">
+Āṭānāṭiyasutta<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+1. Tụng Phẩm Thứ Nhất<br>
+<span lang="pi" class="pali">
+1. Paṭhamabhāṇavāra<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở tại Rājagaha (Vương Xá), núi Gijjhakūta (Linh Thứu).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā rājagahe viharati gijjhakūṭe pabbate.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn Thiên vương sau khi sắp đặt trấn giữ bốn phương với đại quân Yakkha (Dạ-xoa), đại quân Gandhabba (Càn-thát-bà), đại quân Kumbhanda (Cưu-bàn-trà) và đại quân Nāga (Na-già), án ngữ bốn phương, bảo trì bốn phương, trong đêm tối thâm sâu, với hào quang tuyệt diệu chói sáng toàn thể núi Linh Thứu, đến tại chỗ Thế Tôn, sau khi đến, đảnh lễ Ngài và ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho cattāro mahārājā mahatiyā ca yakkhasenāya mahatiyā ca gandhabbasenāya mahatiyā ca kumbhaṇḍasenāya mahatiyā ca nāgasenāya catuddisaṃ rakkhaṃ ṭhapetvā catuddisaṃ gumbaṃ ṭhapetvā catuddisaṃ ovaraṇaṃ ṭhapetvā abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṃ gijjhakūṭaṃ pabbataṃ obhāsetvā yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các vị Dạ-xoa, có vị đảnh lễ Thế Tôn rồi ngồi xuống một bên; có vị nói lên những lời chúc tụng, hỏi thăm, rồi ngồi xuống một bên; có vị nói lên tên họ rồi ngồi xuống một bên; có vị im lặng, rồi ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Tepi kho yakkhā appekacce bhagavantaṃ abhivādetvā ekamantaṃ nisīdiṃsu, appekacce bhagavatā saddhiṃ sammodiṃsu, sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdiṃsu, appekacce yena bhagavā tenañjaliṃ paṇāmetvā ekamantaṃ nisīdiṃsu, appekacce nāmagottaṃ sāvetvā ekamantaṃ nisīdiṃsu, appekacce tuṇhībhūtā ekamantaṃ nisīdiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi ngồi xuống một bên, đại vương Vessavana (Tỳ-sa-môn) bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho vessavaṇo mahārājā bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có những thượng phẩm Dạ-xoa không tin tưởng Thế Tôn;<br>
+<span lang="pi" class="pali">
+“santi hi, bhante, uḷārā yakkhā bhagavato appasannā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn có những thượng phẩm Dạ-xoa tin tưởng Thế Tôn<br>
+<span lang="pi" class="pali">
+Santi hi, bhante, uḷārā yakkhā bhagavato pasannā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có những trung phẩm Dạ-xoa không tin tưởng Thế Tôn;<br>
+<span lang="pi" class="pali">
+Santi hi, bhante, majjhimā yakkhā bhagavato appasannā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có những trung phẩm Dạ-xoa tin tưởng Thế Tôn.<br>
+<span lang="pi" class="pali">
+Santi hi, bhante, majjhimā yakkhā bhagavato pasannā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có những hạ phẩm Dạ-xoa không tin tưởng Thế Tôn;<br>
+<span lang="pi" class="pali">
+Santi hi, bhante, nīcā yakkhā bhagavato appasannā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có những hạ phẩm Dạ-xoa tin tưởng Thế Tôn.<br>
+<span lang="pi" class="pali">
+Santi hi, bhante, nīcā yakkhā bhagavato pasannā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng phần lớn các Dạ-xoa không tin tưởng Thế Tôn.<br>
+<span lang="pi" class="pali">
+Yebhuyyena kho pana, bhante, yakkhā appasannāyeva bhagavato.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn. Thế Tôn thuyết pháp để từ bỏ sát sanh, thuyết pháp để từ bỏ trộm cắp, thuyết pháp để từ bỏ tà dâm, thuyết pháp để từ bỏ nói láo, thuyết pháp để từ bỏ không uống các loại rượu.<br>
+<span lang="pi" class="pali">
+Bhagavā hi, bhante, pāṇātipātā veramaṇiyā dhammaṃ deseti, adinnādānā veramaṇiyā dhammaṃ deseti, kāmesumicchācārā veramaṇiyā dhammaṃ deseti, musāvādā veramaṇiyā dhammaṃ deseti, surāmerayamajjappamādaṭṭhānā veramaṇiyā dhammaṃ deseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, tuy vậy phần lớn các Dạ-xoa đều không từ bỏ sát sanh, không từ bỏ trộm cắp, không từ bỏ tà dâm, không từ bỏ nói láo, không từ bỏ uống các loại rượu.<br>
+<span lang="pi" class="pali">
+Yebhuyyena kho pana, bhante, yakkhā appaṭiviratāyeva pāṇātipātā, appaṭiviratā adinnādānā, appaṭiviratā kāmesumicchācārā, appaṭiviratā musāvādā, appaṭiviratā surāmerayamajjappamādaṭṭhānā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với họ, Pháp ấy không được ưa thích, không được đón mừng.<br>
+<span lang="pi" class="pali">
+Tesaṃ taṃ hoti appiyaṃ amanāpaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, có những đệ tử của Thế Tôn, sống trong chốn thâm sâu cùng cốc, ít tiếng, ít động, có gió mát từ ngoài đồng thổi, che dấu không cho người thấy, thích hợp tịnh tu.<br>
+<span lang="pi" class="pali">
+Santi hi, bhante, bhagavato sāvakā araññavanapatthāni pantāni senāsanāni paṭisevanti appasaddāni appanigghosāni vijanavātāni manussarāhasseyyakāni paṭisallānasāruppāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại chỗ ấy, có những thượng phẩm Dạ-xoa không tin tưởng lời dạy Thế Tôn.<br>
+<span lang="pi" class="pali">
+Tattha santi uḷārā yakkhā nivāsino, ye imasmiṃ bhagavato pāvacane appasannā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, hãy học chú Āṭānāṭiya (A-sá-nang-chi Hộ Kinh) để họ được lòng tin, để các vị Tỷ-kheo, Tỷ-kheo-ni, Nam cư sĩ, Nữ cư sĩ có thể sống an lạc, được che chở, được hộ trì không bị tại họa.”<br>
+<span lang="pi" class="pali">
+Tesaṃ pasādāya uggaṇhātu, bhante, bhagavā āṭānāṭiyaṃ rakkhaṃ bhikkhūnaṃ bhikkhunīnaṃ upāsakānaṃ upāsikānaṃ guttiyā rakkhāya avihiṃsāya phāsuvihārāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn im lặng chấp thuận.<br>
+<span lang="pi" class="pali">
+Adhivāsesi bhagavā tuṇhībhāvena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi đại vương Vessavana, biết được Thế Tôn đã chấp thuận, trong giờ phút ấy, đọc lên bài Āṭānāṭiya Hộ Kinh:<br>
+<span lang="pi" class="pali">
+Atha kho vessavaṇo mahārājā bhagavato adhivāsanaṃ viditvā tāyaṃ velāyaṃ imaṃ āṭānāṭiyaṃ rakkhaṃ abhāsi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðảnh lễ Vipassī (Tỳ-bà-thi),<br>
+<span lang="pi" class="pali">
+“Vipassissa ca namatthu,<br>
+</span>
+Sáng suốt và huy hoàng!<br>
+<span lang="pi" class="pali">
+cakkhumantassa sirīmato;<br>
+</span>
+Ðảnh lễ đấng Sikhī (Thi-khí),<br>
+<span lang="pi" class="pali">
+Sikhissapi ca namatthu,<br>
+</span>
+Có lòng thương muôn loài!<br>
+<span lang="pi" class="pali">
+sabbabhūtānukampino.<br>
+</span>
+Ðảnh lễ Vessabhū (Tỳ-xá-bà),<br>
+<span lang="pi" class="pali">
+Vessabhussa ca namatthu,<br>
+</span>
+Thanh tịnh, tu khổ hạnh!<br>
+<span lang="pi" class="pali">
+nhātakassa tapassino;<br>
+</span>
+Ðảnh lễ Kakusandha (Câu-lâu-tôn),<br>
+<span lang="pi" class="pali">
+Namatthu kakusandhassa,<br>
+</span>
+Vị nhiếp phục ma quân!<br>
+<span lang="pi" class="pali">
+mārasenāpamaddino.<br>
+</span>
+Đảnh lễ Koṇāgamana (Câu-lâu-tôn),<br>
+<span lang="pi" class="pali">
+Koṇāgamanassa namatthu,<br>
+</span>
+Bà-la-môn viên mãn!<br>
+<span lang="pi" class="pali">
+brāhmaṇassa vusīmato;<br>
+</span>
+Ðảnh lễ Kassapa (Ca-diếp),<br>
+<span lang="pi" class="pali">
+Kassapassa ca namatthu,<br>
+</span>
+Vị giải thoát muôn mặt!<br>
+<span lang="pi" class="pali">
+vippamuttassa sabbadhi.<br>
+</span>
+Đảnh lễ Aṅgīrasa,<br>
+<span lang="pi" class="pali">
+Aṅgīrasassa namatthu,<br>
+</span>
+Vị Thích tử huy hoàng,<br>
+<span lang="pi" class="pali">
+sakyaputtassa sirīmato;<br>
+</span>
+Ðã thuyết chơn diệu pháp,<br>
+<span lang="pi" class="pali">
+Yo imaṃ dhammaṃ desesi,<br>
+</span>
+Diệt trừ mọi khổ đau!<br>
+<span lang="pi" class="pali">
+sabbadukkhāpanūdanaṃ.<br>
+</span>
+Ai yểm ly thế giới,<br>
+<span lang="pi" class="pali">
+Ye cāpi nibbutā loke,<br>
+</span>
+Nhìn đời đúng như chơn,<br>
+<span lang="pi" class="pali">
+yathābhūtaṃ vipassisuṃ;<br>
+</span>
+Vị ấy không hai lưỡi,<br>
+<span lang="pi" class="pali">
+Te janā apisuṇātha,<br>
+</span>
+Bậc vĩ đại thanh thoát.<br>
+<span lang="pi" class="pali">
+mahantā vītasāradā.<br>
+</span>
+Cùng đảnh lễ Gotama,<br>
+<span lang="pi" class="pali">
+Hitaṃ devamanussānaṃ,<br>
+</span>
+Lo an lạc Nhân Thiên<br>
+<span lang="pi" class="pali">
+yaṃ namassanti gotamaṃ;<br>
+</span>
+Trì giới đức viên mãn!<br>
+<span lang="pi" class="pali">
+Vijjācaraṇasampannaṃ,<br>
+</span>
+Bậc vĩ đại thanh thoát!<br>
+<span lang="pi" class="pali">
+mahantaṃ vītasāradaṃ.<br>
+</span>
+Mặt trời sáng mọc lên,—<br>
+<span lang="pi" class="pali">
+Yato uggacchati sūriyo,<br>
+</span>
+Vầng thái dương tròn lớn,<br>
+<span lang="pi" class="pali">
+ādicco maṇḍalī mahā;<br>
+</span>
+Khi mặt trời mọc lên,<br>
+<span lang="pi" class="pali">
+Yassa cuggacchamānassa,<br>
+</span>
+Ðêm tối liền biến mất.<br>
+<span lang="pi" class="pali">
+saṃvarīpi nirujjhati;<br>
+</span>
+Khi mặt trời mọc lên<br>
+<span lang="pi" class="pali">
+Yassa cuggate sūriye,<br>
+</span>
+Liền được gọi là ngày.<br>
+<span lang="pi" class="pali">
+‘divaso’ti pavuccati.<br>
+</span>
+Như hồ nước thâm sâu.<br>
+<span lang="pi" class="pali">
+Rahadopi tattha gambhīro,<br>
+</span>
+Biển cả hải triều động,<br>
+<span lang="pi" class="pali">
+samuddo saritodako;<br>
+</span>
+Ở đấy mọi người biết,<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ tattha jānanti,<br>
+</span>
+Chính biển cả hải triều,<br>
+<span lang="pi" class="pali">
+‘samuddo saritodako’.<br>
+</span>
+Là phương Purimā, (phương Đông).<br>
+<span lang="pi" class="pali">
+Ito ‘sā purimā disā’,<br>
+</span>
+Dân chúng gọi như vậy,<br>
+<span lang="pi" class="pali">
+iti naṃ ācikkhatī jano;<br>
+</span>
+Vị trị vì phương ấy,<br>
+<span lang="pi" class="pali">
+Yaṃ disaṃ abhipāleti,<br>
+</span>
+Bậc đại vương danh xưng,<br>
+<span lang="pi" class="pali">
+mahārājā yasassi so.<br>
+</span>
+Chúa loài Càn-thát-bà,<br>
+<span lang="pi" class="pali">
+Gandhabbānaṃ adhipati,<br>
+</span>
+Tên gọi Dhataraṭṭha (Trì Quốc Thiên Vương).<br>
+<span lang="pi" class="pali">
+‘dhataraṭṭho’ti nāmaso;<br>
+</span>
+Hưởng múa hát của họ.<br>
+<span lang="pi" class="pali">
+Ramatī naccagītehi,<br>
+</span>
+Càn-thát-bà hầu quanh,<br>
+<span lang="pi" class="pali">
+gandhabbehi purakkhato.<br>
+</span>
+Vua này có nhiều con,<br>
+<span lang="pi" class="pali">
+Puttāpi tassa bahavo,<br>
+</span>
+Ta nghe chỉ một tên,<br>
+<span lang="pi" class="pali">
+ekanāmāti me sutaṃ;<br>
+</span>
+Tám mươi, mười và một,<br>
+<span lang="pi" class="pali">
+Asīti dasa eko ca,<br>
+</span>
+Ðại lực, danh Inda.<br>
+<span lang="pi" class="pali">
+indanāmā mahabbalā.<br>
+</span>
+Họ chiêm ngưỡng Thế Tôn,<br>
+<span lang="pi" class="pali">
+Te cāpi buddhaṃ disvāna,<br>
+</span>
+Thuộc giòng họ mặt trời.<br>
+<span lang="pi" class="pali">
+buddhaṃ ādiccabandhunaṃ;<br>
+</span>
+Từ xa, họ lễ Phật,<br>
+<span lang="pi" class="pali">
+Dūratova namassanti,<br>
+</span>
+Bậc vĩ đại thanh thoát.<br>
+<span lang="pi" class="pali">
+mahantaṃ vītasāradaṃ.<br>
+</span>
+Ðảnh lễ bậc Siêu Nhân!<br>
+<span lang="pi" class="pali">
+Namo te purisājañña,<br>
+</span>
+Ðảnh lễ bậc Thượng nhân!<br>
+<span lang="pi" class="pali">
+namo te purisuttama;<br>
+</span>
+Thiện tâm nhìn chúng con,<br>
+<span lang="pi" class="pali">
+Kusalena samekkhasi,<br>
+</span>
+Phi nhân cũng lễ Ngài.<br>
+<span lang="pi" class="pali">
+amanussāpi taṃ vandanti;<br>
+</span>
+Ðã nhiều lần, nghe hỏi,<br>
+<span lang="pi" class="pali">
+Sutaṃ netaṃ abhiṇhaso,<br>
+</span>
+‘Quý vị xin đảnh lễ,’<br>
+<span lang="pi" class="pali">
+tasmā evaṃ vademase.<br>
+</span>
+Gotama chiến thắng!<br>
+<span lang="pi" class="pali">
+‘Jinaṃ vandatha gotamaṃ’,<br>
+</span>
+‘Ðảnh lễ Gotama,<br>
+<span lang="pi" class="pali">
+‘jinaṃ vandāma gotamaṃ;<br>
+</span>
+Bậc trí đức viên mãn!<br>
+<span lang="pi" class="pali">
+Vijjācaraṇasampannaṃ,<br>
+</span>
+Chúng con xin đảnh lễ<br>
+Gotama chiến thắng!’<br>
+<span lang="pi" class="pali">
+buddhaṃ vandāma gotamaṃ’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ được gọi Ngạ Quỷ,<br>
+<span lang="pi" class="pali">
+Yena petā pavuccanti,<br>
+</span>
+Nói hai lưỡi, sau lưng,<br>
+<span lang="pi" class="pali">
+pisuṇā piṭṭhimaṃsikā;<br>
+</span>
+Sát sanh và tham đắm,<br>
+<span lang="pi" class="pali">
+Pāṇātipātino luddā,<br>
+</span>
+Ðạo tặc và man trá,<br>
+<span lang="pi" class="pali">
+corā nekatikā janā.<br>
+</span>
+Là phương Dakkhinā (phương Nam).<br>
+<span lang="pi" class="pali">
+Ito ‘sā dakkhiṇā disā’,<br>
+</span>
+Dân chúng gọi như vậy,<br>
+<span lang="pi" class="pali">
+iti naṃ ācikkhatī jano;<br>
+</span>
+Vị trị vì phương ấy,<br>
+<span lang="pi" class="pali">
+Yaṃ disaṃ abhipāleti,<br>
+</span>
+Bậc đại vương, danh xưng,<br>
+<span lang="pi" class="pali">
+mahārājā yasassi so.<br>
+</span>
+Chúa loài Kumbhanda (Cưu-bàn-trà)<br>
+<span lang="pi" class="pali">
+Kumbhaṇḍānaṃ adhipati,<br>
+</span>
+Tên gọi Virūḷha (Tỳ-lâu-lặc).<br>
+<span lang="pi" class="pali">
+‘virūḷho’ iti nāmaso;<br>
+</span>
+Hưởng múa hát của họ.<br>
+<span lang="pi" class="pali">
+Ramatī naccagītehi,<br>
+</span>
+Kumbhaṇda hầu quanh,<br>
+<span lang="pi" class="pali">
+kumbhaṇḍehi purakkhato.<br>
+</span>
+Vua này có nhiều con,<br>
+<span lang="pi" class="pali">
+Puttāpi tassa bahavo,<br>
+</span>
+Ta nghe chỉ một tên,<br>
+<span lang="pi" class="pali">
+ekanāmāti me sutaṃ;<br>
+</span>
+Tám mươi, mười và một,<br>
+<span lang="pi" class="pali">
+Asīti dasa eko ca,<br>
+</span>
+Ðại lực, danh Inda.<br>
+<span lang="pi" class="pali">
+indanāmā mahabbalā.<br>
+</span>
+Họ chiêm ngưỡng Thế Tôn,<br>
+<span lang="pi" class="pali">
+Te cāpi buddhaṃ disvāna,<br>
+</span>
+Thuộc giòng họ mặt trời.<br>
+<span lang="pi" class="pali">
+buddhaṃ ādiccabandhunaṃ;<br>
+</span>
+Từ xa, họ lễ Phật,<br>
+<span lang="pi" class="pali">
+Dūratova namassanti,<br>
+</span>
+Bậc vĩ đại thanh thoát.<br>
+<span lang="pi" class="pali">
+mahantaṃ vītasāradaṃ.<br>
+</span>
+Ðảnh lễ bậc Siêu Nhân!<br>
+<span lang="pi" class="pali">
+Namo te purisājañña,<br>
+</span>
+Ðảnh lễ bậc Thượng nhân!<br>
+<span lang="pi" class="pali">
+namo te purisuttama;<br>
+</span>
+Thiện tâm nhìn chúng con,<br>
+<span lang="pi" class="pali">
+Kusalena samekkhasi,<br>
+</span>
+Phi nhân cũng lễ Ngài.<br>
+<span lang="pi" class="pali">
+amanussāpi taṃ vandanti;<br>
+</span>
+Ðã nhiều lần, nghe hỏi,<br>
+<span lang="pi" class="pali">
+Sutaṃ netaṃ abhiṇhaso,<br>
+</span>
+‘Quý vị xin đảnh lễ,’<br>
+<span lang="pi" class="pali">
+tasmā evaṃ vademase.<br>
+</span>
+Gotama chiến thắng!<br>
+<span lang="pi" class="pali">
+‘Jinaṃ vandatha gotamaṃ’,<br>
+</span>
+‘Ðảnh lễ Gotama,<br>
+<span lang="pi" class="pali">
+‘jinaṃ vandāma gotamaṃ;<br>
+</span>
+Bậc trí đức viên mãn!<br>
+<span lang="pi" class="pali">
+Vijjācaraṇasampannaṃ,<br>
+</span>
+Chúng con xin đảnh lễ,<br>
+Gotama chiến thắng!’<br>
+<span lang="pi" class="pali">
+buddhaṃ vandāma gotamaṃ’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mặt trời sáng lặn xuống,<br>
+<span lang="pi" class="pali">
+Yattha coggacchati sūriyo,<br>
+</span>
+Vầng thái dương trong lớn.<br>
+<span lang="pi" class="pali">
+ādicco maṇḍalī mahā;<br>
+</span>
+Hướng tâm mặt trời lặng,<br>
+<span lang="pi" class="pali">
+Yassa coggacchamānassa,<br>
+</span>
+Ban ngày liền biến mất.<br>
+<span lang="pi" class="pali">
+divasopi nirujjhati;<br>
+</span>
+Khi mặt trời lặn xuống.<br>
+<span lang="pi" class="pali">
+Yassa coggate sūriye,<br>
+</span>
+Liền được gọi là đêm.<br>
+<span lang="pi" class="pali">
+‘saṃvarī’ti pavuccati.<br>
+</span>
+Như hồ nước thâm sâu,<br>
+<span lang="pi" class="pali">
+Rahadopi tattha gambhīro,<br>
+</span>
+Biển cả hải triều động,<br>
+<span lang="pi" class="pali">
+samuddo saritodako;<br>
+</span>
+Ở đây mọi người biết,<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ tattha jānanti,<br>
+</span>
+Chính biển cả hải triều,<br>
+<span lang="pi" class="pali">
+‘samuddo saritodako’.<br>
+</span>
+Là phương Pacchimā (phương Tây).<br>
+<span lang="pi" class="pali">
+Ito ‘sā pacchimā disā’,<br>
+</span>
+Dân chúng gọi phương ấy,<br>
+<span lang="pi" class="pali">
+iti naṃ ācikkhatī jano;<br>
+</span>
+Vị trị vì phương ấy,<br>
+<span lang="pi" class="pali">
+Yaṃ disaṃ abhipāleti,<br>
+</span>
+Bậc đại vương, danh xưng.<br>
+<span lang="pi" class="pali">
+mahārājā yasassi so.<br>
+</span>
+Chúa các loài Rồng (Nāgā),<br>
+<span lang="pi" class="pali">
+Nāgānañca adhipati,<br>
+</span>
+Danh xưng Virūpakkha (Tỳ-lâu-bác-xoa).<br>
+<span lang="pi" class="pali">
+‘virūpakkho’ti nāmaso;<br>
+</span>
+Hưởng múa hát của họ.<br>
+<span lang="pi" class="pali">
+Ramatī naccagītehi,<br>
+</span>
+Loài Nāgā hầu quanh,<br>
+<span lang="pi" class="pali">
+nāgeheva purakkhato.<br>
+</span>
+Vua này có nhiều con,<br>
+<span lang="pi" class="pali">
+Puttāpi tassa bahavo,<br>
+</span>
+Ta nghe chỉ một tên,<br>
+<span lang="pi" class="pali">
+ekanāmāti me sutaṃ;<br>
+</span>
+Tám mươi, mười, và một,<br>
+<span lang="pi" class="pali">
+Asīti dasa eko ca,<br>
+</span>
+Ðại lực, danh Inda.<br>
+<span lang="pi" class="pali">
+indanāmā mahabbalā.<br>
+</span>
+Họ chiêm ngưỡng Thế Tôn,<br>
+<span lang="pi" class="pali">
+Te cāpi buddhaṃ disvāna,<br>
+</span>
+Thuộc giòng họ mặt trời.<br>
+<span lang="pi" class="pali">
+buddhaṃ ādiccabandhunaṃ;<br>
+</span>
+Từ xa, họ lễ Phật,<br>
+<span lang="pi" class="pali">
+Dūratova namassanti,<br>
+</span>
+Bậc vĩ đại thanh thoát.<br>
+<span lang="pi" class="pali">
+mahantaṃ vītasāradaṃ.<br>
+</span>
+Ðảnh lễ bậc Siêu Nhân!<br>
+<span lang="pi" class="pali">
+Namo te purisājañña,<br>
+</span>
+Ðảnh lễ bậc Thượng nhân!<br>
+<span lang="pi" class="pali">
+namo te purisuttama;<br>
+</span>
+Thiện tâm nhìn chúng con,<br>
+<span lang="pi" class="pali">
+Kusalena samekkhasi,<br>
+</span>
+Phi nhân cũng lễ Ngài<br>
+<span lang="pi" class="pali">
+amanussāpi taṃ vandanti;<br>
+</span>
+Ðã nhiều lần, nghe hỏi,<br>
+<span lang="pi" class="pali">
+Sutaṃ netaṃ abhiṇhaso,<br>
+</span>
+‘Nên đảnh lễ như vậy,’<br>
+<span lang="pi" class="pali">
+tasmā evaṃ vademase.<br>
+</span>
+Ðảnh lễ Gotama,<br>
+<span lang="pi" class="pali">
+‘Jinaṃ vandatha gotamaṃ’,<br>
+</span>
+‘Gotama chiến thắng!<br>
+<span lang="pi" class="pali">
+‘jinaṃ vandāma gotamaṃ;<br>
+</span>
+Bậc trí đức viên mãn!<br>
+<span lang="pi" class="pali">
+Vijjācaraṇasampannaṃ,<br>
+</span>
+Chúng con xin đảnh lễ,<br>
+Gotama chiến thắng!’<br>
+<span lang="pi" class="pali">
+buddhaṃ vandāma gotamaṃ’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bắc Lô Châu (Uttarakuru) an lạc<br>
+<span lang="pi" class="pali">
+Yena uttarakuruvho,<br>
+</span>
+Ðại Neru (Tu-di) đẹp đẽ.<br>
+<span lang="pi" class="pali">
+mahāneru sudassano;<br>
+</span>
+Tại đấy, mọi người sống<br>
+<span lang="pi" class="pali">
+Manussā tattha jāyanti,<br>
+</span>
+Không sở hữu, chấp trước.<br>
+<span lang="pi" class="pali">
+amamā apariggahā.<br>
+</span>
+Họ không gieo hột giống,<br>
+<span lang="pi" class="pali">
+Na te bījaṃ pavapanti,<br>
+</span>
+Không cần phải kéo cày.<br>
+<span lang="pi" class="pali">
+napi nīyanti naṅgalā;<br>
+</span>
+Loài người được thọ hưởng<br>
+<span lang="pi" class="pali">
+Akaṭṭhapākimaṃ sāliṃ,<br>
+</span>
+Lúa chín khỏi nhọc công.<br>
+<span lang="pi" class="pali">
+paribhuñjanti mānusā.<br>
+</span>
+Loại gạo không cám trấu,<br>
+<span lang="pi" class="pali">
+Akaṇaṃ athusaṃ suddhaṃ,<br>
+</span>
+Thanh tịnh có hương thơm,<br>
+<span lang="pi" class="pali">
+sugandhaṃ taṇḍulapphalaṃ;<br>
+</span>
+Ðược nấu chín trên đá,<br>
+<span lang="pi" class="pali">
+Tuṇḍikīre pacitvāna,<br>
+</span>
+Và họ ăn gạo ấy.<br>
+<span lang="pi" class="pali">
+tato bhuñjanti bhojanaṃ.<br>
+</span>
+Chỉ cỡi loài bò cái,<br>
+<span lang="pi" class="pali">
+Gāviṃ ekakhuraṃ katvā,<br>
+</span>
+Ði phương này phương khác.<br>
+<span lang="pi" class="pali">
+anuyanti disodisaṃ;<br>
+</span>
+Chỉ dùng các loài thú<br>
+<span lang="pi" class="pali">
+Pasuṃ ekakhuraṃ katvā,<br>
+</span>
+Ði phương này phương khác.<br>
+<span lang="pi" class="pali">
+anuyanti disodisaṃ.<br>
+</span>
+Dùng xe đàn bà kéo,<br>
+<span lang="pi" class="pali">
+Itthiṃ vā vāhanaṃ katvā,<br>
+</span>
+Ði phương này phương khác.<br>
+<span lang="pi" class="pali">
+anuyanti disodisaṃ;<br>
+</span>
+Dùng xe đàn ông kéo,<br>
+<span lang="pi" class="pali">
+Purisaṃ vāhanaṃ katvā,<br>
+</span>
+Ði phương này phương khác.<br>
+<span lang="pi" class="pali">
+anuyanti disodisaṃ.<br>
+</span>
+Dùng xe con gái kéo,<br>
+<span lang="pi" class="pali">
+Kumāriṃ vāhanaṃ katvā,<br>
+</span>
+Ði phương này phương khác.<br>
+<span lang="pi" class="pali">
+anuyanti disodisaṃ;<br>
+</span>
+Dùng xe con trai kéo,<br>
+<span lang="pi" class="pali">
+Kumāraṃ vāhanaṃ katvā,<br>
+</span>
+Ði phương này phương khác.<br>
+<span lang="pi" class="pali">
+anuyanti disodisaṃ.<br>
+</span>
+Họ lên trên các xe,<br>
+<span lang="pi" class="pali">
+Te yāne abhiruhitvā,<br>
+</span>
+Ði khắp mọi phương hướng,<br>
+<span lang="pi" class="pali">
+Sabbā disā anupariyāyanti;<br>
+</span>
+Ðể phục vụ vua mình.<br>
+<span lang="pi" class="pali">
+Pacārā tassa rājino.<br>
+</span>
+Họ cỡi xe voi kéo,<br>
+<span lang="pi" class="pali">
+Hatthiyānaṃ assayānaṃ,<br>
+</span>
+Xe ngựa, xe chư Thiên,<br>
+<span lang="pi" class="pali">
+dibbaṃ yānaṃ upaṭṭhitaṃ;<br>
+</span>
+Có lâu đài, có kiệu,<br>
+<span lang="pi" class="pali">
+Pāsādā sivikā ceva,<br>
+</span>
+Bậc đại vương, danh xưng.<br>
+<span lang="pi" class="pali">
+mahārājassa yasassino.<br>
+</span>
+Vị có nhiều thành phố,<br>
+<span lang="pi" class="pali">
+Tassa ca nagarā ahu,<br>
+</span>
+Ðược xây giữa hư không.<br>
+<span lang="pi" class="pali">
+Antalikkhe sumāpitā;<br>
+</span>
+Āṭānāṭā, Kusināṭā, Parakusināṭā,<br>
+<span lang="pi" class="pali">
+Āṭānāṭā kusināṭā parakusināṭā,<br>
+</span>
+Nāṭasuriyā, và Parakusiṭanāṭā.<br>
+<span lang="pi" class="pali">
+Nāṭasuriyā parakusiṭanāṭā.<br>
+</span>
+Phía bắc thành Kapīvanta,<br>
+<span lang="pi" class="pali">
+Uttarena kasivanto,<br>
+</span>
+Jonogha nằm ngoại ô;<br>
+<span lang="pi" class="pali">
+Janoghamaparena ca;<br>
+</span>
+Thành Navanavutiya,<br>
+Ambara-ambaravatiya,<br>
+<span lang="pi" class="pali">
+Navanavutiyo ambaraambaravatiyo,<br>
+</span>
+Kinh đô tên Āḷakamandā.<br>
+<span lang="pi" class="pali">
+Āḷakamandā nāma rājadhānī.<br>
+</span>
+Chỗ Vua Kuvera ở,<br>
+<span lang="pi" class="pali">
+Kuverassa kho pana mārisa,<br>
+</span>
+Kinh thành tên Visāṇā,<br>
+<span lang="pi" class="pali">
+Mahārājassa visāṇā nāma rājadhānī;<br>
+</span>
+Vị vua đáng kính này,<br>
+<span lang="pi" class="pali">
+Tasmā kuvero mahārājā,<br>
+</span>
+Tên gọi ‘Vessavaṇa’.<br>
+<span lang="pi" class="pali">
+‘Vessavaṇo’ti pavuccati.<br>
+</span>
+Các sứ quán được tên:<br>
+<span lang="pi" class="pali">
+Paccesanto pakāsenti,<br>
+</span>
+Tatolā, Tattalā, Tatotalā,<br>
+<span lang="pi" class="pali">
+Tatolā tattalā tatotalā;<br>
+</span>
+Ojasi, Tejasi, Tatojasi,<br>
+<span lang="pi" class="pali">
+Ojasi tejasi tatojasī,<br>
+</span>
+Sūra, Rājā, Ariṭṭha, và Nemi.<br>
+<span lang="pi" class="pali">
+Sūro rājā ariṭṭho nemi.<br>
+</span>
+Đây có hồ nước lớn, Tên gọi Dharaṇī,<br>
+<span lang="pi" class="pali">
+Rahadopi tattha dharaṇī nāma,<br>
+</span>
+Từ đâu mây đổ mưa,<br>
+<span lang="pi" class="pali">
+Yato meghā pavassanti;<br>
+</span>
+Tại đây mưa đổ xuống,<br>
+<span lang="pi" class="pali">
+Vassā yato patāyanti,<br>
+</span>
+Tại đây có giảng đường,<br>
+Tên gọi Bhagalavatī,<br>
+<span lang="pi" class="pali">
+Sabhāpi tattha sālavatī nāma.<br>
+</span>
+Chỗ Dạ-xoa tập hội.<br>
+<span lang="pi" class="pali">
+Yattha yakkhā payirupāsanti,<br>
+</span>
+Tại đây nhiều cây trái,<br>
+<span lang="pi" class="pali">
+Tattha niccaphalā rukkhā;<br>
+</span>
+Trên cây chim tụ họp,<br>
+<span lang="pi" class="pali">
+Nānā dijagaṇā yutā,<br>
+</span>
+Các loại công, loại cò,<br>
+<span lang="pi" class="pali">
+Mayūrakoñcābhirudā;<br>
+</span>
+Diệu âm chim Kokilā,<br>
+<span lang="pi" class="pali">
+Kokilādīhi vagguhi.<br>
+</span>
+Ở đây, chim Jiva,<br>
+Kêu tiếng “Hãy sống đi”,<br>
+<span lang="pi" class="pali">
+Jīvañjīvakasaddettha,<br>
+</span>
+Và tiếng chim kêu lên,<br>
+“Hãy khởi tâm thích thú”.<br>
+<span lang="pi" class="pali">
+atho oṭṭhavacittakā;<br>
+</span>
+Nhiều loại chim sai khác,<br>
+<span lang="pi" class="pali">
+Kukkuṭakā kuḷīrakā,<br>
+</span>
+Ở rừng và ở hồ,<br>
+<span lang="pi" class="pali">
+vane pokkharasātakā.<br>
+</span>
+Với con vẹt ồn ào,<br>
+Và con chim Mynah,<br>
+<span lang="pi" class="pali">
+Sukasāḷikasaddettha,<br>
+</span>
+Với loài chim mặt người;<br>
+<span lang="pi" class="pali">
+daṇḍamāṇavakāni ca;<br>
+</span>
+Lúc nào cũng đẹp đẽ;<br>
+<span lang="pi" class="pali">
+Sobhati sabbakālaṃ sā,<br>
+</span>
+Hồ sen Kuvera,<br>
+<span lang="pi" class="pali">
+kuveranaḷinī sadā.<br>
+</span>
+Là phương Uttarā (phương Bắc).<br>
+<span lang="pi" class="pali">
+Ito ‘sā uttarā disā’,<br>
+</span>
+Dâng chúng gọi phương ấy;<br>
+<span lang="pi" class="pali">
+iti naṃ ācikkhatī jano;<br>
+</span>
+Vị trị vì phương ấy,<br>
+<span lang="pi" class="pali">
+Yaṃ disaṃ abhipāleti,<br>
+</span>
+Bậc đại vương danh xưng,<br>
+<span lang="pi" class="pali">
+mahārājā yasassi so.<br>
+</span>
+Chúa các loài Dạ-xoa,<br>
+<span lang="pi" class="pali">
+Yakkhānañca adhipati,<br>
+</span>
+Tên gọi ‘Kuvera’.<br>
+<span lang="pi" class="pali">
+‘kuvero’ iti nāmaso;<br>
+</span>
+Hưởng múa hát của chúng.<br>
+<span lang="pi" class="pali">
+Ramatī naccagītehi,<br>
+</span>
+Các Dạ-xoa hầu quanh,<br>
+<span lang="pi" class="pali">
+yakkheheva purakkhato.<br>
+</span>
+Vua này có nhiều con,<br>
+<span lang="pi" class="pali">
+Puttāpi tassa bahavo,<br>
+</span>
+Ta nghe chỉ một tên,<br>
+<span lang="pi" class="pali">
+ekanāmāti me sutaṃ;<br>
+</span>
+Tám mươi, mười và một,<br>
+<span lang="pi" class="pali">
+Asīti dasa eko ca,<br>
+</span>
+Ðại lực, danh Inda.<br>
+<span lang="pi" class="pali">
+indanāmā mahabbalā.<br>
+</span>
+Họ chiêm ngưỡng Thế Tôn,<br>
+<span lang="pi" class="pali">
+Te cāpi buddhaṃ disvāna,<br>
+</span>
+Thuộc giòng họ mặt trời.<br>
+<span lang="pi" class="pali">
+buddhaṃ ādiccabandhunaṃ;<br>
+</span>
+Từ xa, họ lễ Phật,<br>
+<span lang="pi" class="pali">
+Dūratova namassanti,<br>
+</span>
+Bậc vĩ đại thanh thoát.<br>
+<span lang="pi" class="pali">
+mahantaṃ vītasāradaṃ.<br>
+</span>
+Ðảnh lễ bậc Siêu Nhân!<br>
+<span lang="pi" class="pali">
+Namo te purisājañña,<br>
+</span>
+Ðảnh lễ bậc Thượng nhân!<br>
+<span lang="pi" class="pali">
+namo te purisuttama;<br>
+</span>
+Thiện tâm nhìn chúng con,<br>
+<span lang="pi" class="pali">
+Kusalena samekkhasi,<br>
+</span>
+Phi nhân cũng lễ Ngài”.<br>
+<span lang="pi" class="pali">
+amanussāpi taṃ vandanti;<br>
+</span>
+Ðã nhiều lần, nghe hỏi,<br>
+<span lang="pi" class="pali">
+Sutaṃ netaṃ abhiṇhaso,<br>
+</span>
+‘Nên đảnh lễ như vậy,’<br>
+<span lang="pi" class="pali">
+tasmā evaṃ vademase.<br>
+</span>
+Ðảnh lễ Gotama,<br>
+<span lang="pi" class="pali">
+‘Jinaṃ vandatha gotamaṃ’,<br>
+</span>
+‘Gotama chiến thắng!<br>
+<span lang="pi" class="pali">
+‘jinaṃ vandāma gotamaṃ;<br>
+</span>
+Bậc trí đức viên mãn<br>
+<span lang="pi" class="pali">
+Vijjācaraṇasampannaṃ,<br>
+</span>
+Chúng con xin đảnh lễ,<br>
+Gotama chiến thắng’”<br>
+<span lang="pi" class="pali">
+buddhaṃ vandāma gotaman’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả, Hộ Kinh Āṭānāṭiya này che chở, hộ trì, ngăn không cho ai làm hại các vị Tỷ-kheo, Tỷ-kheo-ni, Nam cư sĩ, Nữ cư sĩ và khiến các vị này sống an lạc.<br>
+<span lang="pi" class="pali">
+Ayaṃ kho sā, mārisa, āṭānāṭiyā rakkhā bhikkhūnaṃ bhikkhunīnaṃ upāsakānaṃ upāsikānaṃ guttiyā rakkhāya avihiṃsāya phāsuvihārāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi một vị Tỷ-kheo, Tỷ-kheo-ni, Nam cư sĩ, Nữ cư sĩ nào sẽ học Hộ Kinh Āṭānāṭiya này một cách chín chắn, rõ ràng.<br>
+<span lang="pi" class="pali">
+Yassa kassaci, mārisa, bhikkhussa vā bhikkhuniyā vā upāsakassa vā upāsikāya vā ayaṃ āṭānāṭiyā rakkhā suggahitā bhavissati samattā pariyāputā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có loài phi nhân nào, Dạ-xoa, Dạ-xoa-ni, con trai Dạ-xoa, con gái Dạ-xoa, đại thần Dạ-xoa-ni, tùy tùng của Dạ-xoa, hay lao công của Dạ-xoa; hoặc Càn-thát-bà... hoặc Cưu-bàn-trà (Kumbhanda)... hoặc Nàga... đi theo vị Tỷ-kheo, Tỷ-kheo-ni, Nam cư sĩ, Nữ cư sĩ khi vị này đi; đứng gần, khi vị này đứng; ngồi khi vị này ngồi; nằm khi vị này nằm với tâm niệm độc ác.<br>
+<span lang="pi" class="pali">
+Tañce amanusso yakkho vā yakkhinī vā yakkhapotako vā yakkhapotikā vā yakkhamahāmatto vā yakkhapārisajjo vā yakkhapacāro vā, gandhabbo vā gandhabbī vā gandhabbapotako vā gandhabbapotikā vā gandhabbamahāmatto vā gandhabbapārisajjo vā gandhabbapacāro vā, kumbhaṇḍo vā kumbhaṇḍī vā kumbhaṇḍapotako vā kumbhaṇḍapotikā vā kumbhaṇḍamahāmatto vā kumbhaṇḍapārisajjo vā kumbhaṇḍapacāro vā, nāgo vā nāgī vā nāgapotako vā nāgapotikā vā nāgamahāmatto vā nāgapārisajjo vā nāgapacāro vā, paduṭṭhacitto bhikkhuṃ vā bhikkhuniṃ vā upāsakaṃ vā upāsikaṃ vā gacchantaṃ vā anugaccheyya, ṭhitaṃ vā upatiṭṭheyya, nisinnaṃ vā upanisīdeyya, nipannaṃ vā upanipajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thời này Tôn giả, vị phi nhân ấy trong làng hay trong đô thị sẽ không được ai đón mừng hay kính trọng.<br>
+<span lang="pi" class="pali">
+Na me so, mārisa, amanusso labheyya gāmesu vā nigamesu vā sakkāraṃ vā garukāraṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, phi nhân ấy, trong kinh đô Ālakamandā của Ta sẽ không tìm được đất đai hay chỗ ở.<br>
+<span lang="pi" class="pali">
+Na me so, mārisa, amanusso labheyya āḷakamandāya nāma rājadhāniyā vatthuṃ vā vāsaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị phi nhân ấy sẽ không được đi dự hội giữa các Dạ-xoa.<br>
+<span lang="pi" class="pali">
+Na me so, mārisa, amanusso labheyya yakkhānaṃ samitiṃ gantuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, vị phi nhân ấy sẽ không được cưới hỏi.<br>
+<span lang="pi" class="pali">
+Apissu naṃ, mārisa, amanussā anāvayhampi naṃ kareyyuṃ avivayhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, các hàng phi nhân sẽ dùng những lời nói hỗn láo xấc xược đối với vị ấy.<br>
+<span lang="pi" class="pali">
+Apissu naṃ, mārisa, amanussā attāhipi paripuṇṇāhi paribhāsāhi paribhāseyyuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, các hàng phi nhân sẽ dìm đầu vị ấy xuống.<br>
+<span lang="pi" class="pali">
+Apissu naṃ, mārisa, amanussā rittampissa pattaṃ sīse nikkujjeyyuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, các hàng phi nhân sẽ chẻ đầu vị ấy ra làm bảy mảnh.<br>
+<span lang="pi" class="pali">
+Apissu naṃ, mārisa, amanussā sattadhāpissa muddhaṃ phāleyyuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, có hàng phi nhân hung bạo, dữ tợn, khủng khiếp. Chúng không nghe lời các đại vương, không nghe lời đình thần của các vị đại vương, không nghe lời các vị giúp việc cho các đình thần của các vị đại vương.<br>
+<span lang="pi" class="pali">
+Santi hi, mārisa, amanussā caṇḍā ruddhā rabhasā, te neva mahārājānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ purisakānaṃ ādiyanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, các phi nhân này được xem là thù nghịch của các bậc đại vương.<br>
+<span lang="pi" class="pali">
+Te kho te, mārisa, amanussā mahārājānaṃ avaruddhā nāma vuccanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, như các đại tướng cướp vua xứ Magadha bị chinh phục.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, mārisa, rañño māgadhassa vijite mahācorā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, các vị này không nghe lời các vị đại vương, không nghe lời đình thần của các vị đại vương, không nghe lời các vị giúp việc cho các đình thần của các vị đại vương.<br>
+<span lang="pi" class="pali">
+Te neva rañño māgadhassa ādiyanti, na rañño māgadhassa purisakānaṃ ādiyanti, na rañño māgadhassa purisakānaṃ purisakānaṃ ādiyanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, các vị đại tướng cướp này được xem là kẻ thù nghịch của vua xứ Magadha.<br>
+<span lang="pi" class="pali">
+Te kho te, mārisa, mahācorā rañño māgadhassa avaruddhā nāma vuccanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Tôn giả, có những vị phi nhân hung bạo, dữ tợn, khủng khiếp. Các vị này không nghe lời các đại vương, không nghe lời đình thần của các vị đại vương, không nghe lời các vị giúp việc cho các đình thần các vị đại vương.<br>
+<span lang="pi" class="pali">
+Evameva kho, mārisa, santi amanussā caṇḍā ruddhā rabhasā, te neva mahārājānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ purisakānaṃ ādiyanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, các vị phi nhân này được xem là kẻ thù nghịch của các bậc đại vương.<br>
+<span lang="pi" class="pali">
+Te kho te, mārisa, amanussā mahārājānaṃ avaruddhā nāma vuccanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, nếu có vị phi nhân nào, Dạ-xoa hay Dạ-xoa-ni nào... đi theo vị Tỷ-kheo, Tỷ-kheo-ni, Nam cư sĩ hay Nữ cư sĩ khi vị này đi, đứng gần khi vị này đứng; ngồi khi vị này ngồi; nằm khi vị này nằm với tâm niệm độc ác.<br>
+<span lang="pi" class="pali">
+Yo hi koci, mārisa, amanusso yakkho vā yakkhinī vā ...pe... gandhabbo vā gandhabbī vā ...pe... kumbhaṇḍo vā kumbhaṇḍī vā ...pe... nāgo vā nāgī vā nāgapotako vā nāgapotikā vā nāgamahāmatto vā nāgapārisajjo vā nāgapacāro vā paduṭṭhacitto bhikkhuṃ vā bhikkhuniṃ vā upāsakaṃ vā upāsikaṃ vā gacchantaṃ vā anugaccheyya, ṭhitaṃ vā upatiṭṭheyya, nisinnaṃ vā upanisīdeyya, nipannaṃ vā upanipajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị này hãy nói lên, kêu lên, van lên với các những vị Dạ-xoa ấy, đại Dạ-xoa ấy, quân sư, đại quân sư ấy:<br>
+<span lang="pi" class="pali">
+Imesaṃ yakkhānaṃ mahāyakkhānaṃ senāpatīnaṃ mahāsenāpatīnaṃ ujjhāpetabbaṃ vikkanditabbaṃ viravitabbaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Dạ-xoa này bắt tôi, Dạ-xoa này tấn công tôi, Dạ-xoa này đả thương tôi, Dạ-xoa này hại tôi, Dạ-xoa này làm hại tôi, Dạ-xoa này không thả tôi ra’<br>
+<span lang="pi" class="pali">
+‘ayaṃ yakkho gaṇhāti, ayaṃ yakkho āvisati, ayaṃ yakkho heṭheti, ayaṃ yakkho viheṭheti, ayaṃ yakkho hiṃsati, ayaṃ yakkho vihiṃsati, ayaṃ yakkho na muñcatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những Dạ-xoa, đại Dạ-xoa, quân sư, đại quân sư nào được kêu gọi ở đây:<br>
+<span lang="pi" class="pali">
+Katamesaṃ yakkhānaṃ mahāyakkhānaṃ senāpatīnaṃ mahāsenāpatīnaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Indra, Soma, và Varuṇa,<br>
+<span lang="pi" class="pali">
+Indo somo varuṇo ca,<br>
+<p lang="vi" class="vi">Bhāradvāja, Pajāpati,<br>
+<span lang="pi" class="pali">bhāradvājo pajāpati;<br>
+</span>
+Candana và Kāmaseṭṭha,<br>
+<span lang="pi" class="pali">
+Candano kāmaseṭṭho ca,<br>
+</span>
+Kinnughaṇḍu và Nighaṇḍu,<br>
+<span lang="pi" class="pali">
+kinnughaṇḍu nighaṇḍu ca.<br>
+</span>
+Panāda và Opamañña,<br>
+<span lang="pi" class="pali">
+Panādo opamañño ca,<br>
+</span>
+Mātali, vị đánh xe chư thiên;<br>
+<span lang="pi" class="pali">
+devasūto ca mātali;<br>
+</span>
+Cittasena và Càn-thác-bà,<br>
+<span lang="pi" class="pali">
+Cittaseno ca gandhabbo,<br>
+</span>
+Vua Nala và Janesabha,<br>
+<span lang="pi" class="pali">
+naḷo rājā janesabho.<br></span>
+<p lang="vi" class="vi">Sātāgira, Hemavata,<br>
+<span lang="pi" class="pali">Sātāgiro hemavato,<br>
+</span>
+Puṇṇaka, Karatiya, và Guḷa;<br>
+<span lang="pi" class="pali">
+puṇṇako karatiyo guḷo;<br>
+</span>
+Sivaka và Mucalinda,<br>
+<span lang="pi" class="pali">
+Sivako mucalindo ca,<br></span>
+<p lang="vi" class="vi">Vessāmitta, Yugandhara,<br>
+<span lang="pi" class="pali">vessāmitto yugandharo.<br></span>
+Gopāla, Supparodha,<br>
+<span lang="pi" class="pali">Gopālo supparodho ca,<br>
+</span>
+Hiri, Netti, và Mandiya;<br>
+<span lang="pi" class="pali">
+Hiri netti ca mandiyo;<br>
+<p lang="vi" class="vi">Pañcālacaṇḍa, Āḷavaka,<br>
+<span lang="pi" class="pali">Pañcālacaṇḍo āḷavako,<br></span>
+<p lang="vi" class="vi">Pajjunna, Sumana, Sumukha,<br>
+<span lang="pi" class="pali">Pajjunno sumano sumukho;<br>
+<p lang="vi" class="vi">Dadhimukha, Maṇi, Māṇivara, Dīgha,<br>
+<span lang="pi" class="pali">Dadhimukho maṇi māṇivaro dīgho,<br>
+</span>
+Cùng với Serīsaka.’<br>
+<span lang="pi" class="pali">
+Atho serīsako saha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những vị này là những Dạ-xoa, đại Dạ-xoa, quân sư, đại quân sư cần phải được nói lên, kêu lên, van lên:<br>
+<span lang="pi" class="pali">
+Imesaṃ yakkhānaṃ mahāyakkhānaṃ senāpatīnaṃ mahāsenāpatīnaṃ ujjhāpetabbaṃ vikkanditabbaṃ viravitabbaṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Dạ-xoa này bắt tôi, Dạ-xoa này tấn công tôi, Dạ-xoa này đả thương tôi, Dạ-xoa này hại tôi, Dạ-xoa này làm hại tôi, Dạ-xoa này không thả tôi ra.’<br>
+<span lang="pi" class="pali">
+‘ayaṃ yakkho gaṇhāti, ayaṃ yakkho āvisati, ayaṃ yakkho heṭheti, ayaṃ yakkho viheṭheti, ayaṃ yakkho hiṃsati, ayaṃ yakkho vihiṃsati, ayaṃ yakkho na muñcatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Tôn giả, đây là Hộ Kinh Āṭānāṭiya che chở, hộ trì, ngăn không cho ai làm hại các Tỷ-kheo, Tỷ-kheo-ni, Nam cư sĩ, Nữ cư sĩ và khiến các vị này sống an lạc.<br>
+<span lang="pi" class="pali">
+Ayaṃ kho sā, mārisa, āṭānāṭiyā rakkhā bhikkhūnaṃ bhikkhunīnaṃ upāsakānaṃ upāsikānaṃ guttiyā rakkhāya avihiṃsāya phāsuvihārāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả, nay chúng tôi cần phải đi, chúng tôi có nhiều việc, có nhiều bổn phận.<br>
+<span lang="pi" class="pali">
+Handa ca dāni mayaṃ, mārisa, gacchāma bahukiccā mayaṃ bahukaraṇīyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðại vương, Ðại vương hãy làm điều gì Ðại vương nghĩ là phải thời.”<br>
+<span lang="pi" class="pali">
+“Yassadāni tumhe, mahārājāno, kālaṃ maññathā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi bốn vị đại vương, từ chỗ ngồi đứng dậy đảnh lễ Thế Tôn, thân bên hữu hướng về phía Ngài rồi biến mất tại đấy.<br>
+<span lang="pi" class="pali">
+Atha kho cattāro mahārājā uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā tatthevantaradhāyiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các vị Dạ-xoa ấy, từ chỗ ngồi đứng dậy, có vị đảnh lễ Thế Tôn, thân phía hữu hướng về Ngài rồi biến mất tại chỗ; có vị nói lên những lời hỏi thăm xã giao với Thế Tôn rồi biến mất tại chỗ; có vị chấp tay hướng đến Thế Tôn rồi biến mất tại chỗ; có vị nói lên tên họ của mình rồi biến mất tại chỗ; có vị im lặng biến mất tại chỗ.<br>
+<span lang="pi" class="pali">
+Tepi kho yakkhā uṭṭhāyāsanā appekacce bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā tatthevantaradhāyiṃsu. Appekacce bhagavatā saddhiṃ sammodiṃsu, sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā tatthevantaradhāyiṃsu. Appekacce yena bhagavā tenañjaliṃ paṇāmetvā tatthevantaradhāyiṃsu. Appekacce nāmagottaṃ sāvetvā tatthevantaradhāyiṃsu. Appekacce tuṇhībhūtā tatthevantaradhāyiṃsūti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dứt tụng phẩm thứ nhất.<br>
+<span lang="pi" class="pali">
+Paṭhamabhāṇavāro niṭṭhito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Tụng Phẩm Thứ Hai<br>
+<span lang="pi" class="pali">
+2. Dutiyabhāṇavāra<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn sau khi đêm đã mãn, liền gọi các vị Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tassā rattiyā accayena bhikkhū āmantesi:<br>
+</span>
+Này các Tỷ-kheo, khi hôm, bốn vị đại vương cùng với đại quân sư Dạ-xoa: Ðảnh lễ Vipassi (Tỳ-bà-thi) Sáng suốt và huy hoàng; Ðảnh lễ đấng Sikhi, (Thi-khí) Có lòng thương muôn loài... Này Tôn giả, đây là Hộ Kinh Āṭānāṭiya che chở, hộ trì, ...rồi biến mất tại đấy.<br>
+<span lang="pi" class="pali">
+“imaṃ, bhikkhave, rattiṃ cattāro mahārājā mahatiyā ca yakkhasenāya mahatiyā ca gandhabbasenāya mahatiyā ca kumbhaṇḍasenāya mahatiyā ca nāgasenāya catuddisaṃ rakkhaṃ ṭhapetvā catuddisaṃ gumbaṃ ṭhapetvā catuddisaṃ ovaraṇaṃ ṭhapetvā abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṃ gijjhakūṭaṃ pabbataṃ obhāsetvā yenāhaṃ tenupasaṅkamiṃsu; upasaṅkamitvā maṃ abhivādetvā ekamantaṃ nisīdiṃsu.<br>
+Tepi kho, bhikkhave, yakkhā appekacce maṃ abhivādetvā ekamantaṃ nisīdiṃsu. Appekacce mayā saddhiṃ sammodiṃsu, sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdiṃsu. Appekacce yenāhaṃ tenañjaliṃ paṇāmetvā ekamantaṃ nisīdiṃsu. Appekacce nāmagottaṃ sāvetvā ekamantaṃ nisīdiṃsu. Appekacce tuṇhībhūtā ekamantaṃ nisīdiṃsu.<br>
+Ekamantaṃ nisinno kho, bhikkhave, vessavaṇo mahārājā maṃ etadavoca:<br>
+‘santi hi, bhante, uḷārā yakkhā bhagavato appasannā ...pe... santi hi, bhante, nīcā yakkhā bhagavato pasannā.<br>
+Yebhuyyena kho pana, bhante, yakkhā appasannāyeva bhagavato.<br>
+Taṃ kissa hetu?<br>
+Bhagavā hi, bhante, pāṇātipātā veramaṇiyā dhammaṃ deseti ... surāmerayamajjappamādaṭṭhānā veramaṇiyā dhammaṃ deseti.<br>
+Yebhuyyena kho pana, bhante, yakkhā appaṭiviratāyeva pāṇātipātā ... appaṭiviratā surāmerayamajjappamādaṭṭhānā.<br>
+Tesaṃ taṃ hoti appiyaṃ amanāpaṃ.<br>
+Santi hi, bhante, bhagavato sāvakā araññavanapatthāni pantāni senāsanāni paṭisevanti appasaddāni appanigghosāni vijanavātāni manussarāhasseyyakāni paṭisallānasāruppāni.<br>
+Tattha santi uḷārā yakkhā nivāsino, ye imasmiṃ bhagavato pāvacane appasannā, tesaṃ pasādāya uggaṇhātu, bhante, bhagavā āṭānāṭiyaṃ rakkhaṃ bhikkhūnaṃ bhikkhunīnaṃ upāsakānaṃ upāsikānaṃ guttiyā rakkhāya avihiṃsāya phāsuvihārāyā’ti.<br>
+Adhivāsesiṃ kho ahaṃ, bhikkhave, tuṇhībhāvena.<br>
+Atha kho, bhikkhave, vessavaṇo mahārājā me adhivāsanaṃ viditvā tāyaṃ velāyaṃ imaṃ āṭānāṭiyaṃ rakkhaṃ abhāsi:<br>
+‘Vipassissa ca namatthu,<br>
+cakkhumantassa sirīmato;<br>
+Sikhissapi ca namatthu,<br>
+sabbabhūtānukampino.<br>
+Vessabhussa ca namatthu,<br>
+nhātakassa tapassino;<br>
+Namatthu kakusandhassa,<br>
+mārasenāpamaddino.<br>
+Koṇāgamanassa namatthu,<br>
+brāhmaṇassa vusīmato;<br>
+Kassapassa ca namatthu,<br>
+vippamuttassa sabbadhi.<br>
+Aṅgīrasassa namatthu,<br>
+sakyaputtassa sirīmato;<br>
+Yo imaṃ dhammaṃ desesi,<br>
+sabbadukkhāpanūdanaṃ.<br>
+Ye cāpi nibbutā loke,<br>
+yathābhūtaṃ vipassisuṃ;<br>
+Te janā apisuṇātha,<br>
+mahantā vītasāradā.<br>
+Hitaṃ devamanussānaṃ,<br>
+yaṃ namassanti gotamaṃ;<br>
+Vijjācaraṇasampannaṃ,<br>
+mahantaṃ vītasāradaṃ.<br>
+Yato uggacchati sūriyo,<br>
+ādicco maṇḍalī mahā;<br>
+Yassa cuggacchamānassa,<br>
+saṃvarīpi nirujjhati;<br>
+Yassa cuggate sūriye,<br>
+“divaso”ti pavuccati.<br>
+Rahadopi tattha gambhīro,<br>
+samuddo saritodako;<br>
+Evaṃ taṃ tattha jānanti,<br>
+“samuddo saritodako”.<br>
+Ito “sā purimā disā”,<br>
+iti naṃ ācikkhatī jano;<br>
+Yaṃ disaṃ abhipāleti,<br>
+mahārājā yasassi so.<br>
+Gandhabbānaṃ adhipati,<br>
+“dhataraṭṭho”ti nāmaso;<br>
+Ramatī naccagītehi,<br>
+gandhabbehi purakkhato.<br>
+Puttāpi tassa bahavo,<br>
+ekanāmāti me sutaṃ;<br>
+Asīti dasa eko ca,<br>
+indanāmā mahabbalā.<br>
+Te cāpi buddhaṃ disvāna,<br>
+buddhaṃ ādiccabandhunaṃ;<br>
+Dūratova namassanti,<br>
+mahantaṃ vītasāradaṃ.<br>
+Namo te purisājañña,<br>
+namo te purisuttama;<br>
+Kusalena samekkhasi,<br>
+amanussāpi taṃ vandanti;<br>
+Sutaṃ netaṃ abhiṇhaso,<br>
+tasmā evaṃ vademase.<br>
+“Jinaṃ vandatha gotamaṃ,<br>
+jinaṃ vandāma gotamaṃ;<br>
+Vijjācaraṇasampannaṃ,<br>
+buddhaṃ vandāma gotamaṃ”.<br>
+Yena petā pavuccanti,<br>
+pisuṇā piṭṭhimaṃsikā;<br>
+Pāṇātipātino luddā,<br>
+corā nekatikā janā.<br>
+Ito “sā dakkhiṇā disā”,<br>
+iti naṃ ācikkhatī jano;<br>
+Yaṃ disaṃ abhipāleti,<br>
+mahārājā yasassi so.<br>
+Kumbhaṇḍānaṃ adhipati,<br>
+“virūḷho” iti nāmaso;<br>
+Ramatī naccagītehi,<br>
+kumbhaṇḍehi purakkhato.<br>
+Puttāpi tassa bahavo,<br>
+ekanāmāti me sutaṃ;<br>
+Asīti dasa eko ca,<br>
+indanāmā mahabbalā.<br>
+Te cāpi buddhaṃ disvāna,<br>
+buddhaṃ ādiccabandhunaṃ;<br>
+Dūratova namassanti,<br>
+mahantaṃ vītasāradaṃ.<br>
+Namo te purisājañña,<br>
+namo te purisuttama;<br>
+Kusalena samekkhasi,<br>
+amanussāpi taṃ vandanti;<br>
+Sutaṃ netaṃ abhiṇhaso,<br>
+tasmā evaṃ vademase.<br>
+“Jinaṃ vandatha gotamaṃ,<br>
+jinaṃ vandāma gotamaṃ;<br>
+Vijjācaraṇasampannaṃ,<br>
+buddhaṃ vandāma gotamaṃ”.<br>
+Yattha coggacchati sūriyo,<br>
+ādicco maṇḍalī mahā;<br>
+Yassa coggacchamānassa,<br>
+divasopi nirujjhati;<br>
+Yassa coggate sūriye,<br>
+“saṃvarī”ti pavuccati.<br>
+Rahadopi tattha gambhīro,<br>
+samuddo saritodako;<br>
+Evaṃ taṃ tattha jānanti,<br>
+samuddo saritodako.<br>
+Ito “sā pacchimā disā”,<br>
+iti naṃ ācikkhatī jano;<br>
+Yaṃ disaṃ abhipāleti,<br>
+mahārājā yasassi so.<br>
+Nāgānañca adhipati,<br>
+“virūpakkho”ti nāmaso;<br>
+Ramatī naccagītehi,<br>
+nāgeheva purakkhato.<br>
+Puttāpi tassa bahavo,<br>
+ekanāmāti me sutaṃ;<br>
+Asīti dasa eko ca,<br>
+indanāmā mahabbalā.<br>
+Te cāpi buddhaṃ disvāna,<br>
+buddhaṃ ādiccabandhunaṃ;<br>
+Dūratova namassanti,<br>
+mahantaṃ vītasāradaṃ.<br>
+Namo te purisājañña,<br>
+namo te purisuttama;<br>
+Kusalena samekkhasi,<br>
+amanussāpi taṃ vandanti;<br>
+Sutaṃ netaṃ abhiṇhaso,<br>
+tasmā evaṃ vademase.<br>
+“Jinaṃ vandatha gotamaṃ,<br>
+jinaṃ vandāma gotamaṃ;<br>
+Vijjācaraṇasampannaṃ,<br>
+buddhaṃ vandāma gotamaṃ”.<br>
+Yena uttarakuruvho,<br>
+mahāneru sudassano;<br>
+Manussā tattha jāyanti,<br>
+amamā apariggahā.<br>
+Na te bījaṃ pavapanti,<br>
+nāpi nīyanti naṅgalā;<br>
+Akaṭṭhapākimaṃ sāliṃ,<br>
+paribhuñjanti mānusā.<br>
+Akaṇaṃ athusaṃ suddhaṃ,<br>
+sugandhaṃ taṇḍulapphalaṃ;<br>
+Tuṇḍikīre pacitvāna,<br>
+tato bhuñjanti bhojanaṃ.<br>
+Gāviṃ ekakhuraṃ katvā,<br>
+anuyanti disodisaṃ;<br>
+Pasuṃ ekakhuraṃ katvā,<br>
+anuyanti disodisaṃ.<br>
+Itthiṃ vā vāhanaṃ katvā,<br>
+anuyanti disodisaṃ;<br>
+Purisaṃ vāhanaṃ katvā,<br>
+anuyanti disodisaṃ.<br>
+Kumāriṃ vāhanaṃ katvā,<br>
+anuyanti disodisaṃ;<br>
+Kumāraṃ vāhanaṃ katvā,<br>
+anuyanti disodisaṃ.<br>
+Te yāne abhiruhitvā,<br>
+Sabbā disā anupariyāyanti;<br>
+Pacārā tassa rājino.<br>
+Hatthiyānaṃ assayānaṃ,<br>
+dibbaṃ yānaṃ upaṭṭhitaṃ;<br>
+Pāsādā sivikā ceva,<br>
+mahārājassa yasassino.<br>
+Tassa ca nagarā ahu,<br>
+Antalikkhe sumāpitā;<br>
+Āṭānāṭā kusināṭā parakusināṭā,<br>
+Nāṭasuriyā parakusiṭanāṭā.<br>
+Uttarena kasivanto,<br>
+Janoghamaparena ca;<br>
+Navanavutiyo ambaraambaravatiyo,<br>
+Āḷakamandā nāma rājadhānī.<br>
+Kuverassa kho pana mārisa,<br>
+Mahārājassa visāṇā nāma rājadhānī;<br>
+Tasmā kuvero mahārājā,<br>
+“Vessavaṇo”ti pavuccati.<br>
+Paccesanto pakāsenti,<br>
+Tatolā tattalā tatotalā;<br>
+Ojasi tejasi tatojasī,<br>
+Sūro rājā ariṭṭho nemi.<br>
+Rahadopi tattha dharaṇī nāma,<br>
+Yato meghā pavassanti;<br>
+Vassā yato patāyanti,<br>
+Sabhāpi tattha sālavatī nāma.<br>
+Yattha yakkhā payirupāsanti,<br>
+Tattha niccaphalā rukkhā;<br>
+Nānā dijagaṇā yutā,<br>
+Mayūrakoñcābhirudā;<br>
+Kokilādīhi vagguhi.<br>
+Jīvañjīvakasaddettha,<br>
+atho oṭṭhavacittakā;<br>
+Kukkuṭakā kuḷīrakā,<br>
+vane pokkharasātakā.<br>
+Sukasāḷika saddettha,<br>
+daṇḍamāṇavakāni ca;<br>
+Sobhati sabbakālaṃ sā,<br>
+kuveranaḷinī sadā.<br>
+Ito “sā uttarā disā”,<br>
+iti naṃ ācikkhatī jano;<br>
+Yaṃ disaṃ abhipāleti,<br>
+mahārājā yasassi so.<br>
+Yakkhānañca adhipati,<br>
+“kuvero” iti nāmaso;<br>
+Ramatī naccagītehi,<br>
+yakkheheva purakkhato.<br>
+Puttāpi tassa bahavo,<br>
+ekanāmāti me sutaṃ;<br>
+Asīti dasa eko ca,<br>
+indanāmā mahabbalā.<br>
+Te cāpi buddhaṃ disvāna,<br>
+buddhaṃ ādiccabandhunaṃ;<br>
+Dūratova namassanti,<br>
+mahantaṃ vītasāradaṃ.<br>
+Namo te purisājañña,<br>
+namo te purisuttama;<br>
+Kusalena samekkhasi,<br>
+amanussāpi taṃ vandanti;<br>
+Sutaṃ netaṃ abhiṇhaso,<br>
+tasmā evaṃ vademase.<br>
+“Jinaṃ vandatha gotamaṃ,<br>
+jinaṃ vandāma gotamaṃ;<br>
+Vijjācaraṇasampannaṃ,<br>
+buddhaṃ vandāma gotaman”ti.<br>
+Ayaṃ kho sā, mārisa, āṭānāṭiyā rakkhā bhikkhūnaṃ bhikkhunīnaṃ upāsakānaṃ upāsikānaṃ guttiyā rakkhāya avihiṃsāya phāsuvihārāya.<br>
+Yassa kassaci, mārisa, bhikkhussa vā bhikkhuniyā vā upāsakassa vā upāsikāya vā ayaṃ āṭānāṭiyā rakkhā suggahitā bhavissati samattā pariyāputā tañce amanusso yakkho vā yakkhinī vā ...pe... gandhabbo vā gandhabbī vā ...pe... kumbhaṇḍo vā kumbhaṇḍī vā ...pe... nāgo vā nāgī vā nāgapotako vā nāgapotikā vā nāgamahāmatto vā nāgapārisajjo vā nāgapacāro vā, paduṭṭhacitto bhikkhuṃ vā bhikkhuniṃ vā upāsakaṃ vā upāsikaṃ vā gacchantaṃ vā anugaccheyya, ṭhitaṃ vā upatiṭṭheyya, nisinnaṃ vā upanisīdeyya, nipannaṃ vā upanipajjeyya.<br>
+Na me so, mārisa, amanusso labheyya gāmesu vā nigamesu vā sakkāraṃ vā garukāraṃ vā.<br>
+Na me so, mārisa, amanusso labheyya āḷakamandāya nāma rājadhāniyā vatthuṃ vā vāsaṃ vā.<br>
+Na me so, mārisa, amanusso labheyya yakkhānaṃ samitiṃ gantuṃ.<br>
+Apissu naṃ, mārisa, amanussā anāvayhampi naṃ kareyyuṃ avivayhaṃ.<br>
+Apissu naṃ, mārisa, amanussā attāhi paripuṇṇāhi paribhāsāhi paribhāseyyuṃ.<br>
+Apissu naṃ, mārisa, amanussā rittampissa pattaṃ sīse nikkujjeyyuṃ.<br>
+Apissu naṃ, mārisa, amanussā sattadhāpissa muddhaṃ phāleyyuṃ.<br>
+Santi hi, mārisa, amanussā caṇḍā ruddhā rabhasā, te neva mahārājānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ purisakānaṃ ādiyanti.<br>
+Te kho te, mārisa, amanussā mahārājānaṃ avaruddhā nāma vuccanti.<br>
+Seyyathāpi, mārisa, rañño māgadhassa vijite mahācorā.<br>
+Te neva rañño māgadhassa ādiyanti, na rañño māgadhassa purisakānaṃ ādiyanti, na rañño māgadhassa purisakānaṃ purisakānaṃ ādiyanti.<br>
+Te kho te, mārisa, mahācorā rañño māgadhassa avaruddhā nāma vuccanti.<br>
+Evameva kho, mārisa, santi amanussā caṇḍā ruddhā rabhasā, te neva mahārājānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ ādiyanti, na mahārājānaṃ purisakānaṃ purisakānaṃ ādiyanti.<br>
+Te kho te, mārisa, amanussā mahārājānaṃ avaruddhā nāma vuccanti.<br>
+Yo hi koci, mārisa, amanusso yakkho vā yakkhinī vā ...pe... gandhabbo vā gandhabbī vā ...pe... kumbhaṇḍo vā kumbhaṇḍī vā ...pe... nāgo vā nāgī vā ...pe... paduṭṭhacitto bhikkhuṃ vā bhikkhuniṃ vā upāsakaṃ vā upāsikaṃ vā gacchantaṃ vā upagaccheyya, ṭhitaṃ vā upatiṭṭheyya, nisinnaṃ vā upanisīdeyya, nipannaṃ vā upanipajjeyya.<br>
+Imesaṃ yakkhānaṃ mahāyakkhānaṃ senāpatīnaṃ mahāsenāpatīnaṃ ujjhāpetabbaṃ vikkanditabbaṃ viravitabbaṃ:<br>
+“ayaṃ yakkho gaṇhāti, ayaṃ yakkho āvisati, ayaṃ yakkho heṭheti, ayaṃ yakkho viheṭheti, ayaṃ yakkho hiṃsati, ayaṃ yakkho vihiṃsati, ayaṃ yakkho na muñcatī”ti.<br>
+Katamesaṃ yakkhānaṃ mahāyakkhānaṃ senāpatīnaṃ mahāsenāpatīnaṃ?<br>
+Indo somo varuṇo ca,<br>
+bhāradvājo pajāpati;<br>
+Candano kāmaseṭṭho ca,<br>
+kinnughaṇḍu nighaṇḍu ca.<br>
+Panādo opamañño ca,<br>
+devasūto ca mātali;<br>
+Cittaseno ca gandhabbo,<br>
+naḷo rājā janesabho.<br>
+Sātāgiro hemavato,<br>
+puṇṇako karatiyo guḷo;<br>
+Sivako mucalindo ca,<br>
+vessāmitto yugandharo.<br>
+Gopālo supparodho ca,<br>
+Hiri netti ca mandiyo;<br>
+Pañcālacaṇḍo āḷavako,<br>
+Pajjunno sumano sumukho;<br>
+Dadhimukho maṇi māṇivaro dīgho,<br>
+Atho serīsako saha.<br>
+Imesaṃ yakkhānaṃ mahāyakkhānaṃ senāpatīnaṃ mahāsenāpatīnaṃ ujjhāpetabbaṃ vikkanditabbaṃ viravitabbaṃ:<br>
+“ayaṃ yakkho gaṇhāti, ayaṃ yakkho āvisati, ayaṃ yakkho heṭheti, ayaṃ yakkho viheṭheti, ayaṃ yakkho hiṃsati, ayaṃ yakkho vihiṃsati, ayaṃ yakkho na muñcatī”ti.<br>
+Ayaṃ kho, mārisa, āṭānāṭiyā rakkhā bhikkhūnaṃ bhikkhunīnaṃ upāsakānaṃ upāsikānaṃ guttiyā rakkhāya avihiṃsāya phāsuvihārāya.<br>
+Handa ca dāni mayaṃ, mārisa, gacchāma, bahukiccā mayaṃ bahukaraṇīyā’ti.<br>
+‘Yassadāni tumhe, mahārājāno, kālaṃ maññathā’ti.<br>
+Atha kho, bhikkhave, cattāro mahārājā uṭṭhāyāsanā maṃ abhivādetvā padakkhiṇaṃ katvā tatthevantaradhāyiṃsu.<br>
+Tepi kho, bhikkhave, yakkhā uṭṭhāyāsanā appekacce maṃ abhivādetvā padakkhiṇaṃ katvā tatthevantaradhāyiṃsu.<br>
+Appekacce mayā saddhiṃ sammodiṃsu, sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā tatthevantaradhāyiṃsu.<br>
+Appekacce yenāhaṃ tenañjaliṃ paṇāmetvā tatthevantaradhāyiṃsu.<br>
+Appekacce nāmagottaṃ sāvetvā tatthevantaradhāyiṃsu.<br>
+Appekacce tuṇhībhūtā tatthevantaradhāyiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo, hãy học Hộ Kinh Āṭānāṭiya này!<br>
+<span lang="pi" class="pali">
+Uggaṇhātha, bhikkhave, āṭānāṭiyaṃ rakkhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hãy thuộc lòng Kinh Āṭānāṭiya này!<br>
+<span lang="pi" class="pali">
+Pariyāpuṇātha, bhikkhave, āṭānāṭiyaṃ rakkhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hãy ghi nhớ Kinh Āṭānāṭiya này!<br>
+<span lang="pi" class="pali">
+Dhāretha, bhikkhave, āṭānāṭiyaṃ rakkhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các tỳ kheo, Hộ Kinh Āṭānāṭiya che chở, hộ trì, ngăn không cho ai làm hại các Tỷ-kheo, Tỷ-kheo-ni, Nam cư sĩ, Nữ cư sĩ và khiến các vị này sống an lạc.<br>
+<span lang="pi" class="pali">
+Atthasaṃhitā, bhikkhave, āṭānāṭiyā rakkhā bhikkhūnaṃ bhikkhunīnaṃ upāsakānaṃ upāsikānaṃ guttiyā rakkhāya avihiṃsāya phāsuvihārāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các vị Tỷ-kheo ấy hoan hỷ thọ trì lời dạy Thế Tôn.<br>
+<span lang="pi" class="pali">
+Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dứt bài kinh A-sá-nang-chi.<br>
+<span lang="pi" class="pali">
+Āṭānāṭiyasuttaṃ niṭṭhitaṃ navamaṃ.<br>
+</span>
+</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./dn31.html#content"></a><a id="next-sutta" href="./dn33.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

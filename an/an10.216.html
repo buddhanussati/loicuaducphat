@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 10.216 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 10.216<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 10.216<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+21. Phẩm Thân Do Nghiệp Sanh<br>
+<span lang="pi" class="pali">
+21. Karajakāyavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Pháp Môn Quanh Co<br>
+<span lang="pi" class="pali">
+Saṃsappanīyasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“1. Này các Tỷ-kheo, Ta sẽ thuyết về pháp môn quanh co và pháp môn Chánh pháp. Hãy nghe và khéo tác ý, Ta sẽ giảng.”<br>
+<span lang="pi" class="pali">
+“Saṃsappanīyapariyāyaṃ vo, bhikkhave, dhammapariyāyaṃ desessāmi. Taṃ suṇātha, sādhukaṃ manasi karotha, bhāsissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“2. Thế nào là pháp môn quanh co, này các Tỷ-kheo, thế nào là pháp môn Chánh pháp?<br>
+<span lang="pi" class="pali">
+“Katamo ca, bhikkhave, saṃsappanīyapariyāyo dhammapariyāyo?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các chúng sanh là chủ của nghiệp, là thừa tự của nghiệp, là sanh căn của nghiệp, là bà con của nghiệp, là chỗ nương tựa của nghiệp.<br>
+<span lang="pi" class="pali">
+Kammassakā, bhikkhave, sattā kammadāyādā kammayonī kammabandhū kammapaṭisaraṇā, yaṃ kammaṃ karonti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm họ làm nghiệp gì, thiện hay ác, họ là những kẻ thừa tự của nghiệp ấy.<br>
+<span lang="pi" class="pali">
+kalyāṇaṃ vā pāpakaṃ vā—tassa dāyādā bhavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Ở đây, này các Tỷ-kheo, có người sát sanh, bạo ngược, bàn tay lấm máu, tâm chuyên sát hại đả thương, tâm không từ bi đối với tất cả loài hữu tình, sinh vật.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, ekacco pāṇātipātī hoti luddo lohitapāṇi hatapahate niviṭṭho, adayāpanno sabbapāṇabhūtesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy quanh co với thân, quanh co với lời, quanh co với ý.<br>
+<span lang="pi" class="pali">
+So saṃsappati kāyena, saṃsappati vācāya, saṃsappati manasā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thân nghiệp của vị ấy quanh co, ngữ nghiệp của vị ấy quanh co, ý nghiệp của vị ấy quanh co, sanh thú quanh co, sanh thành quanh co.<br>
+<span lang="pi" class="pali">
+Tassa jimhaṃ kāyakammaṃ hoti, jimhaṃ vacīkammaṃ, jimhaṃ manokammaṃ, jimhā gati, jimhupapatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với người có sanh thú quanh co, này các Tỷ-kheo, có sanh thành quanh co. Ta nói rằng có một trong hai sanh thú sau đây:<br>
+<span lang="pi" class="pali">
+Jimhagatikassa kho panāhaṃ, bhikkhave, jimhupapattikassa dvinnaṃ gatīnaṃ aññataraṃ gatiṃ vadāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các địa ngục nhất hướng đau khổ hay các loài bàng sanh thuộc loại trườn bò.<br>
+<span lang="pi" class="pali">
+ye vā ekantadukkhā nirayā yā vā saṃsappajātikā tiracchānayoni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là các loài bàng sanh thuộc loại trườn bò?<br>
+<span lang="pi" class="pali">
+Katamā ca sā, bhikkhave, saṃsappajātikā tiracchānayoni?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Loại rắn, bò cạp, rết, con ăn rắn, con mèo, con chuột, con cú, và bất cứ loài súc vật nào, khi thấy người, trườn bò mà đi.<br>
+<span lang="pi" class="pali">
+Ahi vicchikā satapadī nakulā biḷārā mūsikā ulūkā, ye vā panaññepi keci tiracchānayonikā sattā manusse disvā saṃsappanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo là các sinh vật, sự sanh khởi của sinh vật.<br>
+<span lang="pi" class="pali">
+Iti kho, bhikkhave, bhūtā bhūtassa upapatti hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do làm như thế nào, như vậy được sanh ra và được sanh như thế nào, thời có những cảm xúc như vậy.<br>
+<span lang="pi" class="pali">
+Yaṃ karoti tena upapajjati. Upapannamenaṃ phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Ta nói rằng các chúng sanh ấy là những kẻ thừa tự nghiệp của mình.<br>
+<span lang="pi" class="pali">
+Evamahaṃ, bhikkhave, ‘kammadāyādā sattā’ti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Ở đây, này các Tỷ-kheo, có người lấy của không cho…<br>
+<span lang="pi" class="pali">
+Idha pana, bhikkhave, ekacco adinnādāyī hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có tà hạnh trong các dục… nói láo… nói hai lưỡi… nói lời thô ác… nói lời phù phiếm… có tham ái… có sân tâm… có tà kiến, có kiến điên đảo rằng:<br>
+<span lang="pi" class="pali">
+kāmesumicchācārī hoti … musāvādī hoti … pisuṇavāco hoti … pharusavāco hoti … samphappalāpī hoti … abhijjhālu hoti … byāpannacitto hoti … micchādiṭṭhiko hoti viparītadassano:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Không có bố thí, không có cúng thí, không có tế tự; không có kết quả dị thục các nghiệp thiện ác; không có đời này, không có đời sau; không có mẹ; không có cha; không có các loài hóa sanh; ở đời không có các Sa-môn, Bà-la-môn chân chánh hành trì, chân chánh thành tựu, những vị này, sau khi tự mình với thắng trí chứng ngộ đời này, đời sau và tuyên bố.”<br>
+<span lang="pi" class="pali">
+‘natthi dinnaṃ ...pe... sayaṃ abhiññā sacchikatvā pavedentī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người ấy quanh co với thân, quanh co với lời, quanh co với ý.<br>
+<span lang="pi" class="pali">
+So saṃsappati kāyena, saṃsappati vācāya, saṃsappati manasā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thân nghiệp quanh co, ngữ nghiệp quanh co, ý nghiệp quanh co, sanh thú quanh co, sinh thành quanh co.<br>
+<span lang="pi" class="pali">
+Tassa jimhaṃ kāyakammaṃ hoti, jimhaṃ vacīkammaṃ, jimhaṃ manokammaṃ, jimhā gati, jimhupapatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với người có sanh thú quanh co, này các Tỷ-kheo, có sanh thành quanh co, Ta nói rằng:<br>
+<span lang="pi" class="pali">
+Jimhagatikassa kho panāhaṃ, bhikkhave, jimhupapattikassa dvinnaṃ gatīnaṃ aññataraṃ gatiṃ vadāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các địa ngục nhất hướng đau khổ hay các loài bàng sanh thuộc loại trườn bò.<br>
+<span lang="pi" class="pali">
+ye vā ekantadukkhā nirayā yā vā saṃsappajātikā tiracchānayoni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, thế nào là các loài bàng sanh thuộc loại trườn bò?<br>
+<span lang="pi" class="pali">
+Katamā ca sā, bhikkhave, saṃsappajātikā tiracchānayoni?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Loại rắn, bò cạp, rết, con ăn rắn, con mèo, con chuột, con cú, và bất cứ loài súc vật nào, khi thấy người, trườn bò mà đi.<br>
+<span lang="pi" class="pali">
+Ahi vicchikā satapadī nakulā biḷārā mūsikā ulūkā, ye vā panaññepi keci tiracchānayonikā sattā manusse disvā saṃsappanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo là các sinh vật, sự sanh khởi của sinh vật.<br>
+<span lang="pi" class="pali">
+Iti kho, bhikkhave, bhūtā bhūtassa upapatti hoti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do làm như thế nào, như vậy được sanh ra và được sanh như thế nào, thời có những cảm xúc như vậy.<br>
+<span lang="pi" class="pali">
+yaṃ karoti tena upapajjati. Upapannamenaṃ phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy này các Tỷ-kheo, Ta nói rằng các chúng sanh ấy là những kẻ thừa tự nghiệp của mình.<br>
+<span lang="pi" class="pali">
+Evamahaṃ, bhikkhave, ‘kammadāyādā sattā’ti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các chúng sanh là chủ của nghiệp, là thừa tự của nghiệp, là sanh căn của nghiệp, là bà con của nghiệp, là chỗ nương tựa của nghiệp.<br>
+<span lang="pi" class="pali">
+Kammassakā, bhikkhave, sattā kammadāyādā kammayonī kammabandhū kammapaṭisaraṇā, yaṃ kammaṃ karonti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm là nghiệp gì, thiện hay ác, họ thừa tự nghiệp ấy.<br>
+<span lang="pi" class="pali">
+kalyāṇaṃ vā pāpakaṃ vā—tassa dāyādā bhavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Ở đây, này các Tỷ-kheo, có người sau khi đoạn tận sát sanh, từ bỏ sát sanh, bỏ trượng, bỏ kiếm, biết tàm quý, có lòng từ, sống thương xót đến hạnh phúc của tất cả chúng sanh và các loài hữu tình.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, ekacco pāṇātipātaṃ pahāya pāṇātipātā paṭivirato hoti nihitadaṇḍo nihitasattho, lajjī dayāpanno sabbapāṇabhūtahitānukampī viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không quanh co với thân, không quanh co với lời, không quanh co với ý.<br>
+<span lang="pi" class="pali">
+So na saṃsappati kāyena, na saṃsappati vācāya, na saṃsappati manasā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thân nghiệp của vị ấy chánh trực, ngữ nghiệp chánh trực, ý nghiệp chánh trực, sanh thú chánh trực, sanh thành chánh trực.<br>
+<span lang="pi" class="pali">
+Tassa uju kāyakammaṃ hoti, uju vacīkammaṃ, uju manokammaṃ, uju gati, ujupapatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với người có sanh thú chánh trực, này các Tỷ-kheo, có sanh thành chánh trực, Ta nói rằng một trong hai sanh thú sau đây:<br>
+<span lang="pi" class="pali">
+Ujugatikassa kho panāhaṃ, bhikkhave, ujupapattikassa dvinnaṃ gatīnaṃ aññataraṃ gatiṃ vadāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các thiên giới nhất hướng lạc, hoặc các gia đình cao quý, các Sát-đế-ly đại gia, các Bà-la-môn đại gia, các Gia chủ đại gia, giàu có tài sản lớn, vật thọ dụng lớn, vàng bạc nhiều, tài vật nhiều, tài sản lúa gạo nhiều.<br>
+<span lang="pi" class="pali">
+ye vā ekantasukhā saggā yāni vā pana tāni uccākulāni khattiyamahāsālakulāni vā brāhmaṇamahāsālakulāni vā gahapatimahāsālakulāni vā aḍḍhāni mahaddhanāni mahābhogāni pahūtajātarūparajatāni pahūtavittūpakaraṇāni pahūtadhanadhaññāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo là các sinh vật, sự sanh khởi của sinh vật.<br>
+<span lang="pi" class="pali">
+Iti kho, bhikkhave, bhūtā bhūtassa upapatti hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do làm như thế nào, như vậy được sanh ra, và được sinh như thế nào, thời có những cảm xúc như vậy.<br>
+<span lang="pi" class="pali">
+Yaṃ karoti tena upapajjati. Upapannamenaṃ phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Ta nói rằng các chúng sanh ấy là những kẻ thừa tự nghiệp của mình..<br>
+<span lang="pi" class="pali">
+Evamahaṃ, bhikkhave, ‘kammadāyādā sattā’ti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Ở đây, này các Tỷ-kheo, có người đoạn tận lấy của không cho, từ bỏ lấy của không cho …<br>
+<span lang="pi" class="pali">
+Idha pana, bhikkhave, ekacco adinnādānaṃ pahāya adinnādānā paṭivirato hoti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+đoạn tận tà hạnh trong các dục, từ bỏ tà hạnh trong các dục …<br>
+<span lang="pi" class="pali">
+kāmesumicchācārā paṭivirato hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+đoạn tận nói láo, từ bỏ nói láo…<br>
+<span lang="pi" class="pali">
+musāvādaṃ pahāya musāvādā paṭivirato hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+đoạn tận nói hai lưỡi, từ bỏ nói hai lưỡi…<br>
+<span lang="pi" class="pali">
+pisuṇaṃ vācaṃ pahāya pisuṇāya vācāya paṭivirato hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+đoạn tận nói lời thô ác, từ bỏ nói lời thô ác…<br>
+<span lang="pi" class="pali">
+pharusaṃ vācaṃ pahāya pharusāya vācāya paṭivirato hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+đoạn tận nói lời phù phiếm, từ bỏ nói lời phù phiếm…<br>
+<span lang="pi" class="pali">
+samphappalāpaṃ pahāya samphappalāpā paṭivirato hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không có tham dục…<br>
+<span lang="pi" class="pali">
+anabhijjhālu hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không có sân tâm, …<br>
+<span lang="pi" class="pali">
+abyāpannacitto hoti …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có chánh kiến, không có các kiến điên đảo:<br>
+<span lang="pi" class="pali">
+sammādiṭṭhiko hoti aviparītadassano:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có bố thí, có cúng thí, có tế tự; có kết quả dị thục các nghiệp thiện ác; có đời này, có đời sau; có mẹ; có cha; có các loài hóa sanh. Ở đời có các Sa-môn, Bà-la-môn chân chánh hành trì, chân chánh thành tựu, những vị này, sau khi tự mình với thắng trí chứng ngộ đời này, đời sau và tuyên bố.<br>
+<span lang="pi" class="pali">
+‘atthi dinnaṃ ...pe... ye imañca lokaṃ parañca lokaṃ sayaṃ abhiññā sacchikatvā pavedentī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không quanh co với thân, không quanh co với lời, không quanh co với ý.<br>
+<span lang="pi" class="pali">
+So na saṃsappati kāyena, na saṃsappati vācāya, na saṃsappati manasā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thân nghiệp vị ấy chánh trực, ngữ nghiệp chánh trực, ý nghiệp chánh trực, sanh thú chánh trực, sanh thành chánh trực.<br>
+<span lang="pi" class="pali">
+Tassa uju kāyakammaṃ hoti, uju vacīkammaṃ, uju manokammaṃ, uju gati, ujupapatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với người có sanh thú chánh trực, này các Tỷ-kheo, có sanh thành chánh trực, Ta nói rằng có một trong hai sanh thú sau đây:<br>
+<span lang="pi" class="pali">
+Ujugatikassa kho pana ahaṃ, bhikkhave, ujupapattikassa dvinnaṃ gatīnaṃ aññataraṃ gatiṃ vadāmi—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các thiên giới nhất hướng lạc, hoặc các gia đình cao quý, các Sát-đế-ly đại gia, các Bà-la-môn đại gia, các gia chủ đại gia, giàu có tài sản lớn, vật thọ dụng lớn, vàng bạc nhiều, tài vật nhiều, tài sản lúa gạo nhiều.<br>
+<span lang="pi" class="pali">
+ye vā ekantasukhā saggā yāni vā pana tāni uccākulāni khattiyamahāsālakulāni vā brāhmaṇamahāsālakulāni vā gahapatimahāsālakulāni vā aḍḍhāni mahaddhanāni mahābhogāni pahūtajātarūparajatāni pahūtavittūpakaraṇāni pahūtadhanadhaññāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo là các sinh vật, sự sanh khởi của sinh vật.<br>
+<span lang="pi" class="pali">
+Iti kho, bhikkhave, bhūtā bhūtassa upapatti hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do làm như thế nào, như vậy được sanh ra và được sanh như thế nào, thời có những cảm xúc như vậy.<br>
+<span lang="pi" class="pali">
+Yaṃ karoti tena upapajjati. Upapannamenaṃ phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, Ta nói rằng chúng sanh ấy là những kẻ thừa tự nghiệp của mình.<br>
+<span lang="pi" class="pali">
+Evamahaṃ, bhikkhave, ‘kammadāyādā sattā’ti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, các chúng sanh là chủ của nghiệp, là những kẻ thừa tự của nghiệp, là sanh căn của nghiệp, là bà con của nghiệp, là chỗ nương tựa của nghiệp.<br>
+<span lang="pi" class="pali">
+Kammassakā, bhikkhave, sattā kammadāyādā kammayonī kammabandhū kammapaṭisaraṇā, yaṃ kammaṃ karonti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm làm nghiệp gì, thiện hay ác, họ là những kẻ thừa tự của nghiệp ấy.<br>
+<span lang="pi" class="pali">
+kalyāṇaṃ vā pāpakaṃ vā—tassa dāyādā bhavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là pháp môn quanh co và pháp môn Chánh pháp.”<br>
+<span lang="pi" class="pali">
+Ayaṃ kho so, bhikkhave, saṃsappanīyapariyāyo dhammapariyāyo”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an10.215.html#content"></a><a id="next-sutta" href="./an10.217.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

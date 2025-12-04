@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 111          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 111<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 111<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Bất Đoạn<br>
+<span lang="pi" class="pali">
+Anupadasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Sāvatthī (Xá-vệ), tại Jetavana (Kỳ-đà-lâm), tinh xá ông Anāthapiṇḍika (Cấp Cô Ðộc). Ở đấy, Thế Tôn gọi các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo!”<br>
+<span lang="pi" class="pali">
+“bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Các vị Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo, Sāriputta (Xá-lợi-phất) là bậc Hiền trí;<br>
+<span lang="pi" class="pali">
+“Paṇḍito, bhikkhave, sāriputto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này các Tỷ-kheo, Sāriputta là bậc Ðại tuệ;<br>
+<span lang="pi" class="pali">
+mahāpañño, bhikkhave, sāriputto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này các Tỷ-kheo, Sāriputta là bậc Quảng tuệ;<br>
+<span lang="pi" class="pali">
+puthupañño, bhikkhave, sāriputto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này các Tỷ-kheo, Sāriputta là bậc Hỷ tuệ (Hasupanna);<br>
+<span lang="pi" class="pali">
+hāsapañño, bhikkhave, sāriputto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này các Tỷ-kheo, Sāriputta là bậc Tiệp tuệ (javanapanna);<br>
+<span lang="pi" class="pali">
+javanapañño, bhikkhave, sāriputto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này các Tỷ-kheo, Sāriputta là bậc Lợi tuệ (tikkhapanna);<br>
+<span lang="pi" class="pali">
+tikkhapañño, bhikkhave, sāriputto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này các Tỷ-kheo, Sāriputta là bậc Quyết trạch tuệ (nibbedhikapanna).<br>
+<span lang="pi" class="pali">
+nibbedhikapañño, bhikkhave, sāriputto;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, cho đến nửa tháng, Sāriputta quán tuần tự pháp quán.<br>
+<span lang="pi" class="pali">
+sāriputto, bhikkhave, aḍḍhamāsaṃ anupadadhammavipassanaṃ vipassati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là do tuần tự pháp quán của Sāriputta:<br>
+<span lang="pi" class="pali">
+Tatridaṃ, bhikkhave, sāriputtassa anupadadhammavipassanāya hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Sāriputta ly dục, ly bất thiện pháp, chứng đạt và an trú sơ Thiền, một trạng thái hỷ lạc do ly dục sanh, có tầm, có tứ.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, sāriputto vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṃ savicāraṃ vivekajaṃ pītisukhaṃ paṭhamaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những pháp thuộc về Thiền thứ nhất như tầm, tứ, hỷ, lạc, nhứt tâm, và xúc, thọ, tưởng, tư, tâm, dục, thắng giải, tinh tấn, niệm, xả, tác ý; các pháp ấy được an trú tuần tự. Các pháp ấy được Sāriputta biết đến khi chúng khởi lên, được Sāriputta biết đến khi an trú, được Sāriputta biết đến khi đoạn diệt.<br>
+<span lang="pi" class="pali">
+Ye ca paṭhame jhāne dhammā vitakko ca vicāro ca pīti ca sukhañca cittekaggatā ca, phasso vedanā saññā cetanā cittaṃ chando adhimokkho vīriyaṃ sati upekkhā manasikāro—tyāssa dhammā anupadavavatthitā honti. Tyāssa dhammā viditā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết rõ như sau:<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Như vậy các pháp ấy trước không có nơi ta, nay có hiện hữu, sau khi hiện hữu, chúng đoạn diệt’.<br>
+<span lang="pi" class="pali">
+‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy, cảm thấy không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không có hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Còn có sự giải thoát hơn thế nữa’. Ðối với Sāriputta, còn có nhiều việc phải làm hơn nữa.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti. Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta diệt tầm và tứ, chứng đạt và an trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm không tứ, nội tĩnh nhứt tâm.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto vitakkavicārānaṃ vūpasamā ajjhattaṃ sampasādanaṃ cetaso ekodibhāvaṃ avitakkaṃ avicāraṃ samādhijaṃ pītisukhaṃ dutiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những pháp thuộc về Thiền thứ hai như nội tĩnh, hỷ, lạc, nhứt tâm, và xúc, thọ, tưởng, tư, tâm, dục, thắng giải, tinh tấn, niệm, xả, tác ý, những pháp ấy được an trú tuần tự.<br>
+<span lang="pi" class="pali">
+Ye ca dutiye jhāne dhammā—ajjhattaṃ sampasādo ca pīti ca sukhañca cittekaggatā ca, phasso vedanā saññā cetanā cittaṃ chando adhimokkho vīriyaṃ sati upekkhā manasikāro—tyāssa dhammā anupadavavatthitā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các pháp ấy được Sāriputta biết đến khi chúng khởi lên, được Sāriputta biết đến khi chúng an trú, được Sāriputta biết đến khi chúng đoạn diệt.<br>
+<span lang="pi" class="pali">
+Tyāssa dhammā viditā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết rõ như sau:<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Như vậy các pháp ấy trước không có nơi ta, nay có hiện hữu, sau khi hiện hữu, chúng đoạn diệt’.<br>
+<span lang="pi" class="pali">
+‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy, không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không có hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Còn có sự giải thoát hơn thế nữa’.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với Sāriputta, còn có nhiều việc phải làm hơn thế nữa.<br>
+<span lang="pi" class="pali">
+Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là xả niệm lạc trú, chứng và an trú Thiền thứ ba.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto pītiyā ca virāgā upekkhako ca viharati sato ca sampajāno, sukhañca kāyena paṭisaṃvedeti. Yaṃ taṃ ariyā ācikkhanti: ‘upekkhako satimā sukhavihārī’ti tatiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những pháp thuộc về Thiền thứ ba, như xả, lạc, niệm, tỉnh giác, nhứt tâm, và xúc, thọ, tưởng, tư, tâm, dục, thắng giải, tinh tấn, xả, tác ý;<br>
+<span lang="pi" class="pali">
+Ye ca tatiye jhāne dhammā—sukhañca sati ca sampajaññañca cittekaggatā ca, phasso vedanā saññā cetanā cittaṃ chando adhimokkho vīriyaṃ sati upekkhā manasikāro—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những pháp ấy được Sāriputta an trú tuần tự.<br>
+<span lang="pi" class="pali">
+tyāssa dhammā anupadavavatthitā honti, tyāssa dhammā viditā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các pháp ấy được Sāriputta biết đến khi chúng khởi lên, được Sāriputta biết đến khi chúng an trú, được Sāriputta biết đến khi chúng đoạn diệt.<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti: ‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy, không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát không hệ lụy, an trú với tâm không có hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Còn có sự giải thoát hơn thế nữa’. Ðối với Sāriputta, còn có nhiều việc phải làm hơn thế nữa.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti. Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta xả lạc, xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và trú Thiền thứ tư, không khổ, không lạc, xả niệm, thanh tịnh.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṃ atthaṅgamā adukkhamasukhaṃ upekkhāsatipārisuddhiṃ catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những pháp thuộc về Thiền thứ tư, như xả, bất khổ bất lạc thọ, thọ, vô quán niệm tâm, thanh tịnh nhờ niệm, nhứt tâm, và xúc, thọ, tưởng, tư, tâm, dục, thắng giải, tinh tấn, niệm, xả, tác ý;<br>
+<span lang="pi" class="pali">
+Ye ca catutthe jhāne dhammā—upekkhā adukkhamasukhā vedanā passaddhattā cetaso anābhogo satipārisuddhi cittekaggatā ca, phasso vedanā saññā cetanā cittaṃ chando adhimokkho vīriyaṃ sati upekkhā manasikāro—tyāssa dhammā anupadavavatthitā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những pháp ấy được Sāriputta an trú tuần tự.<br>
+<span lang="pi" class="pali">
+Tyāssa dhammā viditā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các pháp ấy được Sāriputta biết đến khi chúng khởi lên, được Sāriputta biết đến khi chúng an trú, được Sāriputta biết đến khi chúng đoạn diệt.<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti: ‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy, không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không có hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Còn có sự giải thoát hơn thế nữa’. Ðối với Sāriputta, còn có nhiều việc phải làm hơn thế nữa.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti. Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta vượt lên hoàn toàn sắc tưởng, diệt trừ mọi chướng ngại tưởng, không tác ý đối với dị tưởng, nghĩ rằng: ‘Hư không là vô biên’, chứng và trú Không vô biên xứ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto sabbaso rūpasaññānaṃ samatikkamā paṭighasaññānaṃ atthaṅgamā nānattasaññānaṃ amanasikārā ‘ananto ākāso’ti ākāsānañcāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những pháp thuộc về Không vô biên xứ như hư không, vô biên xứ tưởng, nhứt tâm, và xúc, thọ, tưởng, tư, tâm, dục, thắng giải, tinh tấn, niệm, xả, tác ý;<br>
+<span lang="pi" class="pali">
+Ye ca ākāsānañcāyatane dhammā—ākāsānañcāyatanasaññā ca cittekaggatā ca phasso vedanā saññā cetanā cittaṃ chando adhimokkho vīriyaṃ sati upekkhā manasikāro—tyāssa dhammā anupadavavatthitā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những pháp ấy được Sāriputta an trú tuần tự,<br>
+<span lang="pi" class="pali">
+Tyāssa dhammā viditā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các pháp ấy được Sāriputta biết đến khi chúng khởi lên, được Sāriputta biết đến khi chúng an trú, được Sāriputta biết đến khi chúng đoạn diệt.<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti: ‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy, không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không có hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Còn có sự giải thoát hơn thế nữa’. Ðối với Sāriputta, còn có nhiều việc phải làm hơn thế nữa.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti. Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta vượt lên hoàn toàn Không vô biên xứ, nghĩ rằng: ‘Thức là vô biên’, chứng và trú Thức vô biên xứ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto sabbaso ākāsānañcāyatanaṃ samatikkamma ‘anantaṃ viññāṇan’ti viññāṇañcāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những pháp thuộc về Thức vô biên xứ như Thức vô biên xứ tưởng, nhất tâm, và xúc, thọ, tưởng, tư, tâm, dục, thắng giải, tinh tấn, niệm, xả, tác ý;<br>
+<span lang="pi" class="pali">
+Ye ca viññāṇañcāyatane dhammā—viññāṇañcāyatanasaññā ca cittekaggatā ca, phasso vedanā saññā cetanā cittaṃ chando adhimokkho vīriyaṃ sati upekkhā manasikāro—tyāssa dhammā anupadavavatthitā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những pháp ấy được Sāriputta an trú tuần tự;<br>
+<span lang="pi" class="pali">
+Tyāssa dhammā viditā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các pháp ấy được Sāriputta biết đến khi chúng khởi lên, được Sāriputta biết đến khi chúng đoạn diệt.<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti: ‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không có hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Còn có sự giải thoát hơn thế nữa’. Ðối với Sāriputta, còn có nhiều việc phải làm hơn thế nữa.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti. Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta vượt lên hoàn toàn Thức vô biên xứ, nghĩ rằng: ‘Không có vật gì’, chứng và trú Vô sở hữu xứ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto sabbaso viññāṇañcāyatanaṃ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những pháp thuộc về Vô sở hữu xứ, như Vô sở hữu xứ tưởng, nhứt tâm, và xúc, thọ, tưởng, tư, tâm, dục, thắng giải, tinh tấn, niệm, xả, tác ý;<br>
+<span lang="pi" class="pali">
+Ye ca ākiñcaññāyatane dhammā—ākiñcaññāyatanasaññā ca cittekaggatā ca, phasso vedanā saññā cetanā cittaṃ chando adhimokkho vīriyaṃ sati upekkhā manasikāro—tyāssa dhammā anupadavavatthitā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những pháp ấy được Sāriputta an trú tuần tự;<br>
+<span lang="pi" class="pali">
+Tyāssa dhammā viditā uppajjanti, viditā upaṭṭhahanti, viditā abbhatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các pháp ấy được Sāriputta biết đến khi chúng khởi lên, được Sāriputta biết đến khi chúng an trú, được Sāriputta biết đến khi chúng đoạn diệt.<br>
+<span lang="pi" class="pali">
+So evaṃ pajānāti: ‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không có hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Còn có sự giải thoát hơn thế nữa’. Ðối với Sāriputta, còn có nhiều việc phải làm hơn thế nữa.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti. Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta vượt lên hoàn toàn Vô sở hữu xứ, chứng và trú Phi tưởng phi phi tưởng xứ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto sabbaso ākiñcaññāyatanaṃ samatikkamma nevasaññānāsaññāyatanaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với chánh niệm, Sāriputta xuất khỏi định ấy.<br>
+<span lang="pi" class="pali">
+So tāya samāpattiyā sato vuṭṭhahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi với chánh niệm xuất khỏi định ấy, Sāriputta thấy các pháp ấy thuộc về quá khứ, bị đoạn diệt, bị biến hoại:<br>
+<span lang="pi" class="pali">
+So tāya samāpattiyā sato vuṭṭhahitvā ye dhammā atītā niruddhā vipariṇatā te dhamme samanupassati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Như vậy các pháp ấy trước không có nơi ta, nay có hiện hữu, sau khi hiện hữu chúng đoạn diệt’.<br>
+<span lang="pi" class="pali">
+‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với những pháp ấy cảm thấy không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không hạn chế. Sāriputta biết:<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Còn có sự giải thoát hơn thế nữa’. Ðối với Sāriputta, còn có nhiều việc phải làm hơn thế nữa.<br>
+<span lang="pi" class="pali">
+So ‘atthi uttari nissaraṇan’ti pajānāti. Tabbahulīkārā atthitvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này các Tỷ-kheo, Sāriputta vượt khỏi hoàn toàn Phi tưởng phi phi tưởng xứ, chứng và an trú Diệt thọ tưởng (định). Sau khi thấy với trí tuệ, các lậu hoặc được đoạn tận.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sāriputto sabbaso nevasaññānāsaññāyatanaṃ samatikkamma saññāvedayitanirodhaṃ upasampajja viharati. Paññāya cassa disvā āsavā parikkhīṇā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với chánh niệm, Sāriputta xuất khỏi định ấy.<br>
+<span lang="pi" class="pali">
+So tāya samāpattiyā sato vuṭṭhahati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi với chánh niệm xuất khỏi định ấy, Sāriputta thấy các pháp ấy thuộc về quá khứ, bị đoạn diệt, bị biến hoại:<br>
+<span lang="pi" class="pali">
+So tāya samāpattiyā sato vuṭṭhahitvā ye dhammā atītā niruddhā vipariṇatā te dhamme samanupassati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Như vậy các pháp ấy, trước không có nơi ta, sau có hiện hữu, sau khi hiện hữu, chúng đoạn diệt’.<br>
+<span lang="pi" class="pali">
+‘evaṃ kirame dhammā ahutvā sambhonti, hutvā paṭiventī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta đối với các pháp ấy cảm thấy không luyến ái, không chống đối, độc lập, không trói buộc, giải thoát, không hệ lụy, an trú với tâm không hạn chế.<br>
+<span lang="pi" class="pali">
+So tesu dhammesu anupāyo anapāyo anissito appaṭibaddho vippamutto visaṃyutto vimariyādīkatena cetasā viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta biết: ‘Không có sự giải thoát nào vô thượng hơn thế nữa’.<br>
+<span lang="pi" class="pali">
+So ‘natthi uttari nissaraṇan’ti pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với Sāriputta, không có việc phải làm nhiều hơn thế nữa.<br>
+<span lang="pi" class="pali">
+Tabbahulīkārā natthi tvevassa hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu nói một cách chơn chánh, một người có thể nói về người ấy như sau:<br>
+<span lang="pi" class="pali">
+Yaṃ kho taṃ, bhikkhave, sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Người này được tự tại, được cứu cánh trong Thánh giới, được tự tại, được cứu cánh trong Thánh định, được tự tại, được cứu cánh trong Thánh tuệ, được tự tại, được cứu cánh trong Thánh giải thoát’. Nói một cách chơn chánh về Sāriputta, người ấy có thể nói như sau:<br>
+<span lang="pi" class="pali">
+‘vasippatto pāramippatto ariyasmiṃ sīlasmiṃ, vasippatto pāramippatto ariyasmiṃ samādhismiṃ, vasippatto pāramippatto ariyāya paññāya, vasippatto pāramippatto ariyāya vimuttiyā’ti, sāriputtameva taṃ sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sāriputta được tự tại, được cứu cánh trong Thánh giới, được tự tại, được cứu cánh trong Thánh định, được tự tại, được cứu cánh trong Thánh tuệ, được tự tại, được cứu cánh trong Thánh giải thoát’.<br>
+<span lang="pi" class="pali">
+‘vasippatto pāramippatto ariyasmiṃ sīlasmiṃ, vasippatto pāramippatto ariyasmiṃ samādhismiṃ, vasippatto pāramippatto ariyāya paññāya, vasippatto pāramippatto ariyāya vimuttiyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu nói một cách chơn chánh, một người có thể nói về người ấy như sau:<br>
+<span lang="pi" class="pali">
+Yaṃ kho taṃ, bhikkhave, sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Người này là con chánh tông của Thế Tôn, sanh ra từ miệng, sanh ra từ Pháp, do Pháp hóa thành, thừa tự Chánh pháp, không thừa tự vật chất’. Nói một cách chơn chánh về Sāriputta, người ấy có thể nói như sau:<br>
+<span lang="pi" class="pali">
+‘bhagavato putto oraso mukhato jāto dhammajo dhammanimmito dhammadāyādo no āmisadāyādo’ti, sāriputtameva taṃ sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sāriputta là con chánh tông của Thế Tôn, sanh ra từ miệng, sanh ra từ Pháp, do Pháp hóa thành, thừa tự Chánh pháp, không thừa tự vật chất’.<br>
+<span lang="pi" class="pali">
+‘bhagavato putto oraso mukhato jāto dhammajo dhammanimmito dhammadāyādo no āmisadāyādo’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sāriputta, này các Tỷ-kheo, chơn chánh chuyển Pháp luân vô thượng đã được Như Lai chuyển vận.”<br>
+<span lang="pi" class="pali">
+Sāriputto, bhikkhave, tathāgatena anuttaraṃ dhammacakkaṃ pavattitaṃ sammadeva anuppavattetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy. Các vị Tỷ-kheo hoan hỷ tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā. Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Anupadasuttaṃ niṭṭhitaṃ paṭhamaṃ.<br>
+</span>
+</p>
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn110.html#content"></a><a id="next-sutta" href="./mn112.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

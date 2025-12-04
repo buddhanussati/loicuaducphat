@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+  	<title>        Kinh Phật Thuyết Như Vậy         </title>
+
+   
+   <div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+ 
+<h2 id="AN2heading">Khuddaka Nikāya - Tiểu Bộ Kinh</h2>
+    
+ <div id="content">
+
+<h3>Itivuttaka - Kinh Phật Thuyết Như Vậy</h3>
+	<div class="w3-responsive">
+		<table class="suttalist" style="margin: 0 auto;">
+<tr>
+<td><a href="iti1.html#content">Iti 1</a></td>
+<td><a href="iti1.html#content">Lobha</a></td>
+</tr>
+<tr>
+<td><a href="iti2.html#content">Iti 2</a></td>
+<td><a href="iti2.html#content">Dosa</a></td>
+</tr>
+<tr>
+<td><a href="iti3.html#content">Iti 3</a></td>
+<td><a href="iti3.html#content">Moha</a></td>
+</tr>
+<tr>
+<td><a href="iti4.html#content">Iti 4</a></td>
+<td><a href="iti4.html#content">Kodha</a></td>
+</tr>
+<tr>
+<td><a href="iti5.html#content">Iti 5</a></td>
+<td><a href="iti5.html#content">Makkha</a></td>
+</tr>
+<tr>
+<td><a href="iti6.html#content">Iti 6</a></td>
+<td><a href="iti6.html#content">Māna</a></td>
+</tr>
+<tr>
+<td><a href="iti7.html#content">Iti 7</a></td>
+<td><a href="iti7.html#content">Sabbapariññā</a></td>
+</tr>
+<tr>
+<td><a href="iti8.html#content">Iti 8</a></td>
+<td><a href="iti8.html#content">Mānapariññā</a></td>
+</tr>
+<tr>
+<td><a href="iti9.html#content">Iti 9</a></td>
+<td><a href="iti9.html#content">Lobhapariññā</a></td>
+</tr>
+<tr>
+<td><a href="iti10.html#content">Iti 10</a></td>
+<td><a href="iti10.html#content">Dosapariññā</a></td>
+</tr>
+<tr>
+<td><a href="iti11.html#content">Iti 11</a></td>
+<td><a href="iti11.html#content">Mohapariññā</a></td>
+</tr>
+<tr>
+<td><a href="iti12.html#content">Iti 12</a></td>
+<td><a href="iti12.html#content">Kodhapariññā</a></td>
+</tr>
+<tr>
+<td><a href="iti13.html#content">Iti 13</a></td>
+<td><a href="iti13.html#content">Makkhapariññā</a></td>
+</tr>
+<tr>
+<td><a href="iti14.html#content">Iti 14</a></td>
+<td><a href="iti14.html#content">Avijjānīvaraṇa</a></td>
+</tr>
+<tr>
+<td><a href="iti15.html#content">Iti 15</a></td>
+<td><a href="iti15.html#content">Taṇhāsaṃyojana</a></td>
+</tr>
+<tr>
+<td><a href="iti16.html#content">Iti 16</a></td>
+<td><a href="iti16.html#content">Sekha 1</a></td>
+</tr>
+<tr>
+<td><a href="iti17.html#content">Iti 17</a></td>
+<td><a href="iti17.html#content">Sekha 2</a></td>
+</tr>
+<tr>
+<td><a href="iti18.html#content">Iti 18</a></td>
+<td><a href="iti18.html#content">Saṅghabheda</a></td>
+</tr>
+<tr>
+<td><a href="iti19.html#content">Iti 19</a></td>
+<td><a href="iti19.html#content">Saṅghasāmaggī</a></td>
+</tr>
+<tr>
+<td><a href="iti20.html#content">Iti 20</a></td>
+<td><a href="iti20.html#content">Paduṭṭhacitta</a></td>
+</tr>
+<tr>
+<td><a href="iti21.html#content">Iti 21</a></td>
+<td><a href="iti21.html#content">Pasannacitta</a></td>
+</tr>
+<tr>
+<td><a href="iti22.html#content">Iti 22</a></td>
+<td><a href="iti22.html#content">Metta</a></td>
+</tr>
+<tr>
+<td><a href="iti23.html#content">Iti 23</a></td>
+<td><a href="iti23.html#content">Ubhayattha</a></td>
+</tr>
+<tr>
+<td><a href="iti24.html#content">Iti 24</a></td>
+<td><a href="iti24.html#content">Aṭṭhipuñja</a></td>
+</tr>
+<tr>
+<td><a href="iti25.html#content">Iti 25</a></td>
+<td><a href="iti25.html#content">Musāvāda</a></td>
+</tr>
+<tr>
+<td><a href="iti26.html#content">Iti 26</a></td>
+<td><a href="iti26.html#content">Dāna</a></td>
+</tr>
+<tr>
+<td><a href="iti27.html#content">Iti 27</a></td>
+<td><a href="iti27.html#content">Mettābhāvanā</a></td>
+</tr>
+<tr>
+<td><a href="iti28.html#content">Iti 28</a></td>
+<td><a href="iti28.html#content">Dukkhavihāra</a></td>
+</tr>
+<tr>
+<td><a href="iti29.html#content">Iti 29</a></td>
+<td><a href="iti29.html#content">Sukhavihāra</a></td>
+</tr>
+<tr>
+<td><a href="iti30.html#content">Iti 30</a></td>
+<td><a href="iti30.html#content">Tapanīya</a></td>
+</tr>
+<tr>
+<td><a href="iti31.html#content">Iti 31</a></td>
+<td><a href="iti31.html#content">Atapanīya</a></td>
+</tr>
+<tr>
+<td><a href="iti32.html#content">Iti 32</a></td>
+<td><a href="iti32.html#content">Sīla 1</a></td>
+</tr>
+<tr>
+<td><a href="iti33.html#content">Iti 33</a></td>
+<td><a href="iti33.html#content">Sīla 2</a></td>
+</tr>
+<tr>
+<td><a href="iti34.html#content">Iti 34</a></td>
+<td><a href="iti34.html#content">Ātāpī</a></td>
+</tr>
+<tr>
+<td><a href="iti35.html#content">Iti 35</a></td>
+<td><a href="iti35.html#content">Nakuhana 1</a></td>
+</tr>
+<tr>
+<td><a href="iti36.html#content">Iti 36</a></td>
+<td><a href="iti36.html#content">Nakuhana 2</a></td>
+</tr>
+<tr>
+<td><a href="iti37.html#content">Iti 37</a></td>
+<td><a href="iti37.html#content">Somanassa</a></td>
+</tr>
+<tr>
+<td><a href="iti38.html#content">Iti 38</a></td>
+<td><a href="iti38.html#content">Vitakka</a></td>
+</tr>
+<tr>
+<td><a href="iti39.html#content">Iti 39</a></td>
+<td><a href="iti39.html#content">Desanā</a></td>
+</tr>
+<tr>
+<td><a href="iti40.html#content">Iti 40</a></td>
+<td><a href="iti40.html#content">Vijjā</a></td>
+</tr>
+<tr>
+<td><a href="iti41.html#content">Iti 41</a></td>
+<td><a href="iti41.html#content">Paññāparihīna</a></td>
+</tr>
+<tr>
+<td><a href="iti42.html#content">Iti 42</a></td>
+<td><a href="iti42.html#content">Sukkadhamma</a></td>
+</tr>
+<tr>
+<td><a href="iti43.html#content">Iti 43</a></td>
+<td><a href="iti43.html#content">Ajāta</a></td>
+</tr>
+<tr>
+<td><a href="iti44.html#content">Iti 44</a></td>
+<td><a href="iti44.html#content">Nibbānadhātu</a></td>
+</tr>
+<tr>
+<td><a href="iti45.html#content">Iti 45</a></td>
+<td><a href="iti45.html#content">Paṭisallāna</a></td>
+</tr>
+<tr>
+<td><a href="iti46.html#content">Iti 46</a></td>
+<td><a href="iti46.html#content">Sikkhānisaṃsa</a></td>
+</tr>
+<tr>
+<td><a href="iti47.html#content">Iti 47</a></td>
+<td><a href="iti47.html#content">Jāgariya</a></td>
+</tr>
+<tr>
+<td><a href="iti48.html#content">Iti 48</a></td>
+<td><a href="iti48.html#content">Āpāyika</a></td>
+</tr>
+<tr>
+<td><a href="iti49.html#content">Iti 49</a></td>
+<td><a href="iti49.html#content">Diṭṭhigata</a></td>
+</tr>
+<tr>
+<td><a href="iti50.html#content">Iti 50</a></td>
+<td><a href="iti50.html#content">Mūla</a></td>
+</tr>
+<tr>
+<td><a href="iti51.html#content">Iti 51</a></td>
+<td><a href="iti51.html#content">Dhātu</a></td>
+</tr>
+<tr>
+<td><a href="iti52.html#content">Iti 52</a></td>
+<td><a href="iti52.html#content">Vedanā 1</a></td>
+</tr>
+<tr>
+<td><a href="iti53.html#content">Iti 53</a></td>
+<td><a href="iti53.html#content">Vedanā 2</a></td>
+</tr>
+<tr>
+<td><a href="iti54.html#content">Iti 54</a></td>
+<td><a href="iti54.html#content">Esanā 1</a></td>
+</tr>
+<tr>
+<td><a href="iti55.html#content">Iti 55</a></td>
+<td><a href="iti55.html#content">Esanā 2</a></td>
+</tr>
+<tr>
+<td><a href="iti56.html#content">Iti 56</a></td>
+<td><a href="iti56.html#content">Āsava 1</a></td>
+</tr>
+<tr>
+<td><a href="iti57.html#content">Iti 57</a></td>
+<td><a href="iti57.html#content">Āsava 2</a></td>
+</tr>
+<tr>
+<td><a href="iti58.html#content">Iti 58</a></td>
+<td><a href="iti58.html#content">Taṇhā</a></td>
+</tr>
+<tr>
+<td><a href="iti59.html#content">Iti 59</a></td>
+<td><a href="iti59.html#content">Māradheyya</a></td>
+</tr>
+<tr>
+<td><a href="iti60.html#content">Iti 60</a></td>
+<td><a href="iti60.html#content">Puññakiriyavatthu</a></td>
+</tr>
+<tr>
+<td><a href="iti61.html#content">Iti 61</a></td>
+<td><a href="iti61.html#content">Cakkhu</a></td>
+</tr>
+<tr>
+<td><a href="iti62.html#content">Iti 62</a></td>
+<td><a href="iti62.html#content">Indriya</a></td>
+</tr>
+<tr>
+<td><a href="iti63.html#content">Iti 63</a></td>
+<td><a href="iti63.html#content">Addhā</a></td>
+</tr>
+<tr>
+<td><a href="iti64.html#content">Iti 64</a></td>
+<td><a href="iti64.html#content">Duccarita</a></td>
+</tr>
+<tr>
+<td><a href="iti65.html#content">Iti 65</a></td>
+<td><a href="iti65.html#content">Sucarita</a></td>
+</tr>
+<tr>
+<td><a href="iti66.html#content">Iti 66</a></td>
+<td><a href="iti66.html#content">Soceyya</a></td>
+</tr>
+<tr>
+<td><a href="iti67.html#content">Iti 67</a></td>
+<td><a href="iti67.html#content">Moneyya</a></td>
+</tr>
+<tr>
+<td><a href="iti68.html#content">Iti 68</a></td>
+<td><a href="iti68.html#content">Rāga 1</a></td>
+</tr>
+<tr>
+<td><a href="iti69.html#content">Iti 69</a></td>
+<td><a href="iti69.html#content">Rāga 2</a></td>
+</tr>
+<tr>
+<td><a href="iti70.html#content">Iti 70</a></td>
+<td><a href="iti70.html#content">Micchādiṭṭhika</a></td>
+</tr>
+<tr>
+<td><a href="iti71.html#content">Iti 71</a></td>
+<td><a href="iti71.html#content">Sammādiṭṭhika</a></td>
+</tr>
+<tr>
+<td><a href="iti72.html#content">Iti 72</a></td>
+<td><a href="iti72.html#content">Nissaraṇiya</a></td>
+</tr>
+<tr>
+<td><a href="iti73.html#content">Iti 73</a></td>
+<td><a href="iti73.html#content">Santatara</a></td>
+</tr>
+<tr>
+<td><a href="iti74.html#content">Iti 74</a></td>
+<td><a href="iti74.html#content">Putta</a></td>
+</tr>
+<tr>
+<td><a href="iti75.html#content">Iti 75</a></td>
+<td><a href="iti75.html#content">Avuṭṭhika</a></td>
+</tr>
+<tr>
+<td><a href="iti76.html#content">Iti 76</a></td>
+<td><a href="iti76.html#content">Sukhapatthanā</a></td>
+</tr>
+<tr>
+<td><a href="iti77.html#content">Iti 77</a></td>
+<td><a href="iti77.html#content">Bhidura</a></td>
+</tr>
+<tr>
+<td><a href="iti78.html#content">Iti 78</a></td>
+<td><a href="iti78.html#content">Dhātusosaṃsandana</a></td>
+</tr>
+<tr>
+<td><a href="iti79.html#content">Iti 79</a></td>
+<td><a href="iti79.html#content">Parihāna</a></td>
+</tr>
+<tr>
+<td><a href="iti80.html#content">Iti 80</a></td>
+<td><a href="iti80.html#content">Vitakka</a></td>
+</tr>
+<tr>
+<td><a href="iti81.html#content">Iti 81</a></td>
+<td><a href="iti81.html#content">Sakkāra</a></td>
+</tr>
+<tr>
+<td><a href="iti82.html#content">Iti 82</a></td>
+<td><a href="iti82.html#content">Devasadda</a></td>
+</tr>
+<tr>
+<td><a href="iti83.html#content">Iti 83</a></td>
+<td><a href="iti83.html#content">Pañcapubbanimitta</a></td>
+</tr>
+<tr>
+<td><a href="iti84.html#content">Iti 84</a></td>
+<td><a href="iti84.html#content">Bahujanahita</a></td>
+</tr>
+<tr>
+<td><a href="iti85.html#content">Iti 85</a></td>
+<td><a href="iti85.html#content">Asubhānupassī</a></td>
+</tr>
+<tr>
+<td><a href="iti86.html#content">Iti 86</a></td>
+<td><a href="iti86.html#content">Dhammānudhammapaṭipanna</a></td>
+</tr>
+<tr>
+<td><a href="iti87.html#content">Iti 87</a></td>
+<td><a href="iti87.html#content">Andhakaraṇa</a></td>
+</tr>
+<tr>
+<td><a href="iti88.html#content">Iti 88</a></td>
+<td><a href="iti88.html#content">Antarāmala</a></td>
+</tr>
+<tr>
+<td><a href="iti89.html#content">Iti 89</a></td>
+<td><a href="iti89.html#content">Devadatta</a></td>
+</tr>
+<tr>
+<td><a href="iti90.html#content">Iti 90</a></td>
+<td><a href="iti90.html#content">Aggappasāda</a></td>
+</tr>
+<tr>
+<td><a href="iti91.html#content">Iti 91</a></td>
+<td><a href="iti91.html#content">Jīvika</a></td>
+</tr>
+<tr>
+<td><a href="iti92.html#content">Iti 92</a></td>
+<td><a href="iti92.html#content">Saṅghāṭikaṇṇa</a></td>
+</tr>
+<tr>
+<td><a href="iti93.html#content">Iti 93</a></td>
+<td><a href="iti93.html#content">Aggi</a></td>
+</tr>
+<tr>
+<td><a href="iti94.html#content">Iti 94</a></td>
+<td><a href="iti94.html#content">Upaparikkha</a></td>
+</tr>
+<tr>
+<td><a href="iti95.html#content">Iti 95</a></td>
+<td><a href="iti95.html#content">Kāmūpapatti</a></td>
+</tr>
+<tr>
+<td><a href="iti96.html#content">Iti 96</a></td>
+<td><a href="iti96.html#content">Kāmayoga</a></td>
+</tr>
+<tr>
+<td><a href="iti97.html#content">Iti 97</a></td>
+<td><a href="iti97.html#content">Kalyāṇasīla</a></td>
+</tr>
+<tr>
+<td><a href="iti98.html#content">Iti 98</a></td>
+<td><a href="iti98.html#content">Dāna</a></td>
+</tr>
+<tr>
+<td><a href="iti99.html#content">Iti 99</a></td>
+<td><a href="iti99.html#content">Tevijja</a></td>
+</tr>
+<tr>
+<td><a href="iti100.html#content">Iti 100</a></td>
+<td><a href="iti100.html#content">Brāhmaṇadhammayāga</a></td>
+</tr>
+<tr>
+<td><a href="iti101.html#content">Iti 101</a></td>
+<td><a href="iti101.html#content">Sulabha</a></td>
+</tr>
+<tr>
+<td><a href="iti102.html#content">Iti 102</a></td>
+<td><a href="iti102.html#content">Āsavakkhaya</a></td>
+</tr>
+<tr>
+<td><a href="iti103.html#content">Iti 103</a></td>
+<td><a href="iti103.html#content">Samaṇabrāhmaṇa</a></td>
+</tr>
+<tr>
+<td><a href="iti104.html#content">Iti 104</a></td>
+<td><a href="iti104.html#content">Sīlasampanna</a></td>
+</tr>
+<tr>
+<td><a href="iti105.html#content">Iti 105</a></td>
+<td><a href="iti105.html#content">Taṇhuppāda</a></td>
+</tr>
+<tr>
+<td><a href="iti106.html#content">Iti 106</a></td>
+<td><a href="iti106.html#content">Sabrahmaka</a></td>
+</tr>
+<tr>
+<td><a href="iti107.html#content">Iti 107</a></td>
+<td><a href="iti107.html#content">Bahukāra</a></td>
+</tr>
+<tr>
+<td><a href="iti108.html#content">Iti 108</a></td>
+<td><a href="iti108.html#content">Kuha</a></td>
+</tr>
+<tr>
+<td><a href="iti109.html#content">Iti 109</a></td>
+<td><a href="iti109.html#content">Nadīsota</a></td>
+</tr>
+<tr>
+<td><a href="iti110.html#content">Iti 110</a></td>
+<td><a href="iti110.html#content">Cara</a></td>
+</tr>
+<tr>
+<td><a href="iti111.html#content">Iti 111</a></td>
+<td><a href="iti111.html#content">Sampannasīla</a></td>
+</tr>
+<tr>
+<td><a href="iti112.html#content">Iti 112</a></td>
+<td><a href="iti112.html#content">Loka</a></td>
+
+</tr>
+
+</table>
+</div>
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an1.19.html#content"></a><a id=next-sutta href="./an1.21.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 10.94 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 10.94<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 10.94<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+10. Phẩm Nam Cư Sĩ (hay Upāli)<br>
+<span lang="pi" class="pali">
+10. Upālivagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Vajjiyamahita<br>
+<span lang="pi" class="pali">
+Vajjiyamāhitasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Một thời, Thế Tôn trú ở Campā, trên bờ ao Gaggarā.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā campāyaṃ viharati gaggarāya pokkharaṇiyā tīre.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Gia chủ Vajjiyamāhita, vào buổi sáng sớm đi ra khỏi Campā, đến yết kiến Thế Tôn. Rồi Gia chủ Vajjiyamāhita suy nghĩ:<br>
+<span lang="pi" class="pali">
+Atha kho vajjiyamāhito gahapati divā divassa campāya nikkhami bhagavantaṃ dassanāya. Atha kho vajjiyamāhitassa gahapatissa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nay không phải thời để yết kiến Thế Tôn. Thế Tôn đang thiền tịnh.<br>
+<span lang="pi" class="pali">
+“akālo kho tāva bhagavantaṃ dassanāya. Paṭisallīno bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng không phải thời để yết kiến các Tỷ-kheo đang tu tập về ý. Các Tỷ-kheo đang tu tập về ý đang thiền tịnh.<br>
+<span lang="pi" class="pali">
+Manobhāvanīyānampi bhikkhūnaṃ akālo dassanāya. Paṭisallīnā manobhāvanīyāpi bhikkhū.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vậy hãy đi đến khu vườn các du sĩ ngoại đạo.”<br>
+<span lang="pi" class="pali">
+Yannūnāhaṃ yena aññatitthiyānaṃ paribbājakānaṃ ārāmo tenupasaṅkameyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Gia chủ Vajjiyamāhita đi đến khu vườn các du sĩ ngoại đạo.<br>
+<span lang="pi" class="pali">
+Atha kho vajjiyamāhito gahapati yena aññatitthiyānaṃ paribbājakānaṃ ārāmo tenupasaṅkami.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Lúc bấy giờ, các du sĩ ngoại đạo đang ngồi hội họp, đang tụ họp, ồn ào, cao tiếng, lớn tiếng bàn luận những vấn đề phù phiếm.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena te aññatitthiyā paribbājakā saṅgamma samāgamma unnādino uccāsaddamahāsaddā anekavihitaṃ tiracchānakathaṃ kathentā nisinnā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các du sĩ ngoại đạo ấy thấy Gia chủ Vajjiyamāhita từ xa đi đến, khi thấy vậy, liền dặn dò bảo với nhau:<br>
+<span lang="pi" class="pali">
+Addasaṃsu kho te aññatitthiyā paribbājakā vajjiyamāhitaṃ gahapatiṃ dūratova āgacchantaṃ. Disvāna aññamaññaṃ saṇṭhāpesuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy bớt ồn ào, các Tôn giả, chớ làm ồn.<br>
+<span lang="pi" class="pali">
+“appasaddā bhonto hontu. Mā bhonto saddamakattha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả, Gia chủ Vajjiyamāhita này đang đến, một đệ tử của Sa-môn Gotama.<br>
+<span lang="pi" class="pali">
+Ayaṃ vajjiyamāhito gahapati āgacchati samaṇassa gotamassa sāvako.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong những đệ tử của Sa-môn Gotama có gia đình mặc áo trắng ở Campā, Gia chủ Vajjiyamāhita là một trong những vị ấy.<br>
+<span lang="pi" class="pali">
+Yāvatā kho pana samaṇassa gotamassa sāvakā gihī odātavasanā campāyaṃ paṭivasanti, ayaṃ tesaṃ aññataro vajjiyamāhito gahapati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các vị ấy ưa ít ồn ào, được huấn luyện trong ít ồn ào, tán thán ít ồn ào.<br>
+<span lang="pi" class="pali">
+Appasaddakāmā kho pana te āyasmanto appasaddavinītā appasaddassa vaṇṇavādino.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu vị ấy thấy hội chúng ít ồn ào, vị ấy có thể nghĩ đến thăm ở đây.”<br>
+<span lang="pi" class="pali">
+Appeva nāma appasaddaṃ parisaṃ viditvā upasaṅkamitabbaṃ maññeyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các du sĩ ngoại đạo ấy giữ im lặng.<br>
+<span lang="pi" class="pali">
+Atha kho te aññatitthiyā paribbājakā tuṇhī ahesuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Rồi Gia chủ Vajjiyamāhita đi đến các du sĩ ngoại đạo ấy; sau khi đến, nói lên với các du sĩ ngoại đạo ấy những lời chào đón hỏi thăm.<br>
+<span lang="pi" class="pali">
+Atha kho vajjiyamāhito gahapati yena te aññatitthiyā paribbājakā tenupasaṅkami; upasaṅkamitvā tehi aññatitthiyehi paribbājakehi saddhiṃ sammodi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi nói lên những lời chào đón hỏi thăm thân hữu, liền ngồi xuống một bên. Các du sĩ ngoại đạo ấy nói với Gia chủ Vajjiyamāhita đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho vajjiyamāhitaṃ gahapatiṃ te aññatitthiyā paribbājakā etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Có đúng sự thật chăng này Gia chủ, Sa-môn Gotama chỉ trích mọi khổ hạnh, nhất hướng bài bác, chống đối mọi khổ hạnh, mọi nếp sống kham khổ?”<br>
+<span lang="pi" class="pali">
+“saccaṃ kira, gahapati, samaṇo gotamo sabbaṃ tapaṃ garahati, sabbaṃ tapassiṃ lūkhājīviṃ ekaṃsena upakkosati upavadatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa các Tôn giả, Thế Tôn không chỉ trích mọi khổ hạnh, không nhất hướng bài bác, chống đối mọi khổ hạnh, mọi nếp sống kham khổ.<br>
+<span lang="pi" class="pali">
+“Na kho, bhante, bhagavā sabbaṃ tapaṃ garahati napi sabbaṃ tapassiṃ lūkhājīviṃ ekaṃsena upakkosati upavadati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa các Tôn giả, Thế Tôn chỉ trích cái gì đáng chỉ trích, tán thán cái gì đáng tán thán.<br>
+<span lang="pi" class="pali">
+Gārayhaṃ kho, bhante, bhagavā garahati, pasaṃsitabbaṃ pasaṃsati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa các Tôn giả, Thế Tôn chỉ trích cái gì đáng chỉ trích, tán thán cái gì đáng tán thán, như vậy Thế Tôn là người phân tích luận.<br>
+<span lang="pi" class="pali">
+Gārayhaṃ kho pana, bhante, bhagavā garahanto pasaṃsitabbaṃ pasaṃsanto vibhajjavādo bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không phải là người nhất hướng luận (nói một chiều).”<br>
+<span lang="pi" class="pali">
+Na so bhagavā ettha ekaṃsavādo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Ðược nói vậy, một du sĩ nói với Gia chủ Vajjiyamāhita:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, aññataro paribbājako vajjiyamāhitaṃ gahapatiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi chờ ở đây, này Gia chủ, Gia chủ tán thán Sa-môn Gotama và Sa-môn Gotama là người hư vô, một người không bao giờ có định nghĩa rõ ràng.”<br>
+<span lang="pi" class="pali">
+“āgamehi tvaṃ, gahapati, yassa tvaṃ samaṇassa gotamassa vaṇṇaṃ bhāsati, samaṇo gotamo venayiko appaññattiko”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, thưa các Tôn giả, tôi nói với các Tôn giả, tôi nói với các Tôn giả đúng pháp:<br>
+<span lang="pi" class="pali">
+“Etthapāhaṃ, bhante, āyasmante vakkhāmi sahadhammena:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đây là thiện, thưa các Tôn giả, Thế Tôn đã định nghĩa.<br>
+<span lang="pi" class="pali">
+‘idaṃ kusalan’ti, bhante, bhagavatā paññattaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðây là bất thiện, thưa các Tôn giả, Thế Tôn đã định nghĩa.<br>
+<span lang="pi" class="pali">
+‘idaṃ akusalan’ti, bhante, bhagavatā paññattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðây là thiện, đây là bất thiện, Thế Tôn đã định nghĩa.<br>
+<span lang="pi" class="pali">
+Iti kusalākusalaṃ bhagavā paññāpayamāno sapaññattiko bhagavā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn không phải là người chủ trương hư vô. Thế Tôn là người có định nghĩa rõ ràng”.<br>
+<span lang="pi" class="pali">
+na so bhagavā venayiko appaññattiko”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, các du sĩ ấy im lặng, hoang mang, thụt vai, cúi đầu, sửng sờ, không nói nên lời.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte te paribbājakā tuṇhībhūtā maṅkubhūtā pattakkhandhā adhomukhā pajjhāyantā appaṭibhānā nisīdiṃsu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Rồi Gia chủ Vajjiyamāhita, sau khi biết các du sĩ ngoại đạo ấy im lặng, hoang mang, thụt vai, cúi đầu, sửng sờ, không nói nên lời, từ chỗ ngồi đứng dậy, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho vajjiyamāhito gahapati te paribbājake tuṇhībhūte maṅkubhūte pattakkhandhe adhomukhe pajjhāyante appaṭibhāne viditvā uṭṭhāyāsanā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngồi xuống một bên, Gia chủ Vajjiyamāhita, câu chuyện với các du sĩ ngoại đạo như thế nào, tất cả đều thuật lại cho Thế Tôn rõ.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho vajjiyamāhito gahapati yāvatako ahosi tehi aññatitthiyehi paribbājakehi saddhiṃ kathāsallāpo taṃ sabbaṃ bhagavato ārocesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“6. Lành thay, lành thay, này Gia chủ<br>
+<span lang="pi" class="pali">
+“Sādhu sādhu, gahapati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những kẻ ngu si ấy thường thường cần phải được bác bỏ với sự khéo bác bỏ nhờ Chánh pháp.<br>
+<span lang="pi" class="pali">
+Evaṃ kho te, gahapati, moghapurisā kālena kālaṃ sahadhammena suniggahitaṃ niggahetabbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta không nói rằng tất cả khổ hạnh cần phải hành trì.<br>
+<span lang="pi" class="pali">
+Nāhaṃ, gahapati, sabbaṃ tapaṃ tapitabbanti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng tất cả khổ hạnh không cần phải hành trì.<br>
+<span lang="pi" class="pali">
+na ca panāhaṃ, gahapati, sabbaṃ tapaṃ na tapitabbanti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng tất cả sự chấp trì cần phải được chấp trì.<br>
+<span lang="pi" class="pali">
+nāhaṃ, gahapati, sabbaṃ samādānaṃ samāditabbanti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng tất cả sự chấp trì không nên chấp trì.<br>
+<span lang="pi" class="pali">
+na panāhaṃ, gahapati, sabbaṃ samādānaṃ na samāditabbanti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng tất cả sự tinh cần phải tinh cần.<br>
+<span lang="pi" class="pali">
+nāhaṃ, gahapati, sabbaṃ padhānaṃ padahitabbanti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, ta cũng không nói rằng, tất cả sự tinh cần không nên tinh cần.<br>
+<span lang="pi" class="pali">
+na panāhaṃ, gahapati, sabbaṃ padhānaṃ na padahitabbanti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng, tất cả sự từ bỏ nên từ bỏ.<br>
+<span lang="pi" class="pali">
+nāhaṃ, gahapati, sabbo paṭinissaggo paṭinissajjitabboti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng tất cả sự từ bỏ không nên từ bỏ.<br>
+<span lang="pi" class="pali">
+Na panāhaṃ, gahapati, sabbo paṭinissaggo na paṭinissajjitabboti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng tất cả sự giải thoát nên giải thoát.<br>
+<span lang="pi" class="pali">
+nāhaṃ, gahapati, sabbā vimutti vimuccitabbāti vadāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, Ta cũng không nói rằng, tất cả sự giải thoát không nên giải thoát.<br>
+<span lang="pi" class="pali">
+na panāhaṃ, gahapati, sabbā vimutti na vimuccitabbāti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Này Gia chủ, phàm hành trì khổ hạnh nào, các pháp bất thiện tăng trưởng, các pháp thiện tổn giảm, khổ hạnh ấy, Ta nói, không nên hành trì.<br>
+<span lang="pi" class="pali">
+Yañhi, gahapati, tapaṃ tapato akusalā dhammā abhivaḍḍhanti, kusalā dhammā parihāyanti, evarūpaṃ tapaṃ na tapitabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này Gia chủ, phàm hành trì khổ hạnh nào, các pháp bất thiện tổn giảm, các pháp thiện tăng trưởng, khổ hạnh ấy, Ta nói nên hành trì.<br>
+<span lang="pi" class="pali">
+Yañca khvassa, gahapati, tapaṃ tapato akusalā dhammā parihāyanti, kusalā dhammā abhivaḍḍhanti, evarūpaṃ tapaṃ tapitabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, phàm chấp trì nào, các pháp bất thiện tăng trưởng, các pháp thiện tổn giảm, chấp trì ấy, Ta nói, không nên chấp trì.<br>
+<span lang="pi" class="pali">
+Yañhi, gahapati, samādānaṃ samādiyato akusalā dhammā abhivaḍḍhanti, kusalā dhammā parihāyanti, evarūpaṃ samādānaṃ na samāditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm chấp trì nào, các pháp bất thiện tổn giảm, các thiện pháp tăng trưởng, thời chấp trì ấy, Ta nói nên chấp trì.<br>
+<span lang="pi" class="pali">
+Yañca khvassa, gahapati, samādānaṃ samādiyato akusalā dhammā parihāyanti, kusalā dhammā abhivaḍḍhanti, evarūpaṃ samādānaṃ samāditabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, phàm tinh cần nào được tinh cần, các pháp bất thiện tăng trưởng, các pháp thiện tổn giảm, thời tinh cần ấy, Ta nói rằng, không nên tinh cần.<br>
+<span lang="pi" class="pali">
+Yañhi, gahapati, padhānaṃ padahato akusalā dhammā abhivaḍḍhanti, kusalā dhammā parihāyanti, evarūpaṃ padhānaṃ na padahitabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm tinh cần nào được tinh cần, các pháp bất thiện tổn giảm, các pháp thiện tăng trưởng, thời tinh cần ấy, Ta nói nên tinh cần.<br>
+<span lang="pi" class="pali">
+Yañca khvassa, gahapati, padhānaṃ padahato akusalā dhammā parihāyanti kusalā dhammā abhivaḍḍhanti, evarūpaṃ padhānaṃ padahitabbanti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, phàm từ bỏ sự từ bỏ nào, các pháp bất thiện tăng trưởng, các pháp thiện tổn giảm, thời từ bỏ ấy, Ta nói, không nên từ bỏ.<br>
+<span lang="pi" class="pali">
+Yañhi, gahapati, paṭinissaggaṃ paṭinissajjato akusalā dhammā abhivaḍḍhanti, kusalā dhammā parihāyanti, evarūpo paṭinissaggo na paṭinissajjitabboti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm từ bỏ sự từ bỏ nào, các pháp bất thiện tổn giảm, các pháp thiện tăng trưởng, thời từ bỏ ấy, Ta nói, nên từ bỏ.<br>
+<span lang="pi" class="pali">
+Yañca khvassa, gahapati, paṭinissaggaṃ paṭinissajjato akusalā dhammā parihāyanti, kusalā dhammā abhivaḍḍhanti, evarūpo paṭinissaggo paṭinissajjitabboti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, phàm giải thoát sự giải thoát nào, các pháp bất thiện tăng trưởng, các thiện pháp tổn giảm, thời giải thoát ấy, Ta nói, không nên giải thoát.<br>
+<span lang="pi" class="pali">
+Yañhi, gahapati, vimuttiṃ vimuccato akusalā dhammā abhivaḍḍhanti, kusalā dhammā parihāyanti, evarūpā vimutti na vimuccitabbāti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phàm giải thoát sự giải thoát nào, các pháp bất thiện tổn giảm, các pháp thiện tăng trưởng, thời giải thoát ấy, Ta nói nên giải thoát.”<br>
+<span lang="pi" class="pali">
+Yañca khvassa, gahapati, vimuttiṃ vimuccato akusalā dhammā parihāyanti, kusalā dhammā abhivaḍḍhanti, evarūpā vimutti vimuccitabbāti vadāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Gia chủ Vajjiyamāhita sau khi được Thế Tôn với một pháp thoại thuyết giảng, khích lệ, làm cho phấn khởi, làm cho hoan hỷ, từ chỗ ngồi đứng dậy, đảnh lễ Thế Tôn, thân bên hữu hướng về Ngài rồi ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho vajjiyamāhito gahapati bhagavatā dhammiyā kathāya sandassito samādapito samuttejito sampahaṃsito uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8, Rồi Thế Tôn, sau khi Gia chủ Vajjiyamāhita ra đi không bao lâu, bảo các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā acirapakkante vajjiyamāhite gahapatimhi bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Phàm Tỷ-kheo nào, đã lâu ngày với trần cấu ít trong Pháp và Luật này, vị ấy hãy như vậy bài bác các du sĩ ngoại đạo với sự khéo bài bác nhờ Chánh pháp, như Gia chủ Vajjiyamāhita đã làm.”<br>
+<span lang="pi" class="pali">
+“yopi so, bhikkhave, bhikkhu dīgharattaṃ apparajakkho imasmiṃ dhammavinaye, sopi evamevaṃ aññatitthiye paribbājake sahadhammena suniggahitaṃ niggaṇheyya yathā taṃ vajjiyamāhitena gahapatinā niggahitā”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an10.93.html#content"></a><a id="next-sutta" href="./an10.95.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

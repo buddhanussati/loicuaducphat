@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thiền Hơi Thở - Ānāpānasati</title>
+<style>
+  body{
+    margin:0;height:100vh;background:#0b1d2e;color:#ddd;
+    font-family:Segoe UI,Arial,sans-serif;display:flex;
+    flex-direction:column;justify-content:center;align-items:center;
+    position:relative;overflow:hidden; user-select: none;
+  }
+  
+  /* Vòng tròn thở */
+  #circle{
+    width:60vw;height:60vw;max-width:320px;max-height:320px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(100,200,255,0.25), rgba(100,200,255,0.05));
+    box-shadow:0 0 80px rgba(100,200,255,0.3);
+    animation-name: breathe;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    /* Mask để tạo hiệu ứng mờ dần ở giữa nếu thích, hoặc bỏ đi cho sáng */
+    mask-image: radial-gradient(circle, black 0%, black 60%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle, black 0%, black 60%, transparent 100%);
+  }
+  @keyframes breathe{0%,100%{transform:scale(0.9)} 50%{transform:scale(1.45)}}
+
+  /* Khu vực chữ hiển thị */
+  #text-container {
+    position:fixed; bottom: 80px; left:0; right:0;
+    text-align: center; z-index: 10; pointer-events: none;
+  }
+  #stage-indicator {
+    font-size: 12px; color: #8ac; text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 6px; opacity: 0.8;
+  }
+  #main-text {
+    font-size: 18px; font-weight: 300; padding: 0 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    transition: opacity 1s ease; opacity: 1;
+	line-height: 1.4;
+	margin-bottom: 0px
+  }
+
+  /* Thanh điều khiển bên dưới */
+  #controls {
+    position:fixed; bottom: 15px; 
+    background:rgba(0,0,0,0.6); backdrop-filter:blur(10px);
+    padding:8px 16px; border-radius:30px;
+    display:flex; align-items:center; gap:15px;
+    z-index:20; border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  #timer { font-variant-numeric: tabular-nums; min-width: 45px; text-align: center; font-size: 14px; color: #8ac; }
+  
+  .btn {
+    background:none; border:none; color:#eee; font-size:20px; cursor:pointer;
+    padding:0; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;
+    border-radius: 50%; transition: background 0.2s;
+  }
+  .btn:hover { background: rgba(255,255,255,0.1); }
+  .btn:active { transform: scale(0.95); }
+  .btn-small { font-size: 16px; color: #aaa; }
+
+  /* Popup chung */
+  .popup{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:#1a2634; color:#fff; padding:20px; border-radius:12px;
+    display:none; flex-direction:column; gap:12px; z-index:30;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+    border: 1px solid #456; min-width: 220px; text-align: center;
+  }
+  .popup h3 { margin:0; font-size:16px; color:#8ac; text-transform: uppercase; letter-spacing: 1px;}
+  .grid-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .popup button {
+    padding:10px; border:none; border-radius:6px; cursor:pointer;
+    background:#2c3e50; color:#ddd; font-size: 14px;
+  }
+  .popup button:hover { background:#3e5871; }
+  .popup input {
+    padding:8px; border-radius:6px; border:none; width:60px;
+    text-align:center; background:#0f1720; color:#fff; border: 1px solid #456;
+  }
+  .closeBtn { background: #322 !important; color: #eaa !important; margin-top: 5px;}
+  
+.popup button.active {
+  background: #8ac;   /* highlight color */
+  color: #fff;
+}
+
+  #overlay {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.7); z-index: 25; display: none;
+  }
+  
+#timer {
+  background: none;
+  border: none;
+  color: #8ac;
+  font-size: 14px;
+  min-width: 45px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px; /* default rectangular corners */
+}
+
+#timer:hover {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px; /* keep it rectangular on hover */
+}
+
+</style>
+</head>
+<body>
+
+<div id="circle"></div>
+
+<div id="text-container">
+  <div id="stage-indicator">Chuẩn bị</div>
+  <div id="main-text">Giữ lưng thẳng • Đặt niệm trước mặt</div>
+</div>
+
+<div id="controls">
+  <button class="btn btn-small" onclick="changeStage(-1)" title="Giai đoạn trước"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Mũi tên kép lùi lại -->
+    <path d="M11 19l-7-7 7-7v14zM18 19l-7-7 7-7v14z"/>
+</svg></button>
+  
+  <button class="btn" id="speedBtn" title="Tốc độ"><svg width="15" height="15" viewBox="0 0 40 40" fill="none">
+    <!-- Vòng tròn ngoài -->
+    <circle cx="20" cy="20" r="18" stroke="white" stroke-width="2" fill="none"/>
+    <!-- Vòng tròn trong -->
+    <circle cx="20" cy="20" r="9" stroke="white" stroke-width="2" fill="none"/>
+  </svg></button>
+  <button class="btn" id="toggleBtn" title="Bắt đầu/Dừng" style="font-size: 24px; color: #8ac"><svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+      <polygon points="14,10 30,20 14,30" fill="white"/>
+    </svg></button>
+  <button class="btn" id="bellBtn" title="Chuông"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg></button>
+  
+  <button class="btn btn-small" onclick="changeStage(1)" title="Giai đoạn tiếp"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Mũi tên kép tiến lên -->
+    <path d="M13 5l7 7-7 7V5zM6 5l7 7-7 7V5z"/>
+</svg></button>
+  
+  <div style="width:1px; height:20px; background:rgba(255,255,255,0.2); margin:0 5px;"></div>
+<button id="timer" class="btn btn-small" title="Đặt khoảng chuông">--:--</button>
+</div>
+
+<div id="overlay" onclick="closeAllPopups()"></div>
+
+<div id="bellPopup" class="popup">
+  <h3>Khoảng cách chuông</h3>
+  <div class="grid-options">
+    <button data-min="1" onclick="saveInterval(1)">1 phút</button>
+    <button data-min="2" onclick="saveInterval(2)">2 phút</button>
+    <button data-min="5" onclick="saveInterval(5)">5 phút</button>
+    <button data-min="10" onclick="saveInterval(10)">10 phút</button>
+    <button data-min="15" onclick="saveInterval(15)">15 phút</button>
+  <button data-min="20" onclick="saveInterval(20)">20 phút</button>
+  </div>
+  <div style="display:flex;justify-content:center;gap:5px;">
+    <input type="number" id="customMin" placeholder="Phút">
+    <button onclick="saveCustomBell()">OK</button>
+  </div>
+  <button class="closeBtn" onclick="closeAllPopups()">Đóng</button>
+</div>
+
+<div id="speedPopup" class="popup">
+  <h3>Chiều dài hơi thở</h3>
+  <div class="grid-options">
+    <button data-speed="5" onclick="saveSpeed(5)">5 giây</button>
+    <button data-speed="8" onclick="saveSpeed(8)">8 giây</button>
+    <button data-speed="10" onclick="saveSpeed(10)">10 giây</button>
+    <button data-speed="12" onclick="saveSpeed(12)">12 giây</button>
+    <button data-speed="14" onclick="saveSpeed(14)">14 giây</button>
+    <button data-speed="16" onclick="saveSpeed(16)">16 giây</button>
+  </div>
+  <div style="display:flex;justify-content:center;gap:5px;">
+    <input type="number" id="customSpeed" placeholder="Giây">
+    <button onclick="saveCustomSpeed()">OK</button>
+  </div>
+  <button class="closeBtn" onclick="closeAllPopups()">Đóng</button>
+</div>
+<div id="bellSoundPopup" class="popup">
+  <div style="margin:0; margin-bottom:4px; font-size:14px; font-weight:bold; color:#8ac; text-align:center; text-transform:uppercase; letter-spacing:1px;">
+    Âm thanh chuông
+  </div>
+  <div class="grid-options">
+    <button data-sound="bell-1" onclick="setBellSound('bell-1')">Chuông 1</button>
+    <button data-sound="bell-2" onclick="setBellSound('bell-2')">Chuông 2</button>
+    <button data-sound="bell-3" onclick="setBellSound('bell-3')">Chuông 3</button>
+	<button data-sound="bell-4" onclick="setBellSound('bell-4')">Chuông 4</button>
+    <button data-sound="bell-5" onclick="setBellSound('bell-5')">Tiếng Bíp</button>
+    <button data-sound="bell-6" onclick="setBellSound('bell-6')">Nước Chảy</button>
+  </div>
+  <button class="closeBtn" onclick="closeAllPopups()">Đóng</button>
+</div>
+
+<audio id="bell" src="../css/bell.mp3"></audio>
+
+<script>
+const stages = [
+  ["Chánh niệm, tôi sẽ thở vô","Chánh niệm, tôi sẽ thở ra"],
+  ["Thở vô dài, tôi biết tôi thở vô dài","Thở ra dài, tôi biết tôi thở ra dài"],
+  ["Thở vô ngắn, tôi biết tôi thở vô ngắn","Thở ra ngắn, tôi biết tôi thở ra ngắn"],
+  ["Cảm giác toàn thân, tôi sẽ thở vô","Cảm giác toàn thân, tôi sẽ thở ra"],
+  ["An tịnh thân hành, tôi sẽ thở vô","An tịnh thân hành, tôi sẽ thở ra"],
+  ["Cảm giác hỷ thọ, tôi sẽ thở vô","Cảm giác hỷ thọ, tôi sẽ thở ra"],
+  ["Cảm giác lạc thọ, tôi sẽ thở vô","Cảm giác lạc thọ, tôi sẽ thở ra"],
+  ["Cảm giác tâm hành, tôi sẽ thở vô","Cảm giác tâm hành, tôi sẽ thở ra"],
+  ["An tịnh tâm hành, tôi sẽ thở vô","An tịnh tâm hành, tôi sẽ thở ra"],
+  ["Cảm giác về tâm, tôi sẽ thở vô" , "Cảm giác về tâm, tôi sẽ thở ra"],
+  ["Cảm giác tâm hành, tôi sẽ thở vô","Cảm giác tâm hành, tôi sẽ thở ra"],
+  ["Với tâm hân hoan, tôi sẽ thở vô","Với tâm hân hoan, tôi sẽ thở ra"],
+  ["Với tâm định tĩnh, tôi sẽ thở vô", "Với tâm định tĩnh, tôi sẽ thở ra"], 
+  ["Với tâm giải thoát, tôi sẽ thở vô","Với tâm giải thoát, tôi sẽ thở ra"],
+  ["Quán vô thường, tôi sẽ thở vô", "Quán vô thường, tôi sẽ thở ra"],
+  ["Quán ly tham, tôi sẽ thở vô","Quán ly tham, tôi sẽ thở ra"],
+  ["Quán đoạn diệt, tôi sẽ thở vô","Quán đoạn diệt, tôi sẽ thở ra"],
+  ["Quán từ bỏ, tôi sẽ thở vô" , "Quán từ bỏ, tôi sẽ thở ra"] 
+
+];
+
+// State variables
+let running = false;
+let stageIndex = 0;
+let breathPhase = 0; // 0: In, 1: Out
+let breathCycle = localStorage.getItem("breathCycle") ? parseInt(localStorage.getItem("breathCycle")) : 10;
+let bellInterval = localStorage.getItem("bellInterval") ? parseInt(localStorage.getItem("bellInterval")) : 60; // seconds
+let bellCountdown = bellInterval;
+
+// Timers
+let breathTimer;
+let bellTimer;
+
+// UI Elements
+const mainText = document.getElementById("main-text");
+const stageIndicator = document.getElementById("stage-indicator");
+const circle = document.getElementById("circle");
+const toggleBtn = document.getElementById("toggleBtn");
+const timerEl = document.getElementById("timer");
+const bell = document.getElementById("bell");
+const bellPopup = document.getElementById("bellPopup");
+const savedSound = localStorage.getItem("bellSound");
+if (savedSound) {
+  bell.src = `../css/${savedSound}.mp3`;
+}
+const speedPopup = document.getElementById("speedPopup");
+const overlay = document.getElementById("overlay");
+
+// Init
+circle.style.animationDuration = breathCycle + "s";
+circle.style.animationPlayState = "paused";
+timerEl.textContent = formatTime(bellCountdown);
+
+function formatTime(s) {
+  const m = Math.floor(s/60);
+  const sec = s%60;
+  return (m>0?m+":":"") + (sec<10?"0":"") + sec;
+}
+
+function playBell() {
+  bell.currentTime=0; bell.play().catch(()=>{});
+}
+
+function updateText(immediate = false) {
+  const line = stages[stageIndex][breathPhase];
+  const stepName = ` ${stageIndex + 1} / ${stages.length}`;
+  
+  stageIndicator.textContent = stepName;
+  
+  if(immediate){
+     mainText.textContent = line;
+     mainText.style.opacity = 1;
+  } else {
+     mainText.style.opacity = 0;
+     setTimeout(() => {
+       mainText.textContent = line;
+       mainText.style.opacity = 1;
+     }, 500);
+  }
+}
+
+function startBreathLoop() {
+  clearInterval(breathTimer);
+  const halfTime = (breathCycle * 1000) / 2;
+  
+  breathTimer = setInterval(() => {
+    if(running){
+      breathPhase = (breathPhase + 1) % 2; // Toggle 0 & 1
+      updateText();
+    }
+  }, halfTime);
+}
+
+function start() {
+  if (running) return;
+  running = true;
+
+  toggleBtn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+      <rect x="12" y="10" width="5" height="20" fill="white"/>
+      <rect x="23" y="10" width="5" height="20" fill="white"/>
+    </svg>
+  `;
+  toggleBtn.style.color = "#fff";
+
+  circle.style.animationPlayState = "running";
+  updateText(true);
+  startBreathLoop();
+
+  // Resume bell timer
+  clearInterval(bellTimer);
+  bellTimer = setInterval(() => {
+    bellCountdown--;
+    timerEl.textContent = formatTime(bellCountdown);
+    if (bellCountdown <= 0) {
+      playBell();
+      bellCountdown = bellInterval;
+    }
+  }, 1000);
+
+  // If starting from the very beginning (countdown still at full interval), play initial bell
+  if (bellCountdown === bellInterval) {
+    playBell();
+  }
+}
+
+
+
+function pause() {
+  running = false;
+  toggleBtn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+      <polygon points="14,10 30,20 14,30" fill="white"/>
+    </svg>
+  `;
+  toggleBtn.style.color = "#8ac";
+
+  circle.style.animationPlayState = "paused";
+
+  // Stop timers
+  clearInterval(breathTimer);
+  clearInterval(bellTimer);
+
+  // Stop any bell sound immediately
+  bell.pause();
+  bell.currentTime = 0;
+
+  // IMPORTANT: do NOT reset bellCountdown here
+  // Leave timerEl showing the remaining time so it can resume later
+}
+
+
+
+// Logic Chuyển Stage thủ công
+function changeStage(direction) {
+  const newIndex = stageIndex + direction;
+  if (newIndex >= 0 && newIndex < stages.length) {
+    stageIndex = newIndex;
+    breathPhase = 0;
+
+    updateText(true);
+
+    // Reset animation if running
+    if (running) {
+      circle.style.animation = 'none';
+      circle.offsetHeight; // trigger reflow
+      circle.style.animation = `breathe ${breathCycle}s ease-in-out infinite`;
+      startBreathLoop();
+    }
+
+    // Reset bell timer + countdown ALWAYS (paused or running)
+    clearInterval(bellTimer);
+    bellCountdown = bellInterval;
+    timerEl.textContent = formatTime(bellCountdown);
+
+    if (running) {
+      bellTimer = setInterval(() => {
+        bellCountdown--;
+        timerEl.textContent = formatTime(bellCountdown);
+        if (bellCountdown <= 0) {
+          playBell();
+          bellCountdown = bellInterval;
+        }
+      }, 1000);
+
+      // Play bell immediately when stage changes if running
+      playBell();
+    }
+  }
+}
+
+
+
+// --- Event Listeners ---
+toggleBtn.addEventListener("click", () => running ? pause() : start());
+
+document.getElementById("bellBtn").addEventListener("click", () => {
+  closeAllPopups(); 
+  bellPopup.style.display="flex"; 
+  overlay.style.display="block";
+
+  document.querySelectorAll("#bellPopup button").forEach(btn => btn.classList.remove("active"));
+
+  const savedInterval = localStorage.getItem("bellInterval");
+  const savedCustom = localStorage.getItem("bellCustom");
+
+  if (savedCustom && savedCustom !== "") {
+    document.getElementById("customMin").value = savedCustom;
+  } else if (savedInterval) {
+    const minutes = parseInt(savedInterval) / 60;
+    document.querySelectorAll("#bellPopup button").forEach(btn => {
+      if (btn.dataset.min && parseInt(btn.dataset.min) === minutes) {
+        btn.classList.add("active");
+      }
+    });
+  }
+});
+document.getElementById("speedBtn").addEventListener("click", () => {
+  closeAllPopups(); 
+  speedPopup.style.display = "flex"; 
+  overlay.style.display = "block";
+
+  document.querySelectorAll("#speedPopup button").forEach(btn => btn.classList.remove("active"));
+
+  const savedSpeed = localStorage.getItem("breathCycle");
+  const savedCustom = localStorage.getItem("speedCustom");
+
+  if (savedCustom && savedCustom !== "") {
+    document.getElementById("customSpeed").value = savedCustom;
+  } else if (savedSpeed) {
+    const seconds = parseInt(savedSpeed);
+    document.querySelectorAll("#speedPopup button").forEach(btn => {
+      if (btn.dataset.speed && parseInt(btn.dataset.speed) === seconds) {
+        btn.classList.add("active");
+      }
+    });
+  }
+});
+
+
+const bellSoundPopup = document.getElementById("bellSoundPopup");
+let bellSound = localStorage.getItem("bellSound") || "bell-1";
+
+function setBellSound(name) {
+  bellSound = name;
+  localStorage.setItem("bellSound", name);
+
+  document.querySelectorAll("#bellSoundPopup button[data-sound]").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#bellSoundPopup button[data-sound]").forEach(btn => {
+    if (btn.dataset.sound === name) btn.classList.add("active");
+  });
+
+  bell.src = `../css/${name}.mp3`;
+  bell.currentTime = 0;
+  bell.play().catch(()=>{});
+}
+
+document.getElementById("bellBtn").addEventListener("click", () => {
+  closeAllPopups();
+  bellSoundPopup.style.display = "flex";
+  overlay.style.display = "block";
+
+  document.querySelectorAll("#bellSoundPopup button[data-sound]").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#bellSoundPopup button[data-sound]").forEach(btn => {
+    if (btn.dataset.sound === bellSound) btn.classList.add("active");
+  });
+});
+
+document.getElementById("timer").addEventListener("click", () => {
+  closeAllPopups();
+  bellPopup.style.display = "flex";
+  overlay.style.display = "block";
+  // restore interval selection…
+});
+
+function closeAllPopups() {
+  bellPopup.style.display = "none";       // interval popup
+  bellSoundPopup.style.display = "none";  // new sound popup
+  speedPopup.style.display = "none";
+  overlay.style.display = "none";
+}
+
+
+function saveInterval(m) {
+  bellInterval = m * 60;
+  localStorage.setItem("bellInterval", bellInterval);
+  localStorage.setItem("bellCustom", ""); // clear custom if preset chosen
+  bellCountdown = bellInterval;
+  timerEl.textContent = formatTime(bellCountdown);
+
+  // Reset bell timer if running
+  if (running) {
+    clearInterval(bellTimer);
+    bellTimer = setInterval(() => {
+      bellCountdown--;
+      timerEl.textContent = formatTime(bellCountdown);
+      if (bellCountdown <= 0) {
+        playBell();
+        bellCountdown = bellInterval;
+      }
+    }, 1000);
+
+    // Play bell immediately to mark new interval
+    playBell();
+  }
+
+  // Highlight the chosen button
+  document.querySelectorAll("#bellPopup button").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#bellPopup button").forEach(btn => {
+    if (btn.dataset.min && parseInt(btn.dataset.min) === m) {
+      btn.classList.add("active");
+    }
+  });
+
+  closeAllPopups();
+}
+
+function saveCustomBell(){
+  const v = document.getElementById("customMin").value;
+  if (v > 0) {
+    saveInterval(parseFloat(v));
+    localStorage.setItem("bellCustom", v);
+    document.getElementById("customMin").value = v;
+  }
+}
+
+
+
+
+
+function saveSpeed(s) {
+  breathCycle = parseInt(s);
+  localStorage.setItem("breathCycle", breathCycle);
+  localStorage.setItem("speedCustom", ""); // clear custom if preset chosen
+  circle.style.animationDuration = breathCycle + "s";
+
+  if (running) startBreathLoop();
+
+  // Highlight chosen button
+  document.querySelectorAll("#speedPopup button").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#speedPopup button").forEach(btn => {
+    if (btn.dataset.speed && parseInt(btn.dataset.speed) === s) {
+      btn.classList.add("active");
+    }
+  });
+
+  closeAllPopups();
+}
+
+function saveCustomSpeed(){
+  const v = document.getElementById("customSpeed").value;
+  if (v > 1) {
+    saveSpeed(parseFloat(v));
+    localStorage.setItem("speedCustom", v);
+    document.getElementById("customSpeed").value = v;
+  }
+}
+timerEl.addEventListener("click", () => {
+  closeAllPopups();
+  bellPopup.style.display = "flex";
+  overlay.style.display = "block";
+
+  document.querySelectorAll("#bellPopup button").forEach(btn => btn.classList.remove("active"));
+
+  const savedInterval = localStorage.getItem("bellInterval");
+  const savedCustom = localStorage.getItem("bellCustom");
+
+  if (savedCustom && savedCustom !== "") {
+    document.getElementById("customMin").value = savedCustom;
+  } else if (savedInterval) {
+    const minutes = parseInt(savedInterval) / 60;
+    document.querySelectorAll("#bellPopup button").forEach(btn => {
+      if (btn.dataset.min && parseInt(btn.dataset.min) === minutes) {
+        btn.classList.add("active");
+      }
+    });
+  }
+});
+
+
+</script>
+</body>
+</html>

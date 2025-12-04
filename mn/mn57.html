@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 57          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 57<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 57<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Hạnh Con Chó<br>
+<span lang="pi" class="pali">
+Kukkuravatikasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở giữa dân chúng Koliya. Haliddavasana là tên một thị trấn của dân chúng Koliya.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā koliyesu viharati haliddavasanaṃ nāma koliyānaṃ nigamo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Puṇṇa người Koliya, hành trì hạnh con bò, và lõa thể Seniya, hành trì hạnh con chó, cùng đi đến Thế Tôn, sau khi đến Puṇṇa người Koliya, hành trì hạnh con bò, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Còn lõa thể Seniya, hành trì hạnh con chó, nói lời hỏi thăm với Thế Tôn, sau khi nói lên lời hỏi thăm thân hữu, rồi ngồi xuống một bên, ngồi chõ hỏ như con chó.<br>
+<span lang="pi" class="pali">
+Atha kho puṇṇo ca koliyaputto govatiko acelo ca seniyo kukkuravatiko yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā puṇṇo koliyaputto govatiko bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Acelo pana seniyo kukkuravatiko bhagavatā saddhiṃ sammodi. Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā kukkurova palikujjitvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi ngồi một bên, Puṇṇa người Koliya, hành trì hạnh con bò, bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho puṇṇo koliyaputto govatiko bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, lõa thể Seniya, hành trì hạnh con chó, thực hành những hạnh khó hành, ăn đồ ăn quăng xuống đất,<br>
+<span lang="pi" class="pali">
+“ayaṃ, bhante, acelo seniyo kukkuravatiko dukkarakārako chamānikkhittaṃ bhojanaṃ bhuñjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chấp nhận và hành trì hạnh con chó trong một thời gian dài,<br>
+<span lang="pi" class="pali">
+Tassa taṃ kukkuravataṃ dīgharattaṃ samattaṃ samādinnaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vậy sanh thú ông ấy thế nào, vận mạng ông ấy thế nào?”<br>
+<span lang="pi" class="pali">
+Tassa kā gati, ko abhisamparāyo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi vừa rồi Puṇṇa, hãy dừng lại đây, chớ có hỏi Ta nữa.”<br>
+<span lang="pi" class="pali">
+“Alaṃ, puṇṇa, tiṭṭhatetaṃ; mā maṃ etaṃ pucchī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai… (như trên)…<br>
+<span lang="pi" class="pali">
+Dutiyampi kho puṇṇo koliyaputto govatiko ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ ba Puṇṇa người Koliya, hành trì hạnh con bò, bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+tatiyampi kho puṇṇo koliyaputto govatiko bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, lõa thể Seniya hành trì hạnh con chó, thực hành những hạnh khó hành, ăn đồ ăn quăng dưới đất,<br>
+<span lang="pi" class="pali">
+“ayaṃ, bhante, acelo seniyo kukkuravatiko dukkarakārako chamānikkhittaṃ bhojanaṃ bhuñjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chấp nhận và hành trì hạnh con chó trong một thời gian dài,<br>
+<span lang="pi" class="pali">
+Tassa taṃ kukkuravataṃ dīgharattaṃ samattaṃ samādinnaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vậy sanh thú ông ấy thế nào, vận mạng ông ấy thế nào?”<br>
+<span lang="pi" class="pali">
+Tassa kā gati, ko abhisamparāyo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Puṇṇa, thật sự Ta đã không chấp nhận (câu hỏi) của Ông và đã nói:<br>
+<span lang="pi" class="pali">
+“Addhā kho te ahaṃ, puṇṇa, na labhāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi vừa rồi Puṇṇa, hãy dừng lại đây, chớ có hỏi Ta nữa”.<br>
+<span lang="pi" class="pali">
+Alaṃ, puṇṇa, tiṭṭhatetaṃ; mā maṃ etaṃ pucchīti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tuy vậy, Ta sẽ trả lời cho Ông.<br>
+<span lang="pi" class="pali">
+api ca tyāhaṃ byākarissāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Puṇṇa, người nào hành trì hạnh con chó một cách hoàn toàn viên mãn, hành trì giới con chó một cách hoàn toàn viên mãn, hành trì tâm con chó một cách hoàn toàn viên mãn, hành trì uy nghi con chó một cách hoàn toàn viên mãn,<br>
+<span lang="pi" class="pali">
+Idha, puṇṇa, ekacco kukkuravataṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ, kukkurasīlaṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ, kukkuracittaṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ, kukkurākappaṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sau khi thân hoại mạng chung sẽ sanh thân hữu cùng với các loài chó.<br>
+<span lang="pi" class="pali">
+So kukkuravataṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ, kukkurasīlaṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ, kukkuracittaṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ, kukkurākappaṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ kāyassa bhedā paraṃ maraṇā kukkurānaṃ sahabyataṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Ông ấy có tà kiến như sau: “Do giới này, hạnh này, khổ hạnh này, hay phạm hạnh này, ta sẽ sanh thành chư Thiên này, hay chư Thiên khác”,<br>
+<span lang="pi" class="pali">
+Sace kho panassa evaṃdiṭṭhi hoti: ‘imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā devo vā bhavissāmi devaññataro vā’ti, sāssa hoti micchādiṭṭhi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thời này Puṇṇa, đối với kẻ có tà kiến, Ta nói có một trong hai sanh thú như sau: địa ngục hay bàng sanh.<br>
+<span lang="pi" class="pali">
+Micchādiṭṭhissa kho ahaṃ, puṇṇa, dvinnaṃ gatīnaṃ aññataraṃ gatiṃ vadāmi—nirayaṃ vā tiracchānayoniṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Puṇṇa, nếu hạnh con chó được thành tựu, thời được sanh trong loài chó, nếu không được thành tựu, thời được sanh trong địa ngục.”<br>
+<span lang="pi" class="pali">
+Iti kho, puṇṇa, sampajjamānaṃ kukkuravataṃ kukkurānaṃ sahabyataṃ upaneti, vipajjamānaṃ nirayan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, lõa thể Seniya, hành trì hạnh con chó, khóc than chảy nước mắt.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, acelo seniyo kukkuravatiko parodi, assūni pavattesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn nói với Puṇṇa người Koliya, hành trì hạnh con bò:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā puṇṇaṃ koliyaputtaṃ govatikaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Puṇṇa, Ta đã không chấp nhận (câu hỏi) của ông và đã nói:<br>
+<span lang="pi" class="pali">
+“etaṃ kho te ahaṃ, puṇṇa, nālatthaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi vừa rồi Puṇṇa, hãy dừng lại đây, chớ có hỏi Ta nữa”.<br>
+<span lang="pi" class="pali">
+Alaṃ, puṇṇa, tiṭṭhatetaṃ; mā maṃ etaṃ pucchī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, con khóc như vậy không phải vì lời Thế Tôn nói về con.<br>
+<span lang="pi" class="pali">
+“Nāhaṃ, bhante, etaṃ rodāmi yaṃ maṃ bhagavā evamāha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng vì bạch Thế Tôn, con đã chấp nhận và hành trì hạnh con chó này trong một thời gian dài.<br>
+<span lang="pi" class="pali">
+api ca me idaṃ, bhante, kukkuravataṃ dīgharattaṃ samattaṃ samādinnaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, Puṇṇa người Koliya, hành trì hạnh con bò này,<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhante, puṇṇo koliyaputto govatiko.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+đã chấp nhận và hành trì hạnh con bò này, trong một thời gian dài,<br>
+<span lang="pi" class="pali">
+Tassa taṃ govataṃ dīgharattaṃ samattaṃ samādinnaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vậy sanh thú của ông ấy thế nào, vận mạng của ông ấy thế nào?”<br>
+<span lang="pi" class="pali">
+Tassa kā gati, ko abhisamparāyo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi vừa rồi Seniya, hãy dừng lại đây, chớ có hỏi Ta nữa.”<br>
+<span lang="pi" class="pali">
+“Alaṃ, seniya, tiṭṭhatetaṃ; mā maṃ etaṃ pucchī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai… (như trên)…<br>
+<span lang="pi" class="pali">
+Dutiyampi kho acelo seniyo ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ ba, lõa thể Seniya, hành trì hạnh con chó, bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+tatiyampi kho acelo seniyo kukkuravatiko bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, Puṇṇa người Koliya này đã chấp nhận và hành trì hạnh con bò này trong một thời gian dài,<br>
+<span lang="pi" class="pali">
+“ayaṃ, bhante, puṇṇo koliyaputto govatiko. Tassa taṃ govataṃ dīgharattaṃ samattaṃ samādinnaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vậy sanh thú của ông ấy thế nào, vận mạng của ông ấy thế nào?”<br>
+<span lang="pi" class="pali">
+Tassa kā gati, ko abhisamparāyo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Seniya, thật sự Ta đã không chấp nhận (câu hỏi) của Ông và đã nói:<br>
+<span lang="pi" class="pali">
+“Addhā kho te ahaṃ, seniya, na labhāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thôi vừa rồi Seniya, hãy dừng lại đây, chớ có hỏi Ta nữa.’<br>
+<span lang="pi" class="pali">
+Alaṃ, seniya, tiṭṭhatetaṃ; mā maṃ etaṃ pucchīti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tuy vậy ta sẽ trả lời cho Ông.<br>
+<span lang="pi" class="pali">
+api ca tyāhaṃ byākarissāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Seniya, người nào hạnh trì hạnh con bò một cách hoàn toàn viên mãn, hành trì giới con bò một cách hoàn toàn viên mãn, hành trì tâm con bò một cách hoàn toàn viên mãn, hành trì uy nghi con bò một cách hoàn toàn viên mãn,<br>
+<span lang="pi" class="pali">
+Idha, seniya, ekacco govataṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ, gosīlaṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ, gocittaṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ, gavākappaṃ bhāveti paripuṇṇaṃ abbokiṇṇaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sau khi thân hoại mạng chung, sẽ sanh thân hữu cùng với các loài bò.<br>
+<span lang="pi" class="pali">
+So govataṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ, gosīlaṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ, gocittaṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ, gavākappaṃ bhāvetvā paripuṇṇaṃ abbokiṇṇaṃ kāyassa bhedā paraṃ maraṇā gunnaṃ sahabyataṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Ông ấy có tà kiến như sau: “Do giới này, hạnh này, khổ hạnh này, hay phạm hạnh này, ta sẽ sanh thành chư Thiên này hay chư Thiên khác”,<br>
+<span lang="pi" class="pali">
+Sace kho panassa evaṃdiṭṭhi hoti: ‘imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā devo vā bhavissāmi devaññataro vā’ti, sāssa hoti micchādiṭṭhi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thời này Seniya, đối với kẻ có tà kiến, Ta nói có một trong hai sanh thú như sau: địa ngục hay bàng sanh.<br>
+<span lang="pi" class="pali">
+Micchādiṭṭhissa kho ahaṃ, seniya, dvinnaṃ gatīnaṃ aññataraṃ gatiṃ vadāmi—nirayaṃ vā tiracchānayoniṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Seniya, nếu hạnh con bò được thành tựu, thời được sanh trong loài bò, nếu không được thành tựu, thời được sanh trong địa ngục.”<br>
+<span lang="pi" class="pali">
+Iti kho, seniya, sampajjamānaṃ govataṃ gunnaṃ sahabyataṃ upaneti, vipajjamānaṃ nirayan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, Puṇṇa người Koliya, hành trì hạnh con bò, khóc than, chảy nước mắt.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, puṇṇo koliyaputto govatiko parodi, assūni pavattesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn nói với lõa thể Seniya, hành trì hạnh con chó:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā acelaṃ seniyaṃ kukkuravatikaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Seniya, Ta đã không chấp nhận (câu hỏi) của Ông và đã nói:<br>
+<span lang="pi" class="pali">
+“etaṃ kho te ahaṃ, seniya, nālatthaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi vừa rồi Seniya, hãy dừng lại đây, chớ có hỏi Ta nữa”.<br>
+<span lang="pi" class="pali">
+Alaṃ, seniya, tiṭṭhatetaṃ; mā maṃ etaṃ pucchī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, con khóc như vậy không phải vì lời Thế Tôn nói về con.<br>
+<span lang="pi" class="pali">
+“Nāhaṃ, bhante, etaṃ rodāmi yaṃ maṃ bhagavā evamāha;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng vì, bạch Thế Tôn, con đã chấp nhận và hành trì hạnh con bò này trong một thời gian dài.<br>
+<span lang="pi" class="pali">
+api ca me idaṃ, bhante, govataṃ dīgharattaṃ samattaṃ samādinnaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, con có lòng tin tưởng đối với Thế Tôn:<br>
+<span lang="pi" class="pali">
+Evaṃ pasanno ahaṃ, bhante, bhagavati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn có thể thuyết pháp cho con để con có thể từ bỏ hạnh con bò này và để lõa thể Seniya, hành trì hạnh con chó, có thể bỏ hạnh con chó này.”<br>
+<span lang="pi" class="pali">
+pahoti bhagavā tathā dhammaṃ desetuṃ yathā ahaṃ cevimaṃ govataṃ pajaheyyaṃ, ayañceva acelo seniyo kukkuravatiko taṃ kukkuravataṃ pajaheyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Puṇṇa, hãy nghe và khéo tác ý, Ta sẽ nói.”<br>
+<span lang="pi" class="pali">
+“Tena hi, puṇṇa, suṇāhi, sādhukaṃ manasi karohi, bhāsissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” Puṇṇa người Koliya vâng đáp Thế Tôn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho puṇṇo koliyaputto govatiko bhagavato paccassosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Puṇṇa có bốn loại nghiệp này, Ta đã tự chứng tri, chứng ngộ và tuyên thuyết.<br>
+<span lang="pi" class="pali">
+“Cattārimāni, puṇṇa, kammāni mayā sayaṃ abhiññā sacchikatvā paveditāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Katamāni cattāri?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Puṇṇa, có nghiệp đen đưa đến quả báo đen,<br>
+<span lang="pi" class="pali">
+Atthi, puṇṇa, kammaṃ kaṇhaṃ kaṇhavipākaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này Puṇṇa, có nghiệp trắng đưa đến quả báo trắng,<br>
+<span lang="pi" class="pali">
+atthi, puṇṇa, kammaṃ sukkaṃ sukkavipākaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này Puṇṇa, có nghiệp đen trắng đưa đến quả báo đen trắng,<br>
+<span lang="pi" class="pali">
+atthi, puṇṇa, kammaṃ kaṇhasukkaṃ kaṇhasukkavipākaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+này Puṇṇa, có nghiệp không đen trắng đưa đến quả báo không đen trắng, nghiệp đưa đến sự đoạn tận các nghiệp.<br>
+<span lang="pi" class="pali">
+atthi, puṇṇa, kammaṃ akaṇhaṃ asukkaṃ akaṇhaasukkavipākaṃ, kammakkhayāya saṃvattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Puṇṇa, thế nào là nghiệp đen đưa đến quả báo đen?<br>
+<span lang="pi" class="pali">
+Katamañca, puṇṇa, kammaṃ kaṇhaṃ kaṇhavipākaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Puṇṇa có người tạo ra thân hành có tổn hại, tạo ra khẩu hành có tổn hại, tạo ra ý hành có tổn hại.<br>
+<span lang="pi" class="pali">
+Idha, puṇṇa, ekacco sabyābajjhaṃ kāyasaṅkhāraṃ abhisaṅkharoti, sabyābajjhaṃ vacīsaṅkhāraṃ abhisaṅkharoti, sabyābajjhaṃ manosaṅkhāraṃ abhisaṅkharoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tạo ra thân hành có tổn hại, khẩu hành có tổn hại, ý hành có tổn hại, vị này được sanh vào thế giới có tổn hại.<br>
+<span lang="pi" class="pali">
+So sabyābajjhaṃ kāyasaṅkhāraṃ abhisaṅkharitvā, sabyābajjhaṃ vacīsaṅkhāraṃ abhisaṅkharitvā, sabyābajjhaṃ manosaṅkhāraṃ abhisaṅkharitvā, sabyābajjhaṃ lokaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì phải sanh vào thế giới có tổn hại, vị này cảm xúc những cảm xúc có tổn hại.<br>
+<span lang="pi" class="pali">
+Tamenaṃ sabyābajjhaṃ lokaṃ upapannaṃ samānaṃ sabyābajjhā phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do cảm xúc những cảm xúc có tổn hại, vị này cảm thọ những cảm thọ có tổn hại, thuần nhất khổ thọ, như các chúng sanh trong địa ngục.<br>
+<span lang="pi" class="pali">
+So sabyābajjhehi phassehi phuṭṭho samāno sabyābajjhaṃ vedanaṃ vedeti ekantadukkhaṃ, seyyathāpi sattā nerayikā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Puṇṇa, là sự sanh khởi của một chúng sanh tùy thuộc ở chúng sanh,<br>
+<span lang="pi" class="pali">
+Iti kho, puṇṇa, bhūtā bhūtassa upapatti hoti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chúng sanh ấy sanh khởi tùy thuộc hành động của mình,<br>
+<span lang="pi" class="pali">
+yaṃ karoti tena upapajjati,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và khi chúng sanh ấy đã sanh, thời các cảm xúc kích thích mình.<br>
+<span lang="pi" class="pali">
+upapannamenaṃ phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Puṇṇa, Ta nói: “Các chúng sanh là thừa tự hạnh nghiệp (của mình)”.<br>
+<span lang="pi" class="pali">
+Evampāhaṃ, puṇṇa, ‘kammadāyādā sattā’ti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Puṇṇa, được gọi là nghiệp đen đưa đến quả báo đen.<br>
+<span lang="pi" class="pali">
+Idaṃ vuccati, puṇṇa, kammaṃ kaṇhaṃ kaṇhavipākaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Puṇṇa, thế nào là nghiệp trắng đưa đến quả báo trắng?<br>
+<span lang="pi" class="pali">
+Katamañca, puṇṇa, kammaṃ sukkaṃ sukkavipākaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Puṇṇa, có người làm thân hành không không có tổn hại, làm khẩu hành không có tổn hại, làm ý hành không không có tổn hại.<br>
+<span lang="pi" class="pali">
+Idha, puṇṇa, ekacco abyābajjhaṃ kāyasaṅkhāraṃ abhisaṅkharoti, abyābajjhaṃ vacīsaṅkhāraṃ abhisaṅkharoti, abyābajjhaṃ manosaṅkhāraṃ abhisaṅkharoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi làm thân hành không không có tổn hại, khẩu hành không không có tổn hại, ý hành không không có tổn hại, vị này được sanh vào thế giới không không có tổn hại.<br>
+<span lang="pi" class="pali">
+So abyābajjhaṃ kāyasaṅkhāraṃ abhisaṅkharitvā, abyābajjhaṃ vacīsaṅkhāraṃ abhisaṅkharitvā, abyābajjhaṃ manosaṅkhāraṃ abhisaṅkharitvā abyābajjhaṃ lokaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì phải sanh vào thế giới không không có tổn hại, vị này cảm xúc những cảm xúc không không có tổn hại.<br>
+<span lang="pi" class="pali">
+Tamenaṃ abyābajjhaṃ lokaṃ upapannaṃ samānaṃ abyābajjhā phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do cảm xúc những cảm xúc không không có tổn hại, vị này cảm thọ những cảm thọ không không có tổn hại, thuần nhất lạc thọ, như chư Thiên Subhakinha (Biến Tịnh thiên).<br>
+<span lang="pi" class="pali">
+So abyābajjhehi phassehi phuṭṭho samāno abyābajjhaṃ vedanaṃ vedeti ekantasukhaṃ, seyyathāpi devā subhakiṇhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy này Puṇṇa là sự sanh khởi của một chúng sanh tùy thuộc ở chúng sanh,<br>
+<span lang="pi" class="pali">
+Iti kho, puṇṇa, bhūtā bhūtassa upapatti hoti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chúng sanh ấy sanh khởi tùy thuộc hành động của mình;<br>
+<span lang="pi" class="pali">
+yaṃ karoti tena upapajjati,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và khi chúng sanh ấy đã sanh, thời các cảm xúc kích thích chúng sanh ấy.<br>
+<span lang="pi" class="pali">
+upapannamenaṃ phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Puṇṇa, Ta nói: “Các chúng sanh là thừa tự hạnh nghiệp (của mình)”.<br>
+<span lang="pi" class="pali">
+Evampāhaṃ, puṇṇa, ‘kammadāyādā sattā’ti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Puṇṇa, được gọi là nghiệp trắng đưa đến quả báo trắng.<br>
+<span lang="pi" class="pali">
+Idaṃ vuccati, puṇṇa, kammaṃ sukkaṃ sukkavipākaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Puṇṇa, thế nào là nghiệp đen trắng đưa đến quả báo đen trắng?<br>
+<span lang="pi" class="pali">
+Katamañca, puṇṇa, kammaṃ kaṇhasukkaṃ kaṇhasukkavipākaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Puṇṇa, có người làm các thân hành có tổn hại và không tổn hại, các khẩu hành có tổn hại và không tổn hại, các ý hành có tổn hại và không tổn hại.<br>
+<span lang="pi" class="pali">
+Idha, puṇṇa, ekacco sabyābajjhampi abyābajjhampi kāyasaṅkhāraṃ abhisaṅkharoti, sabyābajjhampi abyābajjhampi vacīsaṅkhāraṃ abhisaṅkharoti, sabyābajjhampi abyābajjhampi manosaṅkhāraṃ abhisaṅkharoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi làm các thân hành có tổn hại và không tổn hại, khẩu hành có tổn hại và không tổn hại, ý hành có tổn hại và không tổn hại, vị này được sanh vào thế giới có tổn hại và không tổn hại.<br>
+<span lang="pi" class="pali">
+So sabyābajjhampi abyābajjhampi kāyasaṅkhāraṃ abhisaṅkharitvā, sabyābajjhampi abyābajjhampi vacīsaṅkhāraṃ abhisaṅkharitvā, sabyābajjhampi abyābajjhampi manosaṅkhāraṃ abhisaṅkharitvā sabyābajjhampi abyābajjhampi lokaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì phải sanh vào thế giới có tổn hại và không tổn hại, vị này cảm xúc những cảm xúc có tổn hại và không tổn hại.<br>
+<span lang="pi" class="pali">
+Tamenaṃ sabyābajjhampi abyābajjhampi lokaṃ upapannaṃ samānaṃ sabyābajjhāpi abyābajjhāpi phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do cảm xúc những cảm xúc có tổn hại và không tổn hại, vị này cảm thọ những cảm thọ có tổn hại và không tổn hại, có lạc thọ khổ thọ xen lẫn, như một số loài Người, một số chư Thiên và một số chúng sanh trong đọa xứ.<br>
+<span lang="pi" class="pali">
+So sabyābajjhehipi abyābajjhehipi phassehi phuṭṭho samāno sabyābajjhampi abyābajjhampi vedanaṃ vedeti vokiṇṇasukhadukkhaṃ, seyyathāpi manussā ekacce ca devā ekacce ca vinipātikā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Puṇṇa là sự sanh khởi của một chúng sanh tùy thuộc ở chúng sanh,<br>
+<span lang="pi" class="pali">
+Iti kho, puṇṇa, bhūtā bhūtassa upapatti hoti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chúng sanh ấy sanh khởi tùy thuộc hành động của mình;<br>
+<span lang="pi" class="pali">
+yaṃ karoti tena upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và khi chúng sanh ấy đã sanh, thời các cảm xúc kích thích chúng sanh ấy.<br>
+<span lang="pi" class="pali">
+Upapannamenaṃ phassā phusanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Puṇṇa, Ta nói: “Các chúng sanh là thừa tự hạnh nghiệp (của mình)”.<br>
+<span lang="pi" class="pali">
+Evampāhaṃ, puṇṇa, ‘kammadāyādā sattā’ti vadāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy này Puṇṇa, được gọi là nghiệp đen trắng đưa đến quả báo đen trắng.<br>
+<span lang="pi" class="pali">
+Idaṃ vuccati, puṇṇa, kammaṃ kaṇhasukkaṃ kaṇhasukkavipākaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Puṇṇa, thế nào là nghiệp không đen trắng, đưa đến quả báo không đen trắng, nghiệp đưa đến sự đoạn tận các nghiệp?<br>
+<span lang="pi" class="pali">
+Katamañca, puṇṇa, kammaṃ akaṇhaṃ asukkaṃ akaṇhaasukkavipākaṃ, kammakkhayāya saṃvattati?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Puṇṇa chỗ nào có ý chí (Cetana: Tư tâm sở) đoạn trừ nghiệp đen đưa đến quả báo đen, chỗ nào có ý chí đoạn trừ nghiệp trắng đưa đến quả báo trắng, chỗ nào có ý chí đoạn trừ nghiệp đen trắng đưa đến quả báo đen trắng.<br>
+<span lang="pi" class="pali">
+Tatra, puṇṇa, yamidaṃ kammaṃ kaṇhaṃ kaṇhavipākaṃ tassa pahānāya yā cetanā, yamidaṃ kammaṃ sukkaṃ sukkavipākaṃ tassa pahānāya yā cetanā, yamidaṃ kammaṃ kaṇhasukkaṃ kaṇhasukkavipākaṃ tassa pahānāya yā cetanā—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Puṇṇa, chỗ nào có ý chí như vậy, này Puṇṇa, được gọi là nghiệp không đen trắng đưa đến quả báo không đen trắng, nghiệp đưa đến sự đoạn tận các nghiệp.<br>
+<span lang="pi" class="pali">
+idaṃ vuccati, puṇṇa, kammaṃ akaṇhaṃ asukkaṃ akaṇhaasukkavipākaṃ, kammakkhayāya saṃvattatīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Puṇṇa, bốn loại nghiệp này, Ta đã tự chứng tri, chứng ngộ và tuyên thuyết.”<br>
+<span lang="pi" class="pali">
+Imāni kho, puṇṇa, cattāri kammāni mayā sayaṃ abhiññā sacchikatvā paveditānī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, Puṇṇa người Koliya, hành trì hạnh con bò bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, puṇṇo koliyaputto govatiko bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, bạch Thế Tôn! Thật vi diệu thay, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">
+“abhikkantaṃ, bhante, abhikkantaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho những người đi lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy, Chánh pháp đã được Thế Tôn dùng nhiều phương tiện trình bày giải thích. Con xin quy y Thế Tôn, quy y Pháp và quy y chúng Tỷ-kheo Tăng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhante ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong Thế Tôn nhận con làm cư sĩ, từ nay trở đi cho đến mạng chung, con trọn đời quy ngưỡng.”<br>
+<span lang="pi" class="pali">
+upāsakaṃ maṃ bhagavā dhāretu ajjatagge pāṇupetaṃ saraṇaṃ gatan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn lõa thể Seniya, hành trì hạnh con chó, bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Acelo pana seniyo kukkuravatiko bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, bạch Thế Tôn ! Thật vi diệu thay, bạch Thế Tôn !<br>
+<span lang="pi" class="pali">
+“abhikkantaṃ, bhante, abhikkantaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho những người đi lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc. Cũng vậy, Chánh pháp đã được Thế Tôn dùng nhiều phương tiện trình bày giải thích.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhante ...pe... pakāsito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con xin quy y Thế Tôn, quy y Pháp và quy y chúng Tỷ-kheo Tăng.<br>
+<span lang="pi" class="pali">
+Esāhaṃ, bhante, bhagavantaṃ saraṇaṃ gacchāmi dhammañca bhikkhusaṅghañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong Thế Tôn cho con được xuất gia với Thế Tôn, mong cho con thọ đại giới.”<br>
+<span lang="pi" class="pali">
+Labheyyāhaṃ, bhante, bhagavato santike pabbajjaṃ, labheyyaṃ upasampadan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Seniya, ai trước kia là ngoại đạo nay muốn xuất gia, muốn thọ đại giới trong Pháp và Luật này phải sống bốn tháng biệt trú. Sau khi sống bốn tháng biệt trú, chúng Tăng nếu đồng ý sẽ cho xuất gia, cho thọ đại giới để thành vị Tỷ-kheo.<br>
+<span lang="pi" class="pali">
+“Yo kho, seniya, aññatitthiyapubbo imasmiṃ dhammavinaye ākaṅkhati pabbajjaṃ, ākaṅkhati upasampadaṃ so cattāro māse parivasati. Catunnaṃ māsānaṃ accayena āraddhacittā bhikkhū pabbājenti, upasampādenti bhikkhubhāvāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng Ta nhận thấy ở đây là tánh con người sai biệt nhau.”<br>
+<span lang="pi" class="pali">
+Api ca mettha puggalavemattatā viditā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, nếu những người xưa kia là ngoại đạo nay muốn xuất gia, muốn thọ đại giới trong pháp và luật này, phải sống bốn tháng biệt trú, sau khi sống bốn tháng biệt trú, chúng Tăng nếu đồng ý sẽ cho xuất gia, cho thọ đại giới, để thành vị Tỷ-kheo, thời con sẽ xin sống biệt trú bốn năm. Sau khi sống biệt trú bốn năm, nếu chư Tỷ-kheo đồng ý, mong chư Tỷ-kheo hãy xuất gia cho con, thọ đại giới cho con để thành vị Tỷ-kheo.”<br>
+<span lang="pi" class="pali">
+“Sace, bhante, aññatitthiyapubbā imasmiṃ dhammavinaye ākaṅkhantā pabbajjaṃ ākaṅkhantā upasampadaṃ te cattāro māse parivasanti catunnaṃ māsānaṃ accayena āraddhacittā bhikkhū pabbājenti upasampādenti bhikkhubhāvāya, ahaṃ cattāri vassāni parivasissāmi catunnaṃ vassānaṃ accayena āraddhacittā bhikkhū pabbājentu, upasampādentu bhikkhubhāvāyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lõa thể Seniya, hành trì hạnh con chó, được xuất gia với Thế Tôn, được thọ đại giới. Thọ đại giới không bao lâu, Tôn giả Seniya sống một mình an tịnh, không phóng dật, nhiệt tâm, tinh cần.<br>
+<span lang="pi" class="pali">
+Alattha kho acelo seniyo kukkuravatiko bhagavato santike pabbajjaṃ, alattha upasampadaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và không bao lâu vị này chứng được mục đích tối cao mà con cháu các lương gia đã xuất gia, từ bỏ gia đình, sống không gia đình hướng đến. Ðó là vô thượng phạm hạnh ngay trong hiện tại, tự mình chứng tri, chứng ngộ, chứng đạt và an trú.<br>
+<span lang="pi" class="pali">
+Acirūpasampanno kho panāyasmā seniyo eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto nacirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, Tadanuttaraṃ—brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy biết: “Sanh đã tận, Phạm hạnh đã thành, những gì nên làm đã làm, sau đời này sẽ không có đời sống khác nữa”.<br>
+<span lang="pi" class="pali">
+“Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā”ti abbhaññāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Tôn giả Seniya trở thành một vị A-la-hán nữa.<br>
+<span lang="pi" class="pali">
+Aññataro kho panāyasmā seniyo arahataṃ ahosīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Kukkuravatikasuttaṃ niṭṭhitaṃ sattamaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn56.html#content"></a><a id="next-sutta" href="./mn58.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

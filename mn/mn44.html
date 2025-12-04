@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 44          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 44<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 44<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Tiểu Kinh Phương Quảng<br>
+<span lang="pi" class="pali">
+Cūḷavedallasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở Rājagaha (Vương Xá), tai Veluvana (Trúc Lâm), chỗ ăn của các con Sóc.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi nam cư sĩ Visākha đến chỗ Tỷ-kheo-ni Dhammadinnā ở, sau khi đến, đảnh lễ Tỷ-kheo-ni Dhammadinnā rồi ngồi xuống một bên. Sau khi ngồi xuống một bên, nam cư sĩ Visākha thưa với Tỷ-kheo ni Dhammadinnā:<br>
+<span lang="pi" class="pali">
+Atha kho visākho upāsako yena dhammadinnā bhikkhunī tenupasaṅkami; upasaṅkamitvā dhammadinnaṃ bhikkhuniṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho visākho upāsako dhammadinnaṃ bhikkhuniṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, tự thân, tự thân, (Sakkaya), được gọi là như vậy’.<br>
+<span lang="pi" class="pali">
+“‘sakkāyo sakkāyo’ti, ayye, vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ni sư, Thế Tôn gọi tự thân là như thế nào?”<br>
+<span lang="pi" class="pali">
+Katamo nu kho, ayye, sakkāyo vutto bhagavatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, Thế Tôn gọi năm thủ uẩn là tự thân,<br>
+<span lang="pi" class="pali">
+“Pañca kho ime, āvuso visākha, upādānakkhandhā sakkāyo vutto bhagavatā,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tức là sắc thủ uẩn, thọ thủ uẩn, tưởng thủ uẩn, hành thủ uẩn và thức thủ uẩn.<br>
+<span lang="pi" class="pali">
+seyyathidaṃ—rūpupādānakkhandho, vedanupādānakkhandho, saññupādānakkhandho, saṅkhārupādānakkhandho, viññāṇupādānakkhandho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, năm thủ uẩn này, Thế Tôn gọi là tự thân.”<br>
+<span lang="pi" class="pali">
+Ime kho, āvuso visākha, pañcupādānakkhandhā sakkāyo vutto bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lành thay, thưa Ni sư. Nam cư sĩ Visākha hoan hỷ, tín thọ lời Tỷ-kheo-ni Dhammadinnā nói, rồi hỏi Tỷ-kheo-ni Dhammadinnā thêm một câu hỏi nữa:<br>
+<span lang="pi" class="pali">
+“Sādhayye”ti kho visākho upāsako dhammadinnāya bhikkhuniyā bhāsitaṃ abhinanditvā anumoditvā dhammadinnaṃ bhikkhuniṃ uttariṃ pañhaṃ apucchi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tự thân tập khởi, tự thân tập khởi, thưa Ni sư, được gọi là như vậy’.<br>
+<span lang="pi" class="pali">
+“‘sakkāyasamudayo sakkāyasamudayo’ti, ayye, vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ni sư, Thế Tôn gọi tự thân tập khởi (Sakkaya samudaya) là như thế nào?”<br>
+<span lang="pi" class="pali">
+Katamo nu kho, ayye, sakkāyasamudayo vutto bhagavatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, khát ái này đưa đến tái sanh, câu hữu với hỷ và tham, tìm cầu hỷ lạc chỗ này chỗ kia,<br>
+<span lang="pi" class="pali">
+“Yāyaṃ, āvuso visākha, taṇhā ponobbhavikā nandīrāgasahagatā tatratatrābhinandinī, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tức là dục ái, hữu ái và phi hữu ái.<br>
+<span lang="pi" class="pali">
+kāmataṇhā bhavataṇhā vibhavataṇhā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, khát ái này, Thế Tôn gọi là tự thân tập khởi.”<br>
+<span lang="pi" class="pali">
+ayaṃ kho, āvuso visākha, sakkāyasamudayo vutto bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tự thân diệt, tự thân diệt, thưa Ni sư, được gọi là như vậy.<br>
+<span lang="pi" class="pali">
+“‘Sakkāyanirodho sakkāyanirodho’ti, ayye, vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn gọi tự thân diệt là như thế nào?”<br>
+<span lang="pi" class="pali">
+Katamo nu kho, ayye, sakkāyanirodho vutto bhagavatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, sự đoạn diệt, không tham đắm, không có dư tàn của khát ái ấy, sự xả ly, sự vất bỏ, sự giải thoát, sự vô chấp.<br>
+<span lang="pi" class="pali">
+“Yo kho, āvuso visākha, tassāyeva taṇhāya asesavirāganirodho cāgo paṭinissaggo mutti anālayo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, sự đoạn diệt này, Thế Tôn gọi là tự thân diệt.”<br>
+<span lang="pi" class="pali">
+ayaṃ kho, āvuso visākha, sakkāyanirodho vutto bhagavatā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, tự thân diệt đạo, tự thân diệt đạo, được gọi là như vậy.<br>
+<span lang="pi" class="pali">
+“‘Sakkāyanirodhagāminī paṭipadā sakkāyanirodhagāminī paṭipadā’ti, ayye, vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ni sư, Thế Tôn gọi tự thân diệt đạo là như thế nào?”<br>
+<span lang="pi" class="pali">
+Katamā nu kho, ayye, sakkāyanirodhagāminī paṭipadā vuttā bhagavatā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, Con đường Thánh tám ngành này, Thế Tôn gọi là tự thân diệt đạo, tức là:<br>
+<span lang="pi" class="pali">
+“Ayameva kho, āvuso visākha, ariyo aṭṭhaṅgiko maggo sakkāyanirodhagāminī paṭipadā vuttā bhagavatā, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chánh tri kiến, chánh tư duy, chánh ngữ, chánh nghiệp, chánh mạng, chánh tinh tấn, chánh niệm, chánh định.”<br>
+<span lang="pi" class="pali">
+sammādiṭṭhi sammāsaṅkappo sammāvācā sammākammanto sammāājīvo sammāvāyāmo sammāsati sammāsamādhī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, thủ này tức là năm thủ uẩn kia hay thủ này khác với năm thủ uẩn?”<br>
+<span lang="pi" class="pali">
+“Taññeva nu kho, ayye, upādānaṃ te pañcupādānakkhandhā udāhu aññatra pañcahupādānakkhandhehi upādānan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Không phải, Hiền giả Visākha. Thủ này tức là năm thủ uẩn kia, thủ này không khác với năm thủ uẩn kia.<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso visākha, taññeva upādānaṃ te pañcupādānakkhandhā, nāpi aññatra pañcahupādānakkhandhehi upādānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, phàm có dục tham đối với năm thủ uẩn, tức là (chấp) thủ đối với chúng ở đây vậy.”<br>
+<span lang="pi" class="pali">
+Yo kho, āvuso visākha, pañcasu upādānakkhandhesu chandarāgo taṃ tattha upādānan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, thế nào là thân kiến?”<br>
+<span lang="pi" class="pali">
+“Kathaṃ panāyye, sakkāyadiṭṭhi hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, Hiền giả Visākha, kẻ vô văn phàm phu không đến yết kiến các bậc Thánh, không thuần thục pháp các bậc Thánh, không tu tập pháp các bậc Thánh, không đến yết kiến các bậc Chân nhân, không thuần thục pháp các bậc Chân nhân, không tu tập pháp các bậc Chân nhân,<br>
+<span lang="pi" class="pali">
+“Idhāvuso visākha, assutavā puthujjano, ariyānaṃ adassāvī ariyadhammassa akovido ariyadhamme avinīto, sappurisānaṃ adassāvī sappurisadhammassa akovido sappurisadhamme avinīto,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+xem sắc là tự ngã hay xem tự ngã là có sắc, hay xem sắc là trong tự ngã hay xem tự ngã là trong sắc;<br>
+<span lang="pi" class="pali">
+rūpaṃ attato samanupassati, rūpavantaṃ vā attānaṃ, attani vā rūpaṃ, rūpasmiṃ vā attānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+xem thọ là tự ngã, hay xem tự ngã là có thọ, hay xem thọ là trong tự ngã, hay xem tự ngã là trong thọ;<br>
+<span lang="pi" class="pali">
+Vedanaṃ ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+xem tưởng là tự ngã, hay xem tự ngã là có tưởng, hay xem tưởng là trong tự ngã, hay xem tự ngã là trong tưởng;<br>
+<span lang="pi" class="pali">
+saññaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+xem hành là tự ngã, xem tự ngã là có hành, hay xem hành là trong tự ngã, hay xem tự ngã là trong hành;<br>
+<span lang="pi" class="pali">
+saṅkhāre …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+xem thức là tự ngã, hay xem tự ngã là có thức, hay xem thức là trong tự ngã, hay xem tự ngã là trong thức.<br>
+<span lang="pi" class="pali">
+viññāṇaṃ attato samanupassati, viññāṇavantaṃ vā attānaṃ, attani vā viññāṇaṃ, viññāṇasmiṃ vā attānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, Hiền giả Visākha, là thân kiến.”<br>
+<span lang="pi" class="pali">
+Evaṃ kho, āvuso visākha, sakkāyadiṭṭhi hotī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, thế nào là không phải thân kiến?”<br>
+<span lang="pi" class="pali">
+“Kathaṃ panāyye, sakkāyadiṭṭhi na hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, Hiền giả Visākha, vị Ða văn Thánh đệ tử đến yết kiến các bậc Thánh, thuần thục pháp các bậc Thánh, tu tập pháp các bậc Thánh, đến yết kiến các bậc Chân nhân, thuần thục pháp các bậc Chân nhân, tu tập pháp các bậc Chân nhân,<br>
+<span lang="pi" class="pali">
+“Idhāvuso visākha, sutavā ariyasāvako, ariyānaṃ dassāvī ariyadhammassa kovido ariyadhamme suvinīto, sappurisānaṃ dassāvī sappurisadhammassa kovido sappurisadhamme suvinīto,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không xem sắc là tự ngã, không xem tự ngã là có sắc, không xem sắc là trong tự ngã, không xem tự ngã là trong sắc;<br>
+<span lang="pi" class="pali">
+na rūpaṃ attato samanupassati, na rūpavantaṃ vā attānaṃ, na attani vā rūpaṃ, na rūpasmiṃ vā attānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không xem thọ là tự ngã, không xem tự ngã là có thọ, không xem thọ là trong tự ngã, không xem tự ngã là trong thọ;<br>
+<span lang="pi" class="pali">
+Na vedanaṃ ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không xem tưởng là tự ngã, không xem tự ngã là có tưởng, không xem tưởng là trong tự ngã, không xem tự ngã là trong tưởng;<br>
+<span lang="pi" class="pali">
+na saññaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không xem các hành là tự ngã, không xem tự ngã là có các hành, không xem các hành là trong tự ngã, không xem tự ngã là trong các hành;<br>
+<span lang="pi" class="pali">
+na saṅkhāre ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không xem thức là tự ngã, không xem tự ngã là có thức, không xem thức là trong tự ngã, không xem tự ngã là trong thức.<br>
+<span lang="pi" class="pali">
+na viññāṇaṃ attato samanupassati, na viññāṇavantaṃ vā attānaṃ, na attani vā viññāṇaṃ, na viññāṇasmiṃ vā attānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, Hiền giả Visākha, là không có thân kiến.”<br>
+<span lang="pi" class="pali">
+Evaṃ kho, āvuso visākha, sakkāyadiṭṭhi na hotī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, thế nào là Thánh đạo Tám ngành?”<br>
+<span lang="pi" class="pali">
+“Katamo panāyye, ariyo aṭṭhaṅgiko maggo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, đây là Thánh đạo Tám ngành, tức là<br>
+<span lang="pi" class="pali">
+“Ayameva kho, āvuso visākha, ariyo aṭṭhaṅgiko maggo, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chánh tri kiến, chánh tư duy, chánh ngữ, chánh nghiệp, chánh mạng, chánh tinh tấn, chánh niệm, chánh định.”<br>
+<span lang="pi" class="pali">
+sammādiṭṭhi sammāsaṅkappo sammāvācā sammākammanto sammāājīvo sammāvāyāmo sammāsati sammāsamādhī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, Thánh đạo Tám ngành này là hữu vi hay vô vi?”<br>
+<span lang="pi" class="pali">
+“Ariyo panāyye, aṭṭhaṅgiko maggo saṅkhato udāhu asaṅkhato”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, Thánh đạo Tám ngành này là hữu vi.”<br>
+<span lang="pi" class="pali">
+“Ariyo kho, āvuso visākha, aṭṭhaṅgiko maggo saṅkhato”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, ba uẩn được Thánh đạo Tám ngành thâu nhiếp hay Thánh đạo Tám ngành được ba uẩn thâu nhiếp?”<br>
+<span lang="pi" class="pali">
+“Ariyena nu kho, ayye, aṭṭhaṅgikena maggena tayo khandhā saṅgahitā udāhu tīhi khandhehi ariyo aṭṭhaṅgiko maggo saṅgahito”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, ba uẩn không bị Thánh đạo Tám ngành thâu nhiếp; Hiền giả Visākha, Thánh đạo Tám ngành bị ba uẩn thâu nhiếp.<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso visākha, ariyena aṭṭhaṅgikena maggena tayo khandhā saṅgahitā; tīhi ca kho, āvuso visākha, khandhehi ariyo aṭṭhaṅgiko maggo saṅgahito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, chánh ngữ, chánh nghiệp và chánh mạng, những pháp này được thâu nhiếp trong giới uẩn.<br>
+<span lang="pi" class="pali">
+Yā cāvuso visākha, sammāvācā yo ca sammākammanto yo ca sammāājīvo ime dhammā sīlakkhandhe saṅgahitā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chánh tinh tấn, chánh niệm và chánh định, những pháp này được thâu nhiếp trong định uẩn.<br>
+<span lang="pi" class="pali">
+Yo ca sammāvāyāmo yā ca sammāsati yo ca sammāsamādhi ime dhammā samādhikkhandhe saṅgahitā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chánh tri kiến và chánh tư duy, những pháp này được thâu nhiếp trong tuệ uẩn.”<br>
+<span lang="pi" class="pali">
+Yā ca sammādiṭṭhi yo ca sammāsaṅkappo, ime dhammā paññākkhandhe saṅgahitā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư thế nào là định, thế nào là định tướng, thế nào là định tư cụ, thế nào là định tu tập?”<br>
+<span lang="pi" class="pali">
+“Katamo panāyye, samādhi, katame dhammā samādhinimittā, katame dhammā samādhiparikkhārā, katamā samādhibhāvanā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, nhất tâm là định,<br>
+<span lang="pi" class="pali">
+“Yā kho, āvuso visākha, cittassa ekaggatā ayaṃ samādhi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn Niệm Xứ là định tướng,<br>
+<span lang="pi" class="pali">
+cattāro satipaṭṭhānā samādhinimittā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn Tinh cần là định tư cụ,<br>
+<span lang="pi" class="pali">
+cattāro sammappadhānā samādhiparikkhārā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sự luyện tập, sự tu tập, sự tái tu tập của những pháp ấy là định tu tập ở đây vậy.”<br>
+<span lang="pi" class="pali">
+Yā tesaṃyeva dhammānaṃ āsevanā bhāvanā bahulīkammaṃ, ayaṃ ettha samādhibhāvanā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, có bao nhiêu hành?”<br>
+<span lang="pi" class="pali">
+“Kati panāyye, saṅkhārā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả, có ba loại hành này: thân hành, khẩu hành, và tâm hành.”<br>
+<span lang="pi" class="pali">
+“Tayome, āvuso visākha, saṅkhārā—kāyasaṅkhāro, vacīsaṅkhāro, cittasaṅkhāro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, thế nào là thân hành, thế nào là khẩu hành, thế nào là tâm hành?”<br>
+<span lang="pi" class="pali">
+“Katamo panāyye, kāyasaṅkhāro, katamo vacīsaṅkhāro, katamo cittasaṅkhāro”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thở vô, thở ra, Hiền giả Visākha, là thân hành, tầm tứ là khẩu hành, tưởng và thọ là tâm hành.”<br>
+<span lang="pi" class="pali">
+“Assāsapassāsā kho, āvuso visākha, kāyasaṅkhāro, vitakkavicārā vacīsaṅkhāro, saññā ca vedanā ca cittasaṅkhāro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, vì sao thở vô thở ra là thân hành, vì sao tầm tứ là khẩu hành, vì sao tưởng và thọ là tâm hành?”<br>
+<span lang="pi" class="pali">
+“Kasmā panāyye, assāsapassāsā kāyasaṅkhāro, kasmā vitakkavicārā vacīsaṅkhāro, kasmā saññā ca vedanā ca cittasaṅkhāro”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thở vô, thở ra, Hiền giả Visākha, thuộc về thân, những pháp này lệ thuộc với thân, nên thở vô thở ra thuộc về thân hành.<br>
+<span lang="pi" class="pali">
+“Assāsapassāsā kho, āvuso visākha, kāyikā ete dhammā kāyappaṭibaddhā, tasmā assāsapassāsā kāyasaṅkhāro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, trước phải tầm và tứ rồi sau mới phát lời nói, nên tầm tứ thuộc về khẩu hành.<br>
+<span lang="pi" class="pali">
+Pubbe kho, āvuso visākha, vitakketvā vicāretvā pacchā vācaṃ bhindati, tasmā vitakkavicārā vacīsaṅkhāro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tưởng và thọ và tâm sở, các pháp này lệ thuộc với tâm, nên tưởng và thọ thuộc về tâm hành.”<br>
+<span lang="pi" class="pali">
+Saññā ca vedanā ca cetasikā ete dhammā cittappaṭibaddhā, tasmā saññā ca vedanā ca cittasaṅkhāro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, như thế nào là chứng nhập Diệt thọ tưởng định?”<br>
+<span lang="pi" class="pali">
+“Kathaṃ panāyye, saññāvedayitanirodhasamāpatti hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, Tỷ-kheo chứng nhập Diệt thọ tưởng định, vị ấy không nghĩ rằng:<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso visākha, saññāvedayitanirodhaṃ samāpajjantassa bhikkhuno evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôi sẽ chứng nhập Diệt thọ tưởng định”, hay “Tôi đang chứng nhập Diệt thọ tưởng định” hay “Tôi đã chứng nhập Diệt thọ tưởng định”.<br>
+<span lang="pi" class="pali">
+‘ahaṃ saññāvedayitanirodhaṃ samāpajjissan’ti vā, ‘ahaṃ saññāvedayitanirodhaṃ samāpajjāmī’ti vā, ‘ahaṃ saññāvedayitanirodhaṃ samāpanno’ti vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng, tâm của vị này trước đã được tu tập như vậy nên đưa đến trạng thái như vậy.”<br>
+<span lang="pi" class="pali">
+Atha khvāssa pubbeva tathā cittaṃ bhāvitaṃ hoti yaṃ taṃ tathattāya upanetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, Tỷ-kheo chứng nhập Diệt thọ tưởng định, những pháp gì diệt trước, thân hành, hay khẩu hành, hay tâm hành?”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhaṃ samāpajjantassa panāyye, bhikkhuno katame dhammā paṭhamaṃ nirujjhanti—yadi vā kāyasaṅkhāro, yadi vā vacīsaṅkhāro, yadi vā cittasaṅkhāro”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, vị Tỷ-kheo chứng nhập Diệt thọ tưởng định, khẩu hành diệt trước, rồi đến thân hành, rồi đến tâm hành.”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhaṃ samāpajjantassa kho, āvuso visākha, bhikkhuno paṭhamaṃ nirujjhati vacīsaṅkhāro, tato kāyasaṅkhāro, tato cittasaṅkhāro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, làm thế nào xuất khởi Diệt thọ tưởng định?”<br>
+<span lang="pi" class="pali">
+“Kathaṃ panāyye, saññāvedayitanirodhasamāpattiyā vuṭṭhānaṃ hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, vị Tỷ-kheo xuất khởi Diệt thọ tưởng định, không có nghĩ rằng:<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso visākha, saññāvedayitanirodhasamāpattiyā vuṭṭhahantassa bhikkhuno evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôi sẽ xuất khởi Diệt thọ tưởng định”, hay “Tôi đang xuất khởi Diệt thọ tưởng định”, hay “Tôi đã xuất khởi Diệt thọ tưởng định”.<br>
+<span lang="pi" class="pali">
+‘ahaṃ saññāvedayitanirodhasamāpattiyā vuṭṭhahissan’ti vā, ‘ahaṃ saññāvedayitanirodhasamāpattiyā vuṭṭhahāmī’ti vā, ‘ahaṃ saññāvedayitanirodhasamāpattiyā vuṭṭhito’ti vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì rằng tâm của vị này trước đã tu tập như vậy nên đưa đến trạng thái như vậy.”<br>
+<span lang="pi" class="pali">
+Atha khvāssa pubbeva tathā cittaṃ bhāvitaṃ hoti yaṃ taṃ tathattāya upanetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, Tỷ-kheo xuất khởi Diệt thọ tưởng định, những pháp nào khởi lên trước, thân hành, hay khẩu hành hay tâm hành?”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhasamāpattiyā vuṭṭhahantassa panāyye, bhikkhuno katame dhammā paṭhamaṃ uppajjanti—yadi vā kāyasaṅkhāro, yadi vā vacīsaṅkhāro, yadi vā cittasaṅkhāro”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, Tỷ-kheo xuất khởi Diệt thọ tưởng định, tâm hành khởi lên trước nhất, rồi đến thân hành, rồi đến khẩu hành.”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhasamāpattiyā vuṭṭhahantassa kho, āvuso visākha, bhikkhuno paṭhamaṃ uppajjati cittasaṅkhāro, tato kāyasaṅkhāro, tato vacīsaṅkhāro”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, khi Tỷ-kheo xuất khởi Diệt thọ tưởng định, vị ấy cảm giác những xúc nào?”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhasamāpattiyā vuṭṭhitaṃ panāyye, bhikkhuṃ kati phassā phusantī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, khi Tỷ-kheo xuất khởi Diệt thọ tưởng định, vị ấy cảm giác ba loại xúc: không xúc, vô tướng xúc, vô nguyện xúc.”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhasamāpattiyā vuṭṭhitaṃ kho, āvuso visākha, bhikkhuṃ tayo phassā phusanti—suññato phasso, animitto phasso, appaṇihito phasso”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, khi Tỷ-kheo xuất khởi Diệt thọ tưởng định, tâm của vị ấy thiên về gì, hướng về gì, khuynh hướng về gì?”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhasamāpattiyā vuṭṭhitassa panāyye, bhikkhuno kiṃninnaṃ cittaṃ hoti kiṃpoṇaṃ kiṃpabbhāran”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, khi Tỷ-kheo xuất khởi Diệt thọ tưởng định, tâm của vị ấy thiên về độc cư, hướng về độc cư, khuynh hướng về độc cư.”<br>
+<span lang="pi" class="pali">
+“Saññāvedayitanirodhasamāpattiyā vuṭṭhitassa kho, āvuso visākha, bhikkhuno vivekaninnaṃ cittaṃ hoti, vivekapoṇaṃ vivekapabbhāran”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, có bao nhiêu thọ?”<br>
+<span lang="pi" class="pali">
+“Kati panāyye, vedanā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, có ba thọ này, lạc thọ, khổ thọ, bất khổ bất lạc thọ”.<br>
+<span lang="pi" class="pali">
+“Tisso kho imā, āvuso visākha, vedanā—sukhā vedanā, dukkhā vedanā, adukkhamasukhā vedanā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, thế nào là lạc thọ, thế nào là khổ thọ, thế nào là bất khổ bất lạc thọ?”<br>
+<span lang="pi" class="pali">
+“Katamā panāyye, sukhā vedanā, katamā dukkhā vedanā, katamā adukkhamasukhā vedanā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, cái gì được cảm thọ bởi thân hay tâm, một cách khoái lạc, khoái cảm,<br>
+<span lang="pi" class="pali">
+“Yaṃ kho, āvuso visākha, kāyikaṃ vā cetasikaṃ vā sukhaṃ sātaṃ vedayitaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là lạc thọ.<br>
+<span lang="pi" class="pali">
+ayaṃ sukhā vedanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, cái gì được cảm thọ bởi thân hay tâm, một cách đau khổ, nhức nhối,<br>
+<span lang="pi" class="pali">
+Yaṃ kho, āvuso visākha, kāyikaṃ vā cetasikaṃ vā dukkhaṃ asātaṃ vedayitaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là khổ thọ.<br>
+<span lang="pi" class="pali">
+ayaṃ dukkhā vedanā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, cái gì được cảm thọ bởi thân hay tâm không đau khổ, không khoái lạc<br>
+<span lang="pi" class="pali">
+Yaṃ kho, āvuso visākha, kāyikaṃ vā cetasikaṃ vā neva sātaṃ nāsātaṃ vedayitaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là bất khổ bất lạc thọ.”<br>
+<span lang="pi" class="pali">
+ayaṃ adukkhamasukhā vedanā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, đối với lạc thọ, cái gì lạc, cái gì khổ? Ðối với khổ thọ, cái gì khổ, cái gì lạc? Ðối với bất khổ bất lạc thọ, cái gì lạc, cái gì khổ?”<br>
+<span lang="pi" class="pali">
+“Sukhā panāyye, vedanā kiṃsukhā kiṃdukkhā, dukkhā vedanā kiṃsukhā kiṃdukkhā, adukkhamasukhā vedanā kiṃsukhā kiṃdukkhā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, đối với lạc thọ, cái gì trú là lạc, cái gì biến hoại là khổ.<br>
+<span lang="pi" class="pali">
+“Sukhā kho, āvuso visākha, vedanā ṭhitisukhā vipariṇāmadukkhā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với khổ thọ, cái gì trú là khổ, cái gì biến hoại là lạc.<br>
+<span lang="pi" class="pali">
+dukkhā vedanā ṭhitidukkhā vipariṇāmasukhā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với bất khổ bất lạc thọ, có trí là lạc, vô trí là khổ.”<br>
+<span lang="pi" class="pali">
+adukkhamasukhā vedanā ñāṇasukhā aññāṇadukkhā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, trong lạc thọ, có tùy miên gì tồn tại; trong khổ thọ, có tùy miên gì tồn tại; trong bất khổ bất lạc thọ, có tùy miên gì tồn tại?”<br>
+<span lang="pi" class="pali">
+“Sukhāya panāyye, vedanāya kiṃ anusayo anuseti, dukkhāya vedanāya kiṃ anusayo anuseti, adukkhamasukhāya vedanāya kiṃ anusayo anusetī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, trong lạc thọ, tham tùy miên tồn tại; trong khổ thọ, sân tùy miên tồn tại; trong tất cả bất khổ bất lạc thọ, vô minh tùy miên tồn tại..”<br>
+<span lang="pi" class="pali">
+“Sukhāya kho, āvuso visākha, vedanāya rāgānusayo anuseti, dukkhāya vedanāya paṭighānusayo anuseti, adukkhamasukhāya vedanāya avijjānusayo anusetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, có phải trong tất cả lạc thọ, tham tùy miên tồn tại; trong tất cả khổ thọ, sân tùy miên tồn tại; trong tất cả bất khổ bất lạc thọ, vô minh tùy miên tồn tại?”<br>
+<span lang="pi" class="pali">
+“Sabbāya nu kho, ayye, sukhāya vedanāya rāgānusayo anuseti, sabbāya dukkhāya vedanāya paṭighānusayo anuseti, sabbāya adukkhamasukhāya vedanāya avijjānusayo anusetī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, không phải trong tất cả lạc thọ, tham tùy miên tồn tại; không phải trong tất cả khổ thọ, sân tùy miên tồn tại; không phải trong tất cả bất khổ bất lạc thọ, vô minh tùy miên tồn tại.”<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso visākha, sabbāya sukhāya vedanāya rāgānusayo anuseti, na sabbāya dukkhāya vedanāya paṭighānusayo anuseti, na sabbāya adukkhamasukhāya vedanāya avijjānusayo anusetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, trong lạc thọ, cái gì phải từ bỏ. Trong khổ thọ, cái gì phải từ bỏ. Trong bất khổ bất lạc thọ, cái gì phải từ bỏ?”<br>
+<span lang="pi" class="pali">
+“Sukhāya panāyye, vedanāya kiṃ pahātabbaṃ, dukkhāya vedanāya kiṃ pahātabbaṃ, adukkhamasukhāya vedanāya kiṃ pahātabban”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, trong lạc thọ, tham tùy miên phải từ bỏ. Trong khổ thọ, sân tùy miên phải từ bỏ. Trong bất khổ bất lạc thọ, vô minh tùy miên phải từ bỏ.”<br>
+<span lang="pi" class="pali">
+“Sukhāya kho, āvuso visākha, vedanāya rāgānusayo pahātabbo, dukkhāya vedanāya paṭighānusayo pahātabbo, adukkhamasukhāya vedanāya avijjānusayo pahātabbo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, có phải trong tất cả lạc thọ, tham tùy miên phải từ bỏ. Trong tất cả khổ thọ, sân tùy miên phải từ bỏ. Trong tất cả bất khổ bất lạc thọ, vô minh tùy miên phải từ bỏ?”<br>
+<span lang="pi" class="pali">
+“Sabbāya nu kho, ayye, sukhāya vedanāya rāgānusayo pahātabbo, sabbāya dukkhāya vedanāya paṭighānusayo pahātabbo, sabbāya adukkhamasukhāya vedanāya avijjānusayo pahātabbo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, không phải trong tất cả lạc thọ, tham tùy miên phải từ bỏ; trong tất cả khổ thọ, sân tùy miên phải từ bỏ; trong tất cả bất khổ bất lạc thọ, vô minh tùy miên phải từ bỏ.<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso visākha, sabbāya sukhāya vedanāya rāgānusayo pahātabbo, na sabbāya dukkhāya vedanāya paṭighānusayo pahātabbo, na sabbāya adukkhamasukhāya vedanāya avijjānusayo pahātabbo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Hiền giả Visākha, vị Tỷ-kheo ly dục, ly bất thiện pháp, chứng và an trú Thiền thứ nhất, một trạng thái hỷ lạc do ly dục sanh, có tầm và tứ.<br>
+<span lang="pi" class="pali">
+Idhāvuso visākha, bhikkhu vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṃ savicāraṃ vivekajaṃ pītisukhaṃ paṭhamaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy tham đã được từ bỏ, không còn tham tùy miên tồn tại ở đây.<br>
+<span lang="pi" class="pali">
+Rāgaṃ tena pajahati, na tattha rāgānusayo anuseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Hiền giả Visākha, vị Tỷ-kheo suy tư như sau:<br>
+<span lang="pi" class="pali">
+Idhāvuso visākha, bhikkhu iti paṭisañcikkhati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chắc chắn ta sẽ chứng và an trú trong trú xứ mà nay các vị Thánh đang an trú”.<br>
+<span lang="pi" class="pali">
+‘kudāssu nāmāhaṃ tadāyatanaṃ upasampajja viharissāmi yadariyā etarahi āyatanaṃ upasampajja viharantī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì muốn phát nguyện hướng đến các cảnh giải thoát vô thượng, do ước nguyện ấy, khởi lên ưu tư.<br>
+<span lang="pi" class="pali">
+Iti anuttaresu vimokkhesu pihaṃ upaṭṭhāpayato uppajjati pihāppaccayā domanassaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, sân được từ bỏ, không còn sân tùy miên tồn tại ở đây.<br>
+<span lang="pi" class="pali">
+Paṭighaṃ tena pajahati, na tattha paṭighānusayo anuseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Hiền giả Visākha, vị Tỷ-kheo xả lạc và xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và trú Thiền thứ tư, không khổ, không lạc, xả niệm thanh tịnh.<br>
+<span lang="pi" class="pali">
+Idhāvuso visākha, bhikkhu sukhassa ca pahānā, dukkhassa ca pahānā, pubbeva somanassadomanassānaṃ atthaṅgamā, adukkhamasukhaṃ upekkhāsatipārisuddhiṃ catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy vô minh đã được từ bỏ, không còn vô minh tùy miên tồn tại ở đây.”<br>
+<span lang="pi" class="pali">
+Avijjaṃ tena pajahati, na tattha avijjānusayo anusetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, lạc thọ lấy gì làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Sukhāya panāyye, vedanāya kiṃ paṭibhāgo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, lạc thọ lấy khổ thọ làm tương đương.”<br>
+<span lang="pi" class="pali">
+“Sukhāya kho, āvuso visākha, vedanāya dukkhā vedanā paṭibhāgo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, khổ thọ lấy gì làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Dukkhāya pannāyye, vedanāya kiṃ paṭibhāgo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, khổ thọ lấy lạc thọ làm tương đương.”<br>
+<span lang="pi" class="pali">
+“Dukkhāya kho, āvuso visākha, vedanāya sukhā vedanā paṭibhāgo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, bất khổ bất lạc thọ lấy gì làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Adukkhamasukhāya panāyye, vedanāya kiṃ paṭibhāgo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, bất khổ bất lạc thọ lấy vô minh làm tương đương.”<br>
+<span lang="pi" class="pali">
+“Adukkhamasukhāya kho, āvuso visākha, vedanāya avijjā paṭibhāgo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, vô minh lấy gì làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Avijjāya panāyye, kiṃ paṭibhāgo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, vô minh lấy minh làm tương đương.”<br>
+<span lang="pi" class="pali">
+“Avijjāya kho, āvuso visākha, vijjā paṭibhāgo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, minh lấy gì làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Vijjāya panāyye, kiṃ paṭibhāgo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, minh lấy giải thoát làm tương đương.”<br>
+<span lang="pi" class="pali">
+“Vijjāya kho, āvuso visākha, vimutti paṭibhāgo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, giải thoát lấy gì làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Vimuttiyā panāyye, kiṃ paṭibhāgo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, giải thoát lấy Niết-bàn làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Vimuttiyā kho, āvuso visākha, nibbānaṃ paṭibhāgo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ni sư, Niết-bàn lấy gì làm tương đương?”<br>
+<span lang="pi" class="pali">
+“Nibbānassa panāyye, kiṃ paṭibhāgo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hiền giả Visākha, câu hỏi đi quá xa, vượt ra ngoài giới hạn câu trả lời.<br>
+<span lang="pi" class="pali">
+“Accayāsi, āvuso visākha, pañhaṃ, nāsakkhi pañhānaṃ pariyantaṃ gahetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, phạm hạnh là để thể nhập vào Niết-bàn, để vượt qua đến Niết-bàn, để đạt cứu cánh Niết-bàn.<br>
+<span lang="pi" class="pali">
+Nibbānogadhañhi, āvuso visākha, brahmacariyaṃ, nibbānaparāyanaṃ nibbānapariyosānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hiền giả Visākha, nếu Hiền giả muốn, hãy đến chỗ Thế Tôn ở, và hỏi ý nghĩa này. Và Thế Tôn trả lời cho Hiền giả như thế nào, hãy như vậy thọ trì.”<br>
+<span lang="pi" class="pali">
+Ākaṅkhamāno ca tvaṃ, āvuso visākha, bhagavantaṃ upasaṅkamitvā etamatthaṃ puccheyyāsi, yathā ca te bhagavā byākaroti tathā naṃ dhāreyyāsī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi nam cư sĩ Visākha hoan hỷ, tín thọ lời Tỷ-kheo-ni Dhammadinnā giảng, từ chỗ ngồi đứng dậy, đảnh lễ Tỷ-kheo ni Dhammadinnā, thân bên phải hướng về phía Tỷ-kheo-ni rồi từ biệt, đi đến chỗ Thế Tôn ở. Sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho visākho upāsako dhammadinnāya bhikkhuniyā bhāsitaṃ abhinanditvā anumoditvā uṭṭhāyāsanā dhammadinnaṃ bhikkhuniṃ abhivādetvā padakkhiṇaṃ katvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngồi một bên, nam cư sĩ Visākha thuật lại cho Thế Tôn tất cả câu chuyện đàm đạo với Tỷ-kheo-ni Dhammadinnā.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho visākho upāsako yāvatako ahosi dhammadinnāya bhikkhuniyā saddhiṃ kathāsallāpo taṃ sabbaṃ bhagavato ārocesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, Thế Tôn nói với nam cư sĩ Visākha:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, bhagavā visākhaṃ upāsakaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Visākha, Tỷ-kheo-ni Dhammadinnā là bậc Hiền trí! Này Visākha, Tỷ-kheo-ni Dhammadinnā là bậc Ðại tuệ.<br>
+<span lang="pi" class="pali">
+“paṇḍitā, visākha, dhammadinnā bhikkhunī, mahāpaññā, visākha, dhammadinnā bhikkhunī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Visākha, nếu Ông hỏi Ta ý nghĩa ấy, Ta cũng trả lời như Tỷ-kheo-ni Dhammadinnā đã trả lời.<br>
+<span lang="pi" class="pali">
+Mañcepi tvaṃ, visākha, etamatthaṃ puccheyyāsi, ahampi taṃ evamevaṃ byākareyyaṃ, yathā taṃ dhammadinnāya bhikkhuniyā byākataṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ông đối với nghĩa này, hãy như vậy thọ trì.”<br>
+<span lang="pi" class="pali">
+Eso cevetassa attho. Evañca naṃ dhārehī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nam cư sĩ Visākha hoan hỷ, tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Attamano visākho upāsako bhagavato bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Cūḷavedallasuttaṃ niṭṭhitaṃ catutthaṃ.<br>
+</span>
+</p>
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn43.html#content"></a><a id="next-sutta" href="./mn45.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

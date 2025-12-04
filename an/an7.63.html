@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 7.63 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 7.63<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 7.63<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+6. Phẩm Không Tuyên Bố<br>
+<span lang="pi" class="pali">
+6. Abyākatavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Các Người Vợ<br>
+<span lang="pi" class="pali">
+Bhariyāsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn đắp y, vào buổi sáng, cầm y bát, đi đến trú xứ của Anāthapiṇḍika; sau khi đến, ngồi xuống trên chỗ đã soạn sẵn.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya yena anāthapiṇḍikassa gahapatissa nivesanaṃ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, trong trú xứ của gia chủ Anāthapiṇḍika có nhiều người nói cao tiếng, nói lớn tiếng.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena anāthapiṇḍikassa gahapatissa nivesane manussā uccāsaddā mahāsaddā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Anāthapiṇḍika đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi một bên. Thế Tôn nói với gia chủ Anāthapiṇḍika đang ngồi xuống một bên:<br>
+<span lang="pi" class="pali">
+Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho anāthapiṇḍikaṃ gahapatiṃ bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Gia chủ, vì sao trong nhà của Ông lại có nhiều người nói cao tiếng, nói lớn tiếng như những người đánh cá đang giành giựt cá!”<br>
+<span lang="pi" class="pali">
+“Kiṃ nu te, gahapati, nivesane manussā uccāsaddā mahāsaddā kevaṭṭā maññe macchavilope”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, có nàng dâu Sujātā giàu có đến đây từ một gia đình giàu có.<br>
+<span lang="pi" class="pali">
+“Ayaṃ, bhante, sujātā gharasuṇhā aḍḍhakulā ānītā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nàng không vâng lời mẹ chồng, không vâng lời cha chồng, không vâng lời chồng, cũng không cung kính, không tôn trọng, không lễ bái, không cúng dường Thế Tôn.”<br>
+<span lang="pi" class="pali">
+Sā neva sassuṃ ādiyati, na sasuraṃ ādiyati, na sāmikaṃ ādiyati, bhagavantampi na sakkaroti na garuṃ karoti na māneti na pūjetī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Rồi Thế Tôn cho gọi nàng dâu Sujātā:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā sujātaṃ gharasuṇhaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy đến đây Sujātā.”<br>
+<span lang="pi" class="pali">
+“ehi, sujāte”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” nàng dâu Sujātā vâng đáp Thế Tôn, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn, rồi ngồi xuống một bên. Thế Tôn nói với nàng dâu Sujātā đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho sujātā gharasuṇhā bhagavato paṭissutvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho sujātaṃ gharasuṇhaṃ bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Sujātā có bảy loại vợ này cho người đàn ông. Thế nào là bảy?<br>
+<span lang="pi" class="pali">
+“Satta kho imā, sujāte, purisassa bhariyāyo. Katamā satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vợ như người sát nhân, vợ như người ăn trộm, vợ như người chủ nhân, vợ như người mẹ, vợ như người chị, vợ như người bạn, vợ như người nữ tỳ.<br>
+<span lang="pi" class="pali">
+Vadhakasamā, corīsamā, ayyasamā, mātāsamā, bhaginīsamā, sakhīsamā, dāsīsamā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Sujātā, có bảy loại vợ cho người đàn ông. Và con thuộc loại vợ nào?”<br>
+<span lang="pi" class="pali">
+Imā kho, sujāte, satta purisassa bhariyāyo. Tāsaṃ tvaṃ katamā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, lời dạy tóm tắt này của Thế Tôn, con không hiểu rõ ý nghĩa một cách rộng rãi.<br>
+<span lang="pi" class="pali">
+“Na kho ahaṃ, bhante, imassa bhagavatā saṅkhittena bhāsitassa vitthārena atthaṃ ājānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lành thay, bạch Thế Tôn, nếu Thế Tôn, nếu Thế Tôn thuyết pháp cho con để con có thể hiểu ý nghĩa một cách rộng rãi lời dạy tóm tắt này của Thế Tôn.”<br>
+<span lang="pi" class="pali">
+Sādhu me, bhante, bhagavā tathā dhammaṃ desetu yathāhaṃ imassa bhagavatā saṅkhittena bhāsitassa vitthārena atthaṃ jāneyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vậy này Sujātā, hãy nghe và suy nghiệm kỹ, Ta sẽ nói.”<br>
+<span lang="pi" class="pali">
+“Tena hi, sujāte, suṇāhi, sādhukaṃ manasi karohi; bhāsissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng,” Sujātā vâng đáp Thế Tôn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho sujātā gharasuṇhā bhagavato paccassosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai tâm bị uế nhiễm,<br>
+Không từ mẫn thương người,<br>
+Thích thú những người khác,<br>
+Khinh rẻ người chồng mình,<br>
+Bị mua chuộc bằng tiền,<br>
+Hăng say giết hại người,<br>
+Hạng người vợ như vậy,<br>
+Ðược gọi vợ sát nhân.<br>
+<span lang="pi" class="pali">
+“Paduṭṭhacittā ahitānukampinī,<br>
+Aññesu rattā atimaññate patiṃ;<br>
+Dhanena kītassa vadhāya ussukā,<br>
+Yā evarūpā purisassa bhariyā;<br>
+‘Vadhā ca bhariyā’ti ca sā pavuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn hạng nữ nhân nào,<br>
+Tiêu xài tài sản chồng,<br>
+Do công nghiệp đem lại,<br>
+Hay thương nghiệp, nông nghiệp,<br>
+Do vậy, nếu muốn trộm,<br>
+Dầu có ít đi nữa,<br>
+Hạng người vợ như vậy,<br>
+Ðược gọi vợ ăn trộm.<br>
+<span lang="pi" class="pali">
+Yaṃ itthiyā vindati sāmiko dhanaṃ,<br>
+Sippaṃ vaṇijjañca kasiṃ adhiṭṭhahaṃ;<br>
+Appampi tassa apahātumicchati,<br>
+Yā evarūpā purisassa bhariyā;<br>
+‘Corī ca bhariyā’ti ca sā pavuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không ưa thích làm việc,<br>
+Biếng nhác, nhưng ăn nhiều,<br>
+Ác khẩu và bạo ác,<br>
+Phát ngôn lời khó chịu,<br>
+Mọi cố gắng của chồng,<br>
+Ðàn áp và chỉ huy,<br>
+Hạng người vợ như vậy,<br>
+Ðược gọi là vợ chủ nhân.<br>
+<span lang="pi" class="pali">
+Akammakāmā alasā mahagghasā,<br>
+Pharusā ca caṇḍī duruttavādinī;<br>
+Uṭṭhāyakānaṃ abhibhuyya vattati,<br>
+Yā evarūpā purisassa bhariyā;<br>
+‘Ayyā ca bhariyā’ti ca sā pavuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai luôn luôn từ mẫn,<br>
+Có lòng thương xót người,<br>
+Săn sóc giúp đỡ chồng,<br>
+Như mẹ chăm sóc con,<br>
+Tài sản chồng cất chứa,<br>
+Biết hộ trì gìn giữ,<br>
+Hạng người vợ như vậy,<br>
+Ðược gọi vợ như mẹ.<br>
+<span lang="pi" class="pali">
+Yā sabbadā hoti hitānukampinī,<br>
+Mātāva puttaṃ anurakkhate patiṃ;<br>
+Tato dhanaṃ sambhatamassa rakkhati,<br>
+Yā evarūpā purisassa bhariyā;<br>
+‘Mātā ca bhariyā’ti ca sā pavuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai như người em gái,<br>
+Ðối xử với chị lớn,<br>
+Biết cung kính tôn trọng,<br>
+Ðối với người chồng mình,<br>
+Với tâm biết tàm quí,<br>
+Tùy thuận phục vụ chồng,<br>
+Hạng người vợ như vậy,<br>
+Ðược gọi vợ như chị.<br>
+<span lang="pi" class="pali">
+Yathāpi jeṭṭhā bhaginī kaniṭṭhakā,<br>
+Sagāravā hoti sakamhi sāmike;<br>
+Hirīmanā bhattuvasānuvattinī,<br>
+Yā evarūpā purisassa bhariyā;<br>
+‘Bhaginī ca bhariyā’ti ca sā pavuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai ở đời thấy chồng,<br>
+Tâm hoan hỷ vui vẻ,<br>
+Như người bạn tốt lành,<br>
+Ðã lâu từ xa về,<br>
+Sanh gia đình hiền đức,<br>
+Giữ giới, dạ trung thành,<br>
+Hạng người vợ như vậy,<br>
+Ðược gọi vợ như bạn.<br>
+<span lang="pi" class="pali">
+Yācīdha disvāna patiṃ pamodati,<br>
+Sakhī sakhāraṃva cirassamāgataṃ;<br>
+Koleyyakā sīlavatī patibbatā,<br>
+Yā evarūpā purisassa bhariyā;<br>
+‘Sakhī ca bhariyā’ti ca sā pavuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không tức giận, an tịnh,<br>
+Không sợ hình phạt, trượng,<br>
+Tâm tư không hiềm hận,<br>
+Nhẫn nhục đối với chồng,<br>
+Không phẫn nộ tức giận,<br>
+Tùy thuận lời chồng dạy,<br>
+Hạng người vợ như vậy,<br>
+Ðược gọi vợ nữ tỳ.<br>
+<span lang="pi" class="pali">
+Akkuddhasantā vadhadaṇḍatajjitā,<br>
+Aduṭṭhacittā patino titikkhati;<br>
+Akkodhanā bhattuvasānuvattinī,<br>
+Yā evarūpā purisassa bhariyā;<br>
+‘Dāsī ca bhariyā’ti ca sā pavuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đời các hạng vợ,<br>
+Ðược gọi vợ sát nhân,<br>
+Kể cả vợ ăn trộm,<br>
+Và cả vợ chủ nhân,<br>
+Vợ ấy không giữ giới,<br>
+Ác khẩu và vô lễ<br>
+Khi thân hoại mạng chung,<br>
+Bị sanh vào địa ngục.<br>
+<span lang="pi" class="pali">
+Yācīdha bhariyā vadhakāti vuccati,<br>
+‘Corī ca ayyā’ti ca yā pavuccati;<br>
+Dussīlarūpā pharusā anādarā,<br>
+Kāyassa bhedā nirayaṃ vajanti tā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đời các hạng vợ,<br>
+Như mẹ, chị và bạn,<br>
+Và người vợ được gọi,<br>
+Là vợ như nữ tỳ,<br>
+An trú trên giới đức,<br>
+Khéo phòng hộ lâu ngày,<br>
+Khi thân hoại mạng chung,<br>
+Ðược sanh lên thiện thú.<br>
+<span lang="pi" class="pali">
+Yācīdha mātā bhaginī sakhīti ca,<br>
+‘Dāsī ca bhariyā’ti ca sā pavuccati;<br>
+Sīle ṭhitattā cirarattasaṃvutā,<br>
+Kāyassa bhedā sugatiṃ vajanti tāti.<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+Này Sujātā, có bảy loại vợ này đối với người đàn ông. Con thuộc hạng người nào?”<br>
+<span lang="pi" class="pali">
+Imā kho, sujāte, satta purisassa bhariyāyo. Tāsaṃ tvaṃ katamā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, bắt đầu từ hôm nay, Thế Tôn hãy xem con là người vợ đối với chồng như người vợ nữ tỳ.”<br>
+<span lang="pi" class="pali">
+“Ajjatagge maṃ, bhante, bhagavā dāsīsamaṃ sāmikassa bhariyaṃ dhāretū”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an7.62.html#content"></a><a id="next-sutta" href="./an7.64.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

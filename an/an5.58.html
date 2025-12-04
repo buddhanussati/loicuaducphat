@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 5.58 </title>
+<p lang="vi" class="vi"; style="text-align: center">
+Tăng Chi Bộ 5.58<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 5.58<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+6. Phẩm Triền Cái<br>
+<span lang="pi" class="pali">
+6. Nīvaraṇavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Thanh Niên Licchavi<br>
+<span lang="pi" class="pali">
+Licchavikumārakasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn trú ở Vesālī, tại Ðại Lâm, tại giảng đường có nóc nhọn. Rồi Thế Tôn vào buổi sáng đắp y, cầm y bát đi vào Vesālī để khất thực.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā vesāliyaṃ viharati mahāvane kūṭāgārasālāyaṃ. Atha kho bhagavā pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya vesāliṃ piṇḍāya pāvisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi khất thực ở Vesālī xong, sau bữa ăn, trên con đường khất thực trở về, Ngài đi sâu vào Ðại lâm, và ngồi xuống một gốc cây để nghỉ ban ngày.<br>
+<span lang="pi" class="pali">
+Vesāliyaṃ piṇḍāya caritvā pacchābhattaṃ piṇḍapātapaṭikkanto mahāvanaṃ ajjhogāhetvā aññatarasmiṃ rukkhamūle divāvihāraṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, một số đông thanh niên Licchavi cầm các cung được chuẩn bị sẵn sàng với đàn chó bao vây xung quanh, đang đi qua đi lại ở Ðại Lâm, thấy Thế Tôn ngồi dưới một gốc cây.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena sambahulā licchavikumārakā sajjāni dhanūni ādāya kukkurasaṅghaparivutā mahāvane anucaṅkamamānā anuvicaramānā addasu bhagavantaṃ aññatarasmiṃ rukkhamūle nisinnaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy vậy họ liền bỏ các cung được chuẩn bị sẵn sàng xuống, kéo đàn chó về một phía và đi đến Thế Tôn. Sau khi đến đảnh lễ Thế Tôn, rồi yên lặng, yên lặng chắp tay đứng hầu Thế Tôn.<br>
+<span lang="pi" class="pali">
+disvāna sajjāni dhanūni nikkhipitvā kukkurasaṅghaṃ ekamantaṃ uyyojetvā yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā bhagavantaṃ abhivādetvā tuṇhībhūtā tuṇhībhūtā pañjalikā bhagavantaṃ payirupāsanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Mahānāma người Licchavi bộ hành đi qua đi lại trong rừng Ðại Lâm, thấy các thanh niên Licchavi đang yên lặng, yên lặng chắp tay đứng hầu Thế Tôn.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena mahānāmo licchavi mahāvane jaṅghāvihāraṃ anucaṅkamamāno addasa te licchavikumārake tuṇhībhūte tuṇhībhūte pañjalike bhagavantaṃ payirupāsante;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy vậy, ông đi đến gần Thế Tôn, sau khi đến đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, Mahānāma người Licchavi nói lên lời cảm hứng ngữ:<br>
+<span lang="pi" class="pali">
+disvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho mahānāmo licchavi udānaṃ udānesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Họ sẽ trở thành người Vajji! Họ sẽ trở thành người Vajji!<br>
+<span lang="pi" class="pali">
+“bhavissanti vajjī, bhavissanti vajjī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Này Mahānāma, sao Ông lại nói như vậy: “Họ sẽ trở thành người Vajji! Họ sẽ trở thành người Vajji”?<br>
+<span lang="pi" class="pali">
+“Kiṃ pana tvaṃ, mahānāma, evaṃ vadesi: ‘bhavissanti vajjī, bhavissanti vajjī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Bạch Thế Tôn, những thanh niên Licchavi này là hung bạo, thô ác, ngạo mạn.<br>
+<span lang="pi" class="pali">
+“Ime, bhante, licchavikumārakā caṇḍā pharusā apānubhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các đồ vật được các gia đình gửi đi như mía, trái táo, bánh ngọt, kẹo đường, họ cướp giật và ăn;<br>
+<span lang="pi" class="pali">
+Yānipi tāni kulesu paheṇakāni pahīyanti, ucchūti vā badarāti vā pūvāti vā modakāti vā saṅkulikāti vā, tāni vilumpitvā vilumpitvā khādanti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+họ đánh sau hông các nữ nhân, thiếu nữ các gia đình. Nhưng nay họ đứng yên lặng, yên lặng chắp tay hầu hạ Thế Tôn.<br>
+<span lang="pi" class="pali">
+kulitthīnampi kulakumārīnampi pacchāliyaṃ khipanti. Te dānime tuṇhībhūtā tuṇhībhūtā pañjalikā bhagavantaṃ payirupāsantī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Ðối với thiện nam tử nào, này Mahānāma, năm pháp này được tìm thấy, dầu là vua Sát-đế-ly đã làm lễ quán đảnh, hay là người thôn quê sống trên đất trại của người cha, hay là vị tướng trong quân đội hay là vị thôn trưởng ở làng, hay là vị tổ trưởng các tổ hợp, hay là những vị có quyền thế trong gia tộc, thời được chờ đợi là sự tăng trưởng, không phải là giảm thiểu. Thế nào là năm?<br>
+<span lang="pi" class="pali">
+“Yassa kassaci, mahānāma, kulaputtassa pañca dhammā saṃvijjanti—yadi vā rañño khattiyassa muddhāvasittassa, yadi vā raṭṭhikassa pettanikassa, yadi vā senāya senāpatikassa, yadi vā gāmagāmaṇikassa, yadi vā pūgagāmaṇikassa, ye vā pana kulesu paccekādhipaccaṃ kārenti, vuddhiyeva pāṭikaṅkhā, no parihāni. Katame pañca?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này Mahānāma, thiện nam tử, với những tài sản thâu hoạch được do nỗ lực tinh tấn, tích lũy được do sức mạnh cách tay, do mồ hôi đổ ra đúng pháp, thâu hoạch đúng pháp, cung kính, tôn trọng, đảnh lễ, cúng dường cha mẹ.<br>
+<span lang="pi" class="pali">
+Idha, mahānāma, kulaputto uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi mātāpitaro sakkaroti garuṃ karoti māneti pūjeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cha mẹ được người ấy cung kính, tôn trọng, đảnh lễ, cúng dường với thiện ý, khởi lên lòng thương mến người ấy: “Mong rằng (con ta) được sống lâu! Mong rằng thọ mạng được che chở lâu dài!”<br>
+<span lang="pi" class="pali">
+Tamenaṃ mātāpitaro sakkatā garukatā mānitā pūjitā kalyāṇena manasā anukampanti: ‘ciraṃ jīva, dīghamāyuṃ pālehī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Mahānāma, với một thiện nam tử được cha mẹ thương tưởng, chờ đợi là sự tăng trưởng, không phải là giảm thiểu.<br>
+<span lang="pi" class="pali">
+Mātāpitānukampitassa, mahānāma, kulaputtassa vuddhiyeva pāṭikaṅkhā, no parihāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Mahānāma, thiện nam tử với những tài sản thâu hoạch được do nỗ lực tinh tấn, tích lũy được do sức mạnh cách tay, do mồ hôi đổ ra đúng pháp, thâu hoạch đúng pháp, cung kính, tôn trọng, đảnh lễ, cúng dường vợ con, người phục vụ, người làm công và vợ con người phục vụ người làm công.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, mahānāma, kulaputto uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi puttadāradāsakammakaraporise sakkaroti garuṃ karoti māneti pūjeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vợ con, người phục vụ, người làm công và vợ con người phục vụ, người làm công và được người ấy cung kính, tôn trọng đảnh lễ, cúng dường với thiện ý, khởi lên lòng thương tưởng người ấy: “Mong rằng được sống lâu! Mong rằng thọ mạng được che chở lâu dài!”<br>
+<span lang="pi" class="pali">
+Tamenaṃ puttadāradāsakammakaraporisā sakkatā garukatā mānitā pūjitā kalyāṇena manasā anukampanti: ‘ciraṃ jīva, dīghamāyuṃ pālehī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Mahānāma, một thiện nam tử được vợ con, người phục vụ, người làm công thương tưởng, chờ đợi là sự tăng trưởng không phải là giảm thiểu.<br>
+<span lang="pi" class="pali">
+Puttadāradāsakammakaraporisānukampitassa, mahānāma, kulaputtassa vuddhiyeva pāṭikaṅkhā, no parihāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Mahānāma, vị thiện nam tử với những tài sản thâu hoạch được do nỗ lực tinh tấn, đúng pháp, thâu hoạch đúng pháp, cung kính, tôn trọng, đảnh lễ, cúng dường các người làm ruộng các chức sắc ở biên cương.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, mahānāma, kulaputto uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi khettakammantasāmantasabyohāre sakkaroti garuṃ karoti māneti pūjeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những người làm ruộng các chức sắc ở biên cương được người ấy cung kính, tôn trọng, đảnh lễ, cúng dường với thiện ý, khởi lên lòng thương tưởng người ấy: “Mong rằng được sống lâu! Mong rằng thọ mạng được che chở lâu dài!”<br>
+<span lang="pi" class="pali">
+Tamenaṃ khettakammantasāmantasabyohārā sakkatā garukatā mānitā pūjitā kalyāṇena manasā anukampanti: ‘ciraṃ jīva, dīghamāyuṃ pālehī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Mahānāma, một thiện nam tử được người làm ruộng các chức sắc ở biên cương thương tưởng, chờ đợi là sự tăng trưởng không phải là giảm thiểu.<br>
+<span lang="pi" class="pali">
+Khettakammantasāmantasabyohārānukampitassa, mahānāma, kulaputtassa vuddhiyeva pāṭikaṅkhā, no parihāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Mahānāma, thiện nam tử với những tài sản thâu hoạch được do nỗ lực tinh tấn, đúng pháp, thâu hoạch đúng pháp, cung kính, tôn trọng, đảnh lễ, cúng dường chư thiên nhận lãnh các vật cúng tế.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, mahānāma, kulaputto uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi yāvatā balipaṭiggāhikā devatā sakkaroti garuṃ karoti māneti pūjeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Thiên nhận lãnh các vật cúng tế được người ấy cung kính, tôn trọng, đảnh lễ, cúng dường với thiện ý, khởi lên lòng thương tưởng người ấy: “Mong rằng được sống lâu! Mong rằng thọ mạng được che chở lâu dài!”<br>
+<span lang="pi" class="pali">
+Tamenaṃ balipaṭiggāhikā devatā sakkatā garukatā mānitā pūjitā kalyāṇena manasā anukampanti: ‘ciraṃ jīva, dīghamāyuṃ pālehī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Mahānāma, một thiện nam tử được chư thiên nhận lãnh các vật cúng tế thương tưởng, chờ đợi là sự tăng trưởng không phải là giảm thiểu.<br>
+<span lang="pi" class="pali">
+devatānukampitassa, mahānāma, kulaputtassa vuddhiyeva pāṭikaṅkhā, no parihāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Mahānāma, thiện nam tử với những tài sản thâu hoạch được do nỗ lực tinh tấn, tích lũy được do sức mạnh cánh tay, do mồ hôi đổ ra đúng pháp, thâu hoạch đúng pháp, tôn trọng, cung kính, đảnh lễ, cúng dường các Sa-môn, Bà-la-môn.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, mahānāma, kulaputto uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi samaṇabrāhmaṇe sakkaroti garuṃ karoti māneti pūjeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Sa-môn, Bà-la-môn được người ấy cung kính, tôn trọng, đảnh lễ, cúng dường với thiện ý, khởi lên trong lòng thương tưởng người ấy: “Mong rằng được sống lâu! Mong rằng thọ mạng được che chở lâu dài.”<br>
+<span lang="pi" class="pali">
+Tamenaṃ samaṇabrāhmaṇā sakkatā garukatā mānitā pūjitā kalyāṇena manasā anukampanti: ‘ciraṃ jīva, dīghamāyuṃ pālehī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Mahānāma, với một thiện nam tử được các Sa-môn, Bà-la-môn thương tưởng, được chờ đợi là sự tăng trưởng, không phải là giảm thiểu.<br>
+<span lang="pi" class="pali">
+Samaṇabrāhmaṇānukampitassa, mahānāma, kulaputtassa vuddhiyeva pāṭikaṅkhā, no parihāni.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với vị thiện nam tử nào, này Mahānāma, năm pháp này được tìm thấy, dầu là Sát-đế-lỵ đã làm lễ quán đảnh, hay là người thôn quê sống trên đất của người cha, hay là vị tướng trong quân đội, hay là vị thôn trưởng ở làng, hay là vị tổ trưởng các tổ hợp, hay là những vị có quyền thế trong gia tộc, thời được chờ đợi là sự tăng trưởng, không phải là giảm thiểu.<br>
+<span lang="pi" class="pali">
+Yassa kassaci, mahānāma, kulaputtassa ime pañca dhammā saṃvijjanti—yadi vā rañño khattiyassa muddhābhisittassa, yadi vā raṭṭhikassa pettanikassa, yadi vā senāya senāpatikassa, yadi vā gāmagāmaṇikassa, yadi vā pūgagāmaṇikassa, ye vā pana kulesu paccekādhipaccaṃ kārenti, vuddhiyeva pāṭikaṅkhā, no parihānīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mẹ cha lo phục vụ,<br>
+Vợ con thường thương tưởng,<br>
+Vì hạnh phúc nội nhân,<br>
+Cùng với kẻ tùng sự.<br>
+<span lang="pi" class="pali">
+Mātā­pi­tu­kicca­karo,<br>
+puttadārahito sadā;<br>
+Antojanassa atthāya,<br>
+ye cassa anujīvino.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì hạnh phúc cả hai,<br>
+Lời hòa nhã, giữ giới,<br>
+Vì hạnh phúc bà con,<br>
+Vì hương linh đi trước,<br>
+Vì mạng sống hiện tại.<br>
+<span lang="pi" class="pali">
+Ubhinnañceva atthāya,<br>
+Vadaññū hoti sīlavā;<br>
+Ñātīnaṃ pubbapetānaṃ,<br>
+Diṭṭhe dhamme ca jīvataṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì Sa-môn, Phạm chí,<br>
+Vì chư Thiên bậc trí,<br>
+Thành người ban hạnh phúc,<br>
+Sống gia đình, đúng pháp.<br>
+<span lang="pi" class="pali">
+Samaṇānaṃ brāhmaṇānaṃ,<br>
+devatānañca paṇḍito;<br>
+Vittisañjanano hoti,<br>
+dhammena gharamāvasaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy làm thiện sự,<br>
+Ðược cúng dường tán thán,<br>
+Ðời này họ được khen,<br>
+Ðời sau sống hoan hỷ,<br>
+Trong cảnh giới chư Thiên.<br>
+<span lang="pi" class="pali">
+So karitvāna kalyāṇaṃ,<br>
+pujjo hoti pasaṃsiyo;<br>
+Idheva naṃ pasaṃsanti,<br>
+pecca sagge pamodatī”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an5.57.html#content"></a><a id="next-sutta" href="./an5.59.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

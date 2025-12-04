@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 12.67 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 12.67<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 12.67<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+7. Đại Phẩm Thứ Bảy<br>
+<span lang="pi" class="pali">
+7. Mahāvagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Bó Lau<br>
+<span lang="pi" class="pali">
+Naḷakalāpīsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Tôn giả Sāriputta và Tôn giả Mahākoṭṭhita trú ở Bārāṇasi (Ba-la-nại), tại Isipatana (chư Tiên đọa xứ) ở Migàdàya (rừng nai).<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ āyasmā ca sāriputto āyasmā ca mahākoṭṭhiko bārāṇasiyaṃ viharanti isipatane migadāye.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahākoṭṭhita, vào buổi chiều từ chỗ Thiền tịnh độc cư đứng dậy, đi đến Tôn giả Sāriputta; sau khi đến, nói lên với Tôn giả Sāriputta những lời chào đón hỏi thăm;<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā mahākoṭṭhiko sāyanhasamayaṃ paṭisallānā vuṭṭhito yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṃ sammodi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sau khi nói lên những lời chào đón hỏi thăm thân hữu, bèn ngồi xuống một bên. Ngồi xuống một bên, Tôn giả Mahākoṭṭhita nói với Tôn giả Sāriputta:<br>
+<span lang="pi" class="pali">
+Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho āyasmā mahākoṭṭhiko āyasmantaṃ sāriputtaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Sāriputta, già chết do tự mình tạo ra, già chết do người khác tạo ra, già chết do tự mình và do người khác tạo ra, hay già chết không do tự mình tạo ra, không do người khác tạo ra, do tự nhiên sanh?”<br>
+<span lang="pi" class="pali">
+“kiṃ nu kho, āvuso sāriputta, sayaṅkataṃ jarāmaraṇaṃ, paraṅkataṃ jarāmaraṇaṃ, sayaṅkatañca paraṅkatañca jarāmaraṇaṃ, udāhu asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ jarāmaraṇan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Koṭṭhita, già chết không do tự mình tạo ra, già chết không do người khác tạo ra, già chết không do tự mình tạo ra và người khác tạo ra, già chết cũng không phải không do tự mình tạo ra, không do người khác tạo ra, không do tự nhiên sanh.<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso koṭṭhika, sayaṅkataṃ jarāmaraṇaṃ, na paraṅkataṃ jarāmaraṇaṃ, na sayaṅkatañca paraṅkatañca jarāmaraṇaṃ, nāpi asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ jarāmaraṇaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Già chết do duyên sanh.”<br>
+<span lang="pi" class="pali">
+Api ca jātipaccayā jarāmaraṇan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Sāriputta, có phải sanh do tự mình làm ra, sanh do người khác làm ra, sanh do tự mình làm ra và do người khác làm ra, hay sanh không do tự mình làm ra và không do người khác làm ra, do tự nhiên sanh?”<br>
+<span lang="pi" class="pali">
+“Kiṃ nu kho, āvuso sāriputta, sayaṅkatā jāti, paraṅkatā jāti, sayaṅkatā ca paraṅkatā ca jāti, udāhu asayaṅkārā aparaṅkārā adhiccasamuppannā jātī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Koṭṭhita, sanh không do tự mình làm ra, sanh không do người khác làm ra, sanh không do tự mình làm ra và người khác làm ra, hay sanh cũng không phải không do tự mình làm ra và không phải không do người khác làm ra, cũng không do tự nhiên sanh.<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso koṭṭhika, sayaṅkatā jāti, na paraṅkatā jāti, na sayaṅkatā ca paraṅkatā ca jāti, nāpi asayaṅkārā aparaṅkārā adhiccasamuppannā jāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sanh do duyên hữu.”<br>
+<span lang="pi" class="pali">
+Api ca bhavapaccayā jātī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Sāriputta, hữu có phải do tự mình làm ra ...” ...<br>
+<span lang="pi" class="pali">
+“Kiṃ nu kho, āvuso sāriputta, sayaṅkato bhavo ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“thủ có phải do tự mình làm ra ...” ...<br>
+<span lang="pi" class="pali">
+sayaṅkataṃ upādānaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“ái có phải do tự mình làm ra ...” ...<br>
+<span lang="pi" class="pali">
+sayaṅkatā taṇhā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“thọ có phải do tự mình làm ra ...” ...<br>
+<span lang="pi" class="pali">
+sayaṅkatā vedanā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“xúc có phải do tự mình làm ra ...” ...<br>
+<span lang="pi" class="pali">
+sayaṅkato phasso ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“sáu xứ có phải do tự mình làm ra ...” ...<br>
+<span lang="pi" class="pali">
+sayaṅkataṃ saḷāyatanaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Danh sắc có phải do tự mình làm ra, danh sắc có phải do người khác làm ra, danh sắc có phải do tự mình làm ra và do người khác làm ra, hay danh sắc có phải không do tự mình làm ra và không do người khác làm ra, do tự nhiên sanh?”<br>
+<span lang="pi" class="pali">
+sayaṅkataṃ nāmarūpaṃ, paraṅkataṃ nāmarūpaṃ, sayaṅkatañca paraṅkatañca nāmarūpaṃ, udāhu asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ nāmarūpan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Koṭṭhita, danh sắc không phải do tự mình làm ra, danh sắc không phải do người khác làm ra, danh sắc không phải do tự mình làm ra và do người khác làm ra, hay danh sắc cũng không phải không do tự mình làm ra và không phải không do người khác làm ra, không do tự nhiên sanh.<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso koṭṭhika, sayaṅkataṃ nāmarūpaṃ, na paraṅkataṃ nāmarūpaṃ, na sayaṅkatañca paraṅkatañca nāmarūpaṃ, nāpi asayaṅkāraṃ aparaṅkāraṃ, adhiccasamuppannaṃ nāmarūpaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Danh sắc do duyên thức.”<br>
+<span lang="pi" class="pali">
+Api ca viññāṇapaccayā nāmarūpan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Sāriputta, có phải thức do tự mình làm ra, thức do người khác làm ra, thức do tự mình làm ra và do người khác làm ra, hay có phải thức không do tự mình làm ra và không do người khác làm ra, do tự nhiên sanh?”<br>
+<span lang="pi" class="pali">
+“Kiṃ nu kho, āvuso sāriputta, sayaṅkataṃ viññāṇaṃ, paraṅkataṃ viññāṇaṃ, sayaṅkatañca paraṅkatañca viññāṇaṃ, udāhu asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ viññāṇan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Koṭṭhita, thức không do tự mình làm ra, thức không do người khác làm ra, thức không do tự mình làm ra và không do người khác làm ra, hay thức cũng không phải không do tự mình làm ra và không phải không do người khác làm ra, không do tự nhiên sanh.<br>
+<span lang="pi" class="pali">
+“Na kho, āvuso koṭṭhika, sayaṅkataṃ viññāṇaṃ, na paraṅkataṃ viññāṇaṃ, na sayaṅkatañca paraṅkatañca viññāṇaṃ, nāpi asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ viññāṇaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thức do duyên danh sắc.”<br>
+<span lang="pi" class="pali">
+Api ca nāmarūpapaccayā viññāṇan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nay chúng tôi hiểu lời nói của Hiền giả Sāriputta như sau:<br>
+<span lang="pi" class="pali">
+“Idāneva kho mayaṃ āyasmato sāriputtassa bhāsitaṃ evaṃ ājānāma:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả Koṭṭhita, danh sắc không do tự mình làm ra, danh sắc không do người khác làm ra, danh sắc không do tự mình làm ra và không do người khác làm ra, danh sắc cũng không phải không do tự mình làm ra và không phải không do người khác làm ra, không do tự nhiên sanh.<br>
+<span lang="pi" class="pali">
+‘na khvāvuso koṭṭhika, sayaṅkataṃ nāmarūpaṃ, na paraṅkataṃ nāmarūpaṃ, na sayaṅkatañca paraṅkatañca nāmarūpaṃ, nāpi asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ nāmarūpaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Danh sắc do duyên thức’.<br>
+<span lang="pi" class="pali">
+Api ca viññāṇapaccayā nāmarūpan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và nay chúng tôi hiểu lời nói của Hiền giả Sāriputta như sau:<br>
+<span lang="pi" class="pali">
+Idāneva ca pana mayaṃ āyasmato sāriputtassa bhāsitaṃ evaṃ ājānāma:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả Koṭṭhita, thức không do tự mình làm ra, không do người khác làm ra, không do tự mình làm ra và người khác làm ra, cũng không phải không do tự mình làm ra  và không phải không do người khác làm ra, không do tự nhiên sanh.<br>
+<span lang="pi" class="pali">
+‘na khvāvuso koṭṭhika, sayaṅkataṃ viññāṇaṃ, na paraṅkataṃ viññāṇaṃ, na sayaṅkatañca paraṅkatañca viññāṇaṃ, nāpi asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ viññāṇaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thức do duyên danh sắc’.<br>
+<span lang="pi" class="pali">
+Api ca nāmarūpapaccayā viññāṇan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả Sāriputta, cần phải hiểu như thế nào ý nghĩa lời nói này?”<br>
+<span lang="pi" class="pali">
+Yathā kathaṃ panāvuso sāriputta, imassa bhāsitassa attho daṭṭhabbo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vậy này Hiền giả, tôi sẽ nêu một ví dụ.<br>
+<span lang="pi" class="pali">
+“Tenahāvuso, upamaṃ te karissāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhờ có ví dụ, người có trí hiểu được ý nghĩa lời nói.<br>
+<span lang="pi" class="pali">
+Upamāyapidhekacce viññū purisā bhāsitassa atthaṃ jānanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như hai bó lau dựa vào nhau mà đứng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, dve naḷakalāpiyo aññamaññaṃ nissāya tiṭṭheyyuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Hiền giả, do duyên danh sắc, thức sanh khởi.<br>
+<span lang="pi" class="pali">
+Evameva kho, āvuso, nāmarūpapaccayā viññāṇaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên thức, danh sắc sanh khởi.<br>
+<span lang="pi" class="pali">
+viññāṇapaccayā nāmarūpaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên danh sắc, sáu xứ sanh khởi.<br>
+<span lang="pi" class="pali">
+nāmarūpapaccayā saḷāyatanaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do duyên sáu xứ, xúc sanh khởi... (như trên)...<br>
+<span lang="pi" class="pali">
+saḷāyatanapaccayā phasso ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là toàn bộ khổ uẩn này tập khởi.<br>
+<span lang="pi" class="pali">
+evametassa kevalassa dukkhakkhandhassa samudayo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, nếu một bó lau được kéo qua một bên, bó lau kia liền rơi xuống.<br>
+<span lang="pi" class="pali">
+Tāsañce, āvuso, naḷakalāpīnaṃ ekaṃ ākaḍḍheyya, ekā papateyya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu bó lau kia được kéo qua một bên, bó lau này được rơi xuống.<br>
+<span lang="pi" class="pali">
+aparañce ākaḍḍheyya, aparā papateyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Hiền giả, do danh sắc diệt nên thức diệt.<br>
+<span lang="pi" class="pali">
+Evameva kho, āvuso, nāmarūpanirodhā viññāṇanirodho;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thức diệt nên danh sắc diệt.<br>
+<span lang="pi" class="pali">
+viññāṇanirodhā nāmarūpanirodho;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do danh sắc diệt nên sáu xứ diệt.<br>
+<span lang="pi" class="pali">
+nāmarūpanirodhā saḷāyatananirodho;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do sáu xứ diệt nên xúc diệt... (như trên)...<br>
+<span lang="pi" class="pali">
+saḷāyatananirodhā phassanirodho ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+như vậy là toàn bộ khổ uẩn này đoạn diệt.”<br>
+<span lang="pi" class="pali">
+evametassa kevalassa dukkhakkhandhassa nirodho hotī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, Hiền giả Sāriputta! Thật hy hữu thay, Hiền giả Sāriputta!<br>
+<span lang="pi" class="pali">
+“Acchariyaṃ, āvuso sāriputta; abbhutaṃ, āvuso sāriputta.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lời nói khéo nói này của Hiền giả Sāriputta<br>
+<span lang="pi" class="pali">
+Yāvasubhāsitañcidaṃ āyasmatā sāriputtena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và lời nói với ba mươi sáu sự này của Hiền giả Sāriputta, chúng tôi xin tùy hỷ.<br>
+<span lang="pi" class="pali">
+Idañca pana mayaṃ āyasmato sāriputtassa bhāsitaṃ imehi chattiṃsāya vatthūhi anumodāma:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, nếu một Tỷ-kheo thuyết pháp để nhàm chán, ly tham, đoạn diệt già chết, thời đủ để được gọi là vị Tỷ-kheo thuyết pháp.<br>
+<span lang="pi" class="pali">
+‘Jarāmaraṇassa ce, āvuso, bhikkhu nibbidāya virāgāya nirodhāya dhammaṃ deseti, dhammakathiko bhikkhūti alaṃvacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, nếu một Tỷ-kheo thực hành để nhàm chán, ly tham, đoạn diệt, già chết, thời đủ để được gọi là Tỷ-kheo tùy pháp hành.<br>
+<span lang="pi" class="pali">
+Jarāmaraṇassa ce, āvuso, bhikkhu nibbidāya virāgāya nirodhāya paṭipanno hoti, dhammānudhammappaṭipanno bhikkhūti alaṃvacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, nếu một Tỷ-kheo do nhàm chán, ly tham, đoạn diệt, vô minh được giải thoát, không có chấp thủ, thời đủ để được gọi vị Tỷ-kheo đã đạt được hiện tại Niết-bàn.<br>
+<span lang="pi" class="pali">
+Jarāmaraṇassa ce, āvuso, bhikkhu nibbidā virāgā nirodhā anupādā vimutto hoti, diṭṭhadhammanibbānappatto bhikkhūti alaṃvacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Tỷ-kheo thuyết pháp về sự yếm ly, ly tham, đoạn diệt sanh...<br>
+<span lang="pi" class="pali">
+Jātiyā ce ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hữu ... thủ ... ái ... thọ ... xúc ... sáu xứ ... danh sắc ... thức ... hành ...(như trên)...<br>
+<span lang="pi" class="pali">
+bhavassa ce ... upādānassa ce ... taṇhāya ce ... vedanāya ce ... phassassa ce ... saḷāyatanassa ce ... nāmarūpassa ce ... viññāṇassa ce ... saṅkhārānañce ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Tỷ-kheo thuyết pháp về yếm ly, ly tham, đoạn diệt vô minh, như vậy là đủ để được gọi là ‘Tỷ-kheo thuyết pháp’.<br>
+<span lang="pi" class="pali">
+avijjāya ce, āvuso, bhikkhu nibbidāya virāgāya nirodhāya dhammaṃ deseti, dhammakathiko bhikkhūti alaṃvacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Tỷ-kheo thực hành về yếm ly, ly tham, đoạn diệt vô minh, như vậy là đủ để được gọi là ‘Tỷ-kheo thực hành các pháp và tùy pháp’.<br>
+<span lang="pi" class="pali">
+Avijjāya ce, āvuso, bhikkhu nibbidāya virāgāya nirodhāya paṭipanno hoti, dhammānudhammappaṭipanno bhikkhūti alaṃvacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Tỷ-kheo giải thoát, không còn chấp thủ mọi yếm ly, ly tham, đoạn diệt vô minh, như vậy là đủ để được gọi là ‘Tỷ-kheo đã đạt được Niết-bàn ngay trong đời sống hiện tại’.”<br>
+<span lang="pi" class="pali">
+Avijjāya ce, āvuso, bhikkhu nibbidā virāgā nirodhā anupādā vimutto hoti, diṭṭhadhammanibbānappatto bhikkhūti alaṃvacanāyā’”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn12.66.html#content"></a><a id="next-sutta" href="./sn12.68.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

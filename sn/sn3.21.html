@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 3.21 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 3.21<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 3.21<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+3. Phẩm Thứ Ba<br>
+<span lang="pi" class="pali">
+3. Tatiyavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Người<br>
+<span lang="pi" class="pali">
+Puggalasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở tại Sāvatthi.<br>
+<span lang="pi" class="pali">
+Sāvatthinidānaṃ.<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Thế Tôn nói với vua Pasenadi nước Kosala đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho rājānaṃ pasenadiṃ kosalaṃ bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Thưa Ðại vương, có bốn loại người này có mặt, hiện diện ở đời. Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+“cattārome, mahārāja puggalā santo saṃvijjamānā lokasmiṃ. Katame cattāro?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sống trong bóng tối và hướng đến bóng tối,<br>
+<span lang="pi" class="pali">
+Tamotamaparāyano,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sống trong bóng tối hướng đến ánh sáng,<br>
+<span lang="pi" class="pali">
+tamojotiparāyano,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sống trong ánh sáng hướng đến bóng tối,<br>
+<span lang="pi" class="pali">
+jotitamaparāyano,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sống trong ánh sáng hướng đến ánh sáng. (Xem A ii, 85; Tăng II 85).<br>
+<span lang="pi" class="pali">
+jotijotiparāyano.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, và thế nào là người sống trong bóng tối hướng đến bóng tối? Ở đây, thưa Ðại vương, có một số người sanh trong gia đình hạ tiện, gia đình kẻ chiên-đà-la hay gia đình người đan rổ, hay gia đình người làm bẫy sập, hay gia đình người làm xe, hay gia đình người đổ rác nghèo đói, ăn uống thiếu thốn, sanh kế khó khăn, khó kiếm đồ ăn mặc, và người ấy xấu xí khó nhìn, còm lưng, nhiều bệnh, mù lòa, quẹo tay, bại chân, hay nửa thân tê liệt. Người ấy không nhận được đồ ăn, đồ uống, vải mặc, xe cộ, vòng hoa, hương liệu, phấn sáp, không nhận được chỗ nằm, chỗ ở, đèn đuốc. Người ấy thân làm ác, miệng nói ác, ý nghĩ ác. Do thân làm ác, miệng nói ác, ý nghĩ ác, sau khi thân hoại mạng chung, người ấy sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+Kathañca, mahārāja puggalo tamotamaparāyano hoti? Idha, mahārāja, ekacco puggalo nīce kule paccājāto hoti, caṇḍālakule vā venakule vā nesādakule vā rathakārakule vā pukkusakule vā dalidde appannapānabhojane kasiravuttike, yattha kasirena ghāsacchādo labbhati. So ca hoti dubbaṇṇo duddasiko okoṭimako bavhābādho kāṇo vā kuṇī vā khañjo vā pakkhahato vā, na lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa. So kāyena duccaritaṃ carati, vācāya duccaritaṃ carati, manasā duccaritaṃ carati. So kāyena duccaritaṃ caritvā vācāya duccaritaṃ caritvā manasā duccaritaṃ caritvā, kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, ví như một người đi từ tối tăm này đến tối tăm khác, hay đi từ hắc ám này đến hắc ám khác, hay từ vết máu đỏ này đến vết máu đỏ khác. Thưa Ðại vương, Ta nói người ấy với ví dụ như vậy. Thưa Ðại vương, như vậy là người sống trong bóng tối, hướng đến bóng tối.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, mahārāja, puriso andhakārā vā andhakāraṃ gaccheyya, tamā vā tamaṃ gaccheyya, lohitamalā vā lohitamalaṃ gaccheyya. Tathūpamāhaṃ, mahārāja, imaṃ puggalaṃ vadāmi. Evaṃ kho, mahārāja, puggalo tamotamaparāyano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và thưa Ðại vương, thế nào là người sống trong bóng tối hướng đến ánh sáng? Ở đây, thưa Ðại vương, có một số người sanh trong gia đình hạ tiện, gia đình kẻ chiên-đà-la, hay gia đình người đan rổ, hay gia đình người làm bẫy sập, hay gia đình người làm xe, hay gia đình người đổ rác, nghèo đói, ăn uống thiếu thốn, sanh kế khó khăn, khó kiếm đồ ăn mặc. Và người ấy xấu xí, khó nhìn, còm lưng, nhiều bệnh, mù lòa, quẹo tay, bại chân hay nửa thân tê liệt. Người ấy không nhận được đồ ăn, đồ uống, vải mặc, xe cộ, vòng hoa, hương liệu, phấn sáp, không nhận được chỗ nằm, chỗ ở, đèn đuốc. Người ấy thân làm thiện, miệng nói thiện, ý nghĩ thiện. Do thân làm thiện, miệng nói thiện, ý nghĩ thiện, sau khi thân hoại mạng chung người ấy được sanh lên thiện thú, Thiên giới, cõi đời này.<br>
+<span lang="pi" class="pali">
+Kathañca, mahārāja, puggalo tamojotiparāyano hoti? Idha, mahārāja, ekacco puggalo nīce kule paccājāto hoti, caṇḍālakule vā venakule vā nesādakule vā rathakārakule vā pukkusakule vā dalidde appannapānabhojane kasiravuttike, yattha kasirena ghāsacchādo labbhati. So ca kho hoti dubbaṇṇo duddasiko okoṭimako bavhābādho, kāṇo vā kuṇī vā khañjo vā pakkhahato vā, na lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa. So kāyena sucaritaṃ carati, vācāya sucaritaṃ carati, manasā sucaritaṃ carati. So kāyena sucaritaṃ caritvā vācāya sucaritaṃ caritvā manasā sucaritaṃ caritvā, kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, ví như một người từ đất leo lên kiệu, hay từ kiệu leo lên lưng ngựa, hay từ lưng ngựa leo lên thân voi, hay từ thân voi leo lên lầu. Thưa Ðại vương, Ta nói người ấy với ví dụ như vậy. Thưa Ðại vương, như vậy là người sống trong bóng tối hướng đến ánh sáng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, mahārāja, puriso pathaviyā vā pallaṅkaṃ āroheyya, pallaṅkā vā assapiṭṭhiṃ āroheyya, assapiṭṭhiyā vā hatthikkhandhaṃ āroheyya, hatthikkhandhā vā pāsādaṃ āroheyya. Tathūpamāhaṃ, mahārāja, imaṃ puggalaṃ vadāmi. Evaṃ kho, mahārāja, puggalo tamojotiparāyano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và thưa Ðại vương, thế nào là người sống trong ánh sáng hướng đến bóng tối? Ở đây, thưa Ðại vương, có số người sanh ra trong gia đình cao quý, trong gia đình Sát-đế-lỵ đại phú, hay trong gia đình Bà-la-môn đại phú, hay trong gia đình gia chủ đại phú, phú hào có tiền của lớn, có tài sản lớn, có nhiều vàng và bạc, có nhiều tài sản vật dụng, nhiều tiền của, ngũ cốc. Người ấy đẹp trai, dễ nhìn, dễ thương, với màu da tuyệt đẹp, mỹ miều. Người ấy lại nhận được đồ ăn, đồ uống, áo mặc, xe cộ, vòng hoa, hương liệu, phấn sáp, chỗ nằm, chỗ trú, đèn đuốc. Người ấy, thân làm ác, miệng nói ác, ý nghĩ ác. Do thân làm ác, miệng nói ác, ý nghĩ ác, sau khi thân hoại mạng chung, người ấy sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+Kathañca, mahārāja, puggalo jotitamaparāyano hoti? Idha, mahārāja, ekacco puggalo ucce kule paccājāto hoti, khattiyamahāsālakule vā brāhmaṇamahāsālakule vā gahapatimahāsālakule vā, aḍḍhe mahaddhane mahābhoge pahūtajātarūparajate pahūtavittūpakaraṇe pahūtadhanadhaññe. So ca hoti abhirūpo dassanīyo pāsādiko, paramāya vaṇṇapokkharatāya samannāgato, lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa. So kāyena duccaritaṃ carati, vācāya duccaritaṃ carati, manasā duccaritaṃ carati. So kāyena duccaritaṃ caritvā vācāya duccaritaṃ caritvā manasā duccaritaṃ caritvā, kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa Ðại vương, một người từ lầu leo xuống thân voi, hay từ thân voi leo xuống lưng ngựa, hay từ lưng ngựa leo xuống chiếc kiệu, hay từ chiếc kiệu leo xuống đất, hay từ đất leo xuống lòng đất tối tăm. Thưa Ðại vương, Ta nói người ấy với ví dụ như vậy. Thưa Ðại vương, như vậy là người sống trong ánh sáng hướng đến bóng tối.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, mahārāja, puriso pāsādā vā hatthikkhandhaṃ oroheyya, hatthikkhandhā vā assapiṭṭhiṃ oroheyya, assapiṭṭhiyā vā pallaṅkaṃ oroheyya, pallaṅkā vā pathaviṃ oroheyya, pathaviyā vā andhakāraṃ paviseyya. Tathūpamāhaṃ, mahārāja, imaṃ puggalaṃ vadāmi. Evaṃ kho, mahārāja, puggalo jotitamaparāyano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và thưa Ðại vương, thế nào là người sống trong ánh sáng hướng đến ánh sáng? Ở đây, thưa Ðại vương, có người sanh ra trong gia đình cao quý, trong gia đình Sát-đế-lỵ đại phú, hay trong gia đình Bà-la-môn đại phú, hay trong gia đình gia chủ đại phú, phú hào, có tiền của lớn, có tài sản lớn, có nhiều vàng và bạc, có nhiều tài sản vật dụng, có nhiều tiền của, ngũ cốc. Và người ấy đẹp trai, dễ nhìn, dễ thương, với màu da tuyệt đẹp, mỹ miều. Người ấy lại nhận được đồ ăn, đồ uống, vải mặc, xe cộ, vòng hoa, hương liệu, phấn sáp, chỗ nằm, chỗ trú, đèn đuốc. Người ấy thân làm thiện, miệng nói thiện, ý nghĩ thiện. Do thân làm thiện, miệng nói thiện, ý nghĩ thiện, người ấy khi thân hoại mạng chung được sanh lên thiện thú, Thiên giới, cõi đời này.<br>
+<span lang="pi" class="pali">
+Kathañca, mahārāja, puggalo jotijotiparāyano hoti? Idha, mahārāja, ekacco puggalo ucce kule paccājāto hoti, khattiyamahāsālakule vā brāhmaṇamahāsālakule vā gahapatimahāsālakule vā, aḍḍhe mahaddhane mahābhoge pahūtajātarūparajate pahūtavittūpakaraṇe pahūtadhanadhaññe. So ca hoti abhirūpo dassanīyo pāsādiko, paramāya vaṇṇapokkharatāya samannāgato, lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa. So kāyena sucaritaṃ carati, vācāya sucaritaṃ carati, manasā sucaritaṃ carati. So kāyena sucaritaṃ caritvā vācāya sucaritaṃ caritvā manasā sucaritaṃ caritvā, kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, thưa Ðại vương, một người từ chiếc kiệu này bước qua chiếc kiệu khác, hay từ lưng ngựa này bước qua lưng ngựa khác, hay từ thân voi này bước qua thân voi khác, hay từ lầu này bước qua lầu khác. Thưa Ðại vương, Ta nói người ấy với ví dụ như vậy. Thưa Ðại vương, như vậy là người sống trong ánh sáng, hướng đến ánh sáng.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, mahārāja, puriso pallaṅkā vā pallaṅkaṃ saṅkameyya, assapiṭṭhiyā vā assapiṭṭhiṃ saṅkameyya, hatthikkhandhā vā hatthikkhandhaṃ saṅkameyya, pāsādā vā pāsādaṃ saṅkameyya. Tathūpamāhaṃ, mahārāja, imaṃ puggalaṃ vadāmi. Evaṃ kho, mahārāja, puggalo jotijotiparāyano hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, những người như vậy có mặt, hiện diện trong đời.<br>
+<span lang="pi" class="pali">
+Ime kho, mahārāja, cattāro puggalā santo saṃvijjamānā lokasmin”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn đã nói như trên.<br>
+<span lang="pi" class="pali">
+Idamavoca ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðại vương, người nghèo đói<br>
+bất tín và xan tham:<br>
+Keo kiết, ác tư duy,<br>
+Tà kiến, thiếu lễ nghĩa,<br>
+<span lang="pi" class="pali">
+“Daliddo puriso rāja,<br>
+assaddho hoti maccharī;<br>
+Kadariyo pāpasaṅkappo,<br>
+micchādiṭṭhi anādaro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhiếc mắng và mạ lỵ<br>
+Sa-môn, Bà-la-môn,<br>
+Cùng các khất sĩ khác;<br>
+Không cho, làm phiền nhiễu,<br>
+<span lang="pi" class="pali">
+Samaṇe brāhmaṇe vāpi,<br>
+aññe vāpi vanibbake;<br>
+Akkosati paribhāsati,<br>
+natthiko hoti rosako.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngăn chận sự bố thí,<br>
+Cơm nước cho người xin;<br>
+Ðại vương, người như vậy,<br>
+Khi thân hoại mạng chung,<br>
+Sanh địa ngục hãi hùng.<br>
+Ôi Nhân chủ, người vậy,<br>
+Ðược gọi sanh bóng tối,<br>
+Và hướng đến bóng tối.<br>
+<span lang="pi" class="pali">
+Dadamānaṃ nivāreti,<br>
+yācamānāna bhojanaṃ;<br>
+Tādiso puriso rāja,<br>
+mīyamāno janādhipa;<br>
+Upeti nirayaṃ ghoraṃ,<br>
+tamotamaparāyano.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương, người nghèo đói<br>
+Có tín, không xan tham,<br>
+Bố thí, thiện tư duy,<br>
+Có chí, tâm không loạn,<br>
+<span lang="pi" class="pali">
+Daliddo puriso rāja,<br>
+saddho hoti amaccharī;<br>
+Dadāti seṭṭhasaṅkappo,<br>
+abyaggamanaso naro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðứng dậy và chào đón<br>
+Sa-môn, Bà-la-môn,<br>
+Cùng các khất sĩ khác,<br>
+Tu học hạnh thăng bằng;<br>
+<span lang="pi" class="pali">
+Samaṇe brāhmaṇe vāpi,<br>
+aññe vāpi vanibbake;<br>
+Uṭṭhāya abhivādeti,<br>
+samacariyāya sikkhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không ngăn sự bố thí,<br>
+Cơm nước cho người xin;<br>
+Ðại vương, người như vậy,<br>
+Khi thân hoại mạng chung,<br>
+Ðược sanh lên Thiên giới,<br>
+Ôi Nhân chủ, người vậy,<br>
+Ðược gọi sanh bóng tối,<br>
+Nhưng hướng đến ánh sáng.<br>
+<span lang="pi" class="pali">
+Dadamānaṃ na vāreti,<br>
+yācamānāna bhojanaṃ;<br>
+Tādiso puriso rāja,<br>
+mīyamāno janādhipa;<br>
+Upeti tidivaṃ ṭhānaṃ,<br>
+tamojotiparāyano.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương, người hào phú,<br>
+Bất tín và xan tham,<br>
+Keo kiết, ác tư duy,<br>
+Tà kiến, không lễ nghĩa,<br>
+<span lang="pi" class="pali">
+Aḍḍho ce puriso rāja,<br>
+assaddho hoti maccharī;<br>
+Kadariyo pāpasaṅkappo,<br>
+micchādiṭṭhi anādaro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhiếc mắng và mạ lỵ.<br>
+Sa-môn, Bà-la-môn,<br>
+Cùng các khất sĩ khác,<br>
+Không cho, làm phiền nhiễu,<br>
+<span lang="pi" class="pali">
+Samaṇe brāhmaṇe vāpi,<br>
+aññe vāpi vanibbake;<br>
+Akkosati paribhāsati,<br>
+natthiko hoti rosako.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngăn chận sự bố thí,<br>
+Cơm nước cho người xin.<br>
+Ðại vương, người như vậy,<br>
+Khi thân hoại mạng chung,<br>
+Phải sanh vào địa ngục.<br>
+Ôi Nhân chủ, người vậy,<br>
+Ðược gọi sanh ánh sáng,<br>
+Và hướng đến bóng tối.<br>
+<span lang="pi" class="pali">
+Dadamānaṃ nivāreti,<br>
+yācamānāna bhojanaṃ;<br>
+Tādiso puriso rāja,<br>
+mīyamāno janādhipa;<br>
+Upeti nirayaṃ ghoraṃ,<br>
+jotitamaparāyano.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương, người hào phú,<br>
+Có tín, không xan tham,<br>
+Bố thí, thiện tư duy,<br>
+Có chí, tâm không loạn.<br>
+<span lang="pi" class="pali">
+Aḍḍho ce puriso rāja,<br>
+saddho hoti amaccharī;<br>
+Dadāti seṭṭhasaṅkappo,<br>
+abyaggamanaso naro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðứng dậy và chào đón,<br>
+Sa-môn, Bà-la-môn,<br>
+Cùng các khất sĩ khác,<br>
+Tu học hạnh hòa bình,<br>
+<span lang="pi" class="pali">
+Samaṇe brāhmaṇe vāpi,<br>
+aññe vāpi vanibbake;<br>
+Uṭṭhāya abhivādeti,<br>
+samacariyāya sikkhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không ngăn sự bố thí,<br>
+Cơm nước cho người xin.<br>
+Ðại vương, người như vậy,<br>
+Khi thân hoại mạng chung,<br>
+Ðược sanh lên Thiên giới,<br>
+Ôi Nhân chủ, người vậy,<br>
+Ðược gọi sanh ánh sáng,<br>
+Và hướng đến ánh sáng.”<br>
+<span lang="pi" class="pali">
+Dadamānaṃ na vāreti,<br>
+yācamānāna bhojanaṃ;<br>
+Tādiso puriso rāja,<br>
+mīyamāno janādhipa;<br>
+Upeti tidivaṃ ṭhānaṃ,<br>
+jotijotiparāyano”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn3.20.html#content"></a><a id="next-sutta" href="./sn3.22.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

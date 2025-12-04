@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Khuddaka Nikāya - Tiểu Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Sutta Nipāta 1.7 </title>
+
+<p lang="vi" class="vi" style="text-align: center">
+Tiểu Bộ Kinh<br>
+<span lang="pi" class="pali">
+Khuddaka Nikāya<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Kinh Tập<br>
+<span lang="pi" class="pali">
+Sutta Nipāta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Kinh Kẻ Bần Tiện<br>
+<span lang="pi" class="pali">
+Vasalasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe:<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—​<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Sàvathi, tại Jetavana, khu vườn ông Anàthapindika. Rồi Thế Tôn vào buổi sáng, đắp y, cầm y bát, đi vào Sàvatthi để khất thực.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho bhagavā pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiṃ piṇḍāya pāvisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, tại trú xứ của Bà-la-môn Aggikabhàradvàja, lửa tế lễ được đốt cháy, đồ cúng dường được dâng cao. Rồi Thế Tôn, trong khi thứ lớp khất thực ở Sàvatthi, đi đến trú xứ của Bà-la-môn Aggibhàradvàja.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena aggikabhāradvājassa brāhmaṇassa nivesane aggi pajjalito hoti āhuti paggahitā. Atha kho bhagavā sāvatthiyaṃ sapadānaṃ piṇḍāya caramāno yena aggikabhāradvājassa brāhmaṇassa nivesanaṃ tenupasaṅkami.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bà-la-môn Aggibhàradvàja thấy Thế Tôn từ xa đi đến, thấy vậy bèn nói với Thế Tôn:<br>
+<span lang="pi" class="pali">
+Addasā kho aggikabhāradvājo brāhmaṇo bhagavantaṃ dūratova āgacchantaṃ. Disvāna bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Ở đây kẻ trọc đầu, ở đây kẻ Sa-môn ti tiện, ở đây kẻ bần tiện, hãy đứng lại.<br>
+<span lang="pi" class="pali">
+"tatreva, muṇḍaka; tatreva, samaṇaka; tatreva, vasalaka, tiṭṭhāhī"ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, Thế Tôn nói với Bà-la-môn Aggibhàradvàja:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, bhagavā aggikabhāradvājaṃ brāhmaṇaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Bà-la-môn, Người có biết người bần tiện hay những pháp tạo ra kẻ bần tiện không?<br>
+<span lang="pi" class="pali">
+"jānāsi pana tvaṃ, brāhmaṇa, vasalaṃ vā vasalakaraṇe vā dhamme"ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Tôn giả Gotama, tôi không biết kẻ bần tiện hay những pháp tạo ra kẻ bần tiện. Lành thay, nếu Tôn giả Gotama thuyết pháp như thế nào cho tôi, để tôi được biết về kẻ bần tiện hay các pháp tạo thành kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+"Na khvāhaṃ, bho gotama, jānāmi vasalaṃ vā vasalakaraṇe vā dhamme; sādhu me bhavaṃ gotamo tathā dhammaṃ desetu, yathāhaṃ jāneyyaṃ vasalaṃ vā vasalakaraṇe vā dhamme"ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Vậy này Bà-la-môn, hãy nghe và khéo tác ý, Ta sẽ nói.<br>
+<span lang="pi" class="pali">
+" Tena hi, brāhmaṇa, suṇāhi, sādhukaṃ manasi karohi; bhāsissāmī"ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"- Thưa vâng, Tôn giả!" Bà-la-môn Aggibhàradvàja vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+" Evaṃ, bho"ti kho aggikabhāradvājo brāhmaṇo bhagavato paccassosi. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+116. Người phẫn nộ, hiềm hận,<br>
+Ác nhân, gièm pha người,<br>
+Ác tà kiến, man trá,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+116. "Kodhano upanāhī ca,<br>
+pāpamakkhī ca yo naro;<br>
+Vipannadiṭṭhi māyāvī,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+117. Ai ở đây hại vật,<br>
+Một sanh, hoặc hai sanh,<br>
+Không thương xót hữu tình,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+117. Ekajaṃ vā dvijaṃ vāpi,<br>
+yodha pāṇaṃ vihiṃsati;<br>
+Yassa pāṇe dayā natthi,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+118. Ai làm hại vây hãm,<br>
+Các làng, các thị trấn,<br>
+Kẻ cướp đoạt có tiếng,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+118. Yo hanti parirundhati,<br>
+gāmāni nigamāni ca;<br>
+Niggāhako samaññāto,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+119. Tại làng hay tại rừng,<br>
+Vật sở hữu của người,<br>
+Lấy trộm của không cho,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+119. Gāme vā yadi vā raññe,<br>
+yaṃ paresaṃ mamāyitaṃ;<br>
+Theyyā adinnamādeti,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+120. Ai vay nợ của người,<br>
+Bị đòi liền trốn tránh,<br>
+Ta đâu mắc nợ ngươi,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+120. Yo have iṇamādāya,<br>
+cujjamāno palāyati;<br>
+Na hi te iṇamatthīti,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+121. Ai vì ham vật mọn,<br>
+Kẻ đang đi trên đường,<br>
+Giết hại cướp vật mọn,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+121. Yo ve kiñcikkhakamyatā,<br>
+panthasmiṃ vajantaṃ janaṃ;<br>
+Hantvā kiñcikkhamādeti,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+122. Ai vì mình, vì người,<br>
+Hay vì nhân tài sản,<br>
+Làm nhân họ nói láo,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+122. Attahetu parahetu,<br>
+dhanahetu ca yo naro;<br>
+Sakkhipuṭṭho musā brūti,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+123. Ai được thấy giữa vợ<br>
+Của bà con, bạn thân,<br>
+Ép buộc hay ưng thuận,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+123. Yo ñātīnaṃ sakhīnaṃ vā,<br>
+dāresu paṭidissati;<br>
+Sāhasā sampiyena vā,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+124. Ai với mẹ hay cha,<br>
+Già yếu, tuổi trẻ qua,<br>
+Tuy giàu không giúp đỡ,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+124. Yo mātaraṃ pitaraṃ vā,<br>
+jiṇṇakaṃ gatayobbanaṃ;<br>
+Pahu santo na bharati,<br>
+taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+125. Ai với mẹ hay cha,<br>
+Với anh chị, nhạc mẫu,<br>
+Làm hại, dùng lời mắng,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+125. Yo mātaraṃ pitaraṃ vā,<br>
+Bhātaraṃ bhaginiṃ sasuṃ;<br>
+Hanti roseti vācāya,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+126. Ai được hỏi mục đích,<br>
+Lại khuyên lời trái đích,<br>
+Khuyên bảo nên che đậy,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+126. Yo atthaṃ pucchito santo,<br>
+Anatthamanusāsati;<br>
+Paṭicchannena manteti,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+127. Ai làm các nghiệp ác,<br>
+Muốn không biết mình làm,<br>
+Ai làm hạnh che đậy,<br>
+Ðược biết là kẻ bần tiện.<br>
+<span lang="pi" class="pali">
+127. Yo katvā pāpakaṃ kammaṃ,<br>
+Mā maṃ jaññāti icchati;<br>
+Yo paṭicchannakammanto,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+128. Ai đến nhà người khác,<br>
+Ăn món ăn ngon lành,<br>
+Lại không đáp lễ lại,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+128. Yo ve parakulaṃ gantvā,<br>
+Bhutvāna sucibhojanaṃ;<br>
+Āgataṃ nappaṭipūjeti,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+129. Ai nói dối lường gạt,<br>
+Sa-môn, Bà-la-môn,<br>
+Hay các người nghèo khác,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+129. Yo brāhmaṇaṃ samaṇaṃ vā,<br>
+Aññaṃ vāpi vanibbakaṃ;<br>
+Musāvādena vañceti,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+130. Dùng lời mắng, không cho,<br>
+Sa-môn, Bà-la-môn,<br>
+Khi thời ăn uống đến,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+130. Yo brāhmaṇaṃ samaṇaṃ vā,<br>
+Bhattakāle upaṭṭhite;<br>
+Roseti vācā na ca deti,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+131. Ở đời nói không thật,<br>
+Bị si mê che đậy,<br>
+Tham cầu chút lợi nhỏ,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+131. Asataṃ yodha pabrūti,<br>
+Mohena paliguṇṭhito;<br>
+Kiñcikkhaṃ nijigīsāno,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+132. Ai đề cao tự ngã,<br>
+Khi miệt giá trị người,<br>
+Hạ mình với tự cao,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+132. Yo cattānaṃ samukkaṃse,<br>
+Pare ca mavajānāti;<br>
+Nihīno sena mānena,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+133. Ai gây hấn, hà tiện,<br>
+Ác dục và xan tham,<br>
+Xảo quyệt, không tàm quí,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+133. Rosako kadariyo ca,<br>
+Pāpiccho maccharī saṭho;<br>
+Ahiriko anottappī,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+134. Ai phỉ báng đức Phật,<br>
+Hay đệ tử của Ngài,<br>
+Hàng xuất gia, tại gia,<br>
+Ðược biết là bần tiện.<br>
+<span lang="pi" class="pali">
+134. Yo buddhaṃ paribhāsati,<br>
+Atha vā tassa sāvakaṃ;<br>
+Paribbājaṃ gahaṭṭhaṃ vā,<br>
+Taṃ jaññā vasalo iti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+135. Ai không phải La-hán,<br>
+Tự nhận là La-hán,<br>
+Kẻ trộm Phạm thiên giới,<br>
+Chính tối hạ bần tiện.<br>
+Những hàng bần tiện này,<br>
+Ta nói rõ cho Ông.<br>
+<span lang="pi" class="pali">
+135. Yo ve anarahaṃ santo,<br>
+Arahaṃ paṭijānāti;<br>
+Coro sabrahmake loke,<br>
+Eso kho vasalādhamo;<br>
+Ete kho vasalā vuttā,<br>
+Mayā yete pakāsitā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+136. Bần tiện không vì sanh,<br>
+Phạm chí không vì sanh,<br>
+Do hành, thành bần tiện,<br>
+Do hành, thành Phạm chí.<br>
+<span lang="pi" class="pali">
+136. Na jaccā vasalo hoti,<br>
+Na jaccā hoti brāhmaṇo;<br>
+Kammunā vasalo hoti,<br>
+Kammunā hoti brāhmaṇo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+137. Do đây, nên hiểu biết,<br>
+Như Ta trình bày rõ,<br>
+Màtanga được danh,<br>
+Bần tiện, ăn thịt chó.<br>
+<span lang="pi" class="pali">
+137. Tadamināpi jānātha,<br>
+Yathāmedaṃ nidassanaṃ;<br>
+Caṇḍālaputto sopāko,<br>
+Mātaṅgo iti vissuto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+138. Danh tối thượng khó đạt,<br>
+Màtanga đạt được,<br>
+Nhiều Sát-ly, Phạm chí,<br>
+Ðến hầu hạ vị ấy.<br>
+<span lang="pi" class="pali">
+138. So yasaṃ paramaṃ patto,<br>
+Mātaṅgo yaṃ sudullabhaṃ;<br>
+Āgacchuṃ tassupaṭṭhānaṃ,<br>
+Khattiyā brāhmaṇā bahū.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+139. Vị ấy leo thiên xa,<br>
+Trên đường lớn không bụi,<br>
+Từ bỏ mọi dục tham,<br>
+Ðạt được Phạm thiên giới,<br>
+Thọ sanh không ngăn chận,<br>
+Vị ấy sanh Phạm thiên.<br>
+<span lang="pi" class="pali">
+139. Devayānaṃ abhiruyha,<br>
+Virajaṃ so mahāpathaṃ;<br>
+Kāmarāgaṃ virājetvā,<br>
+Brahmalokūpago ahu;<br>
+Na naṃ jāti nivāresi,<br>
+Brahmalokūpapattiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+140. Có những Bà-la-môn,<br>
+Sanh gia đình Ðạo sư,<br>
+Hay sanh những gia đình<br>
+Quyến thuộc với bùa chú,<br>
+Họ vẫn thường được thấy,<br>
+Làm các điều ác nghiệp,<br>
+<span lang="pi" class="pali">
+140. Ajjhāyakakule jātā,<br>
+Brāhmaṇā mantabandhavā;<br>
+Te ca pāpesu kammesu,<br>
+Abhiṇhamupadissare.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+141. Hiện tại bị khinh miệt,<br>
+Ðời sau sanh ác thú,<br>
+Thọ sanh không ngăn chận,<br>
+Sanh ác thú đáng khinh.<br>
+<span lang="pi" class="pali">
+141. Diṭṭheva dhamme gārayhā,<br>
+Samparāye ca duggati;<br>
+Na ne jāti nivāreti,<br>
+Duggatyā garahāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+142. Bần tiện không vì sanh,<br>
+Phạm chí không vì sanh,<br>
+Do hành thành bần tiện,<br>
+Do hành thành Phạm chí.<br>
+<span lang="pi" class="pali">
+142. Na jaccā vasalo hoti,<br>
+Na jaccā hoti brāhmaṇo;<br>
+Kammunā vasalo hoti,<br>
+Kammunā hoti brāhmaṇo"ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, Bà-la-môn Bhàradvàja bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, aggikabhāradvājo brāhmaṇo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Thật vi diệu thay, thưa Tôn giả Gotama! Thật vi diệu thay, thưa Tôn giả Gotama! Thưa Tôn giả Gotama, ví như người dựng đứng lại những gì bị quăng ngã xuống, mở toang ra những gì bị che kín, chỉ đường cho kẻ bị lạc hướng, đem đèn sáng vào trong bóng tối, để những ai có mắt có thể thấy sắc.<br>
+<span lang="pi" class="pali">
+"Abhikkantaṃ, bho gotama, abhikkantaṃ, bho gotama. seyyathāpi, bho gotama, nikkujjitaṃ vā ukkujjeyya, paṭicchannaṃ vā vivareyya, mūḷhassa vā maggaṃ ācikkheyya, andhakāre vā telapajjotaṃ dhāreyya, ‘cakkhumanto rūpāni dakkhantī’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, Pháp được Tôn giả Gotama dùng nhiều phương tiện trình bày. Con nay qui y Tôn giả Gotama, qui y Pháp và qui y chúng Tỷ-kheo. Mong Tôn giả Gotama nhận con làm đệ tử cư sĩ, từ nay cho đến mạng chung, con trọn đời qui ngưỡng.<br>
+<span lang="pi" class="pali">
+evamevaṃ bhotā gotamena anekapariyāyena dhammo pakāsito. esāhaṃ, bho gotama, saputto sabhariyo sapariso sāmacco bhavantaṃ gotamaṃ saraṇaṃ gacchāmi dhammañca bhikkhusaṅghañca. upāsakaṃ maṃ bhavaṃ gotamo dhāretu ajjatagge pāṇupetaṃ saraṇaṃ gatan"ti.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./snp1.6.html#content"></a><a id="next-sutta" href="./snp1.8.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

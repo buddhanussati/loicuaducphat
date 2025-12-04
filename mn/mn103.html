@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 103          </title>
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 103<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 103<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Nghĩ Như Thế Nào?<br>
+<span lang="pi" class="pali">
+Kintisutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú ở Kusinara, tại khu rừng Baliharana. Ở đây, Thế Tôn gọi các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā pisinārāyaṃ viharati baliharaṇe vanasaṇḍe. Tatra kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo!”<br>
+<span lang="pi" class="pali">
+“bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn”. Các Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn nói như sau:<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ.Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo, đối với Ta, các Ông nghĩ như thế nào?<br>
+<span lang="pi" class="pali">
+“kinti vo, bhikkhave, mayi hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có phải vì nhân y áo, Sa-môn Gotama thuyết pháp? Hay có phải vì nhân đồ ăn khất thực, Sa-môn Gotama thuyết pháp? Hay có phải vì nhân sàng tọa, Sa-môn Gotama thuyết pháp? Hay có phải vì nhân thành bại, Sa-môn Gotama thuyết pháp?’”<br>
+<span lang="pi" class="pali">
+‘cīvarahetu vā samaṇo gotamo dhammaṃ deseti, piṇḍapātahetu vā samaṇo gotamo dhammaṃ deseti, senāsanahetu vā samaṇo gotamo dhammaṃ deseti, itibhavābhavahetu vā samaṇo gotamo dhammaṃ desetī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không phải vậy, bạch Thế Tôn! Chúng con không nghĩ rằng:<br>
+<span lang="pi" class="pali">
+“Na kho no, bhante, bhagavati evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Vì nhân y áo, Sa-môn Gotama thuyết pháp. Hay vì nhân đồ ăn khất thực, Sa-môn Gotama thuyết pháp. Hay vì nhân sàng tọa, Sa-môn Gotama thuyết pháp. Hay vì nhân thành bại, Sa-môn Gotama thuyết pháp’.”<br>
+<span lang="pi" class="pali">
+‘cīvarahetu vā samaṇo gotamo dhammaṃ deseti, piṇḍapātahetu vā samaṇo gotamo dhammaṃ deseti, senāsanahetu vā samaṇo gotamo dhammaṃ deseti, itibhavābhavahetu vā samaṇo gotamo dhammaṃ desetī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Và như vậy, này các Tỷ-kheo, đối với Ta, các Ông không nghĩ như sau:<br>
+<span lang="pi" class="pali">
+“Na ca kira vo, bhikkhave, mayi evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Vì nhân y áo, Sa-môn Gotama thuyết pháp… vì nhân thành bại, Sa-môn Gotama thuyết pháp’.<br>
+<span lang="pi" class="pali">
+‘cīvarahetu vā samaṇo gotamo dhammaṃ deseti ...pe... itibhavābhavahetu vā samaṇo gotamo dhammaṃ desetī’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vậy này các Tỷ-kheo, đối với ta, các Ông nghĩ như thế nào?”<br>
+<span lang="pi" class="pali">
+atha kinti carahi vo, bhikkhave, mayi hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như thế này, bạch Thế Tôn, đối với Thế Tôn, chúng con nghĩ như sau: ‘Với từ tâm, vì lợi tha và do lòng từ, Thế Tôn thuyết pháp’.”<br>
+<span lang="pi" class="pali">
+“Evaṃ kho no, bhante, bhagavati hoti: ‘anukampako bhagavā hitesī; anukampaṃ upādāya dhammaṃ desetī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Như vậy, này các Tỷ-kheo, đối với Ta, các Ông nghĩ như sau: ‘Với từ tâm, vì lợi tha và do lòng từ, Thế Tôn thuyết pháp’.<br>
+<span lang="pi" class="pali">
+“Evañca kira vo, bhikkhave, mayi hoti: ‘anukampako bhagavā hitesī; anukampaṃ upādāya dhammaṃ desetī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này các Tỷ-kheo, những pháp Ta giảng cho các Ông với thượng trí, như là:<br>
+<span lang="pi" class="pali">
+Tasmātiha, bhikkhave, ye vo mayā dhammā abhiññā desitā, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn niệm xứ, Bốn chánh cần, Bốn như ý túc, Năm căn, Năm lực, Bảy Bồ đề phần, Thánh đạo tám ngành. Ở đây, các ông phải học tập tất cả, trong tinh thần hòa đồng, hoan hỷ, không cãi lộn với nhau.<br>
+<span lang="pi" class="pali">
+cattāro satipaṭṭhānā cattāro sammappadhānā cattāro iddhipādā pañcindriyāni pañca balāni satta bojjhaṅgā ariyo aṭṭhaṅgiko maggo, tattha sabbeheva samaggehi sammodamānehi avivadamānehi sikkhitabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, khi các Ông học tập trong các pháp ấy, trong tinh thần hòa đồng, hoan hỷ, không cãi lộn với nhau, có thể có hai vị Tỷ-kheo nói khác nhau về Thắng pháp (Abhidhamma).<br>
+<span lang="pi" class="pali">
+Tesañca vo, bhikkhave, samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ siyaṃsu dve bhikkhū abhidhamme nānāvādā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, nếu các Ông nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các vị Tôn giả này, có sự sai khác về nghĩa, có sự sai khác về văn’; ở đây, Tỷ-kheo nào các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy nói như sau:<br>
+<span lang="pi" class="pali">
+‘imesaṃ kho āyasmantānaṃ atthato ceva nānaṃ byañjanato ca nānan’ti, tattha yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả có sự sai khác về nghĩa, có sự sai khác về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato ceva nānaṃ, byañjanato ca nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này các Tôn giả phải biết có sự sai khác về nghĩa, có sự sai khác về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato ceva nānaṃ, byañjanato ca nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn với nhau’.<br>
+<span lang="pi" class="pali">
+Māyasmanto vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi một Tỷ-kheo nào của phái bên kia mà các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+Athāparesaṃ ekatopakkhikānaṃ bhikkhūnaṃ yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả có sự sai khác về nghĩa, có sự sai khác về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato ceva nānaṃ, byañjanato ca nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này, các Tôn giả phải biết có sự sai khác về nghĩa, có sự sai khác về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato ceva nānaṃ, byañjanato ca nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn với nhau’.<br>
+<span lang="pi" class="pali">
+Māyasmanto vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, cái gì khó nắm giữ, cần phải thọ trì là khó nắm giữ.<br>
+<span lang="pi" class="pali">
+Iti duggahitaṃ duggahitato dhāretabbaṃ, suggahitaṃ suggahitato dhāretabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi thọ trì là khó nắm giữ cái gì khó nắm giữ, cái gì thuộc về Pháp, cái gì thuộc về Luật phải được nói lên.<br>
+<span lang="pi" class="pali">
+Duggahitaṃ duggahitato dhāretvā suggahitaṃ suggahitato dhāretvā yo dhammo yo vinayo so bhāsitabbo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, nếu các Ông suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các bậc Tôn giả này, có sự sai khác về nghĩa, có sự đồng nhất về văn’. Ở đây, Tỷ-kheo nào các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+‘imesaṃ kho āyasmantānaṃ atthato hi kho nānaṃ, byañjanato sametī’ti, tattha yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả, có sự sai khác về nghĩa, có sự đồng nhất về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato hi nānaṃ, byañjanato sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này, các Tôn giả phải biết có sự sai khác về nghĩa, có sự đồng nhất về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato hi kho nānaṃ, byañjanato sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn với nhau’.<br>
+<span lang="pi" class="pali">
+Māyasmanto vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi một Tỷ-kheo nào của phe bên kia mà các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+Athāparesaṃ ekatopakkhikānaṃ bhikkhūnaṃ yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả có sự sai khác về nghĩa, có sự đồng nhất về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato hi kho nānaṃ, byañjanato sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này, các Tôn giả phải biết có sự sai khác về nghĩa, có sự đồng nhất về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato hi kho nānaṃ, byañjanato sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn với nhau’.<br>
+<span lang="pi" class="pali">
+Māyasmanto vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, cái gì khó nắm giữ, cần phải thọ trì là khó nắm giữ, cái gì dễ nắm giữ phải thọ trì là dễ nắm giữ.<br>
+<span lang="pi" class="pali">
+Iti duggahitaṃ duggahitato dhāretabbaṃ, suggahitaṃ suggahitato dhāretabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi thọ trì là khó nắm giữ cái gì khó nắm giữ, sau khi thọ trì là dễ nắm giữ cái gì dễ nắm giữ, cái gì thuộc về Pháp, cái gì thuộc về Luật phải được nói lên.<br>
+<span lang="pi" class="pali">
+Duggahitaṃ duggahitato dhāretvā suggahitaṃ suggahitato dhāretvā yo dhammo yo vinayo so bhāsitabbo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, nếu các Ông nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả này, có sự đồng nhất về nghĩa, có sự sai khác về văn’. Ở đây, Tỷ-kheo nào các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+‘imesaṃ kho āyasmantānaṃ atthato hi kho sameti, byañjanato nānan’ti, tattha yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả, có sự đồng nhất nghĩa, có sự sai khác về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato hi sameti, byañjanato nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này, các Tôn giả phải biết có sự đồng nhất về nghĩa, có sự sai khác về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato hi kho sameti, byañjanato nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng đây chỉ là một vấn đề nhỏ nhặt tức là văn.<br>
+<span lang="pi" class="pali">
+Appamattakaṃ kho panetaṃ yadidaṃ—byañjanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn với nhau vì một vấn đề nhỏ nhặt’.<br>
+<span lang="pi" class="pali">
+Māyasmanto appamattake vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi một Tỷ-kheo nào của phe bên kia mà các Ông nghĩ là nhu thuận dễ nói hơn, hãy nghĩ đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+Athāparesaṃ ekatopakkhikānaṃ bhikkhūnaṃ yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả, có sự đồng nhất về nghĩa, có sự sai khác về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato hi sameti, byañjanato nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này, các Tôn giả phải biết có sự đồng nhất về nghĩa, có sự sai khác về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato hi kho sameti, byañjanato nānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng đây chỉ là một vấn đề nhỏ nhặt, tức là văn.<br>
+<span lang="pi" class="pali">
+Appamattakaṃ kho panetaṃ yadidaṃ—byañjanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn với nhau, vì một vấn đề nhỏ nhặt’.<br>
+<span lang="pi" class="pali">
+Māyasmanto appamattake vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, cái gì dễ nắm giữ, phải thọ trì là dễ nắm giữ, cái gì khó nắm giữ, phải thọ trì là khó nắm giữ.<br>
+<span lang="pi" class="pali">
+Iti suggahitaṃ suggahitato dhāretabbaṃ, duggahitaṃ duggahitato dhāretabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi thọ trì là dễ nắm giữ cái gì dễ nắm giữ, sau khi thọ trì là khó nắm giữ cái gì khó nắm giữ, cái gì thuộc về Pháp, cái gì thuộc về Luật phải được nói lên.<br>
+<span lang="pi" class="pali">
+Suggahitaṃ suggahitato dhāretvā duggahitaṃ duggahitato dhāretvā yo dhammo yo vinayo so bhāsitabbo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, nếu các Ông nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả này có sự đồng nhất về nghĩa có sự đồng nhất về văn’; ở đây, vị Tỷ-kheo nào các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+‘imesaṃ kho āyasmantānaṃ atthato ceva sameti byañjanato ca sametī’ti, tattha yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả có sự đồng nhất về nghĩa và cũng có sự đồng nhất về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato ceva sameti, byañjanato ca sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này, các Tôn giả phải biết có sự đồng nhất về nghĩa và cũng có sự đồng nhất về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato ceva sameti byañjanato ca sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn nhau’.<br>
+<span lang="pi" class="pali">
+Māyasmanto vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi một Tỷ-kheo nào của phe bên kia mà các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+Athāparesaṃ ekatopakkhikānaṃ bhikkhūnaṃ yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa các Tôn giả, có sự đồng nhất về nghĩa và có sự đồng nhất về văn.<br>
+<span lang="pi" class="pali">
+‘āyasmantānaṃ kho atthato ceva sameti byañjanato ca sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề này, các Tôn giả phải biết có sự đồng nhất về nghĩa và cũng có sự đồng nhất về văn như thế này.<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ āyasmanto jānātha—yathā atthato ceva sameti byañjanato ca sameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tôn giả chớ có cãi lộn với nhau’.<br>
+<span lang="pi" class="pali">
+Māyasmanto vivādaṃ āpajjitthā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, cái gì dễ nắm giữ phải thọ trì là dễ nắm giữ.<br>
+<span lang="pi" class="pali">
+Iti suggahitaṃ suggahitato dhāretabbaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi thọ trì là dễ nắm giữ cái gì dễ nắm giữ, cái gì thuộc về Pháp, cái gì thuộc về Luật hãy được nói lên.<br>
+<span lang="pi" class="pali">
+Suggahitaṃ suggahitato dhāretvā yo dhammo yo vinayo so bhāsitabbo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, khi các Ông học tập các pháp ấy trong tinh thần hòa đồng, hoan hỷ, không cãi lộn với nhau, có thể có một Tỷ-kheo khác phạm giới, phạm luật.<br>
+<span lang="pi" class="pali">
+Tesañca vo, bhikkhave, samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ siyā aññatarassa bhikkhuno āpatti siyā vītikkamo,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, chớ có khiển trách hấp tấp, cá nhân người kia cần phải giác sát. Các Ông phải suy nghĩ:<br>
+<span lang="pi" class="pali">
+tatra, bhikkhave, na codanāya taritabbaṃ. Puggalo upaparikkhitabbo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sẽ không có hại gì cho ta, và sẽ không có tổn hại gì cho người kia. Nếu người kia không phẫn nộ, không uất hận, có ý kiến lanh lợi, và dễ thuyết phục, và ta có thể khiến người ấy vượt khỏi bất thiện, an trú vào thiện’.<br>
+<span lang="pi" class="pali">
+‘iti mayhañca avihesā bhavissati parassa ca puggalassa anupaghāto, paro hi puggalo akkodhano anupanāhī adaḷhadiṭṭhī suppaṭinissaggī, sakkomi cāhaṃ etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetun’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu các Ông nghĩ như vậy, thời các Ông nên nói là phải.<br>
+<span lang="pi" class="pali">
+Sace, bhikkhave, evamassa, kallaṃ vacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu, này các Tỷ-kheo, các Ông nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Sace pana, bhikkhave, evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sẽ không có hại gì cho ta, và sẽ có tổn hại cho người kia. Người kia phẫn nộ, uất hận, có ý kiến chậm chạp, nhưng dễ thuyết phục, và ta có thể khiến người ấy vượt khỏi bất thiện, an trú vào thiện.<br>
+<span lang="pi" class="pali">
+‘mayhaṃ kho avihesā bhavissati parassa ca puggalassa upaghāto, paro hi puggalo kodhano upanāhī adaḷhadiṭṭhī suppaṭinissaggī, sakkomi cāhaṃ etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng đây chỉ là một vấn đề nhỏ nhặt, tức là sự tổn hại cho người kia.<br>
+<span lang="pi" class="pali">
+Appamattakaṃ kho panetaṃ yadidaṃ—parassa puggalassa upaghāto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và đây là sự việc to lớn hơn, là ta có thể khiến người này vượt khỏi bất thiện, an trú vào thiện’.<br>
+<span lang="pi" class="pali">
+Atha kho etadeva bahutaraṃ—svāhaṃ sakkomi etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetun’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu các Ông nghĩ như vậy, thời các Ông nên nói là phải.<br>
+<span lang="pi" class="pali">
+Sace, bhikkhave, evamassa, kallaṃ vacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, nếu các Ông suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Sace pana, bhikkhave, evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sẽ có hại cho ta và không có tổn hại cho người kia. Người kia không có phẫn nộ, uất hận, có ý kiến lanh lợi, nhưng khó thuyết phục, và ta có thể khiến người ấy vượt khỏi bất thiện, an trú vào thiện.<br>
+<span lang="pi" class="pali">
+‘mayhaṃ kho vihesā bhavissati parassa ca puggalassa anupaghāto. Paro hi puggalo akkodhano anupanāhī daḷhadiṭṭhī duppaṭinissaggī, sakkomi cāhaṃ etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng đây chỉ là một vấn đề nhỏ nhặt, tức là sự tổn hại cho ta.<br>
+<span lang="pi" class="pali">
+Appamattakaṃ kho panetaṃ yadidaṃ—mayhaṃ vihesā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và đây là sự việc to lớn hơn, là ta có thể khiến người này vượt khỏi bất thiện, an trú vào thiện’.<br>
+<span lang="pi" class="pali">
+Atha kho etadeva bahutaraṃ—svāhaṃ sakkomi etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetun’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu các Ông suy nghĩ như vậy, thời các Ông nên nói là phải.<br>
+<span lang="pi" class="pali">
+Sace, bhikkhave, evamassa, kallaṃ vacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, nếu các Ông suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Sace pana, bhikkhave, evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Sẽ có hại cho ta và sẽ có tổn hại cho người kia. Người khác phẫn nộ, uất hận, có ý kiến chậm chạp, khó thuyết phục và ta có thể khiến người này vượt khỏi bất thiện, an trú vào thiện.<br>
+<span lang="pi" class="pali">
+‘mayhañca kho vihesā bhavissati parassa ca puggalassa upaghāto. Paro hi puggalo kodhano upanāhī daḷhadiṭṭhī duppaṭinissaggī, sakkomi cāhaṃ etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng đây chỉ là một vấn đề nhỏ nhặt, tức là hại cho ta và tổn hại cho người kia.<br>
+<span lang="pi" class="pali">
+Appamattakaṃ kho panetaṃ yadidaṃ—mayhañca vihesā bhavissati parassa ca puggalassa upaghāto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và đây là sự việc to lớn hơn, là ta có thể khiến người này vượt khỏi bất thiện, an trú vào thiện’.<br>
+<span lang="pi" class="pali">
+Atha kho etadeva bahutaraṃ—svāhaṃ sakkomi etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetun’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu các Ông suy nghĩ như vậy, thời các Ông nên nói là phải.<br>
+<span lang="pi" class="pali">
+Sace, bhikkhave, evamassa, kallaṃ vacanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, nếu các Ông suy nghĩ như sau:<br>
+<span lang="pi" class="pali">
+Sace pana, bhikkhave, evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ta sẽ bị hại và người kia cũng bị tổn hại. Người kia phẫn nộ, uất hận, có ý kiến chậm chạp, khó thuyết phục, và ta không có thể khiến người này vượt khỏi bất thiện, an trú vào thiện”.<br>
+<span lang="pi" class="pali">
+‘mayhañca kho vihesā bhavissati parassa ca puggalassa upaghāto. Paro hi puggalo kodhano upanāhī daḷhadiṭṭhī duppaṭinissaggī, na cāhaṃ sakkomi etaṃ puggalaṃ akusalā vuṭṭhāpetvā kusale patiṭṭhāpetun’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với một người như vậy, này các Tỷ-kheo, hãy xả, chớ có nên khinh miệt.<br>
+<span lang="pi" class="pali">
+Evarūpe, bhikkhave, puggale upekkhā nātimaññitabbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, khi các Ông học tập các pháp ấy trong tinh thần hòa đồng, hoan hỷ, không cãi lộn với nhau, có thể khởi lên giữa các Ông, một khẩu hành, một ý kiến ngoan cố, một tâm hiềm hận, ưu não, phẫn nộ.<br>
+<span lang="pi" class="pali">
+Tesañca vo, bhikkhave, samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ aññamaññassa vacīsaṃhāro uppajjeyya diṭṭhipaḷāso cetaso āghāto appaccayo anabhiraddhi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, một Tỷ-kheo nào của phe bên kia mà các Ông nghĩ là nhu thuận dễ nói hơn, hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+Tattha ekatopakkhikānaṃ bhikkhūnaṃ yaṃ bhikkhuṃ suvacataraṃ maññeyyātha so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, dầu chúng tôi học tập các pháp ấy trong tinh thần hòa đồng, hoan hỷ, không cãi lộn nhau, có khởi lên một khẩu hành, một ý kiến ngoan cố, một tâm hiềm hận, ưu não, phẫn nộ. Nếu biết được như thế, vị Sa-môn sẽ quở trách’.<br>
+<span lang="pi" class="pali">
+‘yaṃ no, āvuso, amhākaṃ samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ aññamaññassa vacīsaṃhāro uppanno diṭṭhipaḷāso cetaso āghāto appaccayo anabhiraddhi, taṃ jānamāno samaṇo garaheyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trả lời một cách chơn chánh, này các Tỷ-kheo, Tỷ-kheo phải trả lời như sau:<br>
+<span lang="pi" class="pali">
+Sammā byākaramāno, bhikkhave, bhikkhu evaṃ byākareyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, dầu cho, chúng tôi học tập các pháp ấy trong tinh thần hòa đồng, hoan hỷ, không cãi lộn nhau… , vị Sa-môn sẽ quở trách’.<br>
+<span lang="pi" class="pali">
+‘yaṃ no, āvuso, amhākaṃ samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ aññamaññassa vacīsaṃhāro uppanno diṭṭhipaḷāso cetaso āghāto appaccayo anabhiraddhi, taṃ jānamāno samaṇo garaheyyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này Hiền giả, nếu không từ bỏ điều kiện ấy, Niết-bàn có thể chứng được chăng?’<br>
+<span lang="pi" class="pali">
+Etaṃ panāvuso, dhammaṃ appahāya nibbānaṃ sacchikareyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu trả lời một cách chơn chánh, này các Tỷ-kheo, Tỷ-kheo phải trả lời như sau:<br>
+<span lang="pi" class="pali">
+Sammā byākaramāno, bhikkhave, bhikkhu evaṃ byākareyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, nếu không từ bỏ điều kiện ấy, Niết-bàn không có thể chứng được’.<br>
+<span lang="pi" class="pali">
+‘etaṃ, āvuso, dhammaṃ appahāya na nibbānaṃ sacchikareyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi một Tỷ-kheo nào của phe bên kia mà các Ông nghĩ là nhu thuận dễ nói hơn hãy đến vị ấy và nói như sau:<br>
+<span lang="pi" class="pali">
+Athāparesaṃ ekatopakkhikānaṃ bhikkhūnaṃ yaṃ bhikkhuṃ suvacataraṃ maññeyyātha, so upasaṅkamitvā evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, dầu chúng tôi học tập các pháp ấy… ,vị Sa-môn sẽ quở trách’.<br>
+<span lang="pi" class="pali">
+‘yaṃ no, āvuso, amhākaṃ samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ aññamaññassa vacīsaṃhāro uppanno diṭṭhipaḷāso cetaso āghāto appaccayo anabhiraddhi, taṃ jānamāno samaṇo garaheyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trả lời một cách chơn chánh, này các Tỷ-kheo, Tỷ-kheo phải trả lời như sau:<br>
+<span lang="pi" class="pali">
+Sammā byākaramāno, bhikkhave, bhikkhu evaṃ byākareyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, dầu cho chúng tôi … , vị Sa-môn sẽ quở trách’.<br>
+<span lang="pi" class="pali">
+‘yaṃ no, āvuso, amhākaṃ samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ aññamaññassa vacīsaṃhāro uppanno diṭṭhipaḷāso cetaso āghāto appaccayo anabhiraddhi taṃ jānamāno samaṇo garaheyyāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này Hiền giả, nếu không từ bỏ điều kiện ấy, Niết-bàn có thể chứng được chăng?’<br>
+<span lang="pi" class="pali">
+Etaṃ panāvuso, dhammaṃ appahāya nibbānaṃ sacchikareyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu trả lời một cách chơn chánh, này các Tỷ-kheo, Tỷ-kheo phải trả lời như sau:<br>
+<span lang="pi" class="pali">
+Sammā byākaramāno, bhikkhave, bhikkhu evaṃ byākareyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, nếu không từ bỏ điều kiện ấy, Niết-bàn không có thể chứng được’.<br>
+<span lang="pi" class="pali">
+‘etaṃ kho, āvuso, dhammaṃ appahāya na nibbānaṃ sacchikareyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này các Tỷ-kheo, nếu các Ông khác hỏi Tỷ-kheo ấy, nói rằng:<br>
+<span lang="pi" class="pali">
+Tañce, bhikkhave, bhikkhuṃ pare evaṃ puccheyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Các Tỷ-kheo ấy có được Tôn giả khiến cho vượt khỏi bất thiện, an trú vào thiện chăng?’<br>
+<span lang="pi" class="pali">
+‘āyasmatā no ete bhikkhū akusalā vuṭṭhāpetvā kusale patiṭṭhāpitā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu trả lời một cách chơn chánh, này các Tỷ-kheo, Tỷ-kheo phải trả lời như sau:<br>
+<span lang="pi" class="pali">
+Sammā byākaramāno, bhikkhave, bhikkhu evaṃ byākareyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ở đây, này Hiền giả, tôi đi đến Thế Tôn và Thế Tôn thuyết pháp của Ngài cho tôi. Sau khi nghe pháp ấy, tôi đã nói lại cho các Tỷ-kheo ấy. Khi các Tỷ-kheo ấy nghe pháp ấy xong, các vị ấy tự vượt khỏi bất thiện và an trú vào thiện’.<br>
+<span lang="pi" class="pali">
+‘idhāhaṃ, āvuso, yena bhagavā tenupasaṅkamiṃ, tassa me bhagavā dhammaṃ desesi, tāhaṃ dhammaṃ sutvā tesaṃ bhikkhūnaṃ abhāsiṃ. Taṃ te bhikkhū dhammaṃ sutvā akusalā vuṭṭhahiṃsu, kusale patiṭṭhahiṃsū’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trả lời như vậy, này các Tỷ-kheo, Tỷ-kheo không tự khen mình chê người. Vị ấy giải thích tùy pháp đúng với pháp, và không một ai trong các Pháp hữu nói lời tùy thuyết, có thể đưa đến phỉ báng.”<br>
+<span lang="pi" class="pali">
+Evaṃ byākaramāno kho, bhikkhave, bhikkhu na ceva attānaṃ ukkaṃseti, na paraṃ vambheti, dhammassa cānudhammaṃ byākaroti, na ca koci sahadhammiko vādānuvādo gārayhaṃ ṭhānaṃ āgacchatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy. Các Tỷ-kheo hoan hỷ tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā. Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Kintisuttaṃ niṭṭhitaṃ tatiyaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn102.html#content"></a><a id="next-sutta" href="./mn104.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

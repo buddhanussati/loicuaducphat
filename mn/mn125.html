@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 125           </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 125<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 125<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Ðiều ngự địa<br>
+<span lang="pi" class="pali">
+Dantabhūmisutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở Vương Xá, Trúc Lâm, tại chỗ nuôi dưỡng sóc.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Sa-di Aciravata đang ở tại am thất nơi hoang vắng.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena aciravato samaṇuddeso araññakuṭikāyaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vương tử Jayasena trong khi tản bộ du hành, đi đến Sa-di Aciravata, sau khi đến nói lên với Sa-di Aciravata những lời chào đón hỏi thăm;<br>
+<span lang="pi" class="pali">
+Atha kho jayaseno rājakumāro jaṅghāvihāraṃ anucaṅkamamāno anuvicaramāno yena aciravato samaṇuddeso tenupasaṅkami; upasaṅkamitvā aciravatena samaṇuddesena saddhiṃ sammodi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+sau khi đến, nói lên những lời chào đón hỏi thăm thân hữu, rồi ngồi xuống một bên. Ngồi một bên, vương tử Jayasena nói với Sa-di Aciravata:<br>
+<span lang="pi" class="pali">
+Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho jayaseno rājakumāro aciravataṃ samaṇuddesaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Aggivessana, tôi có nghe như sau: ‘Ở đây Tỷ-kheo sống không phóng dật, nhiệt tâm, tinh cần, sẽ được nhứt tâm’.<br>
+<span lang="pi" class="pali">
+“Sutaṃ metaṃ, bho aggivessana: ‘idha bhikkhu appamatto ātāpī pahitatto viharanto phuseyya cittassa ekaggatan’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự việc là vậy, này Vương tử! Sự việc là vậy, này Vương tử!<br>
+<span lang="pi" class="pali">
+“Evametaṃ, rājakumāra, evametaṃ, rājakumāra.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Tỷ-kheo sống không phóng dật, nhiệt tâm, tinh cần sẽ chứng được nhứt tâm.”<br>
+<span lang="pi" class="pali">
+Idha bhikkhu appamatto ātāpī pahitatto viharanto phuseyya cittassa ekaggatan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật là tốt lành nếu Tôn giả Aggivessana thuyết pháp cho tôi như đã được nghe, như đã được học.”<br>
+<span lang="pi" class="pali">
+“Sādhu me bhavaṃ aggivessano yathāsutaṃ yathāpariyattaṃ dhammaṃ desetū”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Vương tử, tôi không có thể thuyết pháp cho Vương tử như đã được nghe, như đã được học.<br>
+<span lang="pi" class="pali">
+“Na kho te ahaṃ, rājakumāra, sakkomi yathāsutaṃ yathāpariyattaṃ dhammaṃ desetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu nay tôi thuyết pháp cho Vương tử như đã được nghe, như đã được học, và nếu Vương tử không hiểu lời tôi nói, như vậy sẽ làm tôi mệt mỏi, làm tôi phiền muộn.”<br>
+<span lang="pi" class="pali">
+Ahañca hi te, rājakumāra, yathāsutaṃ yathāpariyattaṃ dhammaṃ deseyyaṃ, tvañca me bhāsitassa atthaṃ na ājāneyyāsi; so mamassa kilamatho, sā mamassa vihesā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Aggivessana, hãy thuyết pháp cho tôi như đã được nghe, như đã được học!<br>
+<span lang="pi" class="pali">
+“Desetu me bhavaṃ aggivessano yathāsutaṃ yathāpariyattaṃ dhammaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rất có thể, tôi sẽ hiểu ý nghĩa lời nói của Tôn giả Aggivessana.”<br>
+<span lang="pi" class="pali">
+Appevanāmāhaṃ bhoto aggivessanassa bhāsitassa atthaṃ ājāneyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Vương tử, tôi sẽ thuyết pháp cho Vương tử như đã được nghe, như đã được học.<br>
+<span lang="pi" class="pali">
+“Deseyyaṃ kho te ahaṃ, rājakumāra, yathāsutaṃ yathāpariyattaṃ dhammaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Vương tử có thể hiểu ý nghĩa lời nói của tôi, như vậy là tốt đẹp.<br>
+<span lang="pi" class="pali">
+Sace me tvaṃ bhāsitassa atthaṃ ājāneyyāsi, iccetaṃ kusalaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Vương tử không thể hiểu lời nói của tôi, hãy dừng lại trên sự trạng của mình, chớ có hỏi tôi thêm nữa!”<br>
+<span lang="pi" class="pali">
+no ce me tvaṃ bhāsitassa atthaṃ ājāneyyāsi, yathāsake tiṭṭheyyāsi, na maṃ tattha uttariṃ paṭipuccheyyāsī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tôn giả Aggivessana, hãy thuyết pháp cho tôi như đã được nghe, như đã được học!<br>
+<span lang="pi" class="pali">
+“Desetu me bhavaṃ aggivessano yathāsutaṃ yathāpariyattaṃ dhammaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tôi có thể hiểu được ý nghĩa lời nói của Tôn giả Aggivessana, như vậy là tốt đẹp.<br>
+<span lang="pi" class="pali">
+Sace ahaṃ bhoto aggivessanassa bhāsitassa atthaṃ ājānissāmi, iccetaṃ kusalaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu tôi không có thể hiểu được ý nghĩa lời nói của Tôn giả Aggivessana, tôi sẽ dừng lại trên sự trạng của tôi, ở đây, tôi sẽ không hỏi Tôn giả Aggivessana thêm nữa.”<br>
+<span lang="pi" class="pali">
+no ce ahaṃ bhoto aggivessanassa bhāsitassa atthaṃ ājānissāmi, yathāsake tiṭṭhissāmi, nāhaṃ tattha bhavantaṃ aggivessanaṃ uttariṃ paṭipucchissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Sa-di Aciravata thuyết pháp cho vương tử Jayasena như đã được nghe, như đã được học.<br>
+<span lang="pi" class="pali">
+Atha kho aciravato samaṇuddeso jayasenassa rājakumārassa yathāsutaṃ yathāpariyattaṃ dhammaṃ desesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nghe vậy, Vương tử nói với Sa-di Aciravata như sau:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, jayaseno rājakumāro aciravataṃ samaṇuddesaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sự việc không phải là như vậy, Tôn giả Aggivessana; trường hợp không phải là như vậy, rằng Tỷ-kheo sống không phóng dật, nhiệt tâm, tinh cần lại có thể chứng đắc nhất tâm.”<br>
+<span lang="pi" class="pali">
+“aṭṭhānametaṃ, bho aggivessana, anavakāso yaṃ bhikkhu appamatto ātāpī pahitatto viharanto phuseyya cittassa ekaggatan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Vương tử Jayasena sau khi nói lên với Sa-di Aciravata sự việc không phải như vậy và trường hợp không phải như vậy, từ chỗ ngồi đứng dậy và ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho jayaseno rājakumāro aciravatassa samaṇuddesassa aṭṭhānatañca anavakāsatañca pavedetvā uṭṭhāyāsanā pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Sa-di Aciravata, sau khi vương tử Jayasena ra đi không bao lâu, liền đi đến Thế Tôn, sau khi đến đảnh lễ Thế Tôn rồi ngồi xuống một bên.<br>
+<span lang="pi" class="pali">
+Atha kho aciravato samaṇuddeso acirapakkante jayasene rājakumāre yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngồi một bên, Sa-di Aciravata kể lại cho Thế Tôn tất cả cuộc đàm thoại với vương tử Jayasena.<br>
+<span lang="pi" class="pali">
+Ekamantaṃ nisinno kho aciravato samaṇuddeso yāvatako ahosi jayasenena rājakumārena saddhiṃ kathāsallāpo taṃ sabbaṃ bhagavato ārocesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, Thế Tôn nói với Sa-di Aciravata:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, bhagavā aciravataṃ samaṇuddesaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“‘Như vậy, này Aggivessana, nào có lợi ích gì?<br>
+<span lang="pi" class="pali">
+“‘taṃ kutettha, aggivessana, labbhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vương tử Jayasenna sống giữa các dục, thọ hưởng các dục, bị tư tưởng dục nhai nghiến, bị nhiệt não dục thiêu đốt, tha thiết truy cầu dục, lại có thể biết, có thể thấy, hay có thể chứng (quả vị) chỉ có ly dục mới biết được, chỉ có ly dục mới thấy được. Chỉ có ly dục mới đạt được, hay chỉ có ly dục mới chứng được’; sự kiện như vậy không xảy ra.<br>
+<span lang="pi" class="pali">
+Yaṃ taṃ nekkhammena ñātabbaṃ nekkhammena daṭṭhabbaṃ nekkhammena pattabbaṃ nekkhammena sacchikātabbaṃ taṃ vata jayaseno rājakumāro kāmamajjhe vasanto kāme paribhuñjanto kāmavitakkehi khajjamāno kāmapariḷāhena pariḍayhamāno kāmapariyesanāya ussuko ñassati vā dakkhati vā sacchi vā karissatī’ti—netaṃ ṭhānaṃ vijjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, ví như giữa các con voi, con ngựa hay con bò được dạy điều phục có hai con voi, hai con ngựa hay hai con bò được dạy điều phục, được khéo huấn luyện; và có hai con voi, hai con ngựa hay hai con bò không được khéo điều phục, không được khéo huấn luyện.<br>
+<span lang="pi" class="pali">
+Seyyathāpissu, aggivessana, dve hatthidammā vā assadammā vā godammā vā sudantā suvinītā, dve hatthidammā vā assadammā vā godammā vā adantā avinītā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, Ông nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, aggivessana,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hai con voi, hai con ngựa hay hai con bò, được khéo điều phục, được khéo huấn luyện, các con ấy có thể đi đến khả năng điều phục (dantakaranam), có thể đạt đến căn bản điều ngự (thành thạo) không?”<br>
+<span lang="pi" class="pali">
+ye te dve hatthidammā vā assadammā vā godammā vā sudantā suvinītā, api nu te dantāva dantakāraṇaṃ gaccheyyuṃ, dantāva dantabhūmiṃ sampāpuṇeyyun”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn.”<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Còn hai con voi, hai con ngựa hay hai con bò được dạy điều phục, nhưng không được khéo điều phục, không được khéo huấn luyện, các con ấy không được điều phục, có thể đi đến khả năng điều phục, không được điều phục có thể đạt đến căn bản điều ngự, như hai con voi, hai con ngựa hay hai con bò được khéo điều phục, được khéo huấn luyện kia không?”<br>
+<span lang="pi" class="pali">
+“Ye pana te dve hatthidammā vā assadammā vā godammā vā adantā avinītā, api nu te adantāva dantakāraṇaṃ gaccheyyuṃ, adantāva dantabhūmiṃ sampāpuṇeyyuṃ, seyyathāpi te dve hatthidammā vā assadammā vā godammā vā sudantā suvinītā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn.”<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cũng vậy, này Aggivessana, vương tử Jayasena sống giữa các dục, thọ hưởng các dục, bị tư tưởng dục nhai nghiến, bị nhiệt não dục thiêu đốt, tha thiết truy cầu dục, lại có thể biết, có thể thấy, hay có thể chứng (quả vị) chỉ có ly dục mới biết được, chỉ có ly dục mới thấy được, chỉ có ly dục mới đạt được, chỉ có ly dục mới chứng được, sự kiện như vậy không xảy ra.<br>
+<span lang="pi" class="pali">
+“Evameva kho, aggivessana, ‘yaṃ taṃ nekkhammena ñātabbaṃ nekkhammena daṭṭhabbaṃ nekkhammena pattabbaṃ nekkhammena sacchikātabbaṃ taṃ vata jayaseno rājakumāro kāmamajjhe vasanto kāme paribhuñjanto kāmavitakkehi khajjamāno kāmapariḷāhena pariḍayhamāno kāmapariyesanāya ussuko ñassati vā dakkhati vā sacchi vā karissatī’ti—netaṃ ṭhānaṃ vijjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này Aggivessana, một hòn núi lớn không xa làng hay thị trấn.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, aggivessana, gāmassa vā nigamassa vā avidūre mahāpabbato.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và có hai người bạn, tay trong tay đi ra khỏi làng hay thị trấn ấy, và đi đến hòn núi kia. Sau khi đến, một người bạn đứng dưới chân núi, còn người bạn kia leo lên đỉnh núi.<br>
+<span lang="pi" class="pali">
+Tamenaṃ dve sahāyakā tamhā gāmā vā nigamā vā nikkhamitvā hatthavilaṅghakena yena so pabbato tenupasaṅkameyyuṃ; upasaṅkamitvā eko sahāyako heṭṭhā pabbatapāde tiṭṭheyya, eko sahāyako uparipabbataṃ āroheyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người bạn đứng dưới chân núi ấy có thể nói với người bạn đứng trên đỉnh núi:<br>
+<span lang="pi" class="pali">
+Tamenaṃ heṭṭhā pabbatapāde ṭhito sahāyako uparipabbate ṭhitaṃ sahāyakaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn thân, Bạn đứng trên đỉnh núi, Bạn thấy những gì?’<br>
+<span lang="pi" class="pali">
+‘yaṃ, samma, kiṃ tvaṃ passasi uparipabbate ṭhito’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người kia nói:<br>
+<span lang="pi" class="pali">
+So evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn thân, đứng trên đỉnh núi tôi thấy các vườn khả ái, các khu rừng khả ái, các đất bằng khả ái, các ao hồ khả ái’.<br>
+<span lang="pi" class="pali">
+‘passāmi kho ahaṃ, samma, uparipabbate ṭhito ārāmarāmaṇeyyakaṃ vanarāmaṇeyyakaṃ bhūmirāmaṇeyyakaṃ pokkharaṇīrāmaṇeyyakan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người kia nói:<br>
+<span lang="pi" class="pali">
+So evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Không có sự kiện này, này Bạn thân, không có trường hợp này, bạn đứng trên đỉnh núi lại có thể thấy các khu vườn khả ái, khu rừng khả ái, các đất bằng khả ái, các ao hồ khả ái’.<br>
+<span lang="pi" class="pali">
+‘aṭṭhānaṃ kho etaṃ, samma, anavakāso yaṃ tvaṃ uparipabbate ṭhito passeyyāsi ārāmarāmaṇeyyakaṃ vanarāmaṇeyyakaṃ bhūmirāmaṇeyyakaṃ pokkharaṇīrāmaṇeyyakan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người bạn đã đứng trên đỉnh núi, sau khi đi xuống chân núi, nắm tay bạn, khiến bạn trèo lên đỉnh núi, để bạn nghỉ thở một thời gian, rồi nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ uparipabbate ṭhito sahāyako heṭṭhimapabbatapādaṃ orohitvā taṃ sahāyakaṃ bāhāyaṃ gahetvā uparipabbataṃ āropetvā muhuttaṃ assāsetvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn thân, nay Bạn có thể thấy gì, khi Bạn đứng trên đỉnh núi?’<br>
+<span lang="pi" class="pali">
+‘yaṃ, samma, kiṃ tvaṃ passasi uparipabbate ṭhito’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người bạn ấy có thể nói:<br>
+<span lang="pi" class="pali">
+So evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn thân, nay đứng trên đỉnh núi, tôi thấy các khu vườn khả ái, các khu rừng khả ái, các đất bằng khả ái, các ao hồ khả ái’.<br>
+<span lang="pi" class="pali">
+‘passāmi kho ahaṃ, samma, uparipabbate ṭhito ārāmarāmaṇeyyakaṃ vanarāmaṇeyyakaṃ bhūmirāmaṇeyyakaṃ pokkharaṇīrāmaṇeyyakan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người kia có thể nói như sau:<br>
+<span lang="pi" class="pali">
+So evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Vừa rồi, này Bạn thân, chúng tôi hiểu Bạn nói:<br>
+<span lang="pi" class="pali">
+‘idāneva kho te, samma, bhāsitaṃ—mayaṃ evaṃ ājānāma—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không thể có sự kiện này, này Bạn thân, không thể có trường hợp này, Bạn đứng trên đỉnh núi lại có thể thấy các khu vườn khả ái … các ao hồ khả ái.<br>
+<span lang="pi" class="pali">
+aṭṭhānaṃ kho etaṃ samma, anavakāso yaṃ tvaṃ uparipabbate ṭhito passeyyāsi ārāmarāmaṇeyyakaṃ vanarāmaṇeyyakaṃ bhūmirāmaṇeyyakaṃ pokkharaṇīrāmaṇeyyakan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nay chúng tôi hiểu Bạn nói:<br>
+<span lang="pi" class="pali">
+Idāneva ca pana te bhāsitaṃ mayaṃ evaṃ ājānāma:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn thân, nay đứng trên đỉnh núi, tôi thấy các khu vườn khả ái … các ao hồ khả ái’.<br>
+<span lang="pi" class="pali">
+‘passāmi kho ahaṃ, samma, uparipabbate ṭhito ārāmarāmaṇeyyakaṃ vanarāmaṇeyyakaṃ bhūmirāmaṇeyyakaṃ pokkharaṇīrāmaṇeyyakan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người kia nói như sau:<br>
+<span lang="pi" class="pali">
+So evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn thân, vì tôi bị che khuất bởi sườn núi này, nên không thấy được những điều đáng thấy’.<br>
+<span lang="pi" class="pali">
+‘tathā hi panāhaṃ, samma, iminā mahatā pabbatena āvuto daṭṭheyyaṃ nāddasan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, nhưng to lớn hơn, này Aggivessana, là Vương tử Jayasena, bị che khuất, bị chận đứng, bị chướng ngại, bị bao vây bởi vô minh uẩn này.<br>
+<span lang="pi" class="pali">
+Ato mahantatarena, aggivessana, ‘avijjākhandhena jayaseno rājakumāro āvuto nivuto ophuṭo pariyonaddho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vương tử Jayasena sống giữa các dục, thọ hưởng các dục, bị tư tưởng dục nhai nghiến, bị nhiệt não dục thiêu đốt, tha thiết truy cầu dục, lại có thể biết, có thể thấy hay có thể chứng (quả vị) chỉ có ly dục mới biết được, chỉ có ly dục mới thấy được, chỉ có ly dục mới đạt được, chỉ có ly dục mới chứng được; sự kiện như vậy không xảy ra.<br>
+<span lang="pi" class="pali">
+So vata yaṃ taṃ nekkhammena ñātabbaṃ nekkhammena daṭṭhabbaṃ nekkhammena pattabbaṃ nekkhammena sacchikātabbaṃ taṃ vata jayaseno rājakumāro kāmamajjhe vasanto kāme paribhuñjanto kāmavitakkehi khajjamāno kāmapariḷāhena pariḍayhamāno kāmapariyesanāya ussuko ñassati vā dakkhati vā sacchi vā karissatī’ti—netaṃ ṭhānaṃ vijjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu hai ví dụ này được Ông đề cập cho Vương tử Jayasena, thời Vương tử Jayasena tự nhiên tin tưởng Ông và khi đã tin tưởng, sẽ hành động đúng theo cung cách một người đã tin tưởng Ông.”<br>
+<span lang="pi" class="pali">
+Sace kho taṃ, aggivessana, jayasenassa rājakumārassa imā dve upamā paṭibhāyeyyuṃ, anacchariyaṃ te jayaseno rājakumāro pasīdeyya, pasanno ca te pasannākāraṃ kareyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Nhưng làm sao, bạch Thế Tôn, hai ví dụ này khởi đến từ nơi con cho Vương tử Jayasena, khởi lên một cách tự nhiên, từ trước chưa từng được nghe, như Thế Tôn được?”<br>
+<span lang="pi" class="pali">
+“Kuto pana maṃ, bhante, jayasenassa rājakumārassa imā dve upamā paṭibhāyissanti anacchariyā pubbe assutapubbā, seyyathāpi bhagavantan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ví như, này Aggivessana, một vị vua Sát-đế-lỵ đã quán đảnh bảo người nài voi:<br>
+<span lang="pi" class="pali">
+“Seyyathāpi, aggivessana, rājā khattiyo muddhāvasitto nāgavanikaṃ āmanteti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Tượng sư, hãy cưỡi con vương tượng, đi vào rừng có voi; khi Ông thấy con voi rừng, hãy cột nó lại vào cổ con vương tượng”.<br>
+<span lang="pi" class="pali">
+‘ehi tvaṃ, samma nāgavanika, rañño nāgaṃ abhiruhitvā nāgavanaṃ pavisitvā āraññakaṃ nāgaṃ atipassitvā rañño nāgassa gīvāyaṃ upanibandhāhī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa vâng, Ðại vương’. Này Aggivessana, người tượng sư vâng theo lời vị vua Sát-đế-lỵ đã làm lễ quán đảnh, cỡi con vương tượng, vào trong rừng có voi, thấy con voi rừng, cột con voi rừng ấy vào cổ con vương tượng.<br>
+<span lang="pi" class="pali">
+‘Evaṃ, devā’ti kho, aggivessana, nāgavaniko rañño khattiyassa muddhāvasittassa paṭissutvā rañño nāgaṃ abhiruhitvā nāgavanaṃ pavisitvā āraññakaṃ nāgaṃ atipassitvā rañño nāgassa gīvāyaṃ upanibandhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con vương tượng kéo nó ra chỗ ngoài trời.<br>
+<span lang="pi" class="pali">
+Tamenaṃ rañño nāgo abbhokāsaṃ nīharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cho đến như vậy, này Aggivessana, con voi rừng được đi đến chỗ ngoài trời.<br>
+<span lang="pi" class="pali">
+Ettāvatā kho, aggivessana, āraññako nāgo abbhokāsaṃ gato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này Aggivessana, con voi rừng còn có sự tham luyến tức là đối với rừng có voi.<br>
+<span lang="pi" class="pali">
+Etthagedhā hi, aggivessana, āraññakā nāgā yadidaṃ—nāgavanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người tượng sư tâu với vị vua Sát-đế-lỵ đã làm lễ quán đảnh về con voi rừng ấy.<br>
+<span lang="pi" class="pali">
+Tamenaṃ nāgavaniko rañño khattiyassa muddhāvasittassa ārocesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, con voi rừng đã ra chỗ ngoài trời’.<br>
+<span lang="pi" class="pali">
+‘abbhokāsagato kho, deva, āraññako nāgo’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vị vua Sát-đế-lỵ đã làm lễ quán đảnh bảo người điều phục voi:<br>
+<span lang="pi" class="pali">
+Atha kho aggivessana, tamenaṃ rājā khattiyo muddhāvasitto hatthidamakaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hãy đến, này người Ðiều phục voi, hãy điều phục con voi rừng này bằng cách điều phục nếp sống rừng của nó, bằng cách điều phục tâm tư rừng núi, bằng cách điều phục sự ưu tư, mệt nhọc, nhiệt não đối với rừng núi của nó bằng cách làm cho nó thích thú với thôn làng, và bằng cách làm cho nó quen thuộc với nếp sống loài người’.<br>
+<span lang="pi" class="pali">
+‘ehi tvaṃ, samma hatthidamaka, āraññakaṃ nāgaṃ damayāhi āraññakānañceva sīlānaṃ abhinimmadanāya āraññakānañceva sarasaṅkappānaṃ abhinimmadanāya āraññakānañceva darathakilamathapariḷāhānaṃ abhinimmadanāya gāmante abhiramāpanāya manussakantesu sīlesu samādapanāyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thưa vâng, tâu Ðại vương’. Này Aggivessana, người điều phục voi vâng theo lời vua Sát-đế-lỵ đã làm lễ quán đảnh, đóng một cọc trụ lớn vào đất, cột cổ con voi rừng, để điều phục nếp sống rừng của nó, để điều phục tâm tư rừng núi, để điều phục sự suy tư, mệt nhọc, nhiệt não của rừng núi, để làm cho nó thích thú với thôn làng và làm cho nó quen thuộc với nếp sống loài người.<br>
+<span lang="pi" class="pali">
+‘Evaṃ, devā’ti kho, aggivessana, hatthidamako rañño khattiyassa muddhāvasittassa paṭissutvā mahantaṃ thambhaṃ pathaviyaṃ nikhaṇitvā āraññakassa nāgassa gīvāyaṃ upanibandhati āraññakānañceva sīlānaṃ abhinimmadanāya āraññakānañceva sarasaṅkappānaṃ abhinimmadanāya āraññakānañceva darathakilamathapariḷāhānaṃ abhinimmadanāya gāmante abhiramāpanāya manussakantesu sīlesu samādapanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người điều phục voi lại nói với nó bằng những lời nhẹ nhàng, đẹp tai, thân tình, đi đến tâm, thanh nhã, khiến nhiều người vui thích, khiến nhiều người hoan hỷ.<br>
+<span lang="pi" class="pali">
+Tamenaṃ hatthidamako yā sā vācā nelā kaṇṇasukhā pemanīyā hadayaṅgamā porī bahujanakantā bahujanamanāpā tathārūpāhi vācāhi samudācarati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này Aggivessana, con voi rừng khi được nói với những lời nhẹ nhàng, đẹp tai, thân tình, đi đến tâm, thanh nhã, khiến nhiều người vui thích, khiến nhiều người hoan hỷ, liền nghe, lóng tai, trú tâm vào học hỏi (anna).<br>
+<span lang="pi" class="pali">
+Yato kho, aggivessana, āraññako nāgo hatthidamakassa yā sā vācā nelā kaṇṇasukhā pemanīyā hadayaṅgamā porī bahujanakantā bahujanamanāpā tathārūpāhi vācāhi samudācariyamāno sussūsati, sotaṃ odahati, aññā cittaṃ upaṭṭhāpeti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tiếp đến người điều phục voi đem cỏ và nước cho con voi rừng.<br>
+<span lang="pi" class="pali">
+tamenaṃ hatthidamako uttari tiṇaghāsodakaṃ anuppavecchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, khi con voi rừng nhận cỏ và nước, người điều phục voi mới nghĩ:<br>
+<span lang="pi" class="pali">
+Yato kho, aggivessana, āraññako nāgo hatthidamakassa tiṇaghāsodakaṃ paṭiggaṇhāti, tatra hatthidamakassa evaṃ hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Nay con voi rừng sẽ sống’.<br>
+<span lang="pi" class="pali">
+‘jīvissati kho dāni āraññako nāgo’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi người điều phục voi khiến (con voi rừng) làm thêm một động tác khác:<br>
+<span lang="pi" class="pali">
+Tamenaṃ hatthidamako uttari kāraṇaṃ kāreti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn, nhặt lên! Này Bạn, đặt xuống!’<br>
+<span lang="pi" class="pali">
+‘ādiya, bho, nikkhipa, bho’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi con vương tượng vâng theo lời người điều phục voi, làm đúng theo lời dạy nhặt lên, đặt xuống rồi, người điều phục voi khiến nó làm thêm một động tác khác:<br>
+<span lang="pi" class="pali">
+Yato kho, aggivessana, āraññako nāgo hatthidamakassa ādānanikkhepe vacanakaro hoti ovādappaṭikaro, tamenaṃ hatthidamako uttari kāraṇaṃ kāreti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn, đi tới! Này Bạn, đi lui!’<br>
+<span lang="pi" class="pali">
+‘abhikkama, bho, paṭikkama, bho’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi con vương tượng vâng theo lời người điều phục voi, làm đúng theo lời dạy đi tới, đi lui rồi, người điều phục voi khiến nó làm thêm một động tác khác:<br>
+<span lang="pi" class="pali">
+Yato kho, aggivessana, āraññako nāgo hatthidamakassa abhikkamapaṭikkamavacanakaro hoti ovādappaṭikaro, tamenaṃ hatthidamako uttari kāraṇaṃ kāreti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bạn, đứng dậy! Này Bạn, ngồi xuống!’<br>
+<span lang="pi" class="pali">
+‘uṭṭhaha, bho, nisīda, bho’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi con vương tượng vâng theo lời người điều phục voi, làm đúng theo lời dạy, đứng dậy, ngồi xuống rồi, người điều phục voi khiến nó làm thêm một động tác khác tên gọi “bất động”. Nó cột cái khiên bằng gỗ vào cái vòi của con vật to lớn, và một người tay cầm ngọn giáo ngồi trên cổ, và xung quanh một số người tay cầm ngọn giáo đứng bao vây. Và người điều phục voi, tay cầm một ngọn giáo với cán cây dài, đứng ở phía trước.<br>
+<span lang="pi" class="pali">
+Yato kho, aggivessana, āraññako nāgo hatthidamakassa uṭṭhānanisajjāya vacanakaro hoti ovādappaṭikaro, tamenaṃ hatthidamako uttari āneñjaṃ nāma kāraṇaṃ kāreti, mahantassa phalakaṃ soṇḍāya upanibandhati, tomarahattho ca puriso uparigīvāya nisinno hoti, samantato ca tomarahatthā purisā parivāretvā ṭhitā honti, hatthidamako ca dīghatomarayaṭṭhiṃ gahetvā purato ṭhito hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con voi ấy làm động tác bất động, không có di động chân trước, không có di động chân sau, không có di động thân trước, không có di động thân sau, không di động đầu, không có di động tai, không có di động ngà, không có di động vòi.<br>
+<span lang="pi" class="pali">
+So āneñjaṃ kāraṇaṃ kāriyamāno neva purime pāde copeti na pacchime pāde copeti, na purimakāyaṃ copeti na pacchimakāyaṃ copeti, na sīsaṃ copeti, na kaṇṇe copeti, na dante copeti, na naṅguṭṭhaṃ copeti, na soṇḍaṃ copeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con vương tượng là con voi có thể nhẫn chịu đao, kiếm, tên, búa chém bắn, nhẫn chịu tiếng vang động của trống lớn, trống nhỏ, tù và, như là vàng ròng tẩy sạch các tỳ vết nhơ bẩn, xứng đáng được vua dùng, một sở hữu của vua, một biểu tượng của vua.<br>
+<span lang="pi" class="pali">
+So hoti āraññako nāgo khamo sattippahārānaṃ asippahārānaṃ usuppahārānaṃ sarapattappahārānaṃ bheripaṇavavaṃsasaṅkhaḍiṇḍimaninnādasaddānaṃ sabbavaṅkadosanihitaninnītakasāvo rājāraho rājabhoggo rañño aṅganteva saṅkhaṃ gacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Aggivessana, ở đây, Như Lai xuất hiện ở đời là bậc A-la-hán, Chánh Biến Tri, Minh Hạnh Túc, Thiện Thệ, Thế Gian Giải, Vô Thượng Sĩ, Ðiều Ngự Trượng Phu, Thiên Nhân Sư, Phật, Thế Tôn.<br>
+<span lang="pi" class="pali">
+Evameva kho, aggivessana, idha tathāgato loke uppajjati arahaṃ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṃ buddho bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như Lai sau khi riêng tự chứng ngộ với thượng trí, thế giới này là Thiên giới, Ma giới, Phạm thiên giới, gồm cả thế giới này với Sa-môn, Bà-la-môn, Thiên, Nhơn, lại tuyên bố điều Ngài đã chứng ngộ.<br>
+<span lang="pi" class="pali">
+So imaṃ lokaṃ sadevakaṃ samārakaṃ sabrahmakaṃ sassamaṇabrāhmaṇiṃ pajaṃ sadevamanussaṃ sayaṃ abhiññā sacchikatvā pavedeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngài thuyết pháp sơ thiện, trung thiện, hậu thiện, đầy đủ văn nghĩa, Ngài truyền dạy Phạm hạnh hoàn toàn đầy đủ thanh tịnh.<br>
+<span lang="pi" class="pali">
+So dhammaṃ deseti ādikalyāṇaṃ majjhekalyāṇaṃ pariyosānakalyāṇaṃ sātthaṃ sabyañjanaṃ, kevalaparipuṇṇaṃ parisuddhaṃ brahmacariyaṃ pakāseti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người gia trưởng hay con người gia trưởng, hay một người sanh ở giai cấp (hạ tiện) nghe pháp ấy, sau khi nghe pháp, người ấy sanh lòng tín ngưỡng Như Lai.<br>
+<span lang="pi" class="pali">
+Taṃ dhammaṃ suṇāti gahapati vā gahapatiputto vā aññatarasmiṃ vā kule paccājāto. So taṃ dhammaṃ sutvā tathāgate saddhaṃ paṭilabhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi có lòng tín ngưỡng ấy, người ấy suy nghĩ:<br>
+<span lang="pi" class="pali">
+So tena saddhāpaṭilābhena samannāgato iti paṭisañcikkhati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðời sống gia đình đầy những triền phược, con đường đầy những bụi đời.<br>
+<span lang="pi" class="pali">
+‘sambādho gharāvāso rajāpatho, abbhokāso pabbajjā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðời sống xuất gia phóng khoáng như hư không. Thật không dễ gì cho một người sống ở gia đình có thể sống theo Phạm hạnh hoàn toàn đầy đủ, hoàn toàn thanh tịnh, trắng bạch như vỏ ốc.<br>
+<span lang="pi" class="pali">
+Nayidaṃ sukaraṃ agāraṃ ajjhāvasatā ekantaparipuṇṇaṃ ekantaparisuddhaṃ saṅkhalikhitaṃ brahmacariyaṃ carituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vậy ta nên cạo bỏ râu tóc, đắp áo cà-sa, xuất gia, từ bỏ gia đình, sống không gia đình’.<br>
+<span lang="pi" class="pali">
+Yannūnāhaṃ kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajeyyan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời gian sau, người ấy bỏ tài sản nhỏ, hay bỏ tài sản lớn, bỏ bà con quyến thuộc nhỏ, hay bỏ bà con quyến thuộc lớn, cạo bỏ râu tóc, đắp áo cà-sa, và xuất gia, từ bỏ gia đình, sống không gia đình.<br>
+<span lang="pi" class="pali">
+So aparena samayena appaṃ vā bhogakkhandhaṃ pahāya mahantaṃ vā bhogakkhandhaṃ pahāya appaṃ vā ñātiparivaṭṭaṃ pahāya mahantaṃ vā ñātiparivaṭṭaṃ pahāya kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cho đến đây, này Aggivessana, là vị Thánh đệ tử đi đến chỗ ngoài trời.<br>
+<span lang="pi" class="pali">
+Ettāvatā kho, aggivessana, ariyasāvako abbhokāsagato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng này Aggivessana, các vị Thiên, Nhân có tham ái này, tức là năm dục công đức.<br>
+<span lang="pi" class="pali">
+Etthagedhā hi, aggivessana, devamanussā yadidaṃ—pañca kāmaguṇā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Như Lai huấn luyện thêm cho vị đệ tử ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ tathāgato uttariṃ vineti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy đến, này Tỷ-kheo, hãy giữ giới, sống chế ngự với sự chế ngự của giới bổn Patimokkha, đầy đủ oai nghi chánh hạnh, thấy nguy hiểm trong những lỗi nhỏ nhặt, thọ lãnh và tu học trong học pháp!”<br>
+<span lang="pi" class="pali">
+‘ehi tvaṃ, bhikkhu, sīlavā hohi, pātimokkhasaṃvarasaṃvuto viharāhi ācāragocarasampanno, aṇumattesu vajjesu bhayadassāvī, samādāya sikkhassu sikkhāpadesū’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi vị Thánh đệ tử đã giữ giới, sống chế ngự với sự chế ngự của giới bổn Patimokkha, đầy đủ oai nghi chánh hạnh, thấy nguy hiểm trong những lỗi nhỏ nhặt, thọ lãnh và tu học trong học pháp, Như Lai lại huấn luyện thêm cho vị đệ tử ấy:<br>
+<span lang="pi" class="pali">
+Yato kho, aggivessana, ariyasāvako sīlavā hoti, pātimokkhasaṃvarasaṃvuto viharati ācāragocarasampanno aṇumattesu vajjesu bhayadassāvī, samādāya sikkhati sikkhāpadesu, tamenaṃ tathāgato uttariṃ vineti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy đến, này Tỷ-kheo, hãy bảo hộ các căn! Khi mắt thấy sắc, chớ có nắm giữ tướng chung, chớ có nắm giữ tướng riêng. Những nguyên nhân gì, vì nhãn căn không được chế ngự, khiến tham ái, ưu bi, các ác bất thiện pháp khởi lên, hãy tự chế ngự nguyên nhân ấy, hộ trì con mắt, thực hành sự hộ trì con mắt. Khi tai nghe tiếng, mũi ngửi hương, lưỡi nếm vị, thân cảm xúc, ý nhận thức các pháp, chớ có nắm giữ tướng chung, chớ có nắm giữ tướng riêng. Những nguyên nhân gì vì ý căn không được chế ngự, khiến tham ái, ưu bi, các ác bất thiện pháp khởi lên, hãy chế ngự nguyên nhân ấy, hộ trì ý căn, thực hành sự hộ trì ý căn”.<br>
+<span lang="pi" class="pali">
+‘ehi tvaṃ, bhikkhu, indriyesu guttadvāro hohi, cakkhunā rūpaṃ disvā mā nimittaggāhī ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+(MN 107, Kinh Bà-la-môn Toán Số Moggallāna.)<br>
+<span lang="pi" class="pali">
+(yathā gaṇakamoggallānasuttante, evaṃ vitthāretabbāni.)<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi Thánh đệ tử đã hộ trì các căn, Như Lai huấn luyện thêm vị Thánh đệ tử ấy: “Hãy đến, này Tỷ-kheo, hãy tiết độ trong ăn uống, chơn chánh giác sát thọ dụng món ăn, không phải để vui đùa, không phải để đam mê, không phải để trang sức, không phải để tự làm đẹp mình, chỉ để thân này được duy trì, được bảo dưỡng, khỏi bị gia hại, để chấp trì Phạm hạnh, nghĩ rằng: “Như vậy, ta diệt trừ các cảm thọ cũ và không cho khởi lên các cảm thọ mới. Và ta sẽ không phạm lỗi lầm, sống được an ổn”.<br>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi vị Thánh đệ tử đã tiết độ trong ăn uống, Như Lai lại huấn luyện thêm vị ấy: “Hãy đến, này Tỷ-kheo, hãy chú tâm cảnh giác! Ban ngày khi đi kinh hành và trong khi đang ngồi, hãy gột sạch tâm trí khỏi các chướng ngại pháp. Ban đêm trong canh một, trong khi đi kinh hành và trong khi đang ngồi, hãy gột sạch tâm trí khỏi các chướng ngại pháp. Ban đêm trong canh giữa, hãy nằm xuống phía hông bên phải, như dáng nằm con sư tử, chân gác trên chân với nhau, chánh niệm tỉnh giác, hướng niệm đến lúc ngồi dậy. Ban đêm canh cuối, khi đã thức dậy,  trong khi đi kinh hành và trong khi đang ngồi, hãy gột sạch tâm trí khỏi các chướng ngại pháp”.<br>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi Thánh đệ tử đã chú tâm cảnh giác, Như Lai huấn luyện thêm vị ấy: “Hãy đến, này Tỷ-kheo, hãy thành tựu chánh niệm tỉnh giác! Khi đi tới khi đi lui đều tỉnh giác; khi nhìn thẳng, khi nhìn quanh đều tỉnh giác; khi co tay, khi duỗi tay đều tỉnh giác; khi mang y kép, bình bát, thượng y đều tỉnh giác; khi ăn, uống, nhai, nuốt đều tỉnh giác; khi đi đại tiện, tiểu tiện đều tỉnh giác; khi đi, đứng ngồi, nằm, thức, nói, yên lặng đều tỉnh giác”.<br>
+</p>
+
+<p lang="vi" class="vi">
+Này Aggivessana, sau khi vị Thánh đệ tử đã thành tựu chánh niệm tỉnh giác, Như Lai lại huấn luyện thêm vị ấy: “Hãy đến, này Tỷ-kheo, hãy lựa một trú xứ thanh vắng, khu rừng, gốc cây, ngọn núi, chỗ hoang vu, hang núi, bãi tha ma, khóm rừng, ngoài trời, đống rơm!”<br>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy lựa chọn một trú xứ thanh vắng, khu rừng, gốc cây, ngọn núi, chỗ hoang vu, hang núi, bãi tha ma, khóm rừng, ngoài trời, đống rơm. Vị ấy sau khi ăn xong, trên đường khất thực trở về, ngồi xuống, kiết-già, giữ lưng cho thẳng, trú niệm trước mặt. Vị ấy từ bỏ tham ái ở đời, sống với tâm thoát ly tham ái, gột rửa tâm hết tham ái, từ bỏ sân hận, vị ấy sống với tâm không sân hận, lòng từ mẫn thương xót tất cả chúng hữu tình, gột rửa tâm hết sân hận. Từ bỏ hôn trầm thụy miên, vị ấy sống thoát ly hôn trầm thụy miên, với tâm tưởng hướng về ánh sáng, chánh niệm tỉnh giác, gột rửa tâm hết hôn trầm thụy miên. Từ bỏ trạo cử hối quá, vị ấy sống không trạo cử hối quá, nội tâm trầm lặng, gột rửa tâm hết trạo cử hối quá. Từ bỏ nghi ngờ, vị ấy sống với tâm thoát khỏi nghi ngờ, không phân vân lưỡng lự, gột rửa tâm hết nghi ngờ đối với thiện pháp.<br>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy sau khi đoạn trừ năm triền cái này, những triền cái làm ô nhiễm tâm tư, làm yếu ớt trí tuệ,<br>
+<span lang="pi" class="pali">
+So ime pañca nīvaraṇe pahāya cetaso upakkilese paññāya dubbalīkaraṇe<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vị ấy sống quán thân trên thân, nhiệt tâm, tỉnh giác, chánh niệm để điều phục tham ưu ở đời,<br>
+<span lang="pi" class="pali">
+kāye kāyānupassī viharati ātāpī sampajāno satimā vineyya loke abhijjhādomanassaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+quán thọ trên các cảm thọ…<br>
+<span lang="pi" class="pali">
+Vedanāsu ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+quán tâm trên tâm…<br>
+<span lang="pi" class="pali">
+citte …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+quán pháp trên các pháp, nhiệt tâm, tỉnh giác, chánh niệm để điều phục tham ưu ở đời.<br>
+<span lang="pi" class="pali">
+dhammesu dhammānupassī viharati ātāpī sampajāno satimā vineyya loke abhijjhādomanassaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này Aggivessana, một người điều phục voi đóng một cọc trụ lớn vào đất, cột cổ con voi rừng để điều phục nếp sống rừng của nó, để điều phục tâm tư rừng núi của nó, để điều phục sự ưu tư mệt nhọc nhiệt não của rừng núi, để làm cho nó thích thú với thôn làng và làm cho nó quen thuộc với nếp sống loài người;<br>
+<span lang="pi" class="pali">
+Seyyathāpi, aggivessana, hatthidamako mahantaṃ thambhaṃ pathaviyaṃ nikhaṇitvā āraññakassa nāgassa gīvāyaṃ upanibandhati āraññakānañceva sīlānaṃ abhinimmadanāya āraññakānañceva sarasaṅkappānaṃ abhinimmadanāya āraññakānañceva darathakilamathapariḷāhānaṃ abhinimmadanāya gāmante abhiramāpanāya manussakantesu sīlesu samādapanāya;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+cũng vậy, này Aggivessana, bốn niệm xứ này là những dây cột tâm tư để điều phục tánh cư sĩ, để điều phục tâm tư cư sĩ, để điều phục sự ưu tư mệt nhọc nhiệt não của các cư sĩ, để đạt được chánh lý (naya), để chứng ngộ Niết-bàn.<br>
+<span lang="pi" class="pali">
+evameva kho, aggivessana, ariyasāvakassa ime cattāro satipaṭṭhānā cetaso upanibandhanā honti gehasitānañceva sīlānaṃ abhinimmadanāya gehasitānañceva sarasaṅkappānaṃ abhinimmadanāya gehasitānañceva darathakilamathapariḷāhānaṃ abhinimmadanāya ñāyassa adhigamāya nibbānassa sacchikiriyāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Như Lai huấn luyện thêm vị ấy:<br>
+<span lang="pi" class="pali">
+Tamenaṃ tathāgato uttariṃ vineti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Hãy đến, này Tỷ-kheo, hãy trú quán thân trên thân, và chớ có suy tư trên tầm liên hệ đến thân;<br>
+<span lang="pi" class="pali">
+‘ehi tvaṃ, bhikkhu, kāye kāyānupassī viharāhi, mā ca kāmūpasaṃhitaṃ vitakkaṃ vitakkesi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hãy trú quán thọ trên các cảm thọ, và chớ có suy tư trên tầm liên hệ đến cảm thọ;<br>
+<span lang="pi" class="pali">
+Vedanāsu …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hãy trú quán tâm trên tâm, chớ có suy tư trên tầm liên hệ đến tâm;<br>
+<span lang="pi" class="pali">
+citte …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hãy trú quán pháp trên các pháp, và chớ có suy tư trên tầm liên hệ đến các pháp.<br>
+<span lang="pi" class="pali">
+dhammesu dhammānupassī viharāhi, mā ca kāmūpasaṃhitaṃ vitakkaṃ vitakkesī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy diệt tầm và tứ, chứng và trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm, không tứ, nội tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">
+So vitakkavicārānaṃ vūpasamā ajjhattaṃ sampasādanaṃ cetaso ekodibhāvaṃ avitakkaṃ avicāraṃ samādhijaṃ pītisukhaṃ dutiyaṃ jhānaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy ly hỷ trú xả, chánh niệm tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là xả niệm lạc trú, chứng và an trú Thiền thứ ba.<br>
+<span lang="pi" class="pali">
+tatiyaṃ jhānaṃ …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xả lạc, xả khổ, diệt hỷ ưu đã cảm thọ trước, chứng và trú Thiền thứ tư, không khổ, không lạc, xả niệm thanh tịnh.<br>
+<span lang="pi" class="pali">
+catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với tâm định tĩnh, thanh tịnh, trong sáng, không cấu nhiễm, không phiền não, nhu nhuyến, dễ sử dụng, vững chắc, bất động như vậy, vị ấy hướng tâm đến túc mạng trí.<br>
+<span lang="pi" class="pali">
+So evaṃ samāhite citte parisuddhe pariyodāte anaṅgaṇe vigatūpakkilese mudubhūte kammaniye ṭhite āneñjappatte pubbenivāsānussatiñāṇāya cittaṃ abhininnāmeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nhớ đến các đời sống quá khứ, như một đời, hai đời, ba đời, bốn đời, năm đời, hai mươi đời, bốn mươi đời, năm mươi đời, một trăm đời, một ngàn đời, một trăm ngàn đời, nhiều hoại kiếp, nhiều thành kiếp. Vị ấy nhớ rằng: “Tại chỗ kia, ta có tên như thế này, dòng họ như thế này, giai cấp như thế này, ăn uống như thế này, thọ khổ lạc như thế này, tuổi thọ đến mức như thế này. Sau khi tại chỗ kia, ta được sanh ra tại chỗ nọ. Tại chỗ ấy, ta có tên như thế này, dòng họ như thế này, giai cấp như thế này, ăn uống như thế này, thọ khổ lạc như thế này, tuổi thọ đến mức như thế này. Sau khi chết tại chỗ nọ, ta được sanh ra ở đây”. Như vậy vị ấy nhớ đến những đời sống quá khứ, cùng với các nét đại cương và các chi tiết.<br>
+<span lang="pi" class="pali">
+So anekavihitaṃ pubbenivāsaṃ anussarati, seyyathidaṃ—ekampi jātiṃ dvepi jātiyo ...pe... iti sākāraṃ sauddesaṃ anekavihitaṃ pubbenivāsaṃ anussarati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với tâm định tĩnh, thanh tịnh, trong sáng, không cấu nhiễm, không phiền não, nhu nhuyến, dễ sử dụng, vững chắc, bất động như vậy, vị ấy hướng tâm đến sanh tử trí của chúng sanh.<br>
+<span lang="pi" class="pali">
+So evaṃ samāhite citte parisuddhe pariyodāte anaṅgaṇe vigatūpakkilese mudubhūte kammaniye ṭhite āneñjappatte sattānaṃ cutūpapātañāṇāya cittaṃ abhininnāmeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy với thiên nhãn thuần tịnh, siêu nhân, thấy sự sống và chết của chúng sanh. Vị ấy tuệ tri rõ rằng chúng sanh, người hạ liệt, kẻ cao sang, người đẹp đẽ kẻ thô xấu, người may mắn kẻ bất hạnh đều do hạnh nghiệp của họ. Vị ấy nghĩ rằng: “Thật sự những vị chúng sanh này thành tựu những ác hạnh về thân, thành tựu những ác hạnh về lời nói, thành tựu những ác hạnh về ý, phỉ báng các bậc Thánh, theo tà kiến, tạo các nghiệp theo tà kiến. Những người này, sau khi thân hoại mạng chung, phải sanh vào cõi dữ, ác thú, đọa xứ, địa ngục. Còn những vị chúng sanh này thành tựu những thiện hạnh về thân, thành tựu những thiện hạnh về lời nói, thành tựu những thiện hạnh về ý, không phỉ báng các bậc Thánh, theo chánh kiến, tạo các nghiệp theo chánh kiến, những người này, sau khi thân hoại mạng chung, được sanh lên các thiện thú, Thiên giới, trên đời này”. Như vậy, vị ấy với thiên nhãn thuần tịnh, siêu nhân, thấy sự sống chết của chúng sanh. Vị ấy tuệ tri rõ rằng chúng sanh, người hạ liệt kẻ cao sang, người đẹp đẽ kẻ thô xấu, người may mắn kẻ bất hạnh đều do hạnh nghiệp của họ.<br>
+<span lang="pi" class="pali">
+So dibbena cakkhunā visuddhena atikkantamānusakena satte passati cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe, sugate duggate ...pe... yathākammūpage satte pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với tâm định tĩnh, thanh tịnh, trong sáng, không cấu nhiễm, không phiền não, nhu nhuyến, dễ sử dụng, vững chắc, bất động như vậy, vị ấy hướng tâm đến lậu tận trí.<br>
+<span lang="pi" class="pali">
+So evaṃ samāhite citte parisuddhe pariyodāte anaṅgaṇe vigatūpakkilese mudubhūte kammaniye ṭhite āneñjappatte āsavānaṃ khayañāṇāya cittaṃ abhininnāmeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tuệ tri như thật: ‘Ðây là Khổ’, tuệ tri như thật: ‘Ðây là Khổ tập’, tuệ tri như thật: ‘Ðây là Khổ diệt’, tuệ tri như thật: ‘Ðây là Con Ðường đưa đến khổ diệt’.<br>
+<span lang="pi" class="pali">
+So ‘idaṃ dukkhan’ti yathābhūtaṃ pajānāti, ‘ayaṃ dukkhasamudayo’ti yathābhūtaṃ pajānāti, ‘ayaṃ dukkhanirodho’ti yathābhūtaṃ pajānāti, ‘ayaṃ dukkhanirodhagāminī paṭipadā’ti yathābhūtaṃ pajānāti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tuệ tri như thật: ‘Ðây là những lậu hoặc’, tuệ tri như thật: ‘Ðây là nguyên nhân của các lậu hoặc’, tuệ tri như thật: ‘Ðây là sự diệt trừ các lậu hoặc’, tuệ tri như thật: ‘Ðây là Con Ðường đưa đến sự diệt trừ các lậu hoặc’.<br>
+<span lang="pi" class="pali">
+‘ime āsavā’ti yathābhūtaṃ pajānāti, ‘ayaṃ āsavasamudayo’ti yathābhūtaṃ pajānāti, ‘ayaṃ āsavanirodho’ti yathābhūtaṃ pajānāti, ‘ayaṃ āsavanirodhagāminī paṭipadā’ti yathābhūtaṃ pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhờ biết như vậy, thấy như vậy, tâm vị ấy thoát khỏi dục lậu, thoát khỏi hữu lậu, thoát khỏi vô minh lậu.<br>
+<span lang="pi" class="pali">
+Tassa evaṃ jānato evaṃ passato kāmāsavāpi cittaṃ vimuccati, bhavāsavāpi cittaṃ vimuccati, avijjāsavāpi cittaṃ vimuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðối với tự thân đã giải thoát như vậy, khởi lên sự hiểu biết: ‘Ta đã giải thoát’.<br>
+<span lang="pi" class="pali">
+Vimuttasmiṃ vimuttamiti ñāṇaṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tuệ tri: ‘Sanh đã tận, phạm hạnh đã thành, việc cần làm đã làm; sau đời hiện tại, không có trở lui đời sống này nữa’.<br>
+<span lang="pi" class="pali">
+‘Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā’ti pajānāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tỷ-kheo kham nhẫn lạnh, nóng, đói, khát, sự xúc chạm của muỗi, ruồi, gió, mặt trời và các loài bò sát, các ác ngữ, các lời nói chửi mắng, vị ấy sống quen kham nhẫn với những cảm thọ về thân, thống khổ, đau nhói, đau đớn, kịch liệt, bất khoái, không thích ý, đau đớn đến chết, được gột sạch về uế nhiễm tham, sân, si.<br>
+<span lang="pi" class="pali">
+So hoti bhikkhu khamo sītassa uṇhassa jighacchāya pipāsāya ḍaṃsa-makasa-vāta-ātapa-sarīsapa-samphassānaṃ duruttānaṃ durāgatānaṃ vacanapathānaṃ, uppannānaṃ sārīrikānaṃ vedanānaṃ dukkhānaṃ tibbānaṃ kharānaṃ kaṭukānaṃ asātānaṃ amanāpānaṃ pāṇaharānaṃ adhivāsakajātiko hoti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xứng đáng được cúng dường, cung kính, tôn trọng, chấp tay, là vô thượng phước điền trên đời.<br>
+<span lang="pi" class="pali">
+sabbarāgadosamoha-nihita-ninnītakasāvo āhuneyyo pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṃ puññakkhettaṃ lokassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu, này Aggivessana, một con vương tượng tuổi già chết đi, không được điều phục, không được huấn luyện, thời con vương tượng tuổi già được gọi là đã chết với cái chết không được điều phục.<br>
+<span lang="pi" class="pali">
+Mahallako cepi, aggivessana, rañño nāgo adanto avinīto kālaṃ karoti, ‘adantamaraṇaṃ mahallako rañño nāgo kālaṅkato’tveva saṅkhaṃ gacchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu, này Aggivessana, một con vương tượng tuổi bậc trung;<br>
+<span lang="pi" class="pali">
+majjhimo cepi, aggivessana, rañño nāgo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu, này Aggivessana, một con vương tượng tuổi trẻ chết đi, không được điều phục, không được huấn luyện, thời con vương tượng tuổi trẻ được gọi là đã chết với cái chết không được điều phục.<br>
+<span lang="pi" class="pali">
+Daharo cepi, aggivessana, rañño nāgo adanto avinīto kālaṃ karoti, ‘adantamaraṇaṃ daharo rañño nāgo kālaṅkato’tveva saṅkhaṃ gacchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Aggivessana, nếu vị Trưởng lão Tỷ-kheo chết với lậu hoặc chưa đoạn tận, thời Trưởng lão Tỷ-kheo được gọi là đã chết với cái chết không được điều phục.<br>
+<span lang="pi" class="pali">
+evameva kho, aggivessana, thero cepi bhikkhu akhīṇāsavo kālaṃ karoti, ‘adantamaraṇaṃ thero bhikkhu kālaṅkato’tveva saṅkhaṃ gacchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu, này Aggivessana, một Tỷ-kheo trung niên;<br>
+<span lang="pi" class="pali">
+majjhimo cepi, aggivessana, bhikkhu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu, này Aggivessana, một Tỷ-kheo thiếu niên chết với lậu hoặc chưa đoạn tân, thời Tỷ-kheo thiếu niên được gọi là đã chết với cái chết không được điều phục.<br>
+<span lang="pi" class="pali">
+Navo cepi, aggivessana, bhikkhu akhīṇāsavo kālaṃ karoti, ‘adantamaraṇaṃ navo bhikkhu kālaṅkato’tveva saṅkhaṃ gacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu, này Aggivessana, một con vương tượng tuổi già khéo điều phục, khéo huấn luyện chết đi, thời con vương tượng tuổi già được gọi là đã chết với cái chết được điều phục.<br>
+<span lang="pi" class="pali">
+Mahallako cepi, aggivessana, rañño nāgo sudanto suvinīto kālaṃ karoti, ‘dantamaraṇaṃ mahallako rañño nāgo kālaṅkato’tveva saṅkhaṃ gacchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu, này Aggivessana, một con vương tượng tuổi bậc trung, …<br>
+<span lang="pi" class="pali">
+majjhimo cepi, aggivessana, rañño nāgo …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu, này Aggivessana, một con vương tượng tuổi trẻ khéo điều phục, khéo huấn luyện chết đi, thời con vương tượng tuổi trẻ được gọi là đã chết với cái chết được điều phục.<br>
+<span lang="pi" class="pali">
+daharo cepi, aggivessana, rañño nāgo sudanto suvinīto kālaṃ karoti, ‘dantamaraṇaṃ daharo rañño nāgo kālaṅkato’tveva saṅkhaṃ gacchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Aggivessana, nếu một Trưởng lão Tỷ-kheo với lậu hoặc đã đoạn tận chết đi, thời Trưởng lão Tỷ-kheo được gọi là đã chết, với cái chết được điều phục.<br>
+<span lang="pi" class="pali">
+evameva kho, aggivessana, thero cepi bhikkhu khīṇāsavo kālaṃ karoti, ‘dantamaraṇaṃ thero bhikkhu kālaṅkato’tveva saṅkhaṃ gacchati;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu, này Aggivessana, một trung niên Tỷ-kheo;<br>
+<span lang="pi" class="pali">
+majjhimo cepi, aggivessana, bhikkhu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu, này Aggivessana, một thiếu niên Tỷ-kheo, với lậu hoặc đã đoạn tận chết đi, thời vị thiếu niên Tỷ-kheo được gọi là đã chết, với cái chết được điều phục.<br>
+<span lang="pi" class="pali">
+Navo cepi, aggivessana, bhikkhu khīṇāsavo kālaṃ karoti, ‘dantamaraṇaṃ navo bhikkhu kālaṅkato’tveva saṅkhaṃ gacchatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy. Sa-di Aciravata hoan hỷ tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā. Attamano aciravato samaṇuddeso bhagavato bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Dantabhūmisuttaṃ niṭṭhitaṃ pañcamaṃ.<br>
+</span>
+</p>
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn124.html#content"></a><a id="next-sutta" href="./mn126.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

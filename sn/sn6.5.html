@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 6.5 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 6.5<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 6.5<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+1. Phẩm Thứ Nhất<br>
+<span lang="pi" class="pali">
+1. Paṭhamavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Tà Kiến Khác<br>
+<span lang="pi" class="pali">
+Aññatarabrahmasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhân duyên ở Sāvatthi.<br>
+<span lang="pi" class="pali">
+Sāvatthinidānaṃ.<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, một Phạm thiên khác có khởi lên một ác tà kiến như sau: “Không một Sa-môn hay Bà-la-môn nào có thể đến ở đây”.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena aññatarassa brahmuno evarūpaṃ pāpakaṃ diṭṭhigataṃ uppannaṃ hoti: “natthi so samaṇo vā brāhmaṇo vā yo idha āgaccheyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn, với tâm tư của mình, biết được tâm tư của Phạm thiên ấy. Như người lực sĩ duỗi cánh tay đang co lại, hay co lại cánh tay đang duỗi ra; cũng vậy, Ngài biến mất ở Jetavana (Thắng Lâm) và hiện ra ở Phạm thiên giới ấy.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tassa brahmuno cetasā cetoparivitakkamaññāya—seyyathāpi nāma balavā puriso ...pe... tasmiṃ brahmaloke pāturahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn ngồi kiết-già giữa hư không, trên đầu Phạm thiên ấy, toàn thân phun lửa.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tassa brahmuno upari vehāsaṃ pallaṅkena nisīdi tejodhātuṃ samāpajjitvā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahā Moggallāna khởi lên ý nghĩ: “Nay Thế Tôn đang trú ở đâu?”.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmato mahāmoggallānassa etadahosi: “kahaṃ nu kho bhagavā etarahi viharatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mahā Moggallāna, với thiên nhãn thanh tịnh, siêu nhân, thấy Thế Tôn đang ngồi kiết-già giữa hư không, trên đầu Phạm thiên ấy, toàn thân phun lửa. Thấy vậy, như nhà lực sĩ duỗi cánh tay đang co lại, hay co lại cánh tay đang duỗi ra; cũng vậy, ngài biến mất ở Jetavana và hiện ra ở Phạm thiên giới ấy.<br>
+<span lang="pi" class="pali">
+Addasā kho āyasmā mahāmoggallāno bhagavantaṃ dibbena cakkhunā visuddhena atikkantamānusakena tassa brahmuno upari vehāsaṃ pallaṅkena nisinnaṃ tejodhātuṃ samāpannaṃ. Disvāna—seyyathāpi nāma balavā puriso samiñjitaṃ vā bāhaṃ pasāreyya, pasāritaṃ vā bāhaṃ samiñjeyya; evameva—jetavane antarahito tasmiṃ brahmaloke pāturahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahā Moggallāna ngồi kiết-già giữa hư không về phía Đông, trên đầu vị Phạm thiên ấy, phía dưới Thế Tôn, toàn thân phun lửa.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā mahāmoggallāno puratthimaṃ disaṃ nissāya tassa brahmuno upari vehāsaṃ pallaṅkena nisīdi tejodhātuṃ samāpajjitvā nīcataraṃ bhagavato.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahā Kasspa (Ðại Ca-diếp) khởi lên ý nghĩ: “Nay Thế Tôn đang trú ở đâu?”. Với thiên nhãn thanh tịnh siêu nhân, Mahā Kassapa thấy Thế Tôn đang ngồi kiết-già giữa hư không..., ... thấy vậy như nhà lực sĩ..., ... cũng vậy, biến mất ở Jetavana, hiện ra ở Phạm thiên giới ấy. Rồi Tôn giả Mahā Kassapa ngồi kiết-già giữa hư không về phía Nam, trên đầu vị Phạm thiên ấy, phía dưới Thế Tôn, toàn thân phun lửa.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmato mahākassapassa etadahosi: “kahaṃ nu kho bhagavā etarahi viharatī”ti? Addasā kho āyasmā mahākassapo bhagavantaṃ dibbena cakkhunā ...pe... disvāna—seyyathāpi nāma balavā puriso ...pe... evameva—jetavane antarahito tasmiṃ brahmaloke pāturahosi. Atha kho āyasmā mahākassapo dakkhiṇaṃ disaṃ nissāya tassa brahmuno upari vehāsaṃ pallaṅkena nisīdi tejodhātuṃ samāpajjitvā nīcataraṃ bhagavato.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Mahā Kappina (Ðại Kiếp-tân-na) khởi lên ý nghĩ: “Nay Thế Tôn đang trú ở đâu?” Với thiên nhãn thanh tịnh, siêu nhân, Mahā Kappina thấy Thế Tôn..., ... toàn thân phun lửa. Thấy vậy, như nhà lực sĩ..., ... cũng vậy biến mất ở Jetavana và hiện ra ở Phạm thiên giới ấy. Rồi Tôn giả Mahà Kappina ngồi kiết-già giữa hư không về phía Tây, trên đầu vị Phạm thiên ấy, phía dưới Thế Tôn, toàn thân phun lửa.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmato mahākappinassa etadahosi: “kahaṃ nu kho bhagavā etarahi viharatī”ti? Addasā kho āyasmā mahākappino bhagavantaṃ dibbena cakkhunā ...pe... tejodhātuṃ samāpannaṃ. Disvāna—seyyathāpi nāma balavā puriso ...pe... evameva—jetavane antarahito tasmiṃ brahmaloke pāturahosi. Atha kho āyasmā mahākappino pacchimaṃ disaṃ nissāya tassa brahmuno upari vehāsaṃ pallaṅkena nisīdi tejodhātuṃ samāpajjitvā nīcataraṃ bhagavato.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Anuruddha (A-na-luật-đà) khởi lên ý nghĩ: “Thế Tôn hiện nay đang trú ở đâu?”. Với thiên nhãn thanh tịnh, siêu nhân, Tôn giả Anuruddha thấy..., ... hiện ra ở Phạm thiên giới ấy. Rồi Tôn giả Anuraddha ngồi kiết-già giữa hư không về phía Bắc, trên đầu vị Phạm thiên ấy, phía dưới Thế Tôn, toàn thân phun lửa.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmato anuruddhassa etadahosi: “kahaṃ nu kho bhagavā etarahi viharatī”ti? Addasā kho āyasmā anuruddho ...pe... tejodhātuṃ samāpannaṃ. Disvāna—seyyathāpi nāma balavā puriso ...pe... tasmiṃ brahmaloke pāturahosi. Atha kho āyasmā anuruddho uttaraṃ disaṃ nissāya tassa brahmuno upari vehāsaṃ pallaṅkena nisīdi tejodhātuṃ samāpajjitvā nīcataraṃ bhagavato.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahā Moggallāna nói lên bài kệ với Phạm thiên ấy:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā mahāmoggallāno taṃ brahmānaṃ gāthāya ajjhabhāsi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả, hôm nay,<br>
+Người còn giữ tà kiến<br>
+Như tà kiến của Ông,<br>
+Ðã gìn giữ thời xưa.<br>
+Ông có thấy hào quang<br>
+Siêu việt Phạm thiên giới?”<br>
+<span lang="pi" class="pali">
+“Ajjāpi te āvuso sā diṭṭhi,<br>
+Yā te diṭṭhi pure ahu;<br>
+Passasi vītivattantaṃ,<br>
+Brahmaloke pabhassaran”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+(Phạm thiên ấy):<br>
+</p>
+
+<p lang="vi" class="vi">
+“Này Thân hữu, nay tôi,<br>
+Không còn giữ tà kiến,<br>
+Như tà kiến của tôi,<br>
+Ðã gìn giữ thời xưa.<br>
+Tôi có thấy hào quang,<br>
+Siêu việt Phạm thiên giới,<br>
+Làm sao tôi chấp nhận:<br>
+“Tôi là thường, là hằng”?”<br>
+<span lang="pi" class="pali">
+“Na me mārisa sā diṭṭhi,<br>
+yā me diṭṭhi pure ahu;<br>
+Passāmi vītivattantaṃ,<br>
+brahmaloke pabhassaraṃ;<br>
+Svāhaṃ ajja kathaṃ vajjaṃ,<br>
+ahaṃ niccomhi sassato”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn sau khi làm cho Phạm thiên ấy dao động, như một nhà lực sĩ duỗi cánh tay đang co lại, hay co lại cánh tay đang duỗi ra; cũng vậy, Ngài biến mất tại Phạm thiên giới ấy và hiện ra ở Jetavana.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā taṃ brahmānaṃ saṃvejetvā—seyyathāpi nāma balavā puriso samiñjitaṃ vā bāhaṃ pasāreyya, pasāritaṃ vā bāhaṃ samiñjeyya; evameva—tasmiṃ brahmaloke antarahito jetavane pāturahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Phạm thiên ấy gọi một Phạm thiên chúng:<br>
+<span lang="pi" class="pali">
+Atha kho so brahmā aññataraṃ brahmapārisajjaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Này Tôn giả, hãy đi đến Tôn giả Mahā Moggallāna; sau khi đến, thưa với Tôn giả Mahā Moggallāna: “Thưa Tôn giả Moggallāna, bậc Thế Tôn ấy có những vị đệ tử nào khác, cũng có thần lực, cũng có uy đức như các Tôn giả Moggallāna, Kassapa, Kappina và Anuruddha?”<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, mārisa, yenāyasmā mahāmoggallāno tenupasaṅkama; upasaṅkamitvā āyasmantaṃ mahāmoggallānaṃ evaṃ vadehi: ‘atthi nu kho, mārisa moggallāna, aññepi tassa bhagavato sāvakā evaṃmahiddhikā evaṃmahānubhāvā; seyyathāpi bhavaṃ moggallāno kassapo kappino anuruddho’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Thưa vâng, Tôn giả.<br>
+<span lang="pi" class="pali">
+“Evaṃ, mārisā”ti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phạm thiên chúng ấy vâng đáp Phạm thiên ấy và đi đến Tôn giả Mahā Moggallāna.<br>
+<span lang="pi" class="pali">
+kho so brahmapārisajjo tassa brahmuno paṭissutvā yenāyasmā mahāmoggallāno tenupasaṅkami;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi đến, vị ấy thưa với Tôn giả Mahā Moggallāna:<br>
+<span lang="pi" class="pali">
+upasaṅkamitvā āyasmantaṃ mahāmoggallānaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Thưa Tôn giả Moggallāna, bậc Thế Tôn ấy có những đệ tử nào khác, cũng có thần lực, cũng có uy đức như các Tôn giả Moggallāna, Kassapa, Kappina, Anuruddha?<br>
+<span lang="pi" class="pali">
+“atthi nu kho, mārisa moggallāna, aññepi tassa bhagavato sāvakā evaṃmahiddhikā evaṃmahānubhāvā; seyyathāpi bhavaṃ moggallāno kassapo kappino anuruddho”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahā Moggallāna nói lên bài kệ với Phạm thiên chúng ấy:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā mahāmoggallāno taṃ brahmapārisajjaṃ gāthāya ajjhabhāsi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chứng ba minh thần lực,<br>
+Khéo đọc hiểu tâm người,<br>
+Bậc lậu tận La-hán,<br>
+Ðệ tử Phật rất nhiều.”<br>
+<span lang="pi" class="pali">
+“Tevijjā iddhipattā ca,<br>
+cetopariyāyakovidā;<br>
+Khīṇāsavā arahanto,<br>
+bahū buddhassa sāvakā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Phạm thiên chúng ấy hoan hỷ, tín thọ lời Tôn giả Mahā Moggallāna nói, đi đến Ðại Phạm thiên; sau khi đến, nói với vị Phạm thiên ấy:<br>
+<span lang="pi" class="pali">
+Atha kho so brahmapārisajjo āyasmato mahāmoggallānassa bhāsitaṃ abhinanditvā anumoditvā yena so brahmā tenupasaṅkami; upasaṅkamitvā taṃ brahmānaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+—Thưa Tôn giả, Tôn giả Mahā Moggallāna nói như sau:<br>
+<span lang="pi" class="pali">
+“āyasmā, mārisa, mahāmoggallāno evamāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chứng ba minh thần lực,<br>
+Khéo đọc hiểu tâm người,<br>
+Bậc lậu tận La-hán,<br>
+Ðệ tử Phật rất nhiều.”<br>
+<span lang="pi" class="pali">
+‘Tevijjā iddhipattā ca,<br>
+cetopariyāyakovidā;<br>
+Khīṇāsavā arahanto,<br>
+bahū buddhassa sāvakā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phạm thiên chúng ấy nói như vậy. Vị Phạm thiên kia hoan hỷ, tín thọ lời nói của Phạm thiên chúng ấy.<br>
+<span lang="pi" class="pali">
+Idamavoca so brahmapārisajjo. Attamano ca so brahmā tassa brahmapārisajjassa bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn6.4.html#content"></a><a id="next-sutta" href="./sn6.6.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

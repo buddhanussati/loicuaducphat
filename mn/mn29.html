@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 29          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 29<br>
+<span lang="pi" class="pali"; style="text-align: center">
+Majjhima Nikāya 29<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Đại Kinh Ví Dụ Lõi Cây<br>
+<span lang="pi" class="pali">
+Mahāsāropamasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn ở tại Rājagaha (Vương Xá), núi Gijjhakuṭa (Linh Thứu), khi Devadatta (Ðề-bà-đạt-đa) từ bỏ (Chúng Tăng) ra đi không bao lâu.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā rājagahe viharati gijjhakūṭe pabbate acirapakkante devadatte.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, nhân việc Devadatta, Thế Tôn cho gọi các Tỷ-kheo và dạy như sau:<br>
+<span lang="pi" class="pali">
+Tatra kho bhagavā devadattaṃ ārabbha bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ở đây, này các Tỷ-kheo, có Thiện nam tử do lòng tin xuất gia, từ bỏ gia đình, sống không gia đình:<br>
+<span lang="pi" class="pali">
+“Idha, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘”Ta bị chìm đắm trong sanh, già, chết, sầu, bi, khổ, ưu, não, bị chìm đắm trong đau khổ, bị chi phối bởi đau khổ.<br>
+<span lang="pi" class="pali">
+‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rất có thể, toàn bộ khổ uẩn này có thể chấm dứt được”.<br>
+<span lang="pi" class="pali">
+appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xuất gia như vậy, được lợi dưỡng, tôn kính, danh vọng.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do lợi dưỡng, tôn kính, danh vọng này, vị ấy hoan hỷ, mãn nguyện.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena attamano hoti paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do lợi dưỡng, tôn kính, danh vọng này, vị ấy khen mình, chê người:<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena attānukkaṃseti paraṃ vambheti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta được lợi dưỡng như vậy, được danh vọng như vậy. Còn các Tỷ-kheo khác ít được biết đến, ít có uy quyền”.<br>
+<span lang="pi" class="pali">
+‘ahamasmi lābhasakkārasilokavā, ime panaññe bhikkhū appaññātā appesakkhā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, vì lợi dưỡng, tôn kính, danh vọng này, trở thành mê say, tham đắm, phóng dật. Do sống phóng dật, vị ấy bị đau khổ.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ví như một người muốn được lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người ấy bỏ qua lõi cây, bỏ qua giác cây, bỏ qua vỏ trong, bỏ qua vỏ ngoài, chặt cành lá, lấy chúng mang đi, tưởng rằng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ atikkamma phegguṃ atikkamma tacaṃ atikkamma papaṭikaṃ, sākhāpalāsaṃ chetvā ādāya pakkameyya ‘sāran’ti maññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy vậy bèn nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật sự người này không biết lõi cây, không biết giác cây, không biết vỏ trong, không biết vỏ ngoài, không biết cành lá.<br>
+<span lang="pi" class="pali">
+‘na vatāyaṃ bhavaṃ puriso aññāsi sāraṃ, na aññāsi phegguṃ, na aññāsi tacaṃ, na aññāsi papaṭikaṃ, na aññāsi sākhāpalāsaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người này muốn được lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người này bỏ qua lõi cây, bỏ qua giác cây, bỏ qua vỏ trong, bỏ qua vỏ ngoài, chặt cành lá, lấy chúng mang đi, tưởng rằng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Tathā hayaṃ bhavaṃ puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ atikkamma phegguṃ atikkamma tacaṃ atikkamma papaṭikaṃ, sākhāpalāsaṃ chetvā ādāya pakkanto “sāran”ti maññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người này không đạt mục đích mà lõi cây có thể thành tựu”.<br>
+<span lang="pi" class="pali">
+Yañcassa sārena sārakaraṇīyaṃ tañcassa atthaṃ nānubhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, ở đây, này các Tỷ-kheo, có Thiện nam tử vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình:<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, idhekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta bị chìm đắm trong sanh, già, chết, sầu, bi, khổ, ưu, não, bị chi phối bởi đau khổ. Rất có thể toàn bộ khổ uẩn này có thể chấm dứt”.<br>
+<span lang="pi" class="pali">
+‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xuất gia như vậy, được lợi dưỡng, tôn kính, danh vọng.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do lợi dưỡng, tôn kính, danh vọng này, vị ấy hoan hỷ, tự mãn.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena attamano hoti paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do lợi dưỡng, tôn kính, danh vọng này, vị ấy khen mình, chê người: “Ta được lợi dưỡng như vậy, được danh vọng như vậy, Còn các Tỷ-kheo khác ít được biết đến, ít có uy quyền”.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena attānukkaṃseti, paraṃ vambheti ‘ahamasmi lābhasakkārasilokavā, ime panaññe bhikkhū appaññātā appesakkhā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy vì lợi dưỡng, tôn kính, danh vọng này, trở thành mê say, tham đắm, phóng dật. Do sống phóng dật, vị ấy bị đau khổ.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo ấy được gọi là vị đã nắm lấy cành lá của phạm hạnh, vì do vậy, vị ấy đã dừng lại (ở đây).<br>
+<span lang="pi" class="pali">
+Ayaṃ vuccati, bhikkhave, bhikkhu sākhāpalāsaṃ aggahesi brahmacariyassa; tena ca vosānaṃ āpādi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng ở đây, này các Tỷ-kheo, có vị thiện nam tử vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình:<br>
+<span lang="pi" class="pali">
+Idha pana, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta bị chìm đắm trong sanh, già, chết, sầu, bi, khổ, ưu, não, bị chìm đắm trong đau khổ, bị chi phối bởi đau khổ. Rất có thể toàn bộ khổ uẩn này có thể chấm dứt”.<br>
+<span lang="pi" class="pali">
+‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vị ấy xuất gia như vậy, được lợi dưỡng, tôn kính, danh vọng.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do lợi dưỡng, tôn kính, danh vọng này, vị ấy không hoan hỷ, không tự mãn.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na attamano hoti na paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này mà khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này trở thành mê say, tham đắm, phóng dật.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do sống không phóng dật, vị ấy thành tựu giới đức.<br>
+<span lang="pi" class="pali">
+Appamatto samāno sīlasampadaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu giới đức này, vị ấy hoan hỷ, tự mãn.<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya attamano hoti paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu, giới đức này, vị ấy khen mình chê người:<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya attānukkaṃseti, paraṃ vambheti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta là người trì giới, theo thiện pháp. Các Tỷ-kheo khác phá giới, theo ác pháp”.<br>
+<span lang="pi" class="pali">
+‘ahamasmi sīlavā kalyāṇadhammo, ime panaññe bhikkhū dussīlā pāpadhammā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu giới đức này, vị ấy trở thành mê say, tham đắm, phóng dật. Do sống phóng dật, vị ấy bị đau khổ.<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ví như một người muốn được lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người ấy bỏ qua lõi cây, bỏ qua giác cây, bỏ qua vỏ trong, chặt vỏ ngoài, lấy chúng mang đi, tưởng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ atikkamma phegguṃ atikkamma tacaṃ, papaṭikaṃ chetvā ādāya pakkameyya ‘sāran’ti maññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy vậy bèn nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật sự người này không biết lõi cây, không biết giác cây, không biết vỏ trong, không biết vỏ ngoài, không biết cành lá.<br>
+<span lang="pi" class="pali">
+‘na vatāyaṃ bhavaṃ puriso aññāsi sāraṃ, na aññāsi phegguṃ, na aññāsi tacaṃ, na aññāsi papaṭikaṃ, na aññāsi sākhāpalāsaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người này muốn được lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người này bỏ qua lõi cây, bỏ qua giác cây, bỏ qua vỏ trong, chặt vỏ ngoài, lấy chúng mang đi, tưởng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Tathā hayaṃ bhavaṃ puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ atikkamma phegguṃ atikkamma tacaṃ, papaṭikaṃ chetvā ādāya pakkanto “sāran”ti maññamāno;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người này không đạt mục đích mà lõi cây có thể thành tựu”.<br>
+<span lang="pi" class="pali">
+yañcassa sārena sārakaraṇīyaṃ tañcassa atthaṃ nānubhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, ở đây Tỷ-kheo vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình… (như trên)… Do thành tựu giới đức này, vị ấy trở thành mê say, tham đắm, phóng dật. Do sống phóng dật, vị ấy bị đau khổ.<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, idhekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti: ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti. So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti. So tena lābhasakkārasilokena na attamano hoti na paripuṇṇasaṅkappo. So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti. So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati. Appamatto samāno sīlasampadaṃ ārādheti. So tāya sīlasampadāya attamano hoti paripuṇṇasaṅkappo. So tāya sīlasampadāya attānukkaṃseti, paraṃ vambheti: ‘ahamasmi sīlavā kalyāṇadhammo, ime panaññe bhikkhū dussīlā pāpadhammā’ti. So tāya sīlasampadāya majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, Tỷ-kheo ấy được gọi là vị đã nắm lấy vỏ ngoài của phạm hạnh.<br>
+<span lang="pi" class="pali">
+Ayaṃ vuccati, bhikkhave, bhikkhu papaṭikaṃ aggahesi brahmacariyassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và do vậy, vị ấy đã dừng lại (ở đây).<br>
+<span lang="pi" class="pali">
+tena ca vosānaṃ āpādi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng ở đây, này các Tỷ-kheo, có Thiện nam tử vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình:<br>
+<span lang="pi" class="pali">
+Idha pana, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta bị chìm đắm trong vòng sanh, già, chết, sầu, bi, khổ ưu, não, bị chìm đắm trong đau khổ, bị chi phối bởi đau khổ.<br>
+<span lang="pi" class="pali">
+‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rất có thể toàn bộ khổ uẩn này có thể chấm dứt được”.<br>
+<span lang="pi" class="pali">
+appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vị ấy xuất gia như vậy, được lợi dưỡng, tôn kính, danh vọng. Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này, khen mình, chê người. Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu giới đức. Do thành tựu giới đức này, vị ấy hoan hỷ, nhưng không tự mãn. Do thành tựu giới đức này, vị ấy không khen mình, chê người. Do thành tựu giới đức này, vị ấy không trở thành mê say, tham đắm, phóng dật.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti. So tena lābhasakkārasilokena na attamano hoti na paripuṇṇasaṅkappo. So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti. So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno sīlasampadaṃ ārādheti. So tāya sīlasampadāya attamano hoti no ca kho paripuṇṇasaṅkappo. So tāya sīlasampadāya na attānukkaṃseti, na paraṃ vambheti. So tāya sīlasampadāya na majjati nappamajjati na pamādaṃ āpajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do sống không phóng dật, vị ấy thành tựu thiền định.<br>
+<span lang="pi" class="pali">
+Appamatto samāno samādhisampadaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu thiền định này, vị ấy hoan hỷ, tự mãn.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya attamano hoti paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu thiền định này, vị ấy khen mình chê người:<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya attānukkaṃseti, paraṃ vambheti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta có thiền định nhất tâm. Các Tỷ-kheo khác không có thiền định, tâm bị phân tán”.<br>
+<span lang="pi" class="pali">
+‘ahamasmi samāhito ekaggacitto, ime panaññe bhikkhū asamāhitā vibbhantacittā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu thiền định này, vị ấy trở thành mê say, tham đắm, phóng dật. Do sống phóng dật, vị ấy bị đau khổ.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ví như một người muốn được lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người ấy bỏ qua lõi cây, bỏ qua giác cây, chặt vỏ trong, lấy chúng mang đi, tưởng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ atikkamma phegguṃ tacaṃ chetvā ādāya pakkameyya ‘sāran’ti maññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy vậy, bèn nói: “Thật sự người này không biết lõi cây, không biết giác cây, không biết vỏ trong, không biết vỏ ngoài, không biết cành lá.<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya ‘na vatāyaṃ bhavaṃ puriso aññāsi sāraṃ, na aññāsi phegguṃ, na aññāsi tacaṃ, na aññāsi papaṭikaṃ, na aññāsi sākhāpalāsaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người này muốn lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn có lõi cây, người này bỏ qua lõi cây, bỏ qua giác cây, chặt vỏ trong, mang đi, tưởng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Tathā hayaṃ bhavaṃ puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ atikkamma phegguṃ tacaṃ chetvā ādāya pakkanto “sāran”ti maññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người này không đạt được mục đích mà lõi cây có thể thành tựu”.<br>
+<span lang="pi" class="pali">
+Yañcassa sārena sārakaraṇīyaṃ tañcassa atthaṃ nānubhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, ở đây Tỷ-kheo vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình… (như trên)… Do thành tựu thiền định này, vị ấy trở thành mê say, tham đắm, phóng dật. Vì sống phóng dật, vị ấy bị đau khổ.<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, idhekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti: ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti. So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti. So tena lābhasakkārasilokena na attamano hoti na paripuṇṇasaṅkappo. So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti. So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno sīlasampadaṃ ārādheti. So tāya sīlasampadāya attamano hoti no ca kho paripuṇṇasaṅkappo. So tāya sīlasampadāya na attānukkaṃseti, na paraṃ vambheti. So tāya sīlasampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno samādhisampadaṃ ārādheti. So tāya samādhisampadāya attamano hoti paripuṇṇasaṅkappo. So tāya samādhisampadāya attānukkaṃseti, paraṃ vambheti: ‘ahamasmi samāhito ekaggacitto, ime panaññe bhikkhū asamāhitā vibbhantacittā’ti. So tāya samādhisampadāya majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, như vậy vị ấy được gọi là Tỷ-kheo đã nắm giữ vỏ trong của phạm hạnh.<br>
+<span lang="pi" class="pali">
+Ayaṃ vuccati, bhikkhave, bhikkhu tacaṃ aggahesi brahmacariyassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và do vậy, vị ấy đã dừng lại (ở đây).<br>
+<span lang="pi" class="pali">
+tena ca vosānaṃ āpādi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, ở đây, có Thiện nam tử, vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình: “Ta bị chìm đắm trong vòng sanh, già, chết, sầu, bi, khổ, ưu, não, bị chìm đắm trong đau khổ, bị chi phối bởi đau khổ. Rất có thể toàn bộ khổ uẩn này có thể chấm dứt”.<br>
+<span lang="pi" class="pali">
+Idha pana, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti: ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xuất gia như vậy, được lợi dưỡng, tôn kính, danh vọng. Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này hoan hỷ, tự mãn. Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này, khen mình, chê người. Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu giới đức. Do thành tựu giới đức, vị ấy hoan hỷ, nhưng không tự mãn. Vị ấy không vì thành tựu giới đức này khen mình, chê người. Vị ấy không vì thành tựu giới đức này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu Thiền định. Vị ấy do thành tựu Thiền định này nên hoan hỷ nhưng không tự mãn. Vị ấy không vì thành tựu Thiền định này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti. So tena lābhasakkārasilokena na attamano hoti na paripuṇṇasaṅkappo. So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti. So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati. Appamatto samāno sīlasampadaṃ ārādheti. So tāya sīlasampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo. So tāya sīlasampadāya na attānukkaṃseti, na paraṃ vambheti. So tāya sīlasampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno samādhisampadaṃ ārādheti. So tāya samādhisampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo. So tāya samādhisampadāya na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì thành tựu Thiền định này trở thành mê say, tham đắm, phóng dật.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya na majjati nappamajjati na pamādaṃ āpajjati appamatto samāno ñāṇadassanaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do sống không phóng dật, vị ấy thành tựu tri kiến, vị ấy vì tri kiến này, hoan hỷ, tự mãn.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena attamano hoti paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy do tri kiến này, khen mình, chê người.:<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena attānukkaṃseti, paraṃ vambheti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta sống, thấy và biết.<br>
+<span lang="pi" class="pali">
+‘ahamasmi jānaṃ passaṃ viharāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tỷ-kheo khác sống, không thấy và không biết”.<br>
+<span lang="pi" class="pali">
+Ime panaññe bhikkhū ajānaṃ apassaṃ viharantī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, do tri kiến này, trở thành mê say, tham đắm, phóng dật. Do sống phóng dật vị ấy bị đau khổ.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, ví như một người muốn được lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người bỏ qua lõi cây, chặt giác cây mang đi, tưởng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ phegguṃ chetvā ādāya pakkameyya ‘sāran’ti maññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy vậy bèn nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật sự người này không biết lõi cây, không biết giác cây, không biết vỏ trong, không biết vỏ ngoài, không biết cành lá.<br>
+<span lang="pi" class="pali">
+‘na vatāyaṃ bhavaṃ puriso aññāsi sāraṃ na aññāsi phegguṃ na aññāsi tacaṃ na aññāsi papaṭikaṃ na aññāsi sākhāpalāsaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người này muốn được lõi cây, tìm cầu lõi cây. Trước một cây lớn, đứng thẳng, có lõi cây, người ấy bỏ qua lõi cây, chặt giác cây và mang đi, tưởng đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Tathā hayaṃ bhavaṃ puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato atikkammeva sāraṃ phegguṃ chetvā ādāya pakkanto “sāran”ti maññamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người ấy không đạt được mục đích mà lõi cây có thể thành tựu.<br>
+<span lang="pi" class="pali">
+Yañcassa sārena sārakaraṇīyaṃ tañcassa atthaṃ nānubhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, ở đây, có Thiện nam tử, vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình… Vị này, vì tri kiến này nên mê say, tham đắm, phóng dật. Vì sống phóng dật, vị này bị đau khổ.<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, idhekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti: ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti. So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti. So tena lābhasakkārasilokena na attamano hoti na paripuṇṇasaṅkappo. So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti. So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno sīlasampadaṃ ārādheti. So tāya sīlasampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo. So tāya sīlasampadāya na attānukkaṃseti, na paraṃ vambheti. So tāya sīlasampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno samādhisampadaṃ ārādheti. So tāya samādhisampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo. So tāya samādhisampadāya na attānukkaṃseti, na paraṃ vambheti. So tāya samādhisampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno ñāṇadassanaṃ ārādheti. So tena ñāṇadassanena attamano hoti paripuṇṇasaṅkappo. So tena ñāṇadassanena attānukkaṃseti, paraṃ vambheti: ‘ahamasmi jānaṃ passaṃ viharāmi, ime panaññe bhikkhū ajānaṃ apassaṃ viharantī’ti. So tena ñāṇadassanena majjati pamajjati pamādaṃ āpajjati, pamatto samāno dukkhaṃ viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chư Tỷ-kheo, như vậy vị này gọi là đã nắm giữ giác cây của phạm hạnh.<br>
+<span lang="pi" class="pali">
+Ayaṃ vuccati, bhikkhave, bhikkhu phegguṃ aggahesi brahmacariyassa;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và do vậy, vị ấy đã dừng lại (ở đây)”.<br>
+<span lang="pi" class="pali">
+tena ca vosānaṃ āpādi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, ở đây, này các Tỷ-kheo, có vị Thiện nam tử, vì lòng tin xuất gia, từ bỏ gia đình, sống không gia đình:<br>
+<span lang="pi" class="pali">
+Idha pana, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta bị chìm đắm trong vòng sanh, già, chết, sầu, bi, khổ, ưu, não, bị chìm đắm trong đau khổ, bị chi phối bởi đau khổ. Rất có thể toàn bộ khổ uẩn này có thể chấm dứt”.<br>
+<span lang="pi" class="pali">
+‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xuất gia như vậy, được lợi dưỡng, tôn kính, danh vọng.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này hoan hỷ, tự mãn.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na attamano hoti, na paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu giới đức.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno sīlasampadaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu giới đức, vị ấy hoan hỷ nhưng không tự mãn.<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì thành tựu giới đức này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì thành tựu giới đức này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu Thiền định,<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno samādhisampadaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vị ấy do thành tựu Thiền định này, hoan hỷ nhưng không tự mãn.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không do thành tựu Thiền định này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không do thành tựu Thiền định này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu tri kiến.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno ñāṇadassanaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do thành tựu tri kiến này, vị ấy hoan hỷ nhưng không tự mãn.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena attamano hoti, no ca kho paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì thành tựu tri kiến này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì thành tựu tri kiến này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu phi thời gian giải thoát.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno asamayavimokkhaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, sự tình này không thể xảy ra, Tỷ-kheo ấy có thể từ bỏ phi thời gian giải thoát ấy.<br>
+<span lang="pi" class="pali">
+Aṭṭhānametaṃ, bhikkhave, anavakāso yaṃ so bhikkhu tāya asamayavimuttiyā parihāyetha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, ví như một người muốn được lõi cây, tìm cầu lõi cây. Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người ấy chặt lõi cây, mang đi và biết đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato sāraññeva chetvā ādāya pakkameyya ‘sāran’ti jānamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một người có mắt thấy như vậy, có thể nói:<br>
+<span lang="pi" class="pali">
+Tamenaṃ cakkhumā puriso disvā evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Người này biết lõi cây, biết giác cây, biết vỏ trong, biết vỏ ngoài, biết cành lá. Người này muốn được lõi cây, tìm cầu lõi cây.<br>
+<span lang="pi" class="pali">
+‘aññāsi vatāyaṃ bhavaṃ puriso sāraṃ, aññāsi phegguṃ, aññāsi tacaṃ, aññāsi papaṭikaṃ, aññāsi sākhāpalāsaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong khi đi tìm lõi cây, trước một cây lớn, đứng thẳng, có lõi cây, người ấy chặt lõi cây, mang đi và tự biết đó là lõi cây.<br>
+<span lang="pi" class="pali">
+Tathā hayaṃ bhavaṃ puriso sāratthiko sāragavesī sārapariyesanaṃ caramāno mahato rukkhassa tiṭṭhato sāravato sāraññeva chetvā ādāya pakkanto “sāran”ti jānamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người ấy đạt được mục đích mà lõi cây có thể thực hiện”.<br>
+<span lang="pi" class="pali">
+Yañcassa sārena sārakaraṇīyaṃ tañcassa atthaṃ anubhavissatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, ở đây một Thiện nam tử, vì lòng tin xuất gia, bỏ gia đình, sống không gia đình:<br>
+<span lang="pi" class="pali">
+Evameva kho, bhikkhave, idhekacco kulaputto saddhā agārasmā anagāriyaṃ pabbajito hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta bị chìm đắm trong sanh, già, chết, sầu, bi, khổ, ưu, não, bị chìm đắm trong khổ đau, bị chi phối bởi khổ đau. Rất có thể, toàn bộ khổ uẩn này có thể chấm dứt”.<br>
+<span lang="pi" class="pali">
+‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto, appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy xuất gia như vậy, được lợi dưỡng, tôn kính, danh vọng.<br>
+<span lang="pi" class="pali">
+So evaṃ pabbajito samāno lābhasakkārasilokaṃ abhinibbatteti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này hoan hỷ, tự mãn.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na attamano hoti, na paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì lợi dưỡng, tôn kính, danh vọng này trở thành mê say, tham đắm, phóng dật.  Do sống không phóng dật. Vị ấy thành tựu giới đức.<br>
+<span lang="pi" class="pali">
+So tena lābhasakkārasilokena na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno sīlasampadaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy do thành tựu giới đức này hoan hỷ nhưng không tự mãn.<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy, không do thành tựu giới đức này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không do thành tựu giới đức này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu Thiền định.<br>
+<span lang="pi" class="pali">
+So tāya sīlasampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno samādhisampadaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy do thành tựu thiền định nên hoan hỷ nhưng không tự mãn.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya attamano hoti, no ca kho paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không do thành tựu Thiền định này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không do thành tựu thiền định này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu tri kiến.<br>
+<span lang="pi" class="pali">
+So tāya samādhisampadāya na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno ñāṇadassanaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy vì thành tựu tri kiến này nên hoan hỷ nhưng không tự mãn.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena attamano hoti, no ca kho paripuṇṇasaṅkappo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì thành tựu tri kiến này khen mình, chê người.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena na attānukkaṃseti, na paraṃ vambheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không vì thành tựu tri kiến này trở thành mê say, tham đắm, phóng dật. Do sống không phóng dật, vị ấy thành tựu được phi thời gian giải thoát.<br>
+<span lang="pi" class="pali">
+So tena ñāṇadassanena na majjati nappamajjati na pamādaṃ āpajjati, appamatto samāno asamayavimokkhaṃ ārādheti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này chư Tỷ-kheo, sự tình này không thể xảy ra, Tỷ-kheo ấy có thể từ bỏ phi thời gian giải thoát ấy.<br>
+<span lang="pi" class="pali">
+Aṭṭhānametaṃ, bhikkhave, anavakāso yaṃ so bhikkhu tāya asamayavimuttiyā parihāyetha.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này các Tỷ-kheo, phạm hạnh này không phải vì lợi ích, lợi dưỡng, danh vọng, không phải vì lợi ích thành tựu giới đức, không phải vì lợi ích thành tựu thiền định, không phải vì lợi ích tri kiến.<br>
+<span lang="pi" class="pali">
+Iti kho, bhikkhave, nayidaṃ brahmacariyaṃ lābhasakkārasilokānisaṃsaṃ, na sīlasampadānisaṃsaṃ, na samādhisampadānisaṃsaṃ, na ñāṇadassanānisaṃsaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, tâm giải thoát bất động chính là mục đích của phạm hạnh này, là lõi cây, là mục tiêu cuối cùng của phạm hạnh.”<br>
+<span lang="pi" class="pali">
+Yā ca kho ayaṃ, bhikkhave, akuppā cetovimutti—etadatthamidaṃ, bhikkhave, brahmacariyaṃ, etaṃ sāraṃ etaṃ pariyosānan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tỷ-kheo ấy hoan hỷ, tín thọ lời Thế Tôn dạy.<br>
+<span lang="pi" class="pali">
+Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Mahāsāropamasuttaṃ niṭṭhitaṃ navamaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn28.html#content"></a><a id="next-sutta" href="./mn30.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

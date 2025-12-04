@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 10.91 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 10.91<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 10.91<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+10. Phẩm Nam Cư Sĩ (hay Upāli)<br>
+<span lang="pi" class="pali">
+10. Upālivagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Người Hưởng Dục<br>
+<span lang="pi" class="pali">
+Kāmabhogīsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+1. Một thời, Thế Tôn trú ở Sāvatthī, tại Jetavana, khu vườn ông Anāthapiṇḍika.<br>
+<span lang="pi" class="pali">
+Ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi nam cư sĩ Anāthapiṇḍika đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Thế Tôn nói với Anāthapiṇḍika đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho anāthapiṇḍikaṃ gahapatiṃ bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“2. Này Gia chủ, có mười hạng người hưởng dục này có mặt, hiện hữu ở đời. Thế nào là mười?<br>
+<span lang="pi" class="pali">
+“Dasayime, gahapati, kāmabhogī santo saṃvijjamānā lokasmiṃ. Katame dasa?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản phi pháp với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha, gahapati, ekacco kāmabhogī adhammena bhoge pariyesati sāhasena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản chi pháp với sức mạnh, vị ấy không tự mình được an lạc, hân hoan, không có chia xẻ, không làm các công đức.<br>
+<span lang="pi" class="pali">
+adhammena bhoge pariyesitvā sāhasena na attānaṃ sukheti na pīṇeti na saṃvibhajati na puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản phi pháp với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī adhammena bhoge pariyesati sāhasena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản phi pháp với sức mạnh, vị ấy tự mình được an lạc, hân hoan, không có chia xẻ, không làm các công đức.<br>
+<span lang="pi" class="pali">
+adhammena bhoge pariyesitvā sāhasena attānaṃ sukheti pīṇeti, na saṃvibhajati na puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản phi pháp với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī adhammena bhoge pariyesati sāhasena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản phi pháp với sức mạnh, vị ấy tự mình được an lạc, hân hoan, chia xẻ, làm các công đức.<br>
+<span lang="pi" class="pali">
+adhammena bhoge pariyesitvā sāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản đúng pháp và phi pháp với sức mạnh và không với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī dhammādhammena bhoge pariyesati sāhasenapi asāhasenapi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản đúng pháp và phi pháp với sức mạnh và không với sức mạnh, vị ấy không tự mình được an lạc, hân hoan, không có chia xẻ, không làm các công đức.<br>
+<span lang="pi" class="pali">
+dhammādhammena bhoge pariyesitvā sāhasenapi asāhasenapi na attānaṃ sukheti na pīṇeti na saṃvibhajati na puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản đúng pháp và phi pháp với sức mạnh và không với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī dhammādhammena bhoge pariyesati sāhasenapi asāhasenapi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản đúng pháp và phi pháp với sức mạnh và không với sức mạnh, vị ấy tự mình được an lạc, hân hoan, nhưng không chia xẻ, không làm các công đức.<br>
+<span lang="pi" class="pali">
+dhammādhammena bhoge pariyesitvā sāhasenapi asāhasenapi attānaṃ sukheti pīṇeti, na saṃvibhajati na puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Ở đây, này Gia Chủ, có hạng người hưởng dục, tầm cầu tài sản đúng pháp và phi pháp với sức mạnh và không với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī dhammādhammena bhoge pariyesati sāhasenapi asāhasenapi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản đúng pháp và phi pháp với sức mạnh và không với sức mạnh, vị ấy tự mình được an lạc, hân hoan, có chia xẻ, có làm các công đức.<br>
+<span lang="pi" class="pali">
+dhammādhammena bhoge pariyesitvā sāhasenapi asāhasenapi attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+9. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản đúng pháp không với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī dhammena bhoge pariyesati asāhasena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản đúng pháp không với sức mạnh, vị ấy không tự mình được an lạc, hân hoan, không chia xẻ, không làm các công đức.<br>
+<span lang="pi" class="pali">
+dhammena bhoge pariyesitvā asāhasena na attānaṃ sukheti na pīṇeti na saṃvibhajati na puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+10. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tải sản đúng pháp không với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī dhammena bhoge pariyesati asāhasena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản đúng pháp không với sức mạnh, vị ấy tự mình được an lạc, hân hoan, không chia xẻ, không làm các công đức.<br>
+<span lang="pi" class="pali">
+dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti, na saṃvibhajati na puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+11. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản đúng pháp không với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī dhammena bhoge pariyesati asāhasena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản đúng pháp không với sức mạnh, vị ấy tự mình an lạc, hân hoan, chia xẻ, làm các công đức.<br>
+<span lang="pi" class="pali">
+dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị này hưởng thụ các tài sản ấy với tâm tham trước, đắm say, mê loạn, không thấy sự nguy hại, không với trí tuệ xuất ly.<br>
+<span lang="pi" class="pali">
+Te ca bhoge gathito mucchito ajjhosanno anādīnavadassāvī anissaraṇapañño paribhuñjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+12. Ở đây, này Gia chủ, có hạng người hưởng dục, tầm cầu tài sản đúng pháp không với sức mạnh.<br>
+<span lang="pi" class="pali">
+Idha pana, gahapati, ekacco kāmabhogī dhammena bhoge pariyesati asāhasena;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi tầm cầu tài sản đúng pháp không với sức mạnh, vị ấy tự mình an lạc, hân hoan, chia xẻ, làm các công đức.<br>
+<span lang="pi" class="pali">
+dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị này hưởng thụ các tài sản ấy, không với tâm tham trước, không đắm say, không mê loạn, thấy sự nguy hại, với trí tuệ xuất ly.<br>
+<span lang="pi" class="pali">
+Te ca bhoge agathito amucchito anajjhosanno ādīnavadassāvī nissaraṇapañño paribhuñjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+13. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản phi pháp và dùng sức mạnh. Sau khi tầm cầu tài sản phi pháp và dùng sức mạnh, vị ấy không tự mình an lạc, hân hoan, không chia xẻ, không làm các công đức. Này Gia chủ, vị hưởng dục này do ba điều bị quở trách.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī adhammena bhoge pariyesati sāhasena, adhammena bhoge pariyesitvā sāhasena na attānaṃ sukheti na pīṇeti na saṃvibhajati na puññāni karoti, ayaṃ, gahapati, kāmabhogī tīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tầm cầu tài sản phi pháp, dùng sức mạnh là điều thứ nhất, bị khiển trách;<br>
+<span lang="pi" class="pali">
+‘Adhammena bhoge pariyesati sāhasenā’ti, iminā paṭhamena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không tự mình an lạc, hân hoan là điều thứ hai, bị khiển trách;<br>
+<span lang="pi" class="pali">
+‘Na attānaṃ sukheti na pīṇetī’ti, iminā dutiyena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không chia xẻ, không làm công đức là điều thứ ba, bị khiển trách.<br>
+<span lang="pi" class="pali">
+‘Na saṃvibhajati na puññāni karotī’ti, iminā tatiyena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, vị hưởng dục này có ba điều bị quở trách.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī imehi tīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+14. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản phi pháp, dùng sức mạnh. Sau khi tầm cầu tài sản phi pháp và dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, không chia xẻ, không làm các công đức. Này Gia chủ, vị hưởng dục này có hai điều bị quở trách, và một điều được tán thán.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī adhammena bhoge pariyesati sāhasena, adhammena bhoge pariyesitvā sāhasena attānaṃ sukheti pīṇeti na saṃvibhajati na puññāni karoti, ayaṃ, gahapati, kāmabhogī dvīhi ṭhānehi gārayho ekena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản phi pháp và dùng sức mạnh do điều thứ nhất này, bị quở trách.<br>
+<span lang="pi" class="pali">
+‘Adhammena bhoge pariyesati sāhasenā’ti, iminā paṭhamena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tự mình an lạc, hân hoan, do một điều này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Attānaṃ sukheti pīṇetī’ti, iminā ekena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không san sẻ, không làm các công đức, do điều thứ hai này, bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Na saṃvibhajati na puññāni karotī’ti iminā dutiyena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có hai điều này bị chỉ trích, và một điều này được tán thán.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī imehi dvīhi ṭhānehi gārayho iminā ekena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+15. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản phi pháp và dùng sức mạnh. Sau khi tầm cầu tài sản phi pháp và dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, san sẻ và làm các công đức. Vị hưởng dục này, này Gia chủ, do một điều bị chỉ trích, do hai điều được tán thán.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī adhammena bhoge pariyesati sāhasena, adhammena bhoge pariyesitvā sāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti, ayaṃ, gahapati, kāmabhogī ekena ṭhānena gārayho dvīhi ṭhānehi pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản một cách phi pháp và dùng sức mạnh, do một điều này, bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Adhammena bhoge pariyesati sāhasenā’ti, iminā ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tự mình an lạc, hân hoan, do điều thứ nhất này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Attānaṃ sukheti pīṇetī’ti, iminā paṭhamena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chia xẻ và làm các công đức, do điều thứ hai này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Saṃvibhajati puññāni karotī’ti, iminā dutiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có một điều này bị chỉ trích, và hai điều này được tán thán.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī iminā ekena ṭhānena gārayho, imehi dvīhi ṭhānehi pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+16. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản đúng pháp và phi pháp, dùng sức mạnh và không dùng sức mạnh. Sau khi tầm cầu tài sản đúng pháp và phi pháp, dùng sức mạnh và không dùng sức mạnh, vị ấy không tự mình an lạc, hân hoan, không chia xẻ, không làm các công đức. Vị hưởng dục này, này Gia chủ, có một điều được tán thán, có ba điều bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī dhammādhammena bhoge pariyesati sāhasenapi asāhasenapi, dhammādhammena bhoge pariyesitvā sāhasenapi asāhasenapi na attānaṃ sukheti na pīṇeti na saṃvibhajati na puññāni karoti, ayaṃ, gahapati, kāmabhogī ekena ṭhānena pāsaṃso tīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản đúng pháp không dùng sức mạnh, do một điều này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Dhammena bhoge pariyesati asāhasenā’ti, iminā ekena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản phi pháp và dùng sức mạnh, do điều thứ nhất này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Adhammena bhoge pariyesati sāhasenā’ti, iminā paṭhamena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không tự mình an lạc, hân hoan, do điều thứ hai này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Na attānaṃ sukheti na pīṇetī’ti, iminā dutiyena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không chia xẻ, không làm các công đức, do điều thứ ba này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Na saṃvibhajati na puññāni karotī’ti, iminā tatiyena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có một điều này được tán thán, và ba điều này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī iminā ekena ṭhānena pāsaṃso imehi tīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+17. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản đúng pháp và phi pháp, dùng sức mạnh và không dùng sức mạnh. Sau khi tầm cầu tài sản đúng pháp và phi pháp, dùng sức mạnh và không dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, không chia sẻ và không làm các công đức. Vị hưởng dục này, này Gia chủ, có hai điều được tán thán, và hai điều bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī dhammādhammena bhoge pariyesati sāhasenapi asāhasenapi, dhammādhammena bhoge pariyesitvā sāhasenapi asāhasenapi attānaṃ sukheti pīṇeti na saṃvibhajati na puññāni karoti, ayaṃ, gahapati, kāmabhogī dvīhi ṭhānehi pāsaṃso dvīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản đúng pháp và không dùng sức mạnh, do điều thứ nhất này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Dhammena bhoge pariyesati asāhasenā’ti, iminā paṭhamena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản phi pháp và dùng sức mạnh, do điều thứ nhất này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Adhammena bhoge pariyesati sāhasenā’ti, iminā paṭhamena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tự mình an lạc, hân hoan, do điều thứ hai này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Attānaṃ sukheti pīṇetī’ti, iminā dutiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không san sẻ, không làm các công đức, do điều thứ hai này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Na saṃvibhajati na puññāni karotī’ti, iminā dutiyena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có hai điều này được tán thán, và hai điều này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī imehi dvīhi ṭhānehi pāsaṃso imehi dvīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+18. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản đúng pháp và phi pháp, dùng sức mạnh và không dùng sức mạnh. Sau khi, tầm cầu tài sản đúng pháp và phi pháp, dùng sức mạnh và không dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, chia xẻ và làm các công đức. Vị hưởng dục này, này Gia chủ, có ba điều được tán thán, và một điều bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī dhammādhammena bhoge pariyesati sāhasenapi asāhasenapi, dhammādhammena bhoge pariyesitvā sāhasenapi asāhasenapi attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti, ayaṃ, gahapati, kāmabhogī tīhi ṭhānehi pāsaṃso ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản đúng pháp và không dùng sức mạnh, do điều thứ nhất này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Dhammena bhoge pariyesati asāhasenā’ti, iminā paṭhamena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản phi pháp và dùng sức mạnh, do điều thứ nhất này, bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Adhammena bhoge pariyesati sāhasenā’ti, iminā ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tự mình an lạc, hân hoan, do điều thứ hai này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Attānaṃ sukheti pīṇetī’ti, iminā dutiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chia xẻ và làm các công đức, do điều thứ ba này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Saṃvibhajati puññāni karotī’ti, iminā tatiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có ba điều này được tán thán, và một điều này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī imehi tīhi ṭhānehi pāsaṃso iminā ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+19. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản đúng pháp và không dùng sức mạnh. Sau khi tầm cầu tài sản đúng pháp và không dùng sức mạnh, vị ấy không tự mình an lạc, hân hoan, không chia xẻ và không làm các công đức. Vị hưởng dục này, này Gia chủ, có một điều được tán thán, và hai điều bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī dhammena bhoge pariyesati asāhasena, dhammena bhoge pariyesitvā asāhasena na attānaṃ sukheti na pīṇeti na saṃvibhajati na puññāni karoti, ayaṃ, gahapati, kāmabhogī ekena ṭhānena pāsaṃso dvīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản đúng pháp và không dùng sức mạnh, do điều này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Dhammena bhoge pariyesati asāhasenā’ti, iminā ekena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không tự mình an lạc, hân hoan, do điều thứ nhất này, bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Na attānaṃ sukheti na pīṇetī’ti, iminā paṭhamena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không chia xẻ, không làm các công đức, do điều thứ hai này, bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Na saṃvibhajati na puññāni karotī’ti, iminā dutiyena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có một điều này được tán thán, và hai điều này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī iminā ekena ṭhānena pāsaṃso imehi dvīhi ṭhānehi gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+20. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản đúng pháp và không dùng sức mạnh. Sau khi tầm cầu tài sản đúng pháp và không dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, không chia xẻ, không làm các công đức. Vị hưởng dục này, này Gia chủ, có hai điều được tán thán, và một điều bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī dhammena bhoge pariyesati asāhasena, dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti na saṃvibhajati na puññāni karoti, ayaṃ, gahapati, kāmabhogī dvīhi ṭhānehi pāsaṃso ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản đúng pháp và không dùng sức mạnh, do điều thứ nhất này được tán thán.<br>
+<span lang="pi" class="pali">
+‘Dhammena bhoge pariyesati asāhasenā’ti, iminā paṭhamena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tự mình an lạc, hân hoan, do điều thứ hai này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Attānaṃ sukheti pīṇetī’ti, iminā dutiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy không chia xẻ, không làm các công đức, do điều thứ nhất này, bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Na saṃvibhajati na puññāni karotī’ti iminā ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có hai điều này được tán thán, và một điều này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī imehi dvīhi ṭhānehi pāsaṃso iminā ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+21. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản đúng pháp và không dùng sức mạnh. Sau khi tầm cầu tài sản đúng pháp và không dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, chia xẻ và làm các công đức. Và người ấy thọ hưởng các tài sản ấy tham đắm, đắm say, mê loạn, không thấy sự nguy hại, không có xuất ly với trí tuệ. Người hưởng dục này, này Gia chủ, có ba điều được tán thán, và một điều bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati yvāyaṃ kāmabhogī dhammena bhoge pariyesati asāhasena, dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti, te ca bhoge gathito mucchito ajjhosanno anādīnavadassāvī anissaraṇapañño paribhuñjati, ayaṃ, gahapati, kāmabhogī tīhi ṭhānehi pāsaṃso ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu tài sản đúng pháp và không dùng sức mạnh, do điều thứ nhất này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Dhammena bhoge pariyesati asāhasenā’ti, iminā paṭhamena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tự mình an lạc, hân hoan, do điều thứ hai này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Attānaṃ sukheti pīṇetī’ti, iminā dutiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chia xẻ và làm các công đức, do điều thứ ba này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Saṃvibhajati puññāni karotī’ti, iminā tatiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy thọ hưởng các tài sản ấy tham đắm, đắm say, mê loạn, không thấy sự nguy hại, không có xuất ly với trí tuệ, do một điều này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+‘Te ca bhoge gathito mucchito ajjhosanno anādīnavadassāvī anissaraṇapañño paribhuñjatī’ti, iminā ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có ba điều này được tán thán, và một điều này bị chỉ trích.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī imehi tīhi ṭhānehi pāsaṃso iminā ekena ṭhānena gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+22. Tại đây, này Gia chủ, vị hưởng dục này, tầm cầu tài sản đúng pháp và không dùng sức mạnh. Sau khi tầm cầu tài sản đúng pháp và không dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, chia xẻ và làm các công đức. Người ấy hưởng thọ các tài sản ấy, không có tham đắm, không có đắm say, không có mê loạn, thấy được sự nguy hại, có xuất ly với trí tuệ. Vị hưởng dục này, này Gia chủ, có bốn điều được tán thán.<br>
+<span lang="pi" class="pali">
+Tatra, gahapati, yvāyaṃ kāmabhogī dhammena bhoge pariyesati asāhasena, dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti, te ca bhoge agathito amucchito anajjhosanno ādīnavadassāvī nissaraṇapañño paribhuñjati, ayaṃ, gahapati, kāmabhogī catūhi ṭhānehi pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tầm cầu đúng pháp và không dùng sức mạnh, do điều thứ nhất này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Dhammena bhoge pariyesati asāhasenā’ti, iminā paṭhamena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy tự mình an lạc, hân hoan, do điều thứ hai này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Attānaṃ sukheti pīṇetī’ti, iminā dutiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy chia xẻ và làm các công đức, do điều thứ ba này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Saṃvibhajati puññāni karotī’ti, iminā tatiyena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy thọ hưởng các tài sản ấy, không tham đắm, không có đắm say, không có mê loạn, thấy được sự nguy hại, có xuất ly với trí tuệ, do điều thứ tư này, được tán thán.<br>
+<span lang="pi" class="pali">
+‘Te ca bhoge agathito amucchito anajjhosanno ādīnavadassāvī nissaraṇapañño paribhuñjatī’ti, iminā catutthena ṭhānena pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị hưởng dục này, này Gia chủ, có bốn điều này được tán thán.<br>
+<span lang="pi" class="pali">
+Ayaṃ, gahapati, kāmabhogī imehi catūhi ṭhānehi pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Gia chủ, mười hạng người hưởng dục này có mặt, hiện hữu ở đời.<br>
+<span lang="pi" class="pali">
+Ime kho, gahapati, dasa kāmabhogī santo saṃvijjamānā lokasmiṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+23. Trong mười hạng người hưởng dục này, này Gia chủ, người hưởng dục này, tầm cầu tài sản đúng pháp, không dùng sức mạnh, Sau khi tầm cầu tài sản đúng pháp, không dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, chia xẻ, làm các công đức, hưởng thọ các tài sản ấy, không tham đắm, không đắm say, không mê loạn, thấy được sự nguy hại, có xuất ly với trí tuệ. Trong mười hạng người hưởng dục này, hạng người này là tối thượng, là tối thắng, là thượng thủ, là vô thượng, là tối tôn.<br>
+<span lang="pi" class="pali">
+Imesaṃ kho, gahapati, dasannaṃ kāmabhogīnaṃ yvāyaṃ kāmabhogī dhammena bhoge pariyesati asāhasena, dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti, te ca bhoge agathito amucchito anajjhosanno ādīnavadassāvī nissaraṇapañño paribhuñjati, ayaṃ imesaṃ dasannaṃ kāmabhogīnaṃ aggo ca seṭṭho ca pāmokkho ca uttamo ca pavaro ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này Gia chủ, từ con bò có sữa, từ sữa có lạc, từ lạc có sanh tô, từ sanh tô có thục tô, từ thục tô có tinh túy của thục tô, đề hồ, tinh túy thục tô được xem như tối thượng ở đây.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, gahapati, gavā khīraṃ, khīramhā dadhi, dadhimhā navanītaṃ, navanītamhā sappi, sappimhā sappimaṇḍo. Sappimaṇḍo tattha aggamakkhāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này Gia chủ, trong mười hạng người hưởng dục này, vị hưởng dục này, tầm cầu tài sản đúng pháp và không dùng sức mạnh. Sau khi tầm cầu tài sản đúng pháp và không dùng dùng sức mạnh, vị ấy tự mình an lạc, hân hoan, chia xẻ và làm các công đức, thọ hưởng các tài sản ấy, không tham đắm, không đắm say, không mê loạn, thấy được sự nguy hại, có xuất ly với trí tuệ. Trong mười hạng người hưởng dục này, hạng người này là tối thượng, tối thắng, thượng thủ, vô thượng và tối tôn.”<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, gahapati, imesaṃ dasannaṃ kāmabhogīnaṃ yvāyaṃ kāmabhogī dhammena bhoge pariyesati asāhasena, dhammena bhoge pariyesitvā asāhasena attānaṃ sukheti pīṇeti saṃvibhajati puññāni karoti, te ca bhoge agathito amucchito anajjhosanno ādīnavadassāvī nissaraṇapañño paribhuñjati, ayaṃ imesaṃ dasannaṃ kāmabhogīnaṃ aggo ca seṭṭho ca pāmokkho ca uttamo ca pavaro cā”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an10.90.html#content"></a><a id="next-sutta" href="./an10.92.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

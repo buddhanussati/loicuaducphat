@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel2.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+    <script src="../js/suttaFiles.js"></script>
+
+    <!-- CSS CHO PHẦN THIỀN HƠI THỞ (Đã tối ưu Mobile) -->
+    <style>
+        #anapana-app {
+            margin: 20px auto; /* Auto để căn giữa nếu container cha rộng */
+            width: 100%;
+            max-width: 800px; /* Giới hạn chiều rộng trên desktop */
+            height: 80vh; /* Chiều cao mặc định */
+            background: #0b1d2e;
+            color: #ddd;
+            font-family: Segoe UI, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Vòng tròn thở */
+        #anapana-circle {
+            /* Mặc định Desktop */
+            width: 45vh; 
+            height: 45vh;
+            max-width: 320px; max-height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(100,200,255,0.25), rgba(100,200,255,0.05));
+            box-shadow: 0 0 60px rgba(100,200,255,0.3);
+            animation-name: breathe;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            /* Mask mờ biên */
+            mask-image: radial-gradient(circle, black 0%, black 60%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle, black 0%, black 60%, transparent 100%);
+        }
+        @keyframes breathe{0%,100%{transform:scale(0.9)} 50%{transform:scale(1.45)}}
+
+        /* Khu vực chữ hiển thị */
+        #anapana-text-container {
+            position: absolute; bottom: 90px; left: 0; right: 0;
+            text-align: center; z-index: 10; pointer-events: none;
+            padding: 0 15px; /* Tránh chữ sát lề màn hình */
+        }
+        #anapana-stage-indicator {
+            font-size: 12px; color: #8ac; text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 2px; opacity: 0.8;
+        }
+        #anapana-main-text {
+            font-size: 18px; font-weight: 300; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            transition: opacity 1s ease; opacity: 1;
+            line-height: 1.4;
+			margin-bottom: 0px
+        }
+#anapana-timer {
+  background: none;
+  border: none;
+  color: #8ac;
+  font-size: 14px;
+  min-width: 45px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+#anapana-timer:hover {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}
+
+        /* Thanh điều khiển */
+        #anapana-controls {
+            position: absolute; bottom: 10px; 
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+            padding: 8px 20px; border-radius: 30px;
+            display: flex; align-items: center; gap: 15px;
+            z-index: 20; border: 1px solid rgba(255,255,255,0.1);
+            /* Đảm bảo thanh điều khiển không bị tràn màn hình nhỏ */
+            max-width: 95%;
+            box-sizing: border-box;
+            justify-content: center; 
+        }
+        
+        #anapana-timer { font-variant-numeric: tabular-nums; min-width: 45px; text-align: center; font-size: 14px; color: #8ac; }
+        
+        .anapana-btn {
+            background: none; border: none; color: #eee; font-size: 20px; cursor: pointer;
+            padding: 5px; width: 40px; height: 40px; /* Tăng vùng bấm cho dễ chạm */
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 50%; transition: background 0.2s;
+            touch-action: manipulation; /* Tối ưu cảm ứng */
+        }
+        .anapana-btn:hover { background: rgba(255,255,255,0.1); }
+        .anapana-btn:active { transform: scale(0.95); }
+        .anapana-btn-small { font-size: 16px; color: #aaa; }
+
+        /* Popup chung */
+        .anapana-popup {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            background: #1a2634; color: #fff; padding: 20px; border-radius: 12px;
+            display: none; flex-direction: column; gap: 12px; z-index: 30;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+            border: 1px solid #456; 
+            width: 280px; max-width: 90%; /* Responsive width */
+            text-align: center;
+        }
+	.anapana-popup button.active {
+  background: #8ac;   /* highlight color */
+  color: #fff;
+}
+        .anapana-popup h3 { margin: 0; font-size: 14px; color: #8ac; text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;}
+        .anapana-grid-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .anapana-popup button {
+            padding: 12px; /* Nút to hơn để dễ bấm trên mobile */
+            border: none; border-radius: 6px; cursor: pointer;
+            background: #2c3e50; color: #ddd; font-size: 14px;
+        }
+        .anapana-popup button:hover { background: #3e5871; }
+        /* FIX: Style cho ô input đẹp hơn, không bị tràn chữ */
+        .anapana-popup input {
+            padding: 8px; border-radius: 6px; border: none; 
+            width: 90px; /* Tăng chiều rộng ô input */
+            font-size: 16px; /* Cố định cỡ chữ để không bị vỡ */
+            text-align: center; background: #0f1720; color: #fff; border: 1px solid #456;
+        }
+        /* Placeholder color cho dễ nhìn */
+        .anapana-popup input::placeholder { color: #678; opacity: 1; font-size: 14px;}
+        
+        .anapana-closeBtn { background: #322 !important; color: #eaa !important; margin-top: 5px;}
+
+        #anapana-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 25; display: none;
+        }
+
+        /* ========================================= */
+        /* MOBILE RESPONSIVE (Màn hình < 600px)      */
+        /* ========================================= */
+        @media screen and (max-width: 600px) {
+            #anapana-app {
+                height: 65vh; /* Giảm chiều cao để vừa màn hình điện thoại */
+                border-radius: 0; /* Full viền trên mobile */
+            }
+
+            #anapana-circle {
+                /* Trên mobile dùng VW (chiều rộng) để tính toán vì màn hình dọc */
+                width: 60vw; 
+                height: 60vw;
+                max-width: 240px; max-height: 240px;
+                /* Đẩy vòng tròn lên trên một chút để nhường chỗ cho chữ */
+                margin-bottom: 40px; 
+            }
+
+            #anapana-main-text {
+                font-size: 14px; /* Giảm cỡ chữ */
+                padding: 0 10px;
+            }
+
+            #anapana-text-container {
+                bottom: 80px; /* Điều chỉnh vị trí chữ */
+            }
+
+            #anapana-controls {
+                bottom: 15px;
+                width: 98%; /* Mở rộng tối đa */
+                padding: 5px 5px;
+                gap: 2px; /* Giảm khoảng cách để nhét vừa nhiều nút */
+                justify-content: space-evenly; /* Chia đều khoảng cách */
+            }
+
+            .anapana-btn {
+                width: 36px; height: 36px; /* Nút gọn hơn chút */
+                font-size: 18px;
+                padding: 4px;
+            }
+            
+            .anapana-btn-small { font-size: 14px; }
+            
+            /* Ẩn divider trên mobile nếu chật quá */
+            .anapana-divider { display: none; }
+        }
+    </style>
+
+</head>
+<body class="container">
+<div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+<button id="toggleViBtn" onclick="mockToggle('toggleViBtn')">Pali</button>
+<button id="togglePaliBtn" onclick="mockToggle('togglePaliBtn')">Việt</button>
+<script>
+function goHome() {
+  window.location.href = "../an/an8.41.html#content";
+}
+</script>
+<script>
+  function mockToggle(id) {
+    const btn = document.getElementById(id);
+    btn.classList.toggle('hidden'); // this alone switches green ↔ purple
+  }
+</script>
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="pressed w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Thiền Định - Samādhi Bhāvanā </h2>
+</div>
+
+<br>
+ 	<title>        Thiền Định         </title>
+	
+	<div class="w3-responsive">
+		<table class="suttalist" style="margin: 0 auto;">
+			<tr><td><a href="../mn/mn118.html#content">Kinh Quán Niệm Hơi Thở - Ānāpānassatisutta</a></td></tr>
+			<tr><td><a href="../sn/sn54.html#content">Tương Ưng Hơi Thở Vô, Hơi Thở Ra - Ānāpānasaṃyutta</a></td></tr>
+</table>
+</div>
+
+<!-- ================================================= -->
+<!-- BẮT ĐẦU ỨNG DỤNG THIỀN HƠI THỞ ĐƯỢC NHÚNG VÀO -->
+<!-- ================================================= -->
+
+<div id="anapana-app">
+    <div id="anapana-circle"></div>
+
+    <div id="anapana-text-container">
+        <div id="anapana-stage-indicator">Chuẩn bị</div>
+        <div id="anapana-main-text">Giữ lưng thẳng • Đặt niệm trước mặt</div>
+    </div>
+
+    <div id="anapana-controls">
+        <button class="anapana-btn anapana-btn-small" onclick="changeStage(-1)" title="Giai đoạn trước"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Mũi tên kép lùi lại -->
+    <path d="M11 19l-7-7 7-7v14zM18 19l-7-7 7-7v14z"/>
+</svg></button>
+        
+        <button class="anapana-btn" id="anapana-speedBtn" title="Tốc độ"><svg width="15" height="15" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="18" stroke="white" stroke-width="2" fill="none"/>
+            <circle cx="20" cy="20" r="9" stroke="white" stroke-width="2" fill="none"/>
+        </svg></button>
+        <button class="anapana-btn" id="anapana-toggleBtn" title="Bắt đầu/Dừng" style="font-size: 24px; color: #8ac"><svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+    <polygon points="14,10 30,20 14,30" fill="white"/>
+  </svg></button>
+        <button class="anapana-btn" id="anapana-bellBtn" title="Chuông"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg></button>
+        
+        <button class="anapana-btn anapana-btn-small" onclick="changeStage(1)" title="Giai đoạn tiếp"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Mũi tên kép tiến lên -->
+    <path d="M13 5l7 7-7 7V5zM6 5l7 7-7 7V5z"/>
+</svg></button>
+        
+        <!-- Nút Full Screen Mới -->
+        <button class="anapana-btn anapana-btn-small" onclick="window.location.href='../congcu/Anapana.html'" title="Mở toàn màn hình">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            </svg>
+        </button>
+        
+        <div class="anapana-divider" style="width:1px; height:20px; background:rgba(255,255,255,0.2); margin:0 5px;"></div>
+        <button id="anapana-timer" class="anapana-btn anapana-btn-small" title="Đặt khoảng chuông">--:--</button>
+
+    </div>
+
+    <div id="anapana-overlay" onclick="closeAllPopups()"></div>
+
+    <div id="anapana-bellPopup" class="anapana-popup">
+<div style="margin:0; margin-bottom:4px; font-size:14px; font-weight:bold; color:#8ac; text-align:center; text-transform:uppercase; letter-spacing:1px;">
+  Khoảng cách chuông
+</div>        <div class="anapana-grid-options">
+            <button data-min="1" onclick="saveInterval(1)">1 phút</button>
+    <button data-min="2" onclick="saveInterval(2)">2 phút</button>
+    <button data-min="5" onclick="saveInterval(5)">5 phút</button>
+    <button data-min="10" onclick="saveInterval(10)">10 phút</button>
+    <button data-min="15" onclick="saveInterval(15)">15 phút</button>
+  <button data-min="20" onclick="saveInterval(20)">20 phút</button>
+        </div>
+        <div style="display:flex;justify-content:center;gap:5px;">
+            <input type="number" id="anapana-customMin" placeholder="Phút">
+            <button onclick="saveCustomBell()">OK</button>
+        </div>
+        <button class="anapana-closeBtn" onclick="closeAllPopups()">Đóng</button>
+    </div>
+<div id="anapana-bellSoundPopup" class="anapana-popup">
+  <div style="margin:0; margin-bottom:4px; font-size:14px; font-weight:bold; color:#8ac; text-align:center; text-transform:uppercase; letter-spacing:1px;">
+    Âm thanh chuông
+  </div>
+  <div class="anapana-grid-options">
+    <button data-sound="bell-1" onclick="setBellSound('bell-1')">Chuông 1</button>
+    <button data-sound="bell-2" onclick="setBellSound('bell-2')">Chuông 2</button>
+    <button data-sound="bell-3" onclick="setBellSound('bell-3')">Chuông 3</button>
+	<button data-sound="bell-4" onclick="setBellSound('bell-4')">Chuông 4</button>
+    <button data-sound="bell-5" onclick="setBellSound('bell-5')">Tiếng Bíp</button>
+    <button data-sound="bell-6" onclick="setBellSound('bell-6')">Nước Chảy</button>
+  </div>
+  <button class="anapana-closeBtn" onclick="closeAllPopups()">Đóng</button>
+</div>
+
+    <div id="anapana-speedPopup" class="anapana-popup">
+<div style="margin:0; margin-bottom:4px; font-size:14px; font-weight:bold; color:#8ac; text-align:center; text-transform:uppercase; letter-spacing:1px;">
+  Chiều dài hơi thở
+</div>
+
+        <div class="anapana-grid-options">
+            <button data-speed="5" onclick="saveSpeed(5)">5 giây</button>
+    <button data-speed="8" onclick="saveSpeed(8)">8 giây</button>
+    <button data-speed="10" onclick="saveSpeed(10)">10 giây</button>
+    <button data-speed="12" onclick="saveSpeed(12)">12 giây</button>
+    <button data-speed="14" onclick="saveSpeed(14)">14 giây</button>
+    <button data-speed="16" onclick="saveSpeed(16)">16 giây</button>
+        </div>
+        <div style="display:flex;justify-content:center;gap:5px;">
+            <input type="number" id="anapana-customSpeed" placeholder="Giây">
+            <button onclick="saveCustomSpeed()">OK</button>
+        </div>
+        <button class="anapana-closeBtn" onclick="closeAllPopups()">Đóng</button>
+    </div>
+    
+    <audio id="anapana-bell" src="../css/bell.mp3"></audio>
+</div>
+
+<!-- ================================================= -->
+<!-- KẾT THÚC PHẦN ỨNG DỤNG THIỀN ==================== -->
+<!-- ================================================= -->
+
+<br>
+
+</div>  <!-- End Page -->
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+
+ <!-- SCRIPT ĐIỀU KHIỂN THIỀN HƠI THỞ -->
+ <script>
+    const stages = [
+      ["Chánh niệm, tôi sẽ thở vô","Chánh niệm, tôi sẽ thở ra"],
+      ["Thở vô dài, tôi biết tôi thở vô dài","Thở ra dài, tôi biết tôi thở ra dài"],
+      ["Thở vô ngắn, tôi biết tôi thở vô ngắn","Thở ra ngắn, tôi biết tôi thở ra ngắn"],
+      ["Cảm giác toàn thân, tôi sẽ thở vô","Cảm giác toàn thân, tôi sẽ thở ra"],
+      ["An tịnh thân hành, tôi sẽ thở vô","An tịnh thân hành, tôi sẽ thở ra"],
+      ["Cảm giác hỷ thọ, tôi sẽ thở vô","Cảm giác hỷ thọ, tôi sẽ thở ra"],
+      ["Cảm giác lạc thọ, tôi sẽ thở vô","Cảm giác lạc thọ, tôi sẽ thở ra"],
+      ["Cảm giác tâm hành, tôi sẽ thở vô","Cảm giác tâm hành, tôi sẽ thở ra"],
+      ["An tịnh tâm hành, tôi sẽ thở vô","An tịnh tâm hành, tôi sẽ thở ra"],
+      ["Cảm giác về tâm, tôi sẽ thở vô" , "Cảm giác về tâm, tôi sẽ thở ra"],
+      ["Cảm giác tâm hành, tôi sẽ thở vô","Cảm giác tâm hành, tôi sẽ thở ra"],
+      ["Với tâm hân hoan, tôi sẽ thở vô","Với tâm hân hoan, tôi sẽ thở ra"],
+      ["Với tâm định tĩnh, tôi sẽ thở vô", "Với tâm định tĩnh, tôi sẽ thở ra"], 
+      ["Với tâm giải thoát, tôi sẽ thở vô","Với tâm giải thoát, tôi sẽ thở ra"],
+      ["Quán vô thường, tôi sẽ thở vô", "Quán vô thường, tôi sẽ thở ra"],
+      ["Quán ly tham, tôi sẽ thở vô","Quán ly tham, tôi sẽ thở ra"],
+      ["Quán đoạn diệt, tôi sẽ thở vô","Quán đoạn diệt, tôi sẽ thở ra"],
+      ["Quán từ bỏ, tôi sẽ thở vô" , "Quán từ bỏ, tôi sẽ thở ra"] 
+    ];
+    
+    // State variables
+    let ana_running = false;
+    let ana_stageIndex = 0;
+    let ana_breathPhase = 0; 
+    let ana_breathCycle = localStorage.getItem("breathCycle") ? parseInt(localStorage.getItem("breathCycle")) : 10;
+    let ana_bellInterval = localStorage.getItem("bellInterval") ? parseInt(localStorage.getItem("bellInterval")) : 60; 
+    let ana_bellCountdown = ana_bellInterval;
+    
+    // Timers
+    let ana_breathTimer;
+    let ana_bellTimer;
+    
+    // UI Elements
+    const ana_mainText = document.getElementById("anapana-main-text");
+    const ana_stageIndicator = document.getElementById("anapana-stage-indicator");
+    const ana_circle = document.getElementById("anapana-circle");
+    const ana_toggleBtn = document.getElementById("anapana-toggleBtn");
+    const ana_timerEl = document.getElementById("anapana-timer");
+    const ana_bell = document.getElementById("anapana-bell");
+	// If user has chosen a sound before, use that instead of the default
+const savedSound = localStorage.getItem("bellSound");
+if (savedSound) {
+  ana_bell.src = `../css/${savedSound}.mp3`;
+}
+
+    const ana_bellPopup = document.getElementById("anapana-bellPopup");
+    const ana_speedPopup = document.getElementById("anapana-speedPopup");
+    const ana_overlay = document.getElementById("anapana-overlay");
+    const ana_bellSoundPopup = document.getElementById("anapana-bellSoundPopup");
+
+    // Init
+    ana_circle.style.animationDuration = ana_breathCycle + "s";
+    ana_circle.style.animationPlayState = "paused";
+    ana_timerEl.textContent = formatTime(ana_bellCountdown);
+    
+    function formatTime(s) {
+      const m = Math.floor(s/60);
+      const sec = s%60;
+      return (m>0?m+":":"") + (sec<10?"0":"") + sec;
+    }
+    
+    function playBell() {
+      ana_bell.currentTime=0; ana_bell.play().catch(()=>{});
+    }
+    
+    function updateText(immediate = false) {
+      const line = stages[ana_stageIndex][ana_breathPhase];
+      const stepName = ` ${ana_stageIndex + 1} / ${stages.length}`;
+      
+      ana_stageIndicator.textContent = stepName;
+      
+      if(immediate){
+         ana_mainText.textContent = line;
+         ana_mainText.style.opacity = 1;
+      } else {
+         ana_mainText.style.opacity = 0;
+         setTimeout(() => {
+           ana_mainText.textContent = line;
+           ana_mainText.style.opacity = 1;
+         }, 500);
+      }
+    }
+    
+    function startBreathLoop() {
+      clearInterval(ana_breathTimer);
+      const halfTime = (ana_breathCycle * 1000) / 2;
+      
+      ana_breathTimer = setInterval(() => {
+        if(ana_running){
+          ana_breathPhase = (ana_breathPhase + 1) % 2; 
+          updateText();
+        }
+      }, halfTime);
+    }
+    
+    function start() {
+  if (ana_running) return;
+  ana_running = true;
+
+  ana_toggleBtn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+      <rect x="12" y="10" width="5" height="20" fill="white"/>
+      <rect x="23" y="10" width="5" height="20" fill="white"/>
+    </svg>
+  `;
+  ana_toggleBtn.style.color = "#fff";
+
+  ana_circle.style.animationPlayState = "running";
+  updateText(true);
+  startBreathLoop();
+
+  clearInterval(ana_bellTimer);
+  ana_bellTimer = setInterval(() => {
+    ana_bellCountdown--;
+    ana_timerEl.textContent = formatTime(ana_bellCountdown);
+    if (ana_bellCountdown <= 0) {
+      playBell();
+      ana_bellCountdown = ana_bellInterval;
+    }
+  }, 1000);
+
+  if (ana_bellCountdown === ana_bellInterval) {
+    playBell();
+  }
+}
+
+function pause() {
+  ana_running = false;
+  ana_toggleBtn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+      <polygon points="14,10 30,20 14,30" fill="white"/>
+    </svg>
+  `;
+  ana_toggleBtn.style.color = "#8ac";
+
+  ana_circle.style.animationPlayState = "paused";
+  clearInterval(ana_breathTimer);
+  clearInterval(ana_bellTimer);
+  ana_bell.pause();
+  ana_bell.currentTime = 0;
+}
+
+function changeStage(direction) {
+  const newIndex = ana_stageIndex + direction;
+  if (newIndex >= 0 && newIndex < stages.length) {
+    ana_stageIndex = newIndex;
+    ana_breathPhase = 0;
+
+    updateText(true);
+
+    if (ana_running) {
+      ana_circle.style.animation = 'none';
+      ana_circle.offsetHeight;
+      ana_circle.style.animation = `breathe ${ana_breathCycle}s ease-in-out infinite`;
+      startBreathLoop();
+    }
+
+    clearInterval(ana_bellTimer);
+    ana_bellCountdown = ana_bellInterval;
+    ana_timerEl.textContent = formatTime(ana_bellCountdown);
+
+    if (ana_running) {
+      ana_bellTimer = setInterval(() => {
+        ana_bellCountdown--;
+        ana_timerEl.textContent = formatTime(ana_bellCountdown);
+        if (ana_bellCountdown <= 0) {
+          playBell();
+          ana_bellCountdown = ana_bellInterval;
+        }
+      }, 1000);
+
+      playBell();
+    }
+  }
+}
+let ana_bellSound = localStorage.getItem("bellSound") || "bell-1";
+
+function setBellSound(name) {
+  ana_bellSound = name;
+  localStorage.setItem("bellSound", name);
+
+  // Highlight chosen button
+  document.querySelectorAll("#anapana-bellSoundPopup button[data-sound]").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#anapana-bellSoundPopup button[data-sound]").forEach(btn => {
+    if (btn.dataset.sound === name) {
+      btn.classList.add("active");
+    }
+  });
+
+  // Update audio source
+  ana_bell.src = `../css/${name}.mp3`;
+
+  // 🔔 Play immediately so user hears the choice
+  ana_bell.currentTime = 0;
+  ana_bell.play().catch(()=>{});
+}
+
+
+function saveInterval(m) {
+  ana_bellInterval = m * 60;
+  localStorage.setItem("bellInterval", ana_bellInterval);
+  localStorage.setItem("bellCustom", "");
+  ana_bellCountdown = ana_bellInterval;
+  ana_timerEl.textContent = formatTime(ana_bellCountdown);
+
+  if (ana_running) {
+    clearInterval(ana_bellTimer);
+    ana_bellTimer = setInterval(() => {
+      ana_bellCountdown--;
+      ana_timerEl.textContent = formatTime(ana_bellCountdown);
+      if (ana_bellCountdown <= 0) {
+        playBell();
+        ana_bellCountdown = ana_bellInterval;
+      }
+    }, 1000);
+    playBell();
+  }
+
+  document.querySelectorAll("#anapana-bellPopup button").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#anapana-bellPopup button").forEach(btn => {
+    if (btn.dataset.min && parseInt(btn.dataset.min) === m) {
+      btn.classList.add("active");
+    }
+  });
+
+  closeAllPopups();
+}
+
+function saveCustomBell() {
+  const v = document.getElementById("anapana-customMin").value;
+  if (v > 0) {
+    saveInterval(parseFloat(v));
+    localStorage.setItem("bellCustom", v);
+    document.getElementById("anapana-customMin").value = v;
+  }
+}
+
+function saveSpeed(s) {
+  ana_breathCycle = parseInt(s);
+  localStorage.setItem("breathCycle", ana_breathCycle);
+  localStorage.setItem("speedCustom", "");
+  ana_circle.style.animationDuration = ana_breathCycle + "s";
+
+  if (ana_running) startBreathLoop();
+
+  document.querySelectorAll("#anapana-speedPopup button").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#anapana-speedPopup button").forEach(btn => {
+    if (btn.dataset.speed && parseInt(btn.dataset.speed) === s) {
+      btn.classList.add("active");
+    }
+  });
+
+  closeAllPopups();
+}
+
+function saveCustomSpeed() {
+  const v = document.getElementById("anapana-customSpeed").value;
+  if (v > 1) {
+    saveSpeed(parseFloat(v));
+    localStorage.setItem("speedCustom", v);
+    document.getElementById("anapana-customSpeed").value = v;
+  }
+}
+
+document.getElementById("anapana-bellBtn").addEventListener("click", () => {
+  closeAllPopups();
+  ana_bellSoundPopup.style.display = "flex";
+  ana_overlay.style.display = "block";
+
+  // Restore previously chosen sound
+  document.querySelectorAll("#anapana-bellSoundPopup button[data-sound]").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll("#anapana-bellSoundPopup button[data-sound]").forEach(btn => {
+    if (btn.dataset.sound === ana_bellSound) {
+      btn.classList.add("active");
+    }
+  });
+});
+
+
+document.getElementById("anapana-speedBtn").addEventListener("click", () => {
+  closeAllPopups();
+  ana_speedPopup.style.display = "flex";
+  ana_overlay.style.display = "block";
+
+  document.querySelectorAll("#anapana-speedPopup button").forEach(btn => btn.classList.remove("active"));
+
+  const savedSpeed = localStorage.getItem("breathCycle");
+  const savedCustom = localStorage.getItem("speedCustom");
+
+  if (savedCustom && savedCustom !== "") {
+    document.getElementById("anapana-customSpeed").value = savedCustom;
+  } else if (savedSpeed) {
+    const seconds = parseInt(savedSpeed);
+    document.querySelectorAll("#anapana-speedPopup button").forEach(btn => {
+      if (btn.dataset.speed && parseInt(btn.dataset.speed) === seconds) {
+        btn.classList.add("active");
+      }
+    });
+  }
+});
+// Make the timer clickable to open bell interval popup
+ana_timerEl.addEventListener("click", () => {
+  closeAllPopups();
+  ana_bellPopup.style.display = "flex";
+  ana_overlay.style.display = "block";
+
+  // Reset highlights
+  document.querySelectorAll("#anapana-bellPopup button").forEach(btn => btn.classList.remove("active"));
+
+  const savedInterval = localStorage.getItem("bellInterval");
+  const savedCustom = localStorage.getItem("bellCustom");
+
+  if (savedCustom && savedCustom !== "") {
+    document.getElementById("anapana-customMin").value = savedCustom;
+  } else if (savedInterval) {
+    const minutes = parseInt(savedInterval) / 60;
+    document.querySelectorAll("#anapana-bellPopup button").forEach(btn => {
+      if (btn.dataset.min && parseInt(btn.dataset.min) === minutes) {
+        btn.classList.add("active");
+      }
+    });
+  }
+});
+function closeAllPopups() {
+  ana_bellPopup.style.display = "none";       // interval popup
+  ana_bellSoundPopup.style.display = "none";  // new sound popup
+  ana_speedPopup.style.display = "none";
+  ana_overlay.style.display = "none";
+}
+
+ana_toggleBtn.addEventListener("click", () => ana_running ? pause() : start());
+
+    </script>
+ </body>
+ </html>

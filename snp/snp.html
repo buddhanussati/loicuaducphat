@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ <title>        Sutta Nipāta        </title>
+
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<h2>Khuddaka Nikāya - Tiểu Bộ Kinh</h2>
+<div id="content">
+	
+		<h3>Sutta Nipāta - Kinh Tập</h3>
+<br>
+<div class="w3-responsive">
+		<table class="suttalist" style="margin: 0 auto;">
+<tr><th colspan="3" style="text-align: center;">Chương Một - Phẩm Rắn</th>
+</tr>
+<tr>
+<td><a href="snp1.1.html#content">Snp 1.1</a></td>
+<td><a href="snp1.1.html#content">Kinh Rắn</a></td>
+<td><a href="snp1.1.html#content">Uragasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.2.html#content">Snp 1.2</a></td>
+<td><a href="snp1.2.html#content">Kinh Dhaniya</a></td>
+<td><a href="snp1.2.html#content">Dhaniyasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.3.html#content">Snp 1.3</a></td>
+<td><a href="snp1.3.html#content">Kinh Con Tê Ngưu Một Sừng</a></td>
+<td><a href="snp1.3.html#content">Khaggavisāṇasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.4.html#content">Snp 1.4</a></td>
+<td><a href="snp1.4.html#content">Kinh Bhàradvàja, Người Cày Ruộng</a></td>
+<td><a href="snp1.4.html#content">Kasibhāradvājasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.5.html#content">Snp 1.5</a></td>
+<td><a href="snp1.5.html#content">Kinh Cunda</a></td>
+<td><a href="snp1.5.html#content">Cundasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.6.html#content">Snp 1.6</a></td>
+<td><a href="snp1.6.html#content">Kinh Bại Vong</a></td>
+<td><a href="snp1.6.html#content">Parābhavasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.7.html#content">Snp 1.7</a></td>
+<td><a href="snp1.7.html#content">Kinh Kẻ Bần Tiện</a></td>
+<td><a href="snp1.7.html#content">Vasalasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.8.html#content">Snp 1.8</a></td>
+<td><a href="snp1.8.html#content">Kinh Từ Bi</a></td>
+<td><a href="snp1.8.html#content">Mettasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.9.html#content">Snp 1.9</a></td>
+<td><a href="snp1.9.html#content">Kinh Hemavata</a></td>
+<td><a href="snp1.9.html#content">Hemavatasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.10.html#content">Snp 1.10</a></td>
+<td><a href="snp1.10.html#content">Kinh Alavaka</a></td>
+<td><a href="snp1.10.html#content">Āḷavakasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.11.html#content">Snp 1.11</a></td>
+<td><a href="snp1.11.html#content">Kinh Thắng Trận</a></td>
+<td><a href="snp1.11.html#content">Vijayasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp1.12.html#content">Snp 1.12</a></td>
+<td><a href="snp1.12.html#content">Kinh ẩn sĩ</a></td>
+<td><a href="snp1.12.html#content">Munisutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.1.html#content">Snp 2.1</a></td>
+<td><a href="snp2.1.html#content">Kinh Châu Báu</a></td>
+<td><a href="snp2.1.html#content">Ratanasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.2.html#content">Snp 2.2</a></td>
+<td><a href="snp2.2.html#content">Kinh Hôi Thối</a></td>
+<td><a href="snp2.2.html#content">Āmagandhasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.3.html#content">Snp 2.3</a></td>
+<td><a href="snp2.3.html#content">Kinh Xấu Hổ</a></td>
+<td><a href="snp2.3.html#content">Hirisutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.4.html#content">Snp 2.4</a></td>
+<td><a href="snp2.4.html#content">Kinh Ðiềm Lành Tối Thượng</a></td>
+<td><a href="snp2.4.html#content">Maṅgalasutta</a></td>
+</tr>
+<tr><th colspan="3" style="text-align: center;">Chương Hai - Tiểu Phẩm</th>
+</tr>
+<tr>
+<td><a href="snp2.5.html#content">Snp 2.5</a></td>
+<td><a href="snp2.5.html#content">Kinh Sùciloma</a></td>
+<td><a href="snp2.5.html#content">Sūcilomasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.6.html#content">Snp 2.6</a></td>
+<td><a href="snp2.6.html#content">Kinh Hành Chánh Pháp</a></td>
+<td><a href="snp2.6.html#content">Kapilasutta (dhammacariyasutta)</a></td>
+</tr>
+<tr>
+<td><a href="snp2.7.html#content">Snp 2.7</a></td>
+<td><a href="snp2.7.html#content">Kinh Pháp Bà-la-môn</a></td>
+<td><a href="snp2.7.html#content">Brāhmaṇadhammikasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.8.html#content">Snp 2.8</a></td>
+<td><a href="snp2.8.html#content">Kinh Chiếc Thuyền</a></td>
+<td><a href="snp2.8.html#content">Dhamma (nāvā) sutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.9.html#content">Snp 2.9</a></td>
+<td><a href="snp2.9.html#content">Kinh Thế Nào là Giới</a></td>
+<td><a href="snp2.9.html#content">Kiṃsīlasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.10.html#content">Snp 2.10</a></td>
+<td><a href="snp2.10.html#content">Kinh Ðứng Dậy</a></td>
+<td><a href="snp2.10.html#content">Uṭṭhānasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.11.html#content">Snp 2.11</a></td>
+<td><a href="snp2.11.html#content">Kinh Ràhula</a></td>
+<td><a href="snp2.11.html#content">Rāhulasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.12.html#content">Snp 2.12</a></td>
+<td><a href="snp2.12.html#content">Kinh Vangìsa</a></td>
+<td><a href="snp2.12.html#content">Nigrodhakappa (vaṅgīsa) sutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.13.html#content">Snp 2.13</a></td>
+<td><a href="snp2.13.html#content">Kinh Chánh xuất gia</a></td>
+<td><a href="snp2.13.html#content">Sammāparibbājanīyasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp2.14.html#content">Snp 2.14</a></td>
+<td><a href="snp2.14.html#content">Kinh Dhammika</a></td>
+<td><a href="snp2.14.html#content">Dhammikasutta</a></td>
+</tr>
+<tr><th colspan="3" style="text-align: center;">Chương Ba - Đại Phẩm</th>
+</tr>
+<tr>
+<td><a href="snp3.1.html#content">Snp 3.1</a></td>
+<td><a href="snp3.1.html#content">Kinh Xuất Gia</a></td>
+<td><a href="snp3.1.html#content">Pabbajjāsutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.2.html#content">Snp 3.2</a></td>
+<td><a href="snp3.2.html#content">Kinh Tinh Cần</a></td>
+<td><a href="snp3.2.html#content">Padhānasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.3.html#content">Snp 3.3</a></td>
+<td><a href="snp3.3.html#content">Kinh Khéo Thuyết</a></td>
+<td><a href="snp3.3.html#content">Subhāsitasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.4.html#content">Snp 3.4</a></td>
+<td><a href="snp3.4.html#content">Kinh Sundarika Bhàradvàja</a></td>
+<td><a href="snp3.4.html#content">Pūraḷāsa (sundarikabhāradvāja) sutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.5.html#content">Snp 3.5</a></td>
+<td><a href="snp3.5.html#content">Kinh Màgha</a></td>
+<td><a href="snp3.5.html#content">Māghasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.6.html#content">Snp 3.6</a></td>
+<td><a href="snp3.6.html#content">Kinh Sabhiya</a></td>
+<td><a href="snp3.6.html#content">Sabhiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.7.html#content">Snp 3.7</a></td>
+<td><a href="snp3.7.html#content">Kinh Sela</a></td>
+<td><a href="snp3.7.html#content">Selasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.8.html#content">Snp 3.8</a></td>
+<td><a href="snp3.8.html#content">Kinh Mũi Tên</a></td>
+<td><a href="snp3.8.html#content">Sallasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.9.html#content">Snp 3.9</a></td>
+<td><a href="snp3.9.html#content">Kinh Vasettha</a></td>
+<td><a href="snp3.9.html#content">Vāseṭṭhasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.10.html#content">Snp 3.10</a></td>
+<td><a href="snp3.10.html#content">Kinh Kokàliya</a></td>
+<td><a href="snp3.10.html#content">Kokālikasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.11.html#content">Snp 3.11</a></td>
+<td><a href="snp3.11.html#content">Kinh Nàlaka</a></td>
+<td><a href="snp3.11.html#content">Nālakasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp3.12.html#content">Snp 3.12</a></td>
+<td><a href="snp3.12.html#content">Kinh Hai Pháp Tuỳ Quán</a></td>
+<td><a href="snp3.12.html#content">Dvayatānupassanāsutta</a></td>
+</tr>
+<tr><th colspan="3" style="text-align: center;">Chương Bốn - Phẩm Tám</th>
+</tr>
+<tr>
+<td><a href="snp4.1.html#content">Snp 4.1</a></td>
+<td><a href="snp4.1.html#content">Kinh về Dục</a></td>
+<td><a href="snp4.1.html#content">Kāmasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.2.html#content">Snp 4.2</a></td>
+<td><a href="snp4.2.html#content">Kinh Hang Ðộng tám kệ</a></td>
+<td><a href="snp4.2.html#content">Guhaṭṭhakasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.3.html#content">Snp 4.3</a></td>
+<td><a href="snp4.3.html#content">Kinh Sân Hận tám kệ</a></td>
+<td><a href="snp4.3.html#content">Duṭṭhaṭṭhakasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.4.html#content">Snp 4.4</a></td>
+<td><a href="snp4.4.html#content">Kinh Thanh Tịnh tám kệ</a></td>
+<td><a href="snp4.4.html#content">Suddhaṭṭhakasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.5.html#content">Snp 4.5</a></td>
+<td><a href="snp4.5.html#content">Kinh Tối Thắng tám kệ</a></td>
+<td><a href="snp4.5.html#content">Paramaṭṭhakasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.6.html#content">Snp 4.6</a></td>
+<td><a href="snp4.6.html#content">Kinh Già</a></td>
+<td><a href="snp4.6.html#content">Jarāsutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.7.html#content">Snp 4.7</a></td>
+<td><a href="snp4.7.html#content">Kinh Tissametteyya</a></td>
+<td><a href="snp4.7.html#content">Tissametteyyasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.8.html#content">Snp 4.8</a></td>
+<td><a href="snp4.8.html#content">Kinh Pasùra</a></td>
+<td><a href="snp4.8.html#content">Pasūrasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.9.html#content">Snp 4.9</a></td>
+<td><a href="snp4.9.html#content">Kinh Màgandiya</a></td>
+<td><a href="snp4.9.html#content">Māgaṇḍiyasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.10.html#content">Snp 4.10</a></td>
+<td><a href="snp4.10.html#content">Kinh Trước khi bị hủy hoại</a></td>
+<td><a href="snp4.10.html#content">Purābhedasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.11.html#content">Snp 4.11</a></td>
+<td><a href="snp4.11.html#content">Kinh Tranh luận</a></td>
+<td><a href="snp4.11.html#content">Kalahavivādasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.12.html#content">Snp 4.12</a></td>
+<td><a href="snp4.12.html#content">Kinh Những vấn đề nhỏ bé</a></td>
+<td><a href="snp4.12.html#content">Cūḷabyūhasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.13.html#content">Snp 4.13</a></td>
+<td><a href="snp4.13.html#content">Kinh Những vấn đề to lớn</a></td>
+<td><a href="snp4.13.html#content">Mahābyūhasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.14.html#content">Snp 4.14</a></td>
+<td><a href="snp4.14.html#content">Kinh Tuvataka</a></td>
+<td><a href="snp4.14.html#content">Tuvaṭakasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.15.html#content">Snp 4.15</a></td>
+<td><a href="snp4.15.html#content">Kinh Chấp trượng</a></td>
+<td><a href="snp4.15.html#content">Attadaṇḍasutta</a></td>
+</tr>
+<tr>
+<td><a href="snp4.16.html#content">Snp 4.16</a></td>
+<td><a href="snp4.16.html#content">Kinh Sàriputta</a></td>
+<td><a href="snp4.16.html#content">Sāriputtasutta</a></td>
+</tr>
+<tr><th colspan="3" style="text-align: center;">Chương Năm - Phẩm Con Ðường Ðến Bờ Bên Kia</th>
+</tr>
+<tr>
+<td><a href="snp5.1.html#content">Snp 5.1</a></td>
+<td><a href="snp5.1.html#content">Bài kệ mở đầu</a></td>
+<td><a href="snp5.1.html#content">Vatthugāthā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.2.html#content">Snp 5.2</a></td>
+<td><a href="snp5.2.html#content">Câu hỏi của thanh niên Ajita</a></td>
+<td><a href="snp5.2.html#content">Ajitamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.3.html#content">Snp 5.3</a></td>
+<td><a href="snp5.3.html#content">Câu hỏi của thanh niên Tissametteyya</a></td>
+<td><a href="snp5.3.html#content">Tissametteyyamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.4.html#content">Snp 5.4</a></td>
+<td><a href="snp5.4.html#content">Câu hỏi của thanh niên Punnaka</a></td>
+<td><a href="snp5.4.html#content">Puṇṇakamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.5.html#content">Snp 5.5</a></td>
+<td><a href="snp5.5.html#content">Câu hỏi của thanh niên Mettagu</a></td>
+<td><a href="snp5.5.html#content">Mettagūmāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.6.html#content">Snp 5.6</a></td>
+<td><a href="snp5.6.html#content">Câu hỏi của thanh niên Dhotaka</a></td>
+<td><a href="snp5.6.html#content">Dhotakamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.7.html#content">Snp 5.7</a></td>
+<td><a href="snp5.7.html#content">Câu hỏi của thanh niên Upasiva</a></td>
+<td><a href="snp5.7.html#content">Upasīvamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.8.html#content">Snp 5.8</a></td>
+<td><a href="snp5.8.html#content">Câu hỏi của thanh niên Nanda</a></td>
+<td><a href="snp5.8.html#content">Nandamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.9.html#content">Snp 5.9</a></td>
+<td><a href="snp5.9.html#content">Câu hỏi của thanh niên Hemaka</a></td>
+<td><a href="snp5.9.html#content">Hemakamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.10.html#content">Snp 5.10</a></td>
+<td><a href="snp5.10.html#content">Câu hỏi của thanh niên Todeyya</a></td>
+<td><a href="snp5.10.html#content">Todeyyamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.11.html#content">Snp 5.11</a></td>
+<td><a href="snp5.11.html#content">Câu hỏi của thanh niên Kappa</a></td>
+<td><a href="snp5.11.html#content">Kappamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.12.html#content">Snp 5.12</a></td>
+<td><a href="snp5.12.html#content">Câu hỏi của thanh niên Jatukanni</a></td>
+<td><a href="snp5.12.html#content">Jatukaṇṇimāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.13.html#content">Snp 5.13</a></td>
+<td><a href="snp5.13.html#content">Câu hỏi của thanh niên Bhadràvudha</a></td>
+<td><a href="snp5.13.html#content">Bhadrāvudhamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.14.html#content">Snp 5.14</a></td>
+<td><a href="snp5.14.html#content">Câu hỏi của thanh niên Udaya</a></td>
+<td><a href="snp5.14.html#content">Udayamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.15.html#content">Snp 5.15</a></td>
+<td><a href="snp5.15.html#content">Câu hỏi của thanh niên Posàla</a></td>
+<td><a href="snp5.15.html#content">Posālamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.16.html#content">Snp 5.16</a></td>
+<td><a href="snp5.16.html#content">Câu hỏi của thanh niên Mogharàja</a></td>
+<td><a href="snp5.16.html#content">Mogharājamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.17.html#content">Snp 5.17</a></td>
+<td><a href="snp5.17.html#content">Câu hỏi của thanh niên Pingiya</a></td>
+<td><a href="snp5.17.html#content">Piṅgiyamāṇavapucchā</a></td>
+</tr>
+<tr>
+<td><a href="snp5.18.html#content">Snp 5.18</a></td>
+<td><a href="snp5.18.html#content">Kết luận</a></td>
+<td><a href="snp5.18.html#content">Pārāyanatthutigāthā</a></td>
+</tr>
+</table>
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id=next-sutta href="./snp1.1.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

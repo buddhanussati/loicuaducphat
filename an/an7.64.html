@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 7.64 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 7.64<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 7.64<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+6. Phẩm Không Tuyên Bố<br>
+<span lang="pi" class="pali">
+6. Abyākatavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Sân Hận<br>
+<span lang="pi" class="pali">
+Kodhanasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“1. Này các Tỷ-kheo, có bảy pháp này được người thù địch ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hay đàn ông. Thế nào là bảy?<br>
+<span lang="pi" class="pali">
+“Sattime, bhikkhave, dhammā sapattakantā sapattakaraṇā kodhanaṃ āgacchanti itthiṃ vā purisaṃ vā. Katame satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Ở đây, này các Tỷ-kheo, người thù địch mong muốn kẻ thù địch của mình như sau:<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, sapatto sapattassa evaṃ icchati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng kẻ này trở thành xấu xí!’<br>
+<span lang="pi" class="pali">
+‘aho vatāyaṃ dubbaṇṇo assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người thù địch không hoan hỷ kẻ thù địch của mình có dung sắc.<br>
+<span lang="pi" class="pali">
+Na, bhikkhave, sapatto sapattassa vaṇṇavatāya nandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, hạng người nào phẫn nộ, bị phẫn nộ chinh phục, bị phẫn nộ chi phối, dầu cho người ấy khéo tắm rửa, khéo chải chuốt, tóc râu khéo sửa soạn, mặc toàn đồ trắng rồi người ấy cũng trở thành xấu xí, vì bị phẫn nộ chinh phục.<br>
+<span lang="pi" class="pali">
+Kodhanoyaṃ, bhikkhave, purisapuggalo kodhābhibhūto kodhapareto, kiñcāpi so hoti sunhāto suvilitto kappitakesamassu odātavatthavasano; atha kho so dubbaṇṇova hoti kodhābhibhūto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là pháp thứ nhất, được người thù địch ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, paṭhamo dhammo sapattakanto sapattakaraṇo kodhanaṃ āgacchati itthiṃ vā purisaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Lại nữa, này các Tỷ-kheo, người thù địch mong muốn kẻ thù địch của mình như sau:<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sapatto sapattassa evaṃ icchati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng kẻ này ngủ một cách khổ sở!’<br>
+<span lang="pi" class="pali">
+‘aho vatāyaṃ dukkhaṃ sayeyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người thù địch không hoan hỷ kẻ thù địch của mình ngủ một cách an lành.<br>
+<span lang="pi" class="pali">
+Na, bhikkhave, sapatto sapattassa sukhaseyyāya nandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, hạng người nào phẫn nộ, bị phẫn nộ chinh phục, bị phẫn nộ chi phối, dầu có nằm trên ghế dài, nệm trải bằng len, chăn len trắng, chăn len thêu, nệm bằng da con sơn dương gọi là Kadali, tấm khảm với lọng che phía trên, ghế dài có đầu gối chân màu đỏ. Tuy vậy, họ vẫn ngủ một cách khổ sở, vì bị phẫn nộ chinh phục.<br>
+<span lang="pi" class="pali">
+Kodhanoyaṃ, bhikkhave, purisapuggalo kodhābhibhūto kodhapareto, kiñcāpi so pallaṅke seti gonakatthate paṭalikatthate kadali-miga-pavara-paccattharaṇe sauttaracchade ubhatolohitakūpadhāne; atha kho so dukkhaññeva seti kodhābhibhūto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là pháp thứ hai, được người thù địch ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, dutiyo dhammo sapattakanto sapattakaraṇo kodhanaṃ āgacchati itthiṃ vā purisaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Lại nữa, này các Tỷ-kheo, người thù địch mong muốn kẻ thù địch của mình như sau:<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sapatto sapattassa evaṃ icchati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng kẻ này không có lợi ích!’<br>
+<span lang="pi" class="pali">
+‘aho vatāyaṃ na pacurattho assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người thù địch không hoan hỷ kẻ thù địch của mình có được lợi ích.<br>
+<span lang="pi" class="pali">
+Na, bhikkhave, sapatto sapattassa pacuratthatāya nandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, hạng người nào phẫn nộ, bị phẫn nộ chinh phục, bị phẫn nộ chi phối, thâu hoạch bất lợi, lại nghĩ rằng: ‘Ta được lợi ích’, thâu hoạch điều bất lợi ích, lại nghĩ rằng: ‘Ta không được lợi ích’.<br>
+<span lang="pi" class="pali">
+Kodhanoyaṃ, bhikkhave, purisapuggalo kodhābhibhūto kodhapareto, anatthampi gahetvā ‘attho me gahito’ti maññati, atthampi gahetvā ‘anattho me gahito’ti maññati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những pháp này được nắm giữ khiến người khác trở thành thù địch, đưa đến không hạnh phúc, đau khổ lâu dài, vì bị phẫn nộ chinh phục.<br>
+<span lang="pi" class="pali">
+Tassime dhammā aññamaññaṃ vipaccanīkā gahitā dīgharattaṃ ahitāya dukkhāya saṃvattanti kodhābhibhūtassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là pháp thứ ba, được người thù ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, tatiyo dhammo sapattakanto sapattakaraṇo kodhanaṃ āgacchati itthiṃ vā purisaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Lại nữa, này các Tỷ-kheo, người thù địch mong muốn kẻ thù địch của mình như sau:<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sapatto sapattassa evaṃ icchati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng kẻ này không có tài sản!’<br>
+<span lang="pi" class="pali">
+‘aho vatāyaṃ na bhogavā assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người thù địch không hoan hỷ kẻ thù địch của mình có được tài sản.<br>
+<span lang="pi" class="pali">
+Na, bhikkhave, sapatto sapattassa bhogavatāya nandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, hạng người nào phẫn nộ, bị phẫn nộ chinh phục, bị phẫn nộ chi phối, những tài sản nào của họ thâu hoạch do sự phấn chấn tinh cần, cất chứa do sức mạnh của cánh tay, chồng chất do những giọt mồ hôi, đúng pháp, thâu hoạch hợp pháp. Các tài sản ấy được nhà vua cho chở về ngân khố nhà vua, vì bị phẫn nộ chinh phục.<br>
+<span lang="pi" class="pali">
+Kodhanassa, bhikkhave, purisapuggalassa kodhābhibhūtassa kodhaparetassa, yepissa te honti bhogā uṭṭhānavīriyādhigatā bāhābalaparicitā sedāvakkhittā dhammikā dhammaladdhā, tepi rājāno rājakosaṃ pavesenti kodhābhibhūtassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là pháp thứ tư, được người thù ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, catuttho dhammo sapattakanto sapattakaraṇo kodhanaṃ āgacchati itthiṃ vā purisaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Lại nữa, này các Tỷ-kheo, người thù địch mong muốn kẻ thù địch của mình như sau:<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sapatto sapattassa evaṃ icchati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng kẻ này không có danh tiếng!’<br>
+<span lang="pi" class="pali">
+‘aho vatāyaṃ na yasavā assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người thù địch không hoan hỷ kẻ thù địch của mình có được danh tiếng.<br>
+<span lang="pi" class="pali">
+Na, bhikkhave, sapatto sapattassa yasavatāya nandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, hạng người nào phẫn nộ, bị phẫn nộ chinh phục, bị phẫn nộ chi phối, nếu có được danh tiếng gì nhờ không phóng dật thâu hoạch được, danh tiếng ấy lánh xa họ, vì bị phẫn nộ chinh phục.<br>
+<span lang="pi" class="pali">
+Kodhanoyaṃ, bhikkhave, purisapuggalo kodhābhibhūto kodhapareto, yopissa so hoti yaso appamādādhigato, tamhāpi dhaṃsati kodhābhibhūto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây là pháp thứ năm, được người thù ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, pañcamo dhammo sapattakanto sapattakaraṇo kodhanaṃ āgacchati itthiṃ vā purisaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Lại nữa, này các Tỷ-kheo, người thù địch mong muốn kẻ thù địch của mình như sau:<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sapatto sapattassa evaṃ icchati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng kẻ này không có bạn bè!’<br>
+<span lang="pi" class="pali">
+‘aho vatāyaṃ na mittavā assā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người thù địch không hoan hỷ kẻ thù địch của mình có được bạn bè.<br>
+<span lang="pi" class="pali">
+Na, bhikkhave, sapatto sapattassa mittavatāya nandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, hạng người nào phẫn nộ, bị phẫn nộ chinh phục, bị phẫn nộ chi phối, nếu người đó có những bạn bè thân hữu, bà con huyết thống gì, họ sẽ xa lánh, từ bỏ người đó, vì người đó bị phẫn nộ chinh phục.<br>
+<span lang="pi" class="pali">
+Kodhanaṃ, bhikkhave, purisapuggalaṃ kodhābhibhūtaṃ kodhaparetaṃ, yepissa te honti mittāmaccā ñātisālohitā, tepi ārakā parivajjanti kodhābhibhūtaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðây là pháp thứ sáu, được người thù ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, chaṭṭho dhammo sapattakanto sapattakaraṇo kodhanaṃ āgacchati itthiṃ vā purisaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Lại nữa, này các Tỷ-kheo, người thù địch mong muốn kẻ thù địch của mình như sau:<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, sapatto sapattassa evaṃ icchati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Mong rằng kẻ này sau khi thân hoại mạng chung, sẽ sanh trong cõi dữ, ác thú, đọa xứ, địa ngục!’<br>
+<span lang="pi" class="pali">
+‘aho vatāyaṃ kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyyā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, người thù địch không hoan hỷ kẻ thù địch của mình sau khi thân hoại mạng chung, được sanh lên thiện thú, Thiên giới, cõi đời này.<br>
+<span lang="pi" class="pali">
+Na, bhikkhave, sapatto sapattassa sugatigamane nandati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, hạng người nào phẫn nộ, bị phẫn nộ chinh phục, bị phẫn nộ chi phối, người đó làm ác hạnh với thân, người đó nói lời ác hạnh với lời, người đó nghĩ đến điều ác hạnh với ý,<br>
+<span lang="pi" class="pali">
+Kodhanoyaṃ, bhikkhave, purisapuggalo kodhābhibhūto kodhapareto kāyena duccaritaṃ carati, vācāya duccaritaṃ carati, manasā duccaritaṃ carati. So kāyena duccaritaṃ caritvā vācāya ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+khi thân hoại mạng chung, người đó sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjati kodhābhibhūto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðây là pháp thứ bảy, được người thù ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ayaṃ, bhikkhave, sattamo dhammo sapattakanto sapattakaraṇo kodhanaṃ āgacchati itthiṃ vā purisaṃ vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy pháp này, này các Tỷ-kheo, được người thù địch ưa thích, tác thành kẻ thù địch đi đến người phẫn nộ, đàn bà hoặc đàn ông.<br>
+<span lang="pi" class="pali">
+Ime kho, bhikkhave, satta dhammā sapattakantā sapattakaraṇā kodhanaṃ āgacchanti itthiṃ vā purisaṃ vāti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Kẻ phẫn nộ xấu xí,<br>
+Ðau khổ khi nằm ngủ,<br>
+Ðược các điều lợi ích<br>
+Lại cảm thấy bất lợi.<br>
+<span lang="pi" class="pali">
+Kodhano dubbaṇṇo hoti,<br>
+atho dukkhampi seti so;<br>
+Atho atthaṃ gahetvāna,<br>
+anatthaṃ adhipajjati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phẫn nộ, nó đả thương,<br>
+Với thân với lời nói,<br>
+Người phẫn nộ chinh phục,<br>
+Tài sản bị tiêu vong.<br>
+<span lang="pi" class="pali">
+Tato kāyena vācāya,<br>
+vadhaṃ katvāna kodhano;<br>
+Kodhābhibhūto puriso,<br>
+dhanajāniṃ nigacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bị phẫn nộ điên loạn,<br>
+Danh dự bị hủy diệt,<br>
+Bà con cùng bạn bè,<br>
+Lánh xa người phẫn nộ.<br>
+<span lang="pi" class="pali">
+Kodha­samma­da­sammatto,<br>
+āyasakyaṃ nigacchati;<br>
+Ñātimittā suhajjā ca,<br>
+parivajjanti kodhanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phẫn nộ sanh bất lợi,<br>
+Phẫn nộ dao động tâm,<br>
+Sợ hãi sanh từ trong,<br>
+Người ấy không rõ biết.<br>
+<span lang="pi" class="pali">
+Anatthajanano kodho,<br>
+kodho cittappakopano;<br>
+Bhayamantarato jātaṃ,<br>
+taṃ jano nāvabujjhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phẫn nộ không biết lợi,<br>
+Phẫn nộ không thấy pháp,<br>
+Phẫn nộ chinh phục ai,<br>
+Người ấy bị mê ám.<br>
+<span lang="pi" class="pali">
+Kuddho atthaṃ na jānāti,<br>
+kuddho dhammaṃ na passati;<br>
+Andhatamaṃ tadā hoti,<br>
+yaṃ kodho sahate naraṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người phẫn nộ thích thú<br>
+Làm ác như làm thiện,<br>
+Về sau phẫn nộ dứt,<br>
+Bị khổ như lửa đốt,<br>
+<span lang="pi" class="pali">
+Yaṃ kuddho uparodheti,<br>
+sukaraṃ viya dukkaraṃ;<br>
+Pacchā so vigate kodhe,<br>
+aggidaḍḍhova tappati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như ngọn lửa dầu khói,<br>
+Ðược thấy thất thểu cháy,<br>
+Khi phẫn nộ lan tràn,<br>
+Khi tuổi trẻ nổi nóng,<br>
+<span lang="pi" class="pali">
+Dummaṅkuyaṃ padasseti,<br>
+dhūmaṃ dhūmīva pāvako;<br>
+Yato patāyati kodho,<br>
+yena kujjhanti mānavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không xấu hổ, sợ hãi,<br>
+Lời nói không cung kính.<br>
+Bị phẫn nộ chinh phục,<br>
+Không hòn đảo tựa nương.<br>
+<span lang="pi" class="pali">
+Nāssa hirī na ottappaṃ,<br>
+na vāco hoti gāravo;<br>
+Kodhena abhibhūtassa,<br>
+na dīpaṃ hoti kiñcanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Việc làm đem hối hận,<br>
+Rất xa với Chánh pháp.<br>
+Ta sẽ tuyên bố họ,<br>
+Hãy nghe như tuyên bố,<br>
+<span lang="pi" class="pali">
+Tapanīyāni kammāni,<br>
+yāni dhammehi ārakā;<br>
+Tāni ārocayissāmi,<br>
+taṃ suṇātha yathā tathaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phẫn nộ giết cả cha,<br>
+Phẫn nộ giết cả mẹ,<br>
+Phẫn nộ giết Phạm chí,<br>
+Phẫn nộ giết phàm phu.<br>
+<span lang="pi" class="pali">
+Kuddho hi pitaraṃ hanti,<br>
+hanti kuddho samātaraṃ;<br>
+Kuddho hi brāhmaṇaṃ hanti,<br>
+hanti kuddho puthujjanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chính nhờ mẹ dưỡng dục,<br>
+Người thấy được đời này,<br>
+Nhưng phàm phu phẫn nộ,<br>
+Giết người cho sự sống.<br>
+<span lang="pi" class="pali">
+Yāya mātu bhato poso,<br>
+imaṃ lokaṃ avekkhati;<br>
+Tampi pāṇadadiṃ santiṃ,<br>
+hanti kuddho puthujjano.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chúng sanh tự ví dụ,<br>
+Thương tự ngã tối thượng,<br>
+Phàm phu giết tự ngã,<br>
+Ðiên loạn nhiều hình thức,<br>
+<span lang="pi" class="pali">
+Attūpamā hi te sattā,<br>
+attā hi paramo piyo;<br>
+Hanti kuddho puthuttānaṃ,<br>
+nānārūpesu mucchito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lấy gươm giết tự ngã,<br>
+Ðiên loạn uống thuốc độc,<br>
+Dây tự trói họ chết,<br>
+Trong hang động núi rừng,<br>
+<span lang="pi" class="pali">
+Asinā hanti attānaṃ,<br>
+visaṃ khādanti mucchitā;<br>
+Rajjuyā bajjha mīyanti,<br>
+pabbatāmapi kandare.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những hành động sát sanh,<br>
+Khiến tự ngã phải chết.<br>
+Họ làm nhưng không biết,<br>
+Kẻ phẫn nộ hại người,<br>
+<span lang="pi" class="pali">
+Bhūnahaccāni kammāni,<br>
+attamāraṇiyāni ca;<br>
+Karontā nāvabujjhanti,<br>
+kodhajāto parābhavo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với hình thức phẫn nộ,<br>
+Ma bẫy ẩn trong tâm.<br>
+Hãy nhiếp phục cắt đứt,<br>
+Với tuệ, tấn, chánh kiến,<br>
+<span lang="pi" class="pali">
+Itāyaṃ kodharūpena,<br>
+maccupāso guhāsayo;<br>
+Taṃ damena samucchinde,<br>
+paññāvīriyena diṭṭhiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bậc trí tuệ cắt đoạn,<br>
+Mỗi mỗi bất thiện pháp<br>
+Như vậy học tập pháp,<br>
+Không để tâm nản chí,<br>
+<span lang="pi" class="pali">
+Yathā metaṃ akusalaṃ,<br>
+samucchindetha paṇḍito;<br>
+Tatheva dhamme sikkhetha,<br>
+mā no dummaṅkuyaṃ ahu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ly sân, không áo não,<br>
+Ly tham, tật đố không,<br>
+Nhiếp phục, đoạn phẫn nộ,<br>
+Vô lậu, nhập Niết-bàn.<br>
+<span lang="pi" class="pali">
+Vītakodhā anāyāsā,<br>
+Vītalobhā anussukā;<br>
+Dantā kodhaṃ pahantvāna,<br>
+Parinibbanti anāsavā”ti.<br>
+</span>
+</p>
+
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an7.63.html#content"></a><a id="next-sutta" href="./an7.65.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

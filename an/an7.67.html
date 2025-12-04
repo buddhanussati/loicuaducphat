@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Aṅguttara Nikāya - Tăng Chi Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tăng Chi Bộ 7.67 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tăng Chi Bộ 7.67<br>
+<span lang="pi" class="pali">
+Aṅguttara Nikāya 7.67<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+7. Đại Phẩm<br>
+<span lang="pi" class="pali">
+7. Mahāvagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Thành Trì<br>
+<span lang="pi" class="pali">
+Nagaropamasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“1. Này các Tỷ-kheo, khi nào một thành trì biên địa của vua được khéo trang bị với bảy trang bị của một thành trì, và bốn loại đồ ăn có được không khó khăn, có được không mệt nhọc; có được không phí sức.<br>
+<span lang="pi" class="pali">
+“Yato kho, bhikkhave, rañño paccantimaṃ nagaraṃ sattahi nagaraparikkhārehi suparikkhataṃ hoti, catunnañca āhārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thời này các Tỷ-kheo, thành trì biên địa ấy được gọi là không bị chinh phục bởi quân địch ở bên ngoài và kẻ đồng minh phản nghịch ở bên trong.<br>
+<span lang="pi" class="pali">
+Idaṃ vuccati, bhikkhave, rañño paccantimaṃ nagaraṃ akaraṇīyaṃ bāhirehi paccatthikehi paccāmittehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là được khéo trang bị với bảy trang bị của một thành trì?<br>
+<span lang="pi" class="pali">
+Katamehi sattahi nagaraparikkhārehi suparikkhataṃ hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+2. Ở đây, này các Tỷ-kheo, trong thành trì biên địa của vua có một cột trụ đâm sâu vào đất, khéo đào sâu, không bị dao động, không bị lay chuyển.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, rañño paccantime nagare esikā hoti gambhīranemā sunikhātā acalā asampavedhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với trang bị thành trì thứ nhất này là thành trì biên địa của vua được khéo trang bị, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Iminā paṭhamena nagaraparikkhārena suparikkhataṃ hoti rañño paccantimaṃ nagaraṃ abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+3. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có một đường thông hào sâu và rộng.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare parikkhā hoti gambhīrā ceva vitthatā ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với trang bị thành trì thứ hai này là thành trì biên địa của vua được khéo trang bị, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Iminā dutiyena nagaraparikkhārena suparikkhataṃ hoti rañño paccantimaṃ nagaraṃ abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+4. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có một đường chạy vòng xung quanh vừa cao và vừa rộng.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare anupariyāyapatho hoti ucco ceva vitthato ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với trang bị thành trì thứ ba này của một thành trì, là thành trì biên địa của vua được khéo trang bị, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Iminā tatiyena nagaraparikkhārena suparikkhataṃ hoti rañño paccantimaṃ nagaraṃ abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+5. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có nhiều vũ khí được cất chứa như Salākam (cung tên) và Jevaniyam (cây lao).<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare bahuṃ āvudhaṃ sannicitaṃ hoti salākañceva jevanikañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với trang bị thành trì thứ tư này là thành trì biên địa của vua được khéo trang bị, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Iminā catutthena nagaraparikkhārena suparikkhataṃ hoti rañño paccantimaṃ nagaraṃ abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+6. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có nhiều quân đội đồn trú, như:<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare bahubalakāyo paṭivasati, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những người cưỡi voi, những người cưỡi ngựa, những người cưỡi xe, những người cầm cung, những người cầm cờ, các quan lo chỗ ở, các lính lo vấn đề lương thực, những người con vua dõng mãnh, những bộ đội xung kích, đội voi lớn, các dũng sĩ, các binh sĩ mặc áo giáp, những người con của các nô tỳ.<br>
+<span lang="pi" class="pali">
+hatthārohā assārohā rathikā dhanuggahā celakā calakā piṇḍadāyakā uggā rājaputtā pakkhandino mahānāgā sūrā cammayodhino dāsakaputtā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với trang bị thành trì thứ năm này là thành trì biên địa của vua được khéo trang bị, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Iminā pañcamena nagaraparikkhārena suparikkhataṃ hoti rañño paccantimaṃ nagaraṃ abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+7. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua, có người giữ cửa thành là người hiền trí, thông minh, có trí, ngăn chặn những người lạ mặt, cho vào những người quen biết.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare dovāriko hoti paṇḍito byatto medhāvī aññātānaṃ nivāretā ñātānaṃ pavesetā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với sự trang bị thành trì thứ sáu này là thành trì biên địa của vua được khéo trang bị, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Iminā chaṭṭhena nagaraparikkhārena suparikkhataṃ hoti rañño paccantimaṃ nagaraṃ abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có bức thành vừa cao vừa rộng, ngoài mặt có trét vôi hồ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare pākāro hoti ucco ceva vitthato ca vāsanalepanasampanno ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với sự trang bị thành trì thứ bảy này là thành trì biên địa của vua được khéo trang bị, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Iminā sattamena nagaraparikkhārena suparikkhataṃ hoti rañño paccantimaṃ nagaraṃ abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với bảy loại trang bị thành trì này, thành trì được xem là được khéo trang bị.<br>
+<span lang="pi" class="pali">
+Imehi sattahi nagaraparikkhārehi suparikkhataṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn loại đồ ăn có được không khó khăn, có được không mệt nhọc, có được không phí sức?<br>
+<span lang="pi" class="pali">
+Katamesaṃ catunnaṃ āhārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+9. Ở đây, này các Tỷ-kheo, trong thành trì biên địa của vua có nhiều cỏ, củi, nước được tích trữ để những người ở trong thành được an vui, khỏi sự lo ngại, được lạc trú và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, rañño paccantime nagare bahuṃ tiṇakaṭṭhodakaṃ sannicitaṃ hoti abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+10. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có cất chứa nhiều lúa và lùa mì để những người ở trong thành được an vui, khỏi sự lo ngại, được lạc trú và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare bahuṃ sāliyavakaṃ sannicitaṃ hoti abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+11. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có cất chứa nhiều mè, đậu, các loại giả đậu và ngũ cốc để những người ở trong thành… để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare bahuṃ tilamuggamāsāparaṇṇaṃ sannicitaṃ hoti abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+12. Lại nữa, này các Tỷ-kheo, trong thành trì biên địa của vua có cất chứa nhiều dược phẩm, như—<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, bhikkhave, rañño paccantime nagare bahuṃ bhesajjaṃ sannicitaṃ hoti, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thục tô, sanh tô, dầu, mật, đường bánh, muối để những người ở trong thành… để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+sappi navanītaṃ telaṃ madhu phāṇitaṃ loṇaṃ abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn loại đồ ăn này, có được không khó khăn, có được không mệt nhọc, có được không phí sức.<br>
+<span lang="pi" class="pali">
+Imesaṃ kho, bhikkhave, catunnaṃ āhārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nào, này các Tỷ-kheo, một thành trì biên địa của vua, được khéo trang bị với bảy món trang bị này của một thành trì và bốn loại đồ ăn có được không khó khăn, có được không mệt nhọc, có được không phí sức.<br>
+<span lang="pi" class="pali">
+Yato kho, bhikkhave, rañño paccantimaṃ nagaraṃ imehi sattahi nagaraparikkhārehi suparikkhataṃ hoti, imesañca catunnaṃ āhārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thời này các Tỷ-kheo, thành trì biên địa ấy được gọi là không bị chinh phục bởi quân địch ở bên ngoài và kẻ đồng minh phản nghịch ở bên trong.<br>
+<span lang="pi" class="pali">
+Idaṃ vuccati, bhikkhave, rañño paccantimaṃ nagaraṃ akaraṇīyaṃ bāhirehi paccatthikehi paccāmittehi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, khi nào Thánh đệ tử thành tựu với bảy diệu pháp và bốn Thiền thuộc tăng thượng tâm, hiện tại lạc trú, có được không khó khăn, có được không mệt nhọc, có được không phí sức.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, yato ariyasāvako sattahi saddhammehi samannāgato hoti, catunnañca jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thời này các Tỷ-kheo, Thánh đệ tử này được gọi là không bị Ma chinh phục, không bị ác chinh phục. Vị ấy thành tựu bảy pháp gì?<br>
+<span lang="pi" class="pali">
+Ayaṃ vuccati, bhikkhave, ariyasāvako akaraṇīyo mārassa akaraṇīyo pāpimato. Katamehi sattahi saddhammehi samannāgato hoti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+13. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có một cột trụ đâm sâu vào đất, khéo đóng, không bị dao động, không bị lay chuyển để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare esikā hoti gambhīranemā sunikhātā acalā asampavedhī abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử có lòng tin, tin tưởng ở sự giác ngộ của Như Lai:<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako saddho hoti, saddahati tathāgatassa bodhiṃ<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác, Minh Hạnh Túc, Thiện Thệ, Thế Gian Giải, Vô Thượng Sĩ, Ðiều Ngự Trượng Phu, Thiên Nhơn Sư, Phật, Thế Tôn.’<br>
+<span lang="pi" class="pali">
+‘itipi so ...pe... buddho bhagavā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với lòng tin làm cột trụ, này các Tỷ-kheo, Thánh đệ tử từ bỏ bất thiện, tu tập thiện, từ bỏ có tội, tu tập không có tội, gìn giữ tự thân thanh tịnh.<br>
+<span lang="pi" class="pali">
+Saddhesiko, bhikkhave, ariyasāvako akusalaṃ pajahati, kusalaṃ bhāveti; sāvajjaṃ pajahati, anavajjaṃ bhāveti; suddhaṃ attānaṃ pariharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với diệu pháp thứ nhất này, vị ấy được thành tựu.<br>
+<span lang="pi" class="pali">
+Iminā paṭhamena saddhammena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+14. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có một con đường thông hào, vừa sâu và rộng để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare parikkhā hoti gambhīrā ceva vitthatā ca abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử có lòng xấu hổ. Vị ấy xấu hổ vì thân làm ác, vì miệng nói ác, vì ý nghĩ ác. Vị ấy xấu hổ vì bị rơi vào các ác, bất thiện pháp.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako hirīmā hoti, hirīyati kāyaduccaritena vacīduccaritena manoduccaritena, hirīyati pāpakānaṃ akusalānaṃ dhammānaṃ samāpattiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lấy xấu hổ làm con đường thông hào, này các Tỷ-kheo, Thánh đệ tử từ bỏ bất thiện, tu tập thiện, từ bỏ có tội, tu tập không tội, gìn giữ tự thân thanh tịnh.<br>
+<span lang="pi" class="pali">
+Hirīparikkho kho, bhikkhave, ariyasāvako akusalaṃ pajahati, kusalaṃ bhāveti; sāvajjaṃ pajahati, anavajjaṃ bhāveti; suddhaṃ attānaṃ pariharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với diệu pháp thứ hai này, vị ấy được thành tựu.<br>
+<span lang="pi" class="pali">
+Iminā dutiyena saddhammena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+15. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có một con đường đi vòng chung quanh, vừa cao vừa rộng để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare anupariyāyapatho hoti ucco ceva vitthato ca abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử có lòng sợ hãi, sợ hãi vì thân làm ác, vì miệng nói ác, vì ý nghĩ ác. Vị ấy sợ hãi vì bị rơi vào các ác, bất thiện pháp.<br>
+<span lang="pi" class="pali">
+Evamevaṃ, kho, bhikkhave, ariyasāvako ottappī hoti, ottappati kāyaduccaritena vacīduccaritena manoduccaritena, ottappati pāpakānaṃ akusalānaṃ dhammānaṃ samāpattiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lấy sợ hãi làm con đường đi vòng xung quanh, này các Tỷ-kheo, Thánh đệ tử từ bỏ bất thiện, tu tập thiện, từ bỏ có tội, tu tập không tội, gìn giữ tự thân thanh tịnh.<br>
+<span lang="pi" class="pali">
+Ottappapariyāyapatho, bhikkhave, ariyasāvako akusalaṃ pajahati, kusalaṃ bhāveti; sāvajjaṃ pajahati, anavajjaṃ bhāveti; suddhaṃ attānaṃ pariharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với diệu pháp thứ ba này, vị ấy được thành tựu.<br>
+<span lang="pi" class="pali">
+Iminā tatiyena saddhammena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+16. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có nhiều vũ khí được cất chứa, như cung tên và cây lao để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṃ āvudhaṃ sannicitaṃ hoti salākañceva jevanikañca abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử là người nghe nhiều, thọ trì điều đã được nghe, cất chứa điều đã được nghe. Những pháp nào, sơ thiện, trung thiện, hậu thiện, có nghĩa, có văn, nói lên Phạm hạnh hoàn toàn viên mãn thanh tịnh. Các pháp như vậy được nghe nhiều, được thọ trì, được đọc cho thành thục, được ý khéo tùy quán, được khéo thể nhập với tri kiến.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako bahussuto hoti ...pe... diṭṭhiyā suppaṭividdhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lấy nghe nhiều làm vũ khí, này các Tỷ-kheo, Thánh đệ tử từ bỏ bất thiện, tu tập thiện, từ bỏ có tội, tu tập không tội, gìn giữ tự thân thanh tịnh.<br>
+<span lang="pi" class="pali">
+Sutāvudho, bhikkhave, ariyasāvako akusalaṃ pajahati, kusalaṃ bhāveti; sāvajjaṃ pajahati, anavajjaṃ bhāveti; suddhaṃ attānaṃ pariharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với diệu pháp thứ tư này, vị ấy được thành tựu.<br>
+<span lang="pi" class="pali">
+Iminā catutthena saddhammena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+17. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có nhiều quân đội đồn trú, như những người cưỡi voi, những người cưỡi ngựa, những người cưỡi xe, những người cầm cung, những người cầm cờ, những quan lo chỗ ở, các lính lo vấn đề lương thực, những người con vua dõng mãnh, những bộ đội xung kích, đội voi lớn, các dũng sĩ, các binh sĩ mặc áo giáp, những con của nô tỳ, để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare bahubalakāyo paṭivasati, seyyathidaṃ— hatthārohā assārohā rathikā dhanuggahā celakā calakā piṇḍadāyakā uggā rājaputtā pakkhandino mahānāgā sūrā cammayodhino dāsakaputtā abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, vị Thánh đệ tử sống tinh cần tinh tấn để đoạn tận các pháp bất thiện, để đầy đủ các pháp thiện, nỗ lực, kiên trì, không từ bỏ gánh nặng trong các thiện pháp.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako āraddhavīriyo viharati akusalānaṃ dhammānaṃ pahānāya, kusalānaṃ dhammānaṃ upasampadāya, thāmavā daḷhaparakkamo anikkhittadhuro kusalesu dhammesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lấy tinh tấn làm quân đội, này các Tỷ-kheo, vị thiện nam tử từ bỏ bất thiện, tu tập thiện, từ bỏ có tội, tu tập không tội, gìn giữ tự thân thanh tịnh.<br>
+<span lang="pi" class="pali">
+Vīriyabalakāyo, bhikkhave, ariyasāvako akusalaṃ pajahati, kusalaṃ bhāveti; sāvajjaṃ pajahati, anavajjaṃ bhāveti; suddhaṃ attānaṃ pariharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với diệu pháp thứ năm này, vị ấy được thành tựu.<br>
+<span lang="pi" class="pali">
+Iminā pañcamena saddhammena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+18.Ví như, này các Tỷ kheo, trong thành trì biên địa của vua có người giữ cửa thành là người hiền trí, thông minh, có trí, ngăn chặn những người lạ mặt, cho vào những người quen biết để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare dovāriko hoti paṇḍito byatto medhāvī aññātānaṃ nivāretā ñātānaṃ pavesetā abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, vị Thánh đệ tử sống có chánh niệm thành tựu tối thắng niệm tuệ, nhớ đến và tùy niệm việc làm đã lâu ngày, lời nói đã lâu ngày.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako satimā hoti paramena satinepakkena samannāgato cirakatampi cirabhāsitampi saritā anussaritā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với niệm làm người giữ cửa thành, này các Tỷ kheo, Thánh đệ tử từ bỏ bất thiện, tu tập thiện pháp từ bỏ có tội, tu tập không tội, gìn giữ tự thân thanh tịnh.<br>
+<span lang="pi" class="pali">
+Satidovāriko, bhikkhave, ariyasāvako akusalaṃ pajahati, kusalaṃ bhāveti; sāvajjaṃ pajahati, anavajjaṃ bhāveti; suddhaṃ attānaṃ pariharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với diệu pháp thứ sáu này, vị ấy được thành tựu.<br>
+<span lang="pi" class="pali">
+Iminā chaṭṭhena saddhammena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+19. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có bức thành vừa cao vừa rộng, ngoài mặt trét vôi hồ để bảo vệ những người ở trong thành và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare pākāro hoti ucco ceva vitthato ca vāsanalepanasampanno ca abbhantarānaṃ guttiyā bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử là người có trí tuệ, thành tựu trí tuệ về sanh diệt, với sự Thánh thể nhập vào con đường đưa đến đoạn tận khổ đau.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako paññavā hoti udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammā dukkhakkhayagāminiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với trí tuệ làm lớp vôi hồ trét bên ngoài, này các Tỷ-kheo, Thánh đệ tử từ bỏ bất thiện, tu tập thiện, từ bỏ có tội, tu tập không tội, gìn giữ tự thân thanh tịnh.<br>
+<span lang="pi" class="pali">
+Paññāvāsanalepanasampanno, bhikkhave, ariyasāvako akusalaṃ pajahati, kusalaṃ bhāveti; sāvajjaṃ pajahati, anavajjaṃ bhāveti; suddhaṃ attānaṃ pariharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với diệu pháp thứ bảy này, vị ấy được thành tựu.<br>
+<span lang="pi" class="pali">
+Iminā sattamena saddhammena samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với bảy diệu pháp này, vị ấy thành tựu.<br>
+<span lang="pi" class="pali">
+Imehi sattahi saddhammehi samannāgato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn Thiền thuộc tăng thượng tâm, hiện tại lạc trú, có được không khó khăn, có được không mệt nhọc, có được không phí sức?<br>
+<span lang="pi" class="pali">
+Katamesaṃ catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+20. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có nhiều cỏ, củi, nước được tích trữ để những người ở trong thành được an vui, khỏi sự lo ngại, được lạc trú và để chống những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṃ tiṇakaṭṭhodakaṃ sannicitaṃ hoti abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử ly dục, ly pháp bất thiện, chứng đạt và an trú sơ Thiền, một trạng thái hỷ lạc do ly dục sanh, có tầm có tứ để tự mình được an vui, khỏi sự lo ngại, được lạc trú và để bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako vivicceva kāmehi ...pe... paṭhamaṃ jhānaṃ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+21. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có cất chứa nhiều lúa và lúa mì để những người ở trong thành được an vui, khỏi sự lo ngại, được lạc trú để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṃ sāliyavakaṃ sannicitaṃ hoti abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử, do tịnh chỉ tầm và tứ, chứng đạt và an trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm không tứ, nội tĩnh nhất tâm để tự mình được an vui, không phải lo ngại, được lạc trú và để bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako vitakkavicārānaṃ vūpasamā ...pe... dutiyaṃ jhānaṃ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+22. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có cất chứa nhiều mè, đậu, các loại giả đậu và ngũ cốc để những người trong thành được an vui, khỏi sự lo ngại, được lạc trú và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṃ tilamuggamāsāparaṇṇaṃ sannicitaṃ hoti abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử, do ly hỷ trú xả, chánh niệm, tỉnh giác, thân cảm sự lạc thọ mà các bậc Thánh gọi là xả niệm lạc trú, chứng đạt và an trú Thiền thứ ba để tự mình được an vui, không phải lo ngại, được lạc trú và để bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako pītiyā ca virāgā ...pe... tatiyaṃ jhānaṃ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+23. Ví như, này các Tỷ-kheo, trong thành trì biên địa của vua có nhiều dược phẩm được cất chứa ví như—<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṃ bhesajjaṃ sannicitaṃ hoti, seyyathidaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thục tô, dầu, mật, đường bánh, muối để những người trong thành được an vui, khỏi sự lo ngại, được lạc trú và để chống cự những người bên ngoài.<br>
+<span lang="pi" class="pali">
+sappi navanītaṃ telaṃ madhu phāṇitaṃ loṇaṃ abbhantarānaṃ ratiyā aparitassāya phāsuvihārāya bāhirānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, Thánh đệ tử, do đoạn lạc, do đoạn khổ, chấm dứt hỷ ưu đã cảm thọ từ trước, chứng đạt và an trú Thiền thứ tư, không khổ không lạc, xả niệm thanh tịnh, để tự mình được an vui, khỏi sự lo ngại, được lạc trú và để bước vào Niết-bàn.<br>
+<span lang="pi" class="pali">
+Evamevaṃ kho, bhikkhave, ariyasāvako sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṃ atthaṅgamā adukkhamasukhaṃ upekkhāsatipārisuddhiṃ catutthaṃ jhānaṃ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bốn Thiền này thuộc tăng thượng tâm, hiện tại lạc trú, có được không khó khăn, có được không mệt nhọc, có được không phí sức.<br>
+<span lang="pi" class="pali">
+Imesaṃ catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, khi nào Thánh đệ tử thành tựu bảy diệu pháp này và bốn Thiền này, thuộc tăng thượng tâm, hiện tại lạc trú, có được không khó khăn, có được không mệt nhọc, có được không phí sức.<br>
+<span lang="pi" class="pali">
+Yato kho, bhikkhave, ariyasāvako imehi sattahi saddhammehi samannāgato hoti, imesañca catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī hoti akicchalābhī akasiralābhī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, đây gọi là Thánh đệ tử không bị ma chinh phục, không bị ác chinh phục.”<br>
+<span lang="pi" class="pali">
+Ayaṃ vuccati, bhikkhave, ariyasāvako akaraṇīyo mārassa akaraṇīyo pāpimato”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./an7.66.html#content"></a><a id="next-sutta" href="./an7.68.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

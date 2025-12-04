@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+		<title>        Kinh Điển Tuyển Chọn        </title>
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel3.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/tn.js"></script>
+<script src="../js/suttaFiles.js"></script>
+
+<script>
+function openRandomSutta4() {
+  // Example: /bw2_20250319/dn/dn1.htm
+  const currentPath = location.pathname;
+
+  // Extract the folder name (e.g., "dn")
+  const parts = currentPath.split("/");
+  const currentFolder = parts[parts.length - 2]; // second-to-last segment
+
+  // Filter suttaFiles to only those inside the same folder
+  const sameFolderFiles = tn.filter(file => file.startsWith(currentFolder + "/"));
+
+  // Pick a random file from that filtered list
+  const randomIndex = Math.floor(Math.random() * sameFolderFiles.length);
+  const selectedFile = sameFolderFiles[randomIndex];
+
+  // Build root path (strip last two segments)
+  const rootPath = parts.slice(0, -2).join("/") + "/";
+
+  // Redirect
+  window.location.href = rootPath + selectedFile;
+}
+</script>
+
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a>
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+<button id="toggleViBtn" onclick="mockToggle('toggleViBtn')">Pali</button>
+<button id="togglePaliBtn" onclick="mockToggle('togglePaliBtn')">Việt</button>
+
+<script>
+  function mockToggle(id) {
+    const btn = document.getElementById(id);
+    btn.classList.toggle('hidden'); // this alone switches green ↔ purple
+  }
+</script>
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Kinh Pháp Cú - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Kinh Tập - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Cảm Hứng Ngữ - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Kinh Phật Thuyết Như Vậy - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Trưởng Lão Tăng Kệ - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Trưởng Lão Ni Kệ - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+
+ <!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<style>
+/* === CSS dành riêng cho trang "Đức Phật" - không ghi đè h1 toàn cục === */
+.entry-header {
+    text-align: center;
+    margin: 2rem 0 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+.entry-header .entry-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--title-color, #1a1a1a);
+    font-family: "SourceSans3", Georgia, serif; /* phong cách kinh điển */
+    letter-spacing: 0.5px;
+}
+
+/* Các tiêu đề Nikāya - dùng h2 của WP nhưng style riêng */
+h2.wp-block-heading {
+    font-size: 1.85rem;
+    font-weight: 600;
+    margin: 2.8rem 0 1rem;
+    padding: 0.6rem 1rem 0.6rem 1.4rem;
+    border-left: 5px solid #d4a656; /* màu vàng nghệ truyền thống */
+    background: var(--section-bg, #faf9f7);
+    color: var(--section-color, #2c2c2c);
+    border-radius: 0 4px 4px 0;
+    position: relative;
+}
+
+/* Danh sách trích dẫn */
+ul.wp-block-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 1.2rem 0 2.5rem;
+    counter-reset: item;
+}
+
+ul.wp-block-list > li {
+    position: relative;
+    padding: 1rem 1rem 1rem 2.8rem;
+    margin-bottom: 1rem;
+    background: var(--item-bg, #ffffff);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border: 1px solid var(--item-border, #eaeaea);
+    transition: all 0.3s ease;
+    line-height: 1.65;
+}
+
+ul.wp-block-list > li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-color: #d4a656;
+}
+
+/* Số thứ tự kiểu kinh điển */
+ul.wp-block-list > li::before {
+    counter-increment: item;
+    content: "❦"; /* hoa thị kinh điển, có thể thay bằng "✿" "꧁" "꧂" */
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    font-size: 1.4em;
+    color: #d4a656;
+    opacity: 0.7;
+}
+
+/* Link trong danh sách */
+ul.wp-block-list a {
+    color: var(--link-color, #1e6f9f);
+    text-decoration: none;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 1.05em;
+}
+
+ul.wp-block-list a:hover {
+    color: #d4a656;
+    text-decoration: underline;
+}
+
+/* Trích dẫn (phần in nghiêng) */
+ul.wp-block-list li {
+    font-style: italic;
+    color: var(--quote-color, #444);
+    margin-top: 0.5rem;
+    font-size: 0.98em;
+}
+
+/* === DARK MODE - dùng attribute selector bạn đã có === */
+[light-mode="dark"] .entry-header {
+    border-bottom-color: #444;
+}
+
+[light-mode="dark"] .entry-header .entry-title {
+    color: #f0d9b5;
+}
+
+[light-mode="dark"] h2.wp-block-heading {
+    background: #2d2d2d;
+    color: #f0d9b5;
+    border-left-color: #d4a656;
+}
+
+[light-mode="dark"] ul.wp-block-list > li {
+    background: #2a2a2a;
+    border-color: #444;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+[light-mode="dark"] ul.wp-block-list a {
+    color: #81aed0;
+}
+
+[light-mode="dark"] ul.wp-block-list a:hover {
+    color: #f0d9b5;
+}
+
+[light-mode="dark"] ul.wp-block-list li {
+    color: #ccc;
+}
+
+/* Biến CSS tùy chỉnh (nếu theme của bạn hỗ trợ --var) */
+:root {
+    --title-color: #1a1a1a;
+    --section-bg: #faf9f7;
+    --section-color: #2c2c2c;
+    --item-bg: #ffffff;
+    --item-border: #eaeaea;
+    --link-color: #1e6f9f;
+    --quote-color: #444;
+}
+
+[light-mode="dark"] {
+    --title-color: #f0d9b5;
+    --section-bg: #2d2d2d;
+    --section-color: #f0d9b5;
+    --item-bg: #2a2a2a;
+    --item-border: #444;
+    --link-color: #81aed0;
+    --quote-color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .entry-header .entry-title { font-size: 2rem; }
+    h2.wp-block-heading { font-size: 1.6rem; padding-left: 1rem; }
+    ul.wp-block-list > li { padding: 1rem 1rem 1rem 2.5rem; }
+    ul.wp-block-list > li::before { left: 0.8rem; }
+}
+</style>
+<header class="entry-header">
+<h1 class="entry-title" itemprop="headline">Đức Phật, Phần 3</h1> </header>
+<div class="entry-content" itemprop="text">
+
+<h2 class="wp-block-heading">Kinh Trung Bộ</h1>
+<ul class="wp-block-list">
+<li><a href="../mn/mn36.html#content">MN 36: Đại Kinh Saccaka</a>“Ta hãy nghiến răng, dán chặt lên lưỡi lên nóc họng, lấy tâm chế ngự tâm, nhiếp phục tâm, đánh bại tâm!”
+</li>
+<li><a href="../mn/mn81.html#content">MN 81: Kinh Ghaṭīkāra</a>“Này bạn Jotipāla, chúng ta hãy đi. Chúng ta hãy đi đến yết kiến Thế Tôn Kassapa, bậc A-la-hán, Chánh Ðẳng Giác. Thật là tốt lành cho tôi được đến yết kiến Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác ấy.”</li>
+</ul>
+<h2 class="wp-block-heading">Tương Ưng Bộ</h1>
+<ul class="wp-block-list">
+<li><a href="../sn/sn12.10.html#content">SN 12.10: Gotama</a>“Thật sự thế giới này bị hãm trong khổ não, bị sanh, bị già, bị chết, bị đoạn diệt và bị tái sanh; và từ nơi đau khổ này, không biết sự xuất ly, thoát khỏi già, chết; từ nơi đau khổ này, không biết khi nào được biết đến sự xuất ly già, chết.”</li>
+<li><a href="../sn/sn22.94.html#content">SN 22.94: Bông Hoa</a>“Này các Tỷ-kheo, Ta không tranh luận với đời, chỉ có đời tranh luận với Ta. Này các Tỷ-kheo, người nói Pháp không tranh luận bất cứ với một ai ở đời.”</li>
+<li><a href="../sn/sn35.13.html#content">SN 35.13: Chánh Giác (1)</a>“Thuở trước, này các Tỷ-kheo, khi Ta chưa giác ngộ, chưa chứng Chánh Ðẳng Giác, khi còn là Bồ-tát, Ta suy nghĩ như sau: ‘Cái gì là vị ngọt, cái gì là nguy hiểm, cái gì là xuất ly của mắt?”</li>
+<li><a href="../sn/sn46.16.html#content">SN 46.16: Bệnh (3)</a>“Lúc bấy giờ, Thế Tôn bị bệnh, khổ đau, bị trọng bệnh.”</li>
+<li><a href="../sn/sn47.31.html#content">SN 47.31: Chưa Từng Ðược Nghe</a>“‘Quán thân trên thân này’, này các Tỷ-kheo, đối với các pháp từ trước Ta chưa từng được nghe, nhãn sanh, trí sanh, minh sanh, quang sanh.”</li>
+</ul>
+<h2 class="wp-block-heading">Tăng Chi Bộ</h1>
+<ul class="wp-block-list">
+<li><a href="../an/an1.175–186.html#content">AN 1.175–186: Một Người</a>“Sự xuất hiện của một người này, này các Tỷ-kheo, là sự xuất hiện của mắt lớn, là sự xuất hiện của đại quang minh, là sự xuất hiện của sáu vô thượng.”</li>
+<li><a href="../an/an1.277.html#content">AN 1.277: Phẩm Không Thể Có Được</a>“Sự kiện này không xảy ra, này các Tỷ-kheo, không có được: Trong một Thế giới, hai vị A-la-hán, Chánh Ðẳng Giác, không trước không sau, xuất hiện một lần. Sự kiện này không xảy ra.”</li>
+<li><a href="../an/an2.54.html#content">AN 2.54: Đa Số</a>“Có hai hạng người khi mệnh chung, này các Tỷ-kheo, đưa lại thương tiếc cho đa số. Thế nào là hai?”</li>
+<li><a href="../an/an4.22.html#content">AN 4.22: Tại Uruvelā (2)</a>“Này các Tỷ-kheo, có bốn pháp tác thành trưởng lão này. Thế nào là bốn?”</li>
+<li><a href="../an/an4.247.html#content">AN 4.247: Xứng Ðáng Ðược Dựng Tháp</a>“Này các Tỷ-kheo, có bốn hạng người này xứng được để được dựng tháp. Thế nào là bốn?”</li>
+<li><a href="../an/an5.7.html#content">AN 5.7: Dục Vọng</a>“Cũng vậy, này các Tỷ-kheo, cho đến khi nào vị Tỷ-kheo chưa gây được lòng tin đối với các thiện pháp, chưa gây được lòng hổ thẹn đối với các bất thiện pháp, chưa gây được lòng sợ hãi đối với các bất thiện pháp, chưa gây được tinh tấn đối với các thiện pháp; chưa gây được trí tuệ đối với các thiện pháp, cho đến khi ấy, này các Tỷ-kheo, Ta cần phải phòng hộ Tỷ-kheo ấy.”</li>
+<li><a href="../an/an5.133.html#content">AN 5.133: Chuyển Luân Vương (3)</a>“Cũng vậy, này Tỷ-kheo, Như Lai, bậc A-la-hán Chánh Ðẳng Giác đúng pháp pháp vương, y cứ pháp, tôn kính pháp, kính trọng pháp, tôn trọng pháp, lấy pháp làm tràng phan, lấy pháp làm ngọn cờ, lấy pháp làm tăng thượng, sắp đặt một sự phòng hộ, bảo vệ, chế ngự đúng pháp giữa các hàng Tỷ kheo.”</li>
+<li><a href="../an/an6.25.html#content">AN 6.25: Tùy Niệm Xứ</a>“Khi nào, này các Tỷ-kheo, Thánh đệ tử tùy niệm Như Lai, trong khi ấy, tâm không bị tham chi phối, tâm không bị sân chi phối, tâm không bị si chi phối.”</li>
+<li><a href="../an/an6.55.html#content">AN 6.55: Soṇa</a>“Thầy nghĩ thế nào, này Soṇa? Khi những sợi dây đàn tỳ-bà của Thầy quá trùng, trong khi ấy, đàn tỳ-bà của Thầy có phát âm hay sử dụng được không?”</li>
+<li><a href="../an/an6.96.html#content">AN 6.96: Sự Xuất Hiện</a>“Này các Tỷ-kheo, sự xuất hiện của sáu sự kiện khó tìm được ở đời. Thế nào là sáu?”</li>
+<li><a href="../an/an8.64.html#content">AN 8.64: Tại Gayā</a>Này các Tỷ-kheo, cho đến khi nào tri kiến gồm có tám diễn tiến và thuộc thượng giới Thiên này được khéo thanh tịnh nơi ta, thời Ta có xác chứng trong thế giới chư Thiên với Ma giới, Phạm Thiên giới, với quần chúng Sa-môn, Bà-la-môn, chư Thiên và loài Người, rằng Ta đã chứng ngộ Vô Thượng Chánh Ðẳng Giác.”</li>
+<li><a href="../an/an8.69.html#content">AN 8.69: Các Hội Chúng</a>“Và Ta, với pháp thoại, thuyết giảng, khích lệ, làm cho phấn khởi, làm cho hoan hỷ. Khi Ta nói, họ không biết Ta là ai. Họ nói: “Người nói này là ai, Thiên nhân hay loài Người?”</li>
+<li><a href="../an/an8.85.html#content">AN 8.85: Người Sa Môn</a>“Bậc Giải thoát, này các Tỷ-kheo, là đồng nghĩa với Như Lai, bậc A-la-hán, Chánh Ðẳng Giác.”</li>
+<li><a href="../an/an9.41.html#content">AN 9.41: Tapussa</a>“Này Ānanda, trước khi Ta giác ngộ, chưa chứng được Chánh Ðẳng Giác, còn là Bồ-tát, Ta suy nghĩ như sau: “Lành thay, sự xuất ly! Lành thay, sống viễn ly.”</li>
+</ul>
+<h2 class="wp-block-heading">Kinh Pháp Cú</h1>
+<ul class="wp-block-list">
+<li><a href="../dhp/dhp334-359.html#content">Dhp 353: Phẩm Tham Ái</a>“Ta hàng phục tất cả,<br>
+Ta rõ biết tất cả,<br>
+Không bị nhiễm pháp nào.<br>
+Ta từ bỏ tất cả<br>
+Ái diệt, tự giải thoát.”</li>
+</ul>
+<h2 class="wp-block-heading">Udāna - Cảm Hứng Ngữ</h1>
+<ul class="wp-block-list">
+<li><a href="../ud/ud4.8.html#content">Ud 4.8: Sundarī</a>“Này các Tỷ-kheo, tiếng đồn này sẽ không còn tồn tại lâu dài, chỉ có một tuần thôi, sau một tuần sẽ biến mất.”</li>
+<li><a href="../ud/ud5.2.html#content">Ud 5.2: Thọ Mạng</a>“Thật vi diệu thay, bạch Thế Tôn. Thật hi hữu thay, bạch Thế Tôn. Thọ mạng ít thay, bạch Thế Tôn, là mẹ của Thế Tôn! Sau khi sanh Thế Tôn bảy ngày, mẹ Thế Tôn mệnh chung, được sanh ở cõi trời Ðâu-suất!”</li>
+<li><a href="../ud/ud8.5.html#content">Ud 8.5: Cunda</a>“Có hai sự cúng dường ăn uống đồng một quả báo, đồng một di thục quả, quả báo lớn hơn, lợi ích hơn các sự cúng dường ăn uống khác. Thế nào là hai?”</li>
+<li><a href="../ud/ud8.7.html#content">Ud 8.7: Con Đường Rẽ</a>“Này Nàgasasmàla, đây là con đường. Chúng ta sẽ đi con đường này.”</li>
+</ul>
+<h2 class="wp-block-heading">Kinh Phật Thuyết Như Vậy</h1>
+<ul class="wp-block-list">
+<li><a href="../iti/iti22.html#content">Iti 22: Công Đức</a>“Này các Tỷ-kheo, ba mươi sáu lần Ta đã là Thiên chủ Ðế Thích. Nhiều trăm lần, Ta đã làm vua, vị vua Chuyển Luân, trị vì đúng pháp, bậc Pháp vương, bậc chiến thắng bốn phương...</li>
+</ul>
+
+<h2 class="wp-block-heading">Trưởng Lão Tăng Kệ</h1>
+<ul class="wp-block-list">
+<li><a href="../thag/thag5.8.html#content">Thag 5.8: Trưởng Lão Vakkali</a>“Tùy niệm Phật thiền định,<br>
+Bậc Tối thượng Ðiều Ngự,<br>
+Ngày đêm không biếng nhác,<br>
+Con sẽ sống trong rừng.”</li>
+<li><a href="../thag/thag15.2.html#content">Thag 15.2: Trưởng Lão Udāyī</a>“Vị ấy thật như voi,<br>
+Tuyệt luân đẹp rực rỡ<br>
+Ðứng trên đỉnh núi cao<br>
+Dãy trường sơn Hi-mã.”</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+
+ <div id="nextprev"><a id="previous-sutta" href="./tn21.html#content"></a><a id=next-sutta href="./tn23.html#content"></a></div>
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

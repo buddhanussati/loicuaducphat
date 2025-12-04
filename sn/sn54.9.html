@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 54.9 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 54.9<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 54.9<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+1. Phẩm Một Pháp<br>
+<span lang="pi" class="pali">
+1. Ekadhammavagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Vesālī<br>
+<span lang="pi" class="pali">
+Vesālīsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn ở giữa dân chúng Vesālī, tại Ðại Lâm, ngôi nhà có nóc nhọn.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā vesāliyaṃ viharati mahāvane kūṭāgārasālāyaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ Thế Tôn dùng nhiều phương tiện giảng về bất tịnh, nêu rõ về bất tịnh, tán thán sự tu tập bất tịnh.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena bhagavā bhikkhūnaṃ anekapariyāyena asubhakathaṃ katheti, asubhāya vaṇṇaṃ bhāsati, asubhabhāvanāya vaṇṇaṃ bhāsati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn nói với các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta muốn sống Thiền tịnh một mình trong nửa tháng,<br>
+<span lang="pi" class="pali">
+“icchāmahaṃ, bhikkhave, aḍḍhamāsaṃ paṭisallīyituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+không gặp một ai, trừ người đem đồ ăn cho Ta.”<br>
+<span lang="pi" class="pali">
+Nāmhi kenaci upasaṅkamitabbo, aññatra ekena piṇḍapātanīhārakenā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” các Tỷ-kheo ấy vâng đáp Thế Tôn, không cho một ai đến thăm Thế Tôn, trừ một người đem đồ ăn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho te bhikkhū bhagavato paṭissutvā nāssudha koci bhagavantaṃ upasaṅkamati, aññatra ekena piṇḍapātanīhārakena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi các Tỷ-kheo ấy được nghe:<br>
+<span lang="pi" class="pali">
+Atha kho te bhikkhū:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thế Tôn dùng nhiều pháp môn nói về bất tịnh, nêu rõ về bất tịnh, nói lời tán thán sự tu tập bất tịnh”, nên sống chuyên chú tu tập bất tịnh dưới nhiều hình thức sai biệt.<br>
+<span lang="pi" class="pali">
+“bhagavā anekapariyāyena asubhakathaṃ katheti, asubhāya vaṇṇaṃ bhāsati, asubhabhāvanāya vaṇṇaṃ bhāsatī”ti anekākāravokāraṃ asubhabhāvanānuyogamanuyuttā viharanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ tủi hổ với thân này, tàm quý và nhàm chán, tầm cầu đem lại con dao.<br>
+<span lang="pi" class="pali">
+Te iminā kāyena aṭṭīyamānā harāyamānā jigucchamānā satthahārakaṃ pariyesanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mười Tỷ-kheo một ngày đem lại con dao … Hai mươi … Ba mươi Tỷ-kheo trong một ngày đem lại con dao.<br>
+<span lang="pi" class="pali">
+Dasapi bhikkhū ekāhena satthaṃ āharanti, vīsampi ...pe... tiṃsampi bhikkhū ekāhena satthaṃ āharanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn sau nửa tháng, từ Thiền tịnh đứng dậy và bảo Tôn giả Ānanda:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tassa aḍḍhamāsassa accayena paṭisallānā vuṭṭhito āyasmantaṃ ānandaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Ānanda, vì sao chúng Tỷ-kheo giảm thiểu như vậy?”<br>
+<span lang="pi" class="pali">
+“kiṃ nu kho, ānanda, tanubhūto viya bhikkhusaṅgho”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, vì Thế Tôn dùng nhiều pháp môn thuyết cho các Tỷ-kheo về bất tịnh, nêu rõ về bất tịnh, tán thán sự tu tập bất tịnh, nên các vị ấy sống chuyên chú tu tập bất tịnh dưới nhiều hình thức sai biệt.<br>
+<span lang="pi" class="pali">
+“Tathā hi pana, bhante, ‘bhagavā bhikkhūnaṃ anekapariyāyena asubhakathaṃ katheti, asubhāya vaṇṇaṃ bhāsati, asubhabhāvanāya vaṇṇaṃ bhāsatī’ti anekākāravokāraṃ asubhabhāvanānuyogamanuyuttā viharanti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ tủi hổ với thân nầy, tàm quý và nhàm chán, tầm cầu đem lại con dao.<br>
+<span lang="pi" class="pali">
+Te iminā kāyena aṭṭīyamānā harāyamānā jigucchamānā satthahārakaṃ pariyesanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mười Tỷ-kheo trong một ngày đem lại con dao … Hai mươi … Ba mươi Tỷ-kheo trong một ngày đem lại con dao.<br>
+<span lang="pi" class="pali">
+Dasapi bhikkhū ekāhena satthaṃ āharanti, vīsampi bhikkhū … tiṃsampi bhikkhū ekāhena satthaṃ āharanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lành thay, bạch Thế Tôn, nếu Thế Tôn thuyết cho pháp môn khác, nhờ vậy chúng Tỷ-kheo được an trú vào chánh trí”.<br>
+<span lang="pi" class="pali">
+Sādhu, bhante, bhagavā aññaṃ pariyāyaṃ ācikkhatu yathāyaṃ bhikkhusaṅgho aññāya saṇṭhaheyyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vậy này Ānanda, hãy tập họp tại giảng đường tất cả các Tỷ-kheo trú xung quanh Vesālī.”<br>
+<span lang="pi" class="pali">
+“Tenahānanda, yāvatikā bhikkhū vesāliṃ upanissāya viharanti te sabbe upaṭṭhānasālāyaṃ sannipātehī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” Tôn giả Ānanda vâng đáp Thế Tôn và mời tất cả Tỷ-kheo trú xung quanh Vesālī tập họp tại giảng đường, rồi Tôn giả Ānanda đi đến Thế Tôn; sau khi đến, bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho āyasmā ānando bhagavato paṭissutvā yāvatikā bhikkhū vesāliṃ upanissāya viharanti te sabbe upaṭṭhānasālāyaṃ sannipātetvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, chúng Tỷ-kheo đã tập họp.<br>
+<span lang="pi" class="pali">
+“sannipatito, bhante, bhikkhusaṅgho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay Thế Tôn hãy làm những gì Thế Tôn nghĩ là phải thời.”<br>
+<span lang="pi" class="pali">
+Yassadāni, bhante, bhagavā kālaṃ maññatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn đi đến giảng đường; sau khi đến, ngồi xuống trên chỗ đã soạn sẵn.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā yena upaṭṭhānasālā tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn bảo các Tỷ-kheo:<br>
+<span lang="pi" class="pali">
+Nisajja kho bhagavā bhikkhū āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này các Tỷ-kheo, định niệm hơi thở vô, hơi thở ra này được tu tập, được làm cho sung mãn là tịch tịnh, thù diệu, thuần nhất, lạc trú, làm cho các ác, bất thiện pháp đã sanh biến mất, tịnh chỉ lập tức ngay tại đó.<br>
+<span lang="pi" class="pali">
+“ayampi kho, bhikkhave, ānāpānassatisamādhi bhāvito bahulīkato santo ceva paṇīto ca asecanako ca sukho ca vihāro uppannuppanne ca pāpake akusale dhamme ṭhānaso antaradhāpeti vūpasameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như, này các Tỷ-kheo, trong cuối mùa hạ, bụi nhớp bay lên và một đám mưa lớn trái mùa lập tức làm chúng biến mất, tịnh chỉ.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bhikkhave, gimhānaṃ pacchime māse ūhataṃ rajojallaṃ, tamenaṃ mahāakālamegho ṭhānaso antaradhāpeti vūpasameti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy, này các Tỷ-kheo, định niệm hơi thở vô, hơi thở ra được tu tập, được làm cho sung mãn là tịch tịnh, thù diệu, thuần nhất, lạc trú, làm cho các ác, bất thiện pháp đã sanh biến mất, tịnh chỉ lập tức.<br>
+<span lang="pi" class="pali">
+evameva kho, bhikkhave, ānāpānassatisamādhi bhāvito bahulīkato santo ceva paṇīto ca asecanako ca sukho ca vihāro uppannuppanne ca pāpake akusale dhamme ṭhānaso antaradhāpeti vūpasameti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và này các Tỷ-kheo, định niệm hơi thở vô, hơi thở ra, được tu tập như thế nào, được làm cho sung mãn như thế nào là tịch tịnh, thù diệu, thuần nhất, lạc trú, làm cho các ác, bất thiện pháp đã sanh được biến mất và tịnh chỉ lập tức?<br>
+<span lang="pi" class="pali">
+Kathaṃ bhāvito ca, bhikkhave, ānāpānassatisamādhi kathaṃ bahulīkato santo ceva paṇīto ca asecanako ca sukho ca vihāro uppannuppanne ca pāpake akusale dhamme ṭhānaso antaradhāpeti vūpasameti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, này các Tỷ-kheo, Tỷ-kheo đi đến rừng, hay đi đến gốc cây, hay đi đến chỗ nhà trống, ngồi kiết-già, lưng thẳng, đặt niệm trước mặt;<br>
+<span lang="pi" class="pali">
+Idha, bhikkhave, bhikkhu araññagato vā rukkhamūlagato vā suññāgāragato vā nisīdati pallaṅkaṃ ābhujitvā ujuṃ kāyaṃ paṇidhāya parimukhaṃ satiṃ upaṭṭhapetvā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+vị ấy chánh niệm thở vô, chánh niệm thở ra. …<br>
+<span lang="pi" class="pali">
+So satova assasati, satova passasati ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Quán từ bỏ, tôi sẽ thở vô’, vị ấy tập. ‘Quán từ bỏ, tôi sẽ thở ra’, vị ấy tập.<br>
+<span lang="pi" class="pali">
+‘paṭinissaggānupassī assasissāmī’ti sikkhati, ‘paṭinissaggānupassī passasissāmī’ti sikkhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, định niệm hơi thở vô, hơi thở ra tu tập như vậy, làm cho sung mãn như vậy là tịch tịnh, thù diệu, thuần nhất, lạc trú, và các ác, bất thiện pháp đã sanh được biến mất và tịnh chỉ lập tức.”<br>
+<span lang="pi" class="pali">
+Evaṃ bhāvito kho, bhikkhave, ānāpānassatisamādhi evaṃ bahulīkato santo ceva paṇīto ca asecanako ca sukho ca vihāro uppannuppanne ca pāpake akusale dhamme ṭhānaso antaradhāpeti vūpasametī”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn54.8.html#content"></a><a id="next-sutta" href="./sn54.10.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

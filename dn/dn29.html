@@ -1,0 +1,3292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="pressed w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Dīgha Nikāya – Trường Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trường Bộ 29           </title>
+
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trường Bộ 29<br>
+<span lang="pi" class="pali">
+Dīgha Nikāya 29<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Thanh Tịnh<br>
+<span lang="pi" class="pali">
+Pāsādikasutta<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn trú giữa giòng tộc Sakya (Thích-ca) trong vườn xoài của một gia đình Thích-ca tên là Vedhañña.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sakkesu viharati vedhaññā nāma sakyā, tesaṃ ambavane pāsāde.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Nigaṇṭha Nātaputta (Ni-kiền tử) vừa mới tạ thế ở Pāvā.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena nigaṇṭho nāṭaputto pāvāyaṃ adhunākālaṅkato hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi vị này tạ thế, các vị Nigaṇṭha chia ra làm hai phái, chia rẽ nhau, tranh chấp nhau, tranh luận nhau và sống tàn hại nhau với binh khí bằng miệng:<br>
+<span lang="pi" class="pali">
+Tassa kālaṅkiriyāya bhinnā nigaṇṭhā dvedhikajātā bhaṇḍanajātā kalahajātā vivādāpannā aññamaññaṃ mukhasattīhi vitudantā viharanti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ngươi không biết pháp luật này, ta biết pháp luật này. Sao Ngươi có thể biết pháp luật này? Ngươi theo tà hạnh, ta theo chánh hạnh. Lời nói của ta tương ưng, lời nói Ngươi không tương ưng. Ðiều đáng nói trước, Ngươi nói sau; điều đáng nói sau, Ngươi nói trước. Ðiều Ngươi quan niệm trình bày, đã bị đảo lộn. Quan điểm của Ngươi đã bị thách đố. Ngươi đã bị đánh bại. Hãy đi giải tỏa quan điểm của Ngươi! Hãy tự thoát khỏi bế tắc nếu Ngươi có thể làm được.”<br>
+<span lang="pi" class="pali">
+“na tvaṃ imaṃ dhammavinayaṃ ājānāsi, ahaṃ imaṃ dhammavinayaṃ ājānāmi, kiṃ tvaṃ imaṃ dhammavinayaṃ ājānissasi? Micchāpaṭipanno tvamasi, ahamasmi sammāpaṭipanno. Sahitaṃ me, asahitaṃ te. Purevacanīyaṃ pacchā avaca, pacchāvacanīyaṃ pure avaca. Adhiciṇṇaṃ te viparāvattaṃ, āropito te vādo, niggahito tvamasi, cara vādappamokkhāya, nibbeṭhehi vā sace pahosī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hình như các đệ tử của Nigaṇṭha Nātaputta muốn tàn hại lẫn nhau.<br>
+<span lang="pi" class="pali">
+Vadhoyeva kho maññe nigaṇṭhesu nāṭaputtiyesu vattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chính các đệ tử cư sĩ mặc đồ trắng của Nigaṇṭha Nātaputta cũng chán ngấy, cơ hiềm, và phản đối các vị Nigantha, vì pháp luật của họ đã được trình bày, tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên thuyết, pháp y chỉ đã bị đổ vỡ, không có chỗ y chỉ.<br>
+<span lang="pi" class="pali">
+Yepi nigaṇṭhassa nāṭaputtassa sāvakā gihī odātavasanā, tepi nigaṇṭhesu nāṭaputtiyesu nibbinnarūpā virattarūpā paṭivānarūpā, yathā taṃ durakkhāte dhammavinaye duppavedite aniyyānike anupasamasaṃvattanike asammāsambuddhappavedite bhinnathūpe appaṭisaraṇe.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Sa-di Cunda (Thuần-đà), sau khi an cư mùa mưa ở Pāvā đến thăm tôn giả Ānanda ở Sāmāgama, sau khi đến, đảnh lễ tôn giả Ānanda (A-nan) và ngồi xuống một bên. Sau khi ngồi xuống một bên. Sa-di Cunda bạch tôn giả Ānanda:<br>
+<span lang="pi" class="pali">
+Atha kho cundo samaṇuddeso pāvāyaṃ vassaṃvuṭṭho yena sāmagāmo, yenāyasmā ānando tenupasaṅkami; upasaṅkamitvā āyasmantaṃ ānandaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho cundo samaṇuddeso āyasmantaṃ ānandaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Tôn giả, Nigaṇṭha Nātaputta đã từ trần ở Pāvā sau khi vị này tạ thế, các Nigaṇṭha chia ra làm hai phái... Pháp y chỉ đã bị đổ vỡ, không có chỗ y chỉ.<br>
+<span lang="pi" class="pali">
+“nigaṇṭho, bhante, nāṭaputto pāvāyaṃ adhunākālaṅkato. Tassa kālaṅkiriyāya bhinnā nigaṇṭhā dvedhikajātā ...pe... bhinnathūpe appaṭisaraṇe”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi nghe nói vậy, tôn giả Ānanda nói với Sa-di Cunda:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, āyasmā ānando cundaṃ samaṇuddesaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Hiền giả Cunda, đây là vấn đề đáng đưa ra để yết kiến Thế Tôn.<br>
+<span lang="pi" class="pali">
+“atthi kho idaṃ, āvuso cunda, kathāpābhataṃ bhagavantaṃ dassanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả Cunda, chúng ta hãy đi yết kiến Thế Tôn; sau khi đến xong, chúng ta hãy trình bày vấn đề này để Thế Tôn biết.”<br>
+<span lang="pi" class="pali">
+Āyāmāvuso cunda, yena bhagavā tenupasaṅkamissāma; upasaṅkamitvā etamatthaṃ bhagavato ārocessāmā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Tôn giả, vâng!” Sa-di Cunda vâng lời tôn giả Ānanda.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho cundo samaṇuddeso āyasmato ānandassa paccassosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi tôn giả Ānanda cùng với Sa-di Cunda, đi đến yết kiến Thế Tôn, sau khi đến, đảnh lễ Ngài và ngồi xuống một bên. Sau khi ngồi xuống một bên, tôn giả Ānanda bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā ca ānando cundo ca samaṇuddeso yena bhagavā tenupasaṅkamiṃsu; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdiṃsu. Ekamantaṃ nisinno kho āyasmā ānando bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, Sa-di Cunda có nói: “Nigaṇṭha Nātaputta đã từ trần ở Pāvā. Sau khi vị này từ trần, các vị Nigantha chia ra làm hai phái... pháp y chỉ đã bị đổ vỡ, không có chỗ y chỉ.”<br>
+<span lang="pi" class="pali">
+“ayaṃ, bhante, cundo samaṇuddeso evamāha, ‘nigaṇṭho, bhante, nāṭaputto pāvāyaṃ adhunākālaṅkato, tassa kālaṅkiriyāya bhinnā nigaṇṭhā ...pe... bhinnathūpe appaṭisaraṇe’”ti.<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+“Này Cunda, như vậy ở đây pháp luật đã được trình bày tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+“Evaṃ hetaṃ, cunda, hoti durakkhāte dhammavinaye duppavedite aniyyānike anupasamasaṃvattanike asammāsambuddhappavedite.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây có vị đạo sư không phải là Chánh Ðẳng Giác, có pháp luật đã được trình bày tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Idha, cunda, satthā ca hoti asammāsambuddho, dhammo ca durakkhāto duppavedito aniyyāniko anupasamasaṃvattaniko asammāsambuddhappavedito,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người đệ tử trong pháp này, không thành tựu và an trú trong pháp và tùy pháp, không sống đúng chánh hạnh, không sống đúng tùy pháp, sống vượt ra ngoài pháp.<br>
+<span lang="pi" class="pali">
+sāvako ca tasmiṃ dhamme na dhammānudhammappaṭipanno viharati na sāmīcippaṭipanno na anudhammacārī, vokkamma ca tamhā dhammā vattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người đệ tử ấy cần được nói như sau:<br>
+<span lang="pi" class="pali">
+So evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, thật là lợi ích cho Ngươi. Thật khéo chứng đắc cho Ngươi.<br>
+<span lang="pi" class="pali">
+‘tassa te, āvuso, lābhā, tassa te suladdhaṃ,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðạo sư của Ngươi không phải là vị Chánh Ðẳng Giác. Pháp của Ngươi đã được trình bày, tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên bố.<br>
+<span lang="pi" class="pali">
+satthā ca te asammāsambuddho, dhammo ca durakkhāto duppavedito aniyyāniko anupasamasaṃvattaniko asammāsambuddhappavedito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Ngươi trong pháp này, không thành tựu và an trú trong pháp và tùy pháp, không sống đúng chánh hạnh, không sống đúng tùy pháp, vượt ra ngoài pháp.’<br>
+<span lang="pi" class="pali">
+Tvañca tasmiṃ dhamme na dhammānudhammappaṭipanno viharasi, na sāmīcippaṭipanno, na anudhammacārī, vokkamma ca tamhā dhammā vattasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, như vậy ở đây, vị đạo sư đáng quở trách, ở đây pháp đáng quở trách, nhưng ở đây đệ tử đáng tán thán.<br>
+<span lang="pi" class="pali">
+Iti kho, cunda, satthāpi tattha gārayho, dhammopi tattha gārayho, sāvako ca tattha evaṃ pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, với vị đệ tử như vậy, nên nói như sau:<br>
+<span lang="pi" class="pali">
+Yo kho, cunda, evarūpaṃ sāvakaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Ðại đức, dầu Ðại đức thực hành đúng như pháp vị đạo sư đã dạy và trình bày.’<br>
+<span lang="pi" class="pali">
+‘etāyasmā tathā paṭipajjatu, yathā te satthārā dhammo desito paññatto’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai có suy tầm, ai có bị suy tầm, ai có suy tầm rồi như thực thi hành, tất cả đều không có phước báo.<br>
+<span lang="pi" class="pali">
+Yo ca samādapeti, yañca samādapeti, yo ca samādapito tathattāya paṭipajjati. Sabbe te bahuṃ apuññaṃ pasavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì pháp luật đã được trình bày tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Evaṃ hetaṃ, cunda, hoti durakkhāte dhammavinaye duppavedite aniyyānike anupasamasaṃvattanike asammāsambuddhappavedite.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây, vị đạo sư không là vị Chánh Ðẳng Giác, và pháp được trình bày tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên thuyết,<br>
+<span lang="pi" class="pali">
+Idha pana, cunda, satthā ca hoti asammāsambuddho, dhammo ca durakkhāto duppavedito aniyyāniko anupasamasaṃvattaniko asammāsambuddhappavedito,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và vị đệ tử trong pháp này, sống thành tựu pháp và tùy pháp, sống theo chánh hạnh, sống đúng tùy pháp, sống thuận theo pháp.<br>
+<span lang="pi" class="pali">
+sāvako ca tasmiṃ dhamme dhammānudhammappaṭipanno viharati sāmīcippaṭipanno anudhammacārī, samādāya taṃ dhammaṃ vattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người này nên được nói như sau:<br>
+<span lang="pi" class="pali">
+So evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, thật không lợi ích cho Ngươi, thật không khéo chứng đắc cho Ngươi. Vị đạo sư của Ngươi không là vị Chánh Ðẳng Giác và pháp được trình bày tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên thuyết,<br>
+<span lang="pi" class="pali">
+‘tassa te, āvuso, alābhā, tassa te dulladdhaṃ, satthā ca te asammāsambuddho, dhammo ca durakkhāto duppavedito aniyyāniko anupasamasaṃvattaniko asammāsambuddhappavedito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+những người trong pháp này sống thành tựu pháp và tùy pháp, sống theo chánh hạnh, sống đúng tùy pháp, sống thuận theo pháp.’<br>
+<span lang="pi" class="pali">
+Tvañca tasmiṃ dhamme dhammānudhammappaṭipanno viharasi sāmīcippaṭipanno anudhammacārī, samādāya taṃ dhammaṃ vattasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây vị đạo sư đáng quở trách, ở đây pháp đáng quở trách, ở đây vị đệ tử cũng đáng quở trách.<br>
+<span lang="pi" class="pali">
+Iti kho, cunda, satthāpi tattha gārayho, dhammopi tattha gārayho, sāvakopi tattha evaṃ gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, với vị đệ tử như vậy, có ai, nên nói như sau:<br>
+<span lang="pi" class="pali">
+Yo kho, cunda, evarūpaṃ sāvakaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thật vậy, Ðại đức thành tựu theo chánh hạnh, tinh tấn trong chánh hạnh.’<br>
+<span lang="pi" class="pali">
+‘addhāyasmā ñāyappaṭipanno ñāyamārādhessatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người khen, người được khen, người được khen như vậy lại càng tinh tấn hơn nữa, tất cả đều không được phước đức.<br>
+<span lang="pi" class="pali">
+Yo ca pasaṃsati, yañca pasaṃsati, yo ca pasaṃsito bhiyyoso mattāya vīriyaṃ ārabhati. Sabbe te bahuṃ apuññaṃ pasavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, vì pháp được trình bày tuyên bố một cách vụng về, không có hiệu năng hướng dẫn, không hướng đến an tịnh, không do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Evañhetaṃ, cunda, hoti durakkhāte dhammavinaye duppavedite aniyyānike anupasamasaṃvattanike asammāsambuddhappavedite.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây vị đạo sư là vị Chánh Ðẳng Giác, pháp được khéo giảng và trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Idha pana, cunda, satthā ca hoti sammāsambuddho, dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị đệ tử trong pháp này sống không thành tựu pháp và tùy pháp, sống không theo chánh hạnh, sống không đúng tùy pháp, sống không thuận theo pháp.<br>
+<span lang="pi" class="pali">
+sāvako ca tasmiṃ dhamme na dhammānudhammappaṭipanno viharati, na sāmīcippaṭipanno, na anudhammacārī, vokkamma ca tamhā dhammā vattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị đệ tử ấy cần phải được nói:<br>
+<span lang="pi" class="pali">
+So evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, thật không lợi ích cho Ngươi, thật không khéo chứng đắc cho Ngươi. Vị đạo sư của Ngươi là vị Chánh Ðẳng Giác, pháp được khéo tuyên bố trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+‘tassa te, āvuso, alābhā, tassa te dulladdhaṃ, satthā ca te sammāsambuddho, dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng Ngươi trong pháp này sống không thành tựu pháp, sống không theo chánh hạnh, sống không đúng tùy pháp, sống không thuận theo pháp.’<br>
+<span lang="pi" class="pali">
+Tvañca tasmiṃ dhamme na dhammānudhammappaṭipanno viharasi, na sāmīcippaṭipanno, na anudhammacārī, vokkamma ca tamhā dhammā vattasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây vị đạo sư đáng được tán thán, ở đây pháp đáng được tán thán, ở đây vị đệ tử đáng quở trách.<br>
+<span lang="pi" class="pali">
+Iti kho, cunda, satthāpi tattha pāsaṃso, dhammopi tattha pāsaṃso, sāvako ca tattha evaṃ gārayho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có ai, hãy nói với vị đệ tử ấy như sau:<br>
+<span lang="pi" class="pali">
+Yo kho, cunda, evarūpaṃ sāvakaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðại đức hãy thực hành đúng như pháp do vị đạo sư của Ðại đức trình bày và tuyên thuyết.’<br>
+<span lang="pi" class="pali">
+‘etāyasmā tathā paṭipajjatu yathā te satthārā dhammo desito paññatto’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai có điều tra, ai có bị điều tra, ai có bị điều tra rồi như thực thi hành, tất cả đều được phước báo<br>
+<span lang="pi" class="pali">
+Yo ca samādapeti, yañca samādapeti, yo ca samādapito tathattāya paṭipajjati. Sabbe te bahuṃ puññaṃ pasavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, pháp luật này khéo thuyết khéo trình bày là như vậy, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Evañhetaṃ, cunda, hoti svākkhāte dhammavinaye suppavedite niyyānike upasamasaṃvattanike sammāsambuddhappavedite.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda ở đây vị đạo sư là Chánh Ðẳng Giác, và pháp được khéo tuyên thuyết, khéo trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Cháng Ðẳng Giác tuyên thuyết,<br>
+<span lang="pi" class="pali">
+Idha pana, cunda, satthā ca hoti sammāsambuddho, dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và vị đệ tử trong pháp này sống thành tựu pháp và tùy pháp, sống thành tựu chánh hạnh, sống đúng tùy pháp, sống thuận theo pháp.<br>
+<span lang="pi" class="pali">
+sāvako ca tasmiṃ dhamme dhammānudhammappaṭipanno viharati sāmīcippaṭipanno anudhammacārī, samādāya taṃ dhammaṃ vattati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có ai, hãy nói vị đệ tử ấy nói như sau:<br>
+<span lang="pi" class="pali">
+So evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, thật là lợi ích cho Ngươi, thật khéo chứng đắc cho Ngươi.<br>
+<span lang="pi" class="pali">
+‘tassa te, āvuso, lābhā, tassa te suladdhaṃ,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị đạo sư của Ngươi là vị A la hán Chánh Ðẳng Giác, pháp được khéo tuyên thuyết, được khéo trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+satthā ca te sammāsambuddho, dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Ngươi trong pháp này sống thành tựu pháp và tùy pháp, sống thành tựu chánh hạnh, sống đúng tùy pháp, sống thuận theo pháp.’<br>
+<span lang="pi" class="pali">
+Tvañca tasmiṃ dhamme dhammānudhammappaṭipanno viharasi sāmīcippaṭipanno anudhammacārī, samādāya taṃ dhammaṃ vattasī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, như vậy ở đây vị đạo sư đáng được tán thán, ở đây pháp đáng được tán thán, ở đây vị đệ tử cũng đáng được tán thán.<br>
+<span lang="pi" class="pali">
+Iti kho, cunda, satthāpi tattha pāsaṃso, dhammopi tattha pāsaṃso, sāvakopi tattha evaṃ pāsaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu có ai, hãy nói vị đệ tử ấy như sau:<br>
+<span lang="pi" class="pali">
+Yo kho, cunda, evarūpaṃ sāvakaṃ evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thật vậy, Ðại đức thành tựu như pháp, tinh tấn như pháp.’<br>
+<span lang="pi" class="pali">
+‘addhāyasmā ñāyappaṭipanno ñāyamārādhessatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người khen, người được khen, người được khen như vậy lại càng tinh tấn thực hành, tất cả đều được nhiều công đức.<br>
+<span lang="pi" class="pali">
+Yo ca pasaṃsati, yañca pasaṃsati, yo ca pasaṃsito bhiyyoso mattāya vīriyaṃ ārabhati. Sabbe te bahuṃ puññaṃ pasavanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, vì pháp luật được khéo tuyên thuyết, khéo trình bày như vậy, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Evañhetaṃ, cunda, hoti svākkhāte dhammavinaye suppavedite niyyānike upasamasaṃvattanike sammāsambuddhappavedite.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây vị đạo sư xuất hiện ở đời, bậc A la hán, Chánh Ðẳng Giác, và pháp được khéo tuyên thuyết, được khéo trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Idha pana, cunda, satthā ca loke udapādi arahaṃ sammāsambuddho, dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và các vị đệ tử chưa được tinh thông diệu pháp, và phạm hạnh hoàn toàn viên mãn chưa được tỏ lộ cho các vị này, chưa được trình bày rõ ràng, với tất cả thứ bậc vị trí liên hệ, chưa được trở thành diệu dụng, chưa được khéo trình bày cho loài Người.<br>
+<span lang="pi" class="pali">
+aviññāpitatthā cassa honti sāvakā saddhamme, na ca tesaṃ kevalaṃ paripūraṃ brahmacariyaṃ āvikataṃ hoti uttānīkataṃ sabbasaṅgāhapadakataṃ sappāṭihīrakataṃ yāva devamanussehi suppakāsitaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị đạo sư viên tịch.<br>
+<span lang="pi" class="pali">
+Atha nesaṃ satthuno antaradhānaṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, đối với vị đạo sư như vậy, nếu viên tịch, các đệ tử sẽ ưu tư rất nhiều.<br>
+<span lang="pi" class="pali">
+Evarūpo kho, cunda, satthā sāvakānaṃ kālaṅkato anutappo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì đạo sư của chúng ta xuất hiện ở đời, và pháp được khéo tuyên thuyết, khéo trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết. Nhưng chúng ta chưa được tinh thông diệu pháp, và phạm hạnh hoàn toàn viên mãn chưa được tỏ lộ cho chúng ta với tất cả thứ bậc, vị trí liên hệ, chưa được trở thành diệu dụng, chưa được khéo trình bày cho loài Người.<br>
+<span lang="pi" class="pali">
+‘Satthā ca no loke udapādi arahaṃ sammāsambuddho, dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito, aviññāpitatthā camha saddhamme, na ca no kevalaṃ paripūraṃ brahmacariyaṃ āvikataṃ hoti uttānīkataṃ sabbasaṅgāhapadakataṃ sappāṭihīrakataṃ yāva devamanussehi suppakāsitaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị đạo sư của chúng ta viên tịch.’<br>
+<span lang="pi" class="pali">
+Atha no satthuno antaradhānaṃ hotī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, vị Ðạo sư như vậy có viên tịch, các đệ tử có sự ưu tư.<br>
+<span lang="pi" class="pali">
+Evarūpo kho, cunda, satthā sāvakānaṃ kālaṅkato anutappo hoti.<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây vị đạo sư xuất hiện ở đời, bậc A la hán, Chánh Ðẳng Giác, pháp được khéo tuyên bố và được khéo trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, do vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Idha pana, cunda, satthā ca loke udapādi arahaṃ sammāsambuddho. Dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và các vị đệ tử được tinh thông diệu pháp, và phạm hạnh hoàn toàn viên mãn được tỏ lộ cho các vị ấy với tất cả thứ bậc vị trí liên hệ, được trở thành diệu dụng, được khéo trình bày cho loài Người.<br>
+<span lang="pi" class="pali">
+Viññāpitatthā cassa honti sāvakā saddhamme, kevalañca tesaṃ paripūraṃ brahmacariyaṃ āvikataṃ hoti uttānīkataṃ sabbasaṅgāhapadakataṃ sappāṭihīrakataṃ yāva devamanussehi suppakāsitaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị đạo sư của những vị ấy viên tịch.<br>
+<span lang="pi" class="pali">
+Atha nesaṃ satthuno antaradhānaṃ hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, vị đạo sư như vậy có viên tịch, các đệ tử không có ưu tư.<br>
+<span lang="pi" class="pali">
+Evarūpo kho, cunda, satthā sāvakānaṃ kālaṅkato ananutappo hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì cớ sao?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị đạo sư của chúng ta xuất hiện ở đời là bậc A la hán, Chánh Ðẳng Giác.<br>
+<span lang="pi" class="pali">
+‘Satthā ca no loke udapādi arahaṃ sammāsambuddho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Pháp được khéo tuyên thuyết, được khéo trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, được vị Chánh Ðẳng Giác tuyên thuyết.<br>
+<span lang="pi" class="pali">
+Dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn chúng ta được tinh thông diệu pháp, và phạm hạnh hoàn toàn viên mãn được tỏ lộ cho chúng ta biết với tất cả thứ bậc vị trí liên hệ, được trở thành diệu dụng, được khéo trình bày cho loài Người.<br>
+<span lang="pi" class="pali">
+Viññāpitatthā camha saddhamme, kevalañca no paripūraṃ brahmacariyaṃ āvikataṃ hoti uttānīkataṃ sabbasaṅgāhapadakataṃ sappāṭihīrakataṃ yāva devamanussehi suppakāsitaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và vị Ðạo sư của chúng ta viên tịch.’<br>
+<span lang="pi" class="pali">
+Atha no satthuno antaradhānaṃ hotī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, vị đạo sư như vậy có viên tịch, các đệ tử không có ưu tư.<br>
+<span lang="pi" class="pali">
+Evarūpo kho, cunda, satthā sāvakānaṃ kālaṅkato ananutappo hoti.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, nếu phạm hạnh được đầy đủ những chi phần như vậy, nếu không có một vị đạo sư là một vị Thượng tọa có nhiều kinh nghiệm, xuất gia lâu ngày, đã đến tuổi trưởng thượng, đã đến tuổi trưởng thành.<br>
+<span lang="pi" class="pali">
+Etehi cepi, cunda, aṅgehi samannāgataṃ brahmacariyaṃ hoti, no ca kho satthā hoti thero rattaññū cirapabbajito addhagato vayoanuppatto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một phạm hạnh như vậy được xem là không viên mãn, trong trường hợp như vậy.<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ brahmacariyaṃ aparipūraṃ hoti tenaṅgena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu phạm hạnh được đầy đủ những chi phần như vậy, và nếu có vị đạo sư là một vị Thượng tọa có nhiều kinh nghiệm, xuất gia lâu ngày, đã đến tuổi trưởng thượng, đã đến tuổi trưởng thành.<br>
+<span lang="pi" class="pali">
+Yato ca kho, cunda, etehi ceva aṅgehi samannāgataṃ brahmacariyaṃ hoti, satthā ca hoti thero rattaññū cirapabbajito addhagato vayoanuppatto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một phạm hạnh như vậy được xem là viên mãn, trong trường hợp như vậy.<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ brahmacariyaṃ paripūraṃ hoti tenaṅgena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu phạm hạnh được đầy đủ những chi phần như vậy, và có vị đạo sư là vị Thượng tọa có nhiều kinh nghiệm, xuất gia lâu ngày, đã đến tuổi trưởng thượng, đã đến tuổi trưởng thành,<br>
+<span lang="pi" class="pali">
+Etehi cepi, cunda, aṅgehi samannāgataṃ brahmacariyaṃ hoti, satthā ca hoti thero rattaññū cirapabbajito addhagato vayoanuppatto, no ca khvassa therā bhikkhū sāvakā honti viyattā vinītā visāradā pattayogakkhemā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng không có các vị Thượng tọa Tỷ kheo, những vị đệ tử là những vị sáng suốt, tự điều phục, vô úy, đa văn, đã đạt đến sự an ổn, có thể thuyết diệu pháp, với giáo lý ngoại đạo được khởi lên có thể khéo nhiếp phục với giáo pháp của mình, có thể thuyết diệu pháp bất tư nghì.<br>
+<span lang="pi" class="pali">
+Alaṃ samakkhātuṃ saddhammassa, alaṃ uppannaṃ parappavādaṃ sahadhammehi suniggahitaṃ niggahetvā sappāṭihāriyaṃ dhammaṃ desetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy phạm hạnh này không thể viên mãn bởi chi tiết này.<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ brahmacariyaṃ aparipūraṃ hoti tenaṅgena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, khi nào phạm hạnh được đầy đủ về những phương diện này, vị đạo sư là vị Thượng tọa, có nhiều kinh nghiệm, xuất gia đã lâu ngày, đã đến tuổi trưởng thượng, đã đến tuổi trưởng thành.<br>
+<span lang="pi" class="pali">
+Yato ca kho, cunda, etehi ceva aṅgehi samannāgataṃ brahmacariyaṃ hoti, satthā ca hoti thero rattaññū cirapabbajito addhagato vayoanuppatto, therā cassa bhikkhū sāvakā honti viyattā vinītā visāradā pattayogakkhemā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những vị Thượng tọa Tỷ kheo, những vị đệ tử là những vị sáng suốt, tự điều phục, vô úy, đa văn, đã đạt đến sự an ổn, có thể thuyết diệu pháp, với giáo lý ngoại đạo được khởi lên có thể khéo nhiếp phục với giáo pháp của mình, có thể thuyết diệu pháp bất tư nghì.<br>
+<span lang="pi" class="pali">
+Alaṃ samakkhātuṃ saddhammassa, alaṃ uppannaṃ parappavādaṃ sahadhammehi suniggahitaṃ niggahetvā sappāṭihāriyaṃ dhammaṃ desetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy phạm hạnh này viên mãn bởi chi tiết này.<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ brahmacariyaṃ paripūraṃ hoti tenaṅgena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, khi nào phạm hạnh được đầy đủ về những phương diện này, vị đạo sư là vị Thượng tọa, có nhiều kinh nghiệm, xuất gia đã lâu ngày, đã đến tuổi trưởng thượng, đã đến tuổi trưởng thành.<br>
+<span lang="pi" class="pali">
+Etehi cepi, cunda, aṅgehi samannāgataṃ brahmacariyaṃ hoti, satthā ca hoti thero rattaññū cirapabbajito addhagato vayoanuppatto, therā cassa bhikkhū sāvakā honti viyattā vinītā visāradā pattayogakkhemā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những vị Thượng tọa Tỷ kheo, những vị đệ tử là những vị sáng suốt, tự điều phục, vô úy, đa văn, đã đạt đến sự an ổn, có thể thuyết diệu pháp, với giáo lý ngoại đạo được khởi lên có thể khéo nhiếp phục với giáo pháp của mình, có thể thuyết diệu pháp bất tư nghì.<br>
+<span lang="pi" class="pali">
+Alaṃ samakkhātuṃ saddhammassa, alaṃ uppannaṃ parappavādaṃ sahadhammehi suniggahitaṃ niggahetvā sappāṭihāriyaṃ dhammaṃ desetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu không có các vị Trung lạp Tỷ kheo, những vị đệ tử...<br>
+<span lang="pi" class="pali">
+No ca khvassa majjhimā bhikkhū sāvakā honti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có các vị Trung lạp Tỷ kheo, những vị đệ tử...<br>
+<span lang="pi" class="pali">
+majjhimā cassa bhikkhū sāvakā honti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có các vị Hạ lạp Tỷ kheo, những vị đệ tử...<br>
+<span lang="pi" class="pali">
+no ca khvassa navā bhikkhū sāvakā honti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có các Hạ lạp Tỷ kheo, những vị đệ tử...<br>
+<span lang="pi" class="pali">
+navā cassa bhikkhū sāvakā honti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có các vị Trưởng lão Tỷ kheo ni, các vị đệ tử...<br>
+<span lang="pi" class="pali">
+no ca khvassa therā bhikkhuniyo sāvikā honti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có các vị Trưởng lão Tỷ kheo ni, những vị đệ tử, ...<br>
+<span lang="pi" class="pali">
+therā cassa bhikkhuniyo sāvikā honti, ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có các vị Trung lạp Tỷ kheo ni, các vị đệ tử...<br>
+<span lang="pi" class="pali">
+no ca khvassa majjhimā bhikkhuniyo sāvikā honti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có các vị Trung lạp Tỷ kheo ni, các vị đệ tử...<br>
+<span lang="pi" class="pali">
+majjhimā cassa bhikkhuniyo sāvikā honti, ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có các vị Hạ lạp Tỷ kheo ni, các vị đệ tử...<br>
+<span lang="pi" class="pali">
+no ca khvassa navā bhikkhuniyo sāvikā honti ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có các vị Hạ lạp Tỷ kheo ni, các vị đệ tử...<br>
+<span lang="pi" class="pali">
+navā cassa bhikkhuniyo sāvikā honti, ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có Nam cư sĩ đệ tử, những vị tại gia, mặc áo trắng, sống theo phạm hạnh...<br>
+<span lang="pi" class="pali">
+no ca khvassa upāsakā sāvakā honti gihī odātavasanā brahmacārino ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có những Nam cư sĩ đệ tử, những vị tại gia, mặc áo trắng, sống theo phạm hạnh...<br>
+<span lang="pi" class="pali">
+upāsakā cassa sāvakā honti gihī odātavasanā brahmacārino, ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có những Nam cư sĩ đệ tử, những vị tại gia, mặc áo trắng, chấp nhận dục lạc...<br>
+<span lang="pi" class="pali">
+no ca khvassa upāsakā sāvakā honti gihī odātavasanā kāmabhogino ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có những Nam cư sĩ đệ tử, những vị tại gia, mặc áo trắng, chấp nhận dục lạc...<br>
+<span lang="pi" class="pali">
+upāsakā cassa sāvakā honti gihī odātavasanā kāmabhogino, ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có những Nữ cư sĩ đệ tử, những vị tại gia, mặc áo trắng, sống theo phạm hạnh...<br>
+<span lang="pi" class="pali">
+no ca khvassa upāsikā sāvikā honti gihiniyo odātavasanā brahmacāriniyo ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có những Nư cư sĩ đệ tử, những vị tại gia mặc áo trắng, sống theo phạm hạnh...<br>
+<span lang="pi" class="pali">
+upāsikā cassa sāvikā honti gihiniyo odātavasanā brahmacāriniyo, ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng nếu không có những Nữ cư sĩ đệ tử, những vị tại gia, mặc áo trắng chấp nhận dục lạc...<br>
+<span lang="pi" class="pali">
+no ca khvassa upāsikā sāvikā honti gihiniyo odātavasanā kāmabhoginiyo ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có những Nữ cư sĩ đệ tử, những vị tại gia, mặc áo trắng chấp nhận dục lạc ...<br>
+<span lang="pi" class="pali">
+upāsikā cassa sāvikā honti gihiniyo odātavasanā kāmabhoginiyo,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phạm hạnh như vậy không thành công, hưng thịnh, phát triển và phổ thông một cách rộng rãi, khéo tuyên bố giữa thiên nhân, ...<br>
+<span lang="pi" class="pali">
+no ca khvassa brahmacariyaṃ hoti iddhañceva phītañca vitthārikaṃ bāhujaññaṃ puthubhūtaṃ yāva devamanussehi suppakāsitaṃ ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phạm hạnh như vậy được thành công, hưng thịnh, phát triển và phổ thông một cách rộng rãi, khéo tuyên bố giữa thiên nhân, nhưng không đạt được danh xưng và lợi dưỡng một cách tối thắng<br>
+<span lang="pi" class="pali">
+brahmacariyañcassa hoti iddhañceva phītañca vitthārikaṃ bāhujaññaṃ puthubhūtaṃ yāva devamanussehi suppakāsitaṃ, no ca kho lābhaggayasaggappattaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phạm hạnh như vậy không được viên mãn về phương diện này.<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ brahmacariyaṃ aparipūraṃ hoti tenaṅgena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, khi nào phạm hạnh được đầy đủ với những phương diện này, vị đạo sư là Thượng tọa có nhiều kinh nghiệm, xuất gia đã lâu ngày, đã đến tuổi trưởng thượng, đã đến tuổi trưởng thành.<br>
+<span lang="pi" class="pali">
+Yato ca kho, cunda, etehi ceva aṅgehi samannāgataṃ brahmacariyaṃ hoti, satthā ca hoti thero rattaññū cirapabbajito addhagato vayoanuppatto, therā cassa bhikkhū sāvakā honti viyattā vinītā visāradā pattayogakkhemā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và những vị Thượng tọa là những bậc Tỷ kheo, những vị đệ tử sáng suốt, tự điều phục, vô úy, đa văn, đã đạt đến sự an ổn, có thể thuyết diệu pháp, với giáo lý ngoại đạo được khởi lên có thể khéo nhiếp phục với giáo pháp của mình, có thể thuyết diệu pháp bất tư nghì.<br>
+<span lang="pi" class="pali">
+Alaṃ samakkhātuṃ saddhammassa, alaṃ uppannaṃ parappavādaṃ sahadhammehi suniggahitaṃ niggahetvā sappāṭihāriyaṃ dhammaṃ desetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Trung lạp Tỷ kheo đệ tử, ...<br>
+<span lang="pi" class="pali">
+Majjhimā cassa bhikkhū sāvakā honti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Hạ lạp Tỷ kheo đệ tử ...<br>
+<span lang="pi" class="pali">
+navā cassa bhikkhū sāvakā honti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Trưởng lão Ni đệ tử ...<br>
+<span lang="pi" class="pali">
+therā cassa bhikkhuniyo sāvikā honti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Trung lạp Ni đệ tử ...<br>
+<span lang="pi" class="pali">
+majjhimā cassa bhikkhuniyo sāvikā honti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Hạ lạp Ni đệ tử ...<br>
+<span lang="pi" class="pali">
+navā cassa bhikkhuniyo sāvikā honti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Nam cư sĩ đệ tử, những vị tại gia, mặc áo trắng, sống theo phạm hạnh,<br>
+<span lang="pi" class="pali">
+upāsakā cassa sāvakā honti ... gihī odātavasanā brahmacārino.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Nam cư sĩ đệ tử, những vị tại gia, mặc áo trắng, chấp nhận dục lạc,<br>
+<span lang="pi" class="pali">
+Upāsakā cassa sāvakā honti gihī odātavasanā kāmabhogino ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có Nữ cư sĩ đệ tử, những vị tại gia, mặc áo trắng, sống theo phạm hạnh,<br>
+<span lang="pi" class="pali">
+upāsikā cassa sāvikā honti gihiniyo odātavasanā brahmacāriniyo ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+có những vị Nữ cư sĩ đệ tử, những vị tại gia, mặc áo trắng, chấp nhận dục lạc;<br>
+<span lang="pi" class="pali">
+upāsikā cassa sāvikā honti gihiniyo odātavasanā kāmabhoginiyo ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phạm hạnh như vậy được thành công, hưng thịnh, phát triển, và phổ thông một cách rộng rãi, khéo tuyên bố giữa thiên nhân, đạt được danh xưng và lợi dưỡng một cách tối thắng,<br>
+<span lang="pi" class="pali">
+brahmacariyañcassa hoti iddhañceva phītañca vitthārikaṃ bāhujaññaṃ puthubhūtaṃ yāva devamanussehi suppakāsitaṃ, lābhaggappattañca yasaggappattañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Phạm hạnh như vậy được viên mãn về phương diện này.<br>
+<span lang="pi" class="pali">
+Evaṃ taṃ brahmacariyaṃ paripūraṃ hoti tenaṅgena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta hiện tại là bậc Ðạo sư xuất hiện ở đời, là bậc A la hán, Chánh Ðẳng Giác<br>
+<span lang="pi" class="pali">
+Ahaṃ kho pana, cunda, etarahi satthā loke uppanno arahaṃ sammāsambuddho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và pháp được khéo tuyên bố, khéo trình bày, có hiệu năng hướng dẫn, hướng đến an tịnh, được vị Chánh Ðẳng Giác trình bày.<br>
+<span lang="pi" class="pali">
+Dhammo ca svākkhāto suppavedito niyyāniko upasamasaṃvattaniko sammāsambuddhappavedito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và các vị đệ tử của Ta tinh thông diệu pháp, và phạm hạnh hoàn toàn viên mãn được tỏ lộ với tất cả thứ bậc vị trí liên hệ, được trở thành diệu dụng, được khéo trình giữa thiên nhân.<br>
+<span lang="pi" class="pali">
+Viññāpitatthā ca me sāvakā saddhamme, kevalañca tesaṃ paripūraṃ brahmacariyaṃ āvikataṃ uttānīkataṃ sabbasaṅgāhapadakataṃ sappāṭihīrakataṃ yāva devamanussehi suppakāsitaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta là vị Ðạo sư Trưởng lão, có nhiều kinh nghiệm, xuất gia đã lâu ngay, đã đến tuổi trưởng thượng, đã đến tuổi trưởng thành.<br>
+<span lang="pi" class="pali">
+Ahaṃ kho pana, cunda, etarahi satthā thero rattaññū cirapabbajito addhagato vayoanuppatto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Thượng tọa Tỷ kheo đệ tử sáng suốt, tự biết điều phục, vô úy, đa văn, đã đạt đến sự an ổn, có thể thuyết diệu pháp, đối với giáo lý ngoại đạo được khởi lên, có thể khéo thuyết phục với giáo pháp của mình, có thể thuyết diệu pháp bất khả tư nghì.<br>
+<span lang="pi" class="pali">
+Santi kho pana me, cunda, etarahi therā bhikkhū sāvakā honti viyattā vinītā visāradā pattayogakkhemā. Alaṃ samakkhātuṃ saddhammassa, alaṃ uppannaṃ parappavādaṃ sahadhammehi suniggahitaṃ niggahetvā sappāṭihāriyaṃ dhammaṃ desetuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, Ta lại có những Trung lạp Tỷ kheo sáng suốt...<br>
+<span lang="pi" class="pali">
+Santi kho pana me, cunda, etarahi majjhimā bhikkhū sāvakā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Hạ lạp Tỷ kheo đệ tử ...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi navā bhikkhū sāvakā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Trưởng lão Tỷ kheo ni đệ tử...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi therā bhikkhuniyo sāvikā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Trung lạp Tỷ kheo ni đệ tử...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi majjhimā bhikkhuniyo sāvikā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Hạ lạp Tỷ kheo ni đệ tử...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi navā bhikkhuniyo sāvikā ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Nam cư sĩ, là những vị tại gia, mặc áo trắng, sống theo phạm hạnh...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi upāsakā sāvakā gihī odātavasanā brahmacārino ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Nam cư sĩ, là những vị tại gia mặc áo trắng, chấp nhận dục lạc...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi upāsakā sāvakā gihī odātavasanā kāmabhogino ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Nữ cư sĩ, là những vị tại gia, mặc áo trắng, sống theo phạm hạnh...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi upāsikā sāvikā gihiniyo odātavasanā brahmacāriniyo ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Ta có những vị Nữ cư sĩ là những vị tại gia, mặc áo trắng chấp nhận dục lạc...<br>
+<span lang="pi" class="pali">
+santi kho pana me, cunda, etarahi upāsikā sāvikā gihiniyo odātavasanā kāmabhoginiyo ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nay Phạm hạnh của Ta được thành công, hưng thịnh, phát triển, và phổ thông một cách rộng rãi, khéo tuyên bố giữa thiên nhân.<br>
+<span lang="pi" class="pali">
+etarahi kho pana me, cunda, brahmacariyaṃ iddhañceva phītañca vitthārikaṃ bāhujaññaṃ puthubhūtaṃ yāva devamanussehi suppakāsitaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, đối với tất cả những vị đạo sĩ nay xuất hiện ở đời; này Cunda, Ta không thấy một vị đạo sư nào khác có thể bằng Ta về phương diện lợi dưỡng và danh xưng tối thượng.<br>
+<span lang="pi" class="pali">
+Yāvatā kho, cunda, etarahi satthāro loke uppannā, nāhaṃ, cunda, aññaṃ ekasatthārampi samanupassāmi evaṃlābhaggayasaggappattaṃ yatharivāhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, đối với tất cả các đoàn thể, các hội chúng nay xuất hiện ở đời; này Cunda, Ta không thấy một đoàn thể nào khác có thể bằng đoàn thể Tỷ-kheo về phương diện lợi dưỡng và danh xưng tối thượng.<br>
+<span lang="pi" class="pali">
+Yāvatā kho pana, cunda, etarahi saṅgho vā gaṇo vā loke uppanno; nāhaṃ, cunda, aññaṃ ekasaṅghampi samanupassāmi evaṃlābhaggayasaggappattaṃ yatharivāyaṃ, cunda, bhikkhusaṅgho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có ai tuyên bố đúng đắn sẽ tuyên bố như sau:<br>
+<span lang="pi" class="pali">
+Yaṃ kho taṃ, cunda, sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thành tựu hết thảy tướng, không thiếu sót, không quá đáng, phạm hạnh được khéo tuyên bố một cách viên mãn,,<br>
+<span lang="pi" class="pali">
+‘sabbākārasampannaṃ sabbākāraparipūraṃ anūnamanadhikaṃ svākkhātaṃ kevalaṃ paripūraṃ brahmacariyaṃ suppakāsitan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy nếu tuyên bố đúng đắn sẽ tuyên bố như sau:<br>
+<span lang="pi" class="pali">
+Idameva taṃ sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thành tựu hết thảy tướng... phạm hạnh được khéo tuyên bố”.<br>
+<span lang="pi" class="pali">
+‘sabbākārasampannaṃ ...pe... suppakāsitan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, Uddaka con của Rāma thường nói:<br>
+<span lang="pi" class="pali">
+Udako sudaṃ, cunda, rāmaputto evaṃ vācaṃ bhāsati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thấy mà không thấy.’<br>
+<span lang="pi" class="pali">
+‘passaṃ na passatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy cái gì mà không thấy?<br>
+<span lang="pi" class="pali">
+Kiñca passaṃ na passatīti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Với một con dao sắc bén, chỉ thấy lưỡi dao không thấy khía cạnh sắc bén của dao.<br>
+<span lang="pi" class="pali">
+Khurassa sādhunisitassa talamassa passati, dhārañca khvassa na passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, đấy là nghĩa của câu:<br>
+<span lang="pi" class="pali">
+Idaṃ vuccati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thấy mà không thấy.’<br>
+<span lang="pi" class="pali">
+‘passaṃ na passatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây Uddaka con của Rāma đề cập đến một vật đê tiện, hạ liệt, thuộc về phàm phu, không xứng bậc Thánh, không có lợi ích, nói về con dao.<br>
+<span lang="pi" class="pali">
+Yaṃ kho panetaṃ, cunda, udakena rāmaputtena bhāsitaṃ hīnaṃ gammaṃ pothujjanikaṃ anariyaṃ anatthasaṃhitaṃ khurameva sandhāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu nói đúng đắn câu:<br>
+<span lang="pi" class="pali">
+Yañca taṃ, cunda, sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thấy mà không thấy,’ thời phải nói như sau:<br>
+<span lang="pi" class="pali">
+‘passaṃ na passatī’ti, idameva taṃ sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy mà không thấy<br>
+<span lang="pi" class="pali">
+‘passaṃ na passatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vị ấy thấy cái gì mà không thấy?<br>
+<span lang="pi" class="pali">
+Kiñca passaṃ na passatīti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chính vị ấy thấy phạm hạnh này: Một phạm hạnh, thành tựu hết thảy tướng, đầy đủ hết thảy tướng, không thiếu sót, không quá đáng, được khéo tuyên bố một cách viên mãn, được khéo trình bày.<br>
+<span lang="pi" class="pali">
+Evaṃ sabbākārasampannaṃ sabbākāraparipūraṃ anūnamanadhikaṃ svākkhātaṃ kevalaṃ paripūraṃ brahmacariyaṃ suppakāsitanti, iti hetaṃ passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu vị ấy trừ bớt một phương diện nào tại một chỗ nào, nghĩ rằng làm vậy sẽ được rõ ràng hơn, vị ấy sẽ không thấy gì.<br>
+<span lang="pi" class="pali">
+Idamettha apakaḍḍheyya, evaṃ taṃ parisuddhataraṃ assāti, iti hetaṃ na passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu vị ấy thêm vào một phương diện nào tại chỗ nào, nghĩ rằng làm vậy sẽ được rõ ràng hơn, vị ấy sẽ không thấy gì.<br>
+<span lang="pi" class="pali">
+Idamettha upakaḍḍheyya, evaṃ taṃ paripūraṃ assāti, iti hetaṃ na passati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này, Cunda, như vậy gọi là:<br>
+<span lang="pi" class="pali">
+Idaṃ vuccati, cunda:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thấy mà không thấy.’<br>
+<span lang="pi" class="pali">
+‘passaṃ na passatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu có ai khi tả một phạm hạnh thành tựu hết thảy tướng... phạm hạnh được khéo tuyên bố, vị ấy sẽ tuyên bố đúng đắn như sau:<br>
+<span lang="pi" class="pali">
+Yaṃ kho taṃ, cunda, sammā vadamāno vadeyya: ‘sabbākārasampannaṃ ...pe...brahmacariyaṃ suppakāsitan’ti. Idameva taṃ sammā vadamāno vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Phạm hạnh này thành tựu hết thảy tướng, cụ túc hết thảy tướng, không thiếu thốn, không quá đáng, được khéo tuyên bố một cách viên mãn, được khéo trình bày.’<br>
+<span lang="pi" class="pali">
+‘sabbākārasampannaṃ sabbākāraparipūraṃ anūnamanadhikaṃ svākkhātaṃ kevalaṃ paripūraṃ brahmacariyaṃ suppakāsitan’ti.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Do vậy, này Cunda, những pháp do Ta tự chứng tri và tuyên bố cho các Ngươi, tất cả các Ngươi hãy hội họp lại và tụng đọc lại, chớ có cãi lộn nhau, nhưng hãy so sánh các nghĩa với nhau, các câu với nhau để cho phạm hạnh này được tồn tại lâu dài, được an trú lâu dài, vì hạnh phúc cho muôn loài, vì an lạc cho muôn loài, vì lòng thương tưởng cho đời, vì lợi ích, vì an lạc cho chư Thiên và cho loài Người.<br>
+<span lang="pi" class="pali">
+Tasmātiha, cunda, ye vo mayā dhammā abhiññā desitā, tattha sabbeheva saṅgamma samāgamma atthena atthaṃ byañjanena byañjanaṃ saṅgāyitabbaṃ na vivaditabbaṃ, yathayidaṃ brahmacariyaṃ addhaniyaṃ assa ciraṭṭhitikaṃ, tadassa bahujanahitāya bahujanasukhāya lokānukampāya atthāya hitāya sukhāya devamanussānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, thế nào là những pháp do Ta tự chứng tri và tuyên bố cho các Ngươi, tất cả các Ngươi hãy hội họp lại và tụng đọc lại, chớ có cãi lộn nhau, nhưng hãy so sánh các nghĩa với nhau, các câu với nhau, để cho phạm hạnh này được tồn tại lâu dài, được an trú lâu dài, vì hạnh phúc cho muôn loài, vì an lạc cho muôn loài, vì lòng thương tưởng cho đời, vì lợi ích, vì an lạc cho chư Thiên và cho loài Người?<br>
+<span lang="pi" class="pali">
+Katame ca te, cunda, dhammā mayā abhiññā desitā, yattha sabbeheva saṅgamma samāgamma atthena atthaṃ byañjanena byañjanaṃ saṅgāyitabbaṃ na vivaditabbaṃ, yathayidaṃ brahmacariyaṃ addhaniyaṃ assa ciraṭṭhitikaṃ, tadassa bahujanahitāya bahujanasukhāya lokānukampāya atthāya hitāya sukhāya devamanussānaṃ?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Những pháp ấy là Bốn Niệm xứ, Bốn Chánh cần, Bốn Như ý túc, Năm Căn, Năm Lực, Bảy Giác chi, Tám Thánh đạo.<br>
+<span lang="pi" class="pali">
+Seyyathidaṃ—cattāro satipaṭṭhānā, cattāro sammappadhānā, cattāro iddhipādā, pañcindriyāni, pañca balāni, satta bojjhaṅgā, ariyo aṭṭhaṅgiko maggo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, những pháp ấy do Ta tự chứng tri và tuyên bố cho các Ngươi, tất cả Ngươi hãy hội họp lại và tụng đọc lại, chớ có cãi lộn nhau, nhưng hãy so sánh các nghĩa với nhau, các câu với nhau, để cho phạm hạnh này được tồn tại lâu dài, được an trú lâu dài, vì hạnh phúc của muôn loài, vì an lạc cho muôn loài, vì lòng thương tưởng cho đời, vì lợi ích, vì an lạc cho chư Thiên và cho loài Người.<br>
+<span lang="pi" class="pali">
+Ime kho te, cunda, dhammā mayā abhiññā desitā. Yattha sabbeheva saṅgamma samāgamma atthena atthaṃ byañjanena byañjanaṃ saṅgāyitabbaṃ na vivaditabbaṃ, yathayidaṃ brahmacariyaṃ addhaniyaṃ assa ciraṭṭhitikaṃ, tadassa bahujanahitāya bahujanasukhāya lokānukampāya atthāya hitāya sukhāya devamanussānaṃ.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, các Ngươi hãy hội họp với nhau trong tinh thần hòa đồng và tương kính, không có tranh luận nhau. Có vị đồng phạm hạnh nói pháp giữa Tăng chúng.<br>
+<span lang="pi" class="pali">
+Tesañca vo, cunda, samaggānaṃ sammodamānānaṃ avivadamānānaṃ sikkhataṃ aññataro sabrahmacārī saṅghe dhammaṃ bhāseyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu các Ngươi nghĩ rằng,<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Vị Ðại đức này nắm nghĩa sai lạc hay hành văn sai lạc.’<br>
+<span lang="pi" class="pali">
+‘ayaṃ kho āyasmā atthañceva micchā gaṇhāti, byañjanāni ca micchā ropetī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ngươi không nên tán thán, không nên bác bỏ. Không tán thán không bác bỏ, các Ngươi nên nói với vị ấy:<br>
+<span lang="pi" class="pali">
+Tassa neva abhinanditabbaṃ na paṭikkositabbaṃ, anabhinanditvā appaṭikkositvā so evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, với nghĩa này, cách hành văn này hay cách hành văn kia, cách nào thích hợp hơn? Giữa những cách hành văn này, nghĩa này hay nghĩa kia, nghĩa nào thích hợp hơn?’<br>
+<span lang="pi" class="pali">
+‘imassa nu kho, āvuso, atthassa imāni vā byañjanāni etāni vā byañjanāni katamāni opāyikatarāni, imesañca byañjanānaṃ ayaṃ vā attho eso vā attho katamo opāyikataro’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu vị ấy trả lời:<br>
+<span lang="pi" class="pali">
+So ce evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, với nghĩa này, cách hành văn này thích hợp hơn cách hành văn kia. Giữa những cách hành văn này, nghĩa này thích hợp hơn nghĩa kia.’<br>
+<span lang="pi" class="pali">
+‘imassa kho, āvuso, atthassa imāneva byañjanāni opāyikatarāni, yā ceva etāni; imesañca byañjanānaṃ ayameva attho opāyikataro, yā ceva eso’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ngươi không nên bác bỏ vị ấy, không nên phỉ báng vị ấy. Không bác bỏ, không phỉ báng, các Ngươi phải giải thích cho vị ấy một cách cẩn thận cả nghĩa lẫn hành văn.<br>
+<span lang="pi" class="pali">
+So neva ussādetabbo na apasādetabbo, anussādetvā anapasādetvā sveva sādhukaṃ saññāpetabbo tassa ca atthassa tesañca byañjanānaṃ nisantiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa này Cunda, có vị đồng phạm hạnh khác nói pháp giữa Tăng chúng.<br>
+<span lang="pi" class="pali">
+Aparopi ce, cunda, sabrahmacārī saṅghe dhammaṃ bhāseyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu các Ngươi nghĩ rằng:<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Vị Ðại đức ấy nắm nghĩa sai lạc nhưng hành văn đúng đắn.’<br>
+<span lang="pi" class="pali">
+‘ayaṃ kho āyasmā atthañhi kho micchā gaṇhāti byañjanāni sammā ropetī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ngươi không nên tán thán, không nên bác bỏ. Không thán thán, không bác bỏ, các ngươi nên nói với vị ấy:<br>
+<span lang="pi" class="pali">
+Tassa neva abhinanditabbaṃ na paṭikkositabbaṃ, anabhinanditvā appaṭikkositvā so evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, giữa những cách hành văn này, nghĩa này hay nghĩa kia, nghĩa nào thích hợp hơn?’<br>
+<span lang="pi" class="pali">
+‘imesaṃ nu kho, āvuso, byañjanānaṃ ayaṃ vā attho eso vā attho katamo opāyikataro’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu vị ấy trả lời:<br>
+<span lang="pi" class="pali">
+So ce evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, giữa những cách hành văn này, nghĩa này thích hợp hơn nghĩa kia.’<br>
+<span lang="pi" class="pali">
+‘imesaṃ kho, āvuso, byañjanānaṃ ayameva attho opāyikataro, yā ceva eso’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ngươi không nên bác bỏ, không phỉ báng, các Ngươi phải giải thích một cách cẩn thận ý nghĩa đúng đắn cho vị ấy.<br>
+<span lang="pi" class="pali">
+So neva ussādetabbo na apasādetabbo, anussādetvā anapasādetvā sveva sādhukaṃ saññāpetabbo tasseva atthassa nisantiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có vị đồng phạm hạnh khác nói pháp giữa Tăng chúng.<br>
+<span lang="pi" class="pali">
+Aparopi ce, cunda, sabrahmacārī saṅghe dhammaṃ bhāseyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu các Ngươi nghĩ rằng:<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Vị Ðại đức này nắm nghĩa đúng đắn, nhưng hành văn sai lạc.’<br>
+<span lang="pi" class="pali">
+‘ayaṃ kho āyasmā atthañhi kho sammā gaṇhāti byañjanāni micchā ropetī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ngươi không nên tán thán, không nên bác bỏ. Không tán thán không bác bỏ, các Ngươi nên nói với vị ấy:<br>
+<span lang="pi" class="pali">
+Tassa neva abhinanditabbaṃ na paṭikkositabbaṃ; anabhinanditvā appaṭikkositvā so evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, giữa những cách hành văn này, nghĩa này hay nghĩa kia, nghĩa nào thích hợp hơn?’<br>
+<span lang="pi" class="pali">
+‘imassa nu kho, āvuso, atthassa imāni vā byañjanāni etāni vā byañjanāni katamāni opāyikatarānī’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu vị ấy trả lời:<br>
+<span lang="pi" class="pali">
+So ce evaṃ vadeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Giữa những cách hành văn này, nghĩa này thích hợp hơn nghĩa kia.’<br>
+<span lang="pi" class="pali">
+‘imassa kho, āvuso, atthassa imāneva byañjanāni opayikatarāni, yā ceva etānī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ngươi không nên bác bỏ vị ấy, không nên phỉ báng vị ấy. Không bác bỏ, không phỉ báng, các ngươi phải giải thích một cách cẩn thận cách hành văn cho vị ấy.<br>
+<span lang="pi" class="pali">
+So neva ussādetabbo na apasādetabbo; anussādetvā anapasādetvā sveva sādhukaṃ saññāpetabbo tesaññeva byañjanānaṃ nisantiyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có vị đồng phạm hạnh khác nói pháp giữa Tăng chúng.<br>
+<span lang="pi" class="pali">
+Aparopi ce, cunda, sabrahmacārī saṅghe dhammaṃ bhāseyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu các Ngươi nghĩ rằng:<br>
+<span lang="pi" class="pali">
+Tatra ce tumhākaṃ evamassa:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Vị Ðại đức này nắm nghĩa đúng đắn và hành văn đúng đắn.’<br>
+<span lang="pi" class="pali">
+‘ayaṃ kho āyasmā atthañceva sammā gaṇhāti byañjanāni ca sammā ropetī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các Ngươi nên tán đồng và tán thán vị ấy với câu: “Thật là tốt đẹp”,<br>
+<span lang="pi" class="pali">
+Tassa ‘sādhū’ti bhāsitaṃ abhinanditabbaṃ anumoditabbaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ngươi phải nói với vị ấy” “Thật là tốt đẹp”, các Ngươi phải nói với vị ấy:<br>
+<span lang="pi" class="pali">
+tassa ‘sādhū’ti bhāsitaṃ abhinanditvā anumoditvā so evamassa vacanīyo:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả thật là lợi ích cho chúng tôi, này Hiền giả thật là lợi ích cho chúng tôi; này Hiền giả, thật là may mắn cho chúng tôi; này Hiền giả, thật là may mắn cho chúng tôi, khi chúng tôi thấy một vị đồng phạm hạnh như Hiền giả, tinh thông nghĩa lý như vậy, tinh thông hành văn như vậy!’<br>
+<span lang="pi" class="pali">
+‘lābhā no, āvuso, suladdhaṃ no, āvuso, ye mayaṃ āyasmantaṃ tādisaṃ sabrahmacāriṃ passāma evaṃ atthupetaṃ byañjanupetan’ti.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda Ta không thuyết giảng chỉ để ngăn chận các lậu hoặc ngay trong hiện tại.<br>
+<span lang="pi" class="pali">
+Na vo ahaṃ, cunda, diṭṭhadhammikānaṃyeva āsavānaṃ saṃvarāya dhammaṃ desemi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, Ta không thuyết pháp, chỉ để diệt trừ các lậu hoặc trong tương lai mà thôi.<br>
+<span lang="pi" class="pali">
+Na panāhaṃ, cunda, samparāyikānaṃyeva āsavānaṃ paṭighātāya dhammaṃ desemi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, Ta thuyết pháp vừa để ngăn chận các lậu hoặc ngay trong hiện tại mà cũng để diệt trừ các lậu hoặc trong tương lai nữa.<br>
+<span lang="pi" class="pali">
+Diṭṭhadhammikānaṃ cevāhaṃ, cunda, āsavānaṃ saṃvarāya dhammaṃ desemi; samparāyikānañca āsavānaṃ paṭighātāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy, này Cunda, tấm y mà Ta cho phép các Ngươi mặc, như vậy vừa đủ cho các Ngươi ngăn chận lạnh, ngăn chận nóng, ngăn chận sự xúc chạm của các loài ruồi muỗi, của gió, mặt trời và các loài rắn, và các che dấu sự hổ thẹn.<br>
+<span lang="pi" class="pali">
+Tasmātiha, cunda, yaṃ vo mayā cīvaraṃ anuññātaṃ, alaṃ vo taṃ yāvadeva sītassa paṭighātāya, uṇhassa paṭighātāya, ḍaṃsamakasavātātapasarīsapasamphassānaṃ paṭighātāya, yāvadeva hirikopīnapaṭicchādanatthaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các món ăn khất thực mà Ta cho phép các Ngươi dùng, như vậy vừa đủ để nuôi dưỡng thân thể, giúp thân thể sống còn, tránh khỏi nguy hại và giúp đời sống phạm hạnh với hy vọng: “Như vậy ta diệt trừ các cảm thọ cũ và không cho khởi lên các cảm thọ mới. Nhờ vậy đời sống của ta mới khỏi bị lầm lỗi và ta sống an lạc.”<br>
+<span lang="pi" class="pali">
+Yo vo mayā piṇḍapāto anuññāto, alaṃ vo so yāvadeva imassa kāyassa ṭhitiyā yāpanāya vihiṃsūparatiyā brahmacariyānuggahāya, iti purāṇañca vedanaṃ paṭihaṅkhāmi, navañca vedanaṃ na uppādessāmi, yātrā ca me bhavissati anavajjatā ca phāsuvihāro ca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhà cửa nào mà Ta cho phép các ngươi an trú, như vậy vừa đủ cho các Ngươi ngăn chận lạnh, ngăn chận nóng, ngăn chận sự xúc chạm của ruồi muỗi, gió, mặt trời và các loài rắn, chỉ với mục đích tránh thoát sự nguy hiểm của thời tiết, và an hưởng đời sống tịnh cư.<br>
+<span lang="pi" class="pali">
+Yaṃ vo mayā senāsanaṃ anuññātaṃ, alaṃ vo taṃ yāvadeva sītassa paṭighātāya, uṇhassa paṭighātāya, ḍaṃsamakasavātātapasarīsapasamphassānaṃ paṭighātāya, yāvadeva utuparissayavinodanapaṭisallānārāmatthaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các dược phẩm và thuốc trị bịnh mà Ta cho phép các Ngươi dùng, như vậy vừa đủ để ngăn chận các cảm thọ đau ốm khởi lên và để gìn giữ sức khỏe.<br>
+<span lang="pi" class="pali">
+Yo vo mayā gilānapaccayabhesajjaparikkhāro anuññāto, alaṃ vo so yāvadeva uppannānaṃ veyyābādhikānaṃ vedanānaṃ paṭighātāya abyāpajjaparamatāya.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra, các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Các Sa-môn Thích tử sống đam mê hỷ lạc.’<br>
+<span lang="pi" class="pali">
+‘sukhallikānuyogamanuyuttā samaṇā sakyaputtiyā viharantī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu được nói như vậy, các du sĩ ngoại đạo phải được trả lời như vậy:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, thế nào là đam mê hỷ lạc?<br>
+<span lang="pi" class="pali">
+‘katamo so, āvuso, sukhallikānuyogo?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðam mê hỷ lạc có nhiều loại, có nhiều cách.’<br>
+<span lang="pi" class="pali">
+Sukhallikānuyogā hi bahū anekavihitā nānappakārakā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, bốn loại đam mê hỷ lạc này là thấp kém, hạ liệt, thuộc phàm phu, không xứng Thánh hạnh, không có lợi ích, không hướng đến yểm ly, vô tham, tich diệt, an tịnh, thắng trí, giác ngộ và Niết-bàn.<br>
+<span lang="pi" class="pali">
+Cattārome, cunda, sukhallikānuyogā hīnā gammā pothujjanikā anariyā anatthasaṃhitā na nibbidāya na virāgāya na nirodhāya na upasamāya na abhiññāya na sambodhāya na nibbānāya saṃvattanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Katame cattāro?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây có người ngu si, sau khi sát sanh, tự mình sung sướng hoan hỷ.<br>
+<span lang="pi" class="pali">
+Idha, cunda, ekacco bālo pāṇe vadhitvā vadhitvā attānaṃ sukheti pīṇeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đó là hỷ lạc thứ nhất.<br>
+<span lang="pi" class="pali">
+Ayaṃ paṭhamo sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Cunda, ở đây có người sau khi lấy của không cho, tự mình sung sướng, hoan hỷ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, cunda, idhekacco adinnaṃ ādiyitvā ādiyitvā attānaṃ sukheti pīṇeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đó là hỷ lạc thứ hai.<br>
+<span lang="pi" class="pali">
+Ayaṃ dutiyo sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Cunda, ở đây có người sau khi nói láo, tự mình sung sướng, hoan hỷ.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, cunda, idhekacco musā bhaṇitvā bhaṇitvā attānaṃ sukheti pīṇeti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đó là hỷ lạc thứ ba.<br>
+<span lang="pi" class="pali">
+Ayaṃ tatiyo sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa này Cunda, ở đây có người say đắm, đam mê sống vây quanh với năm món dục lạc.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, cunda, idhekacco pañcahi kāmaguṇehi samappito samaṅgībhūto paricāreti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đó là hỷ lạc thứ tư.<br>
+<span lang="pi" class="pali">
+Ayaṃ catuttho sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, bốn loại hỷ lạc này là thấp kém, hạ liệt, thuộc phàm phu, không xứng Thánh hạnh, không có lợi ích, không hướng đến yểm ly, vô tham, tịch diệt, an tịnh, thắng trí, giác ngộ và Niết-bàn.<br>
+<span lang="pi" class="pali">
+Ime kho, cunda, cattāro sukhallikānuyogā hīnā gammā pothujjanikā anariyā anatthasaṃhitā na nibbidāya na virāgāya na nirodhāya na upasamāya na abhiññāya na sambodhāya na nibbānāya saṃvattanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra, các ngoại đạo có thể hỏi:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Các Sa-môn Thích tử có phải sống đam mê bốn loại hỷ lạc này không?.’<br>
+<span lang="pi" class="pali">
+‘ime cattāro sukhallikānuyoge anuyuttā samaṇā sakyaputtiyā viharantī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ cần phải được trả lời: “Chớ có nói như vậy.<br>
+<span lang="pi" class="pali">
+Te vo ‘mā hevaṃ’ tissu vacanīyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các ông nói như vậy là nói không đúng đắn. Nói như vậy là các ông xuyên tạc, không đúng sự thật, không thực có.<br>
+<span lang="pi" class="pali">
+Na te vo sammā vadamānā vadeyyuṃ, abbhācikkheyyuṃ asatā abhūtena.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có bốn loại hỷ lạc nhất định đưa đến yểm ly, vô tham, tịch diệt, an tịnh, thắng trí, giác ngộ, Niết-bàn.<br>
+<span lang="pi" class="pali">
+Cattārome, cunda, sukhallikānuyogā ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṃvattanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Katame cattāro?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây vị Tỷ-kheo, ly dục, ly ác pháp, chứng và an trú Sơ thiền, một trạng thái hỷ lạc do ly dục sanh, với tầm, với tứ.<br>
+<span lang="pi" class="pali">
+Idha, cunda, bhikkhu vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṃ savicāraṃ vivekajaṃ pītisukhaṃ paṭhamaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðó là hỷ lạc thứ nhất.<br>
+<span lang="pi" class="pali">
+Ayaṃ paṭhamo sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa này Cunda, vị Tỷ-kheo diệt tầm và tứ, chứng và trú Thiền thứ hai, một trạng thái hỷ lạc do định sanh, không tầm không tứ, nội tĩnh nhất tâm.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, cunda, bhikkhu vitakkavicārānaṃ vūpasamā ...pe... dutiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðó là hỷ lạc thứ hai.<br>
+<span lang="pi" class="pali">
+Ayaṃ dutiyo sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa này Cunda, vị Tỷ-kheo ly hỷ trú xả ... chứng và trú Thiền thứ ba...<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, cunda, bhikkhu pītiyā ca virāgā ...pe... tatiyaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðó là hỷ lạc thứ ba.<br>
+<span lang="pi" class="pali">
+Ayaṃ tatiyo sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa này Cunda, vị Tỷ-kheo xả lạc, xả khổ ... chứng và trú Thiền thứ tư ...<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, cunda, bhikkhu sukhassa ca pahānā dukkhassa ca pahānā ...pe... catutthaṃ jhānaṃ upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðó là hỷ lạc thứ tư.<br>
+<span lang="pi" class="pali">
+Ayaṃ catuttho sukhallikānuyogo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, bốn loại hỷ lạc nhất định đưa đến yểm ly, vô tham, tịch diệt, an tịnh, thắng trí, giác ngộ, Niết-bàn.<br>
+<span lang="pi" class="pali">
+Ime kho, cunda, cattāro sukhallikānuyogā ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṃvattanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Các vị Sa-môn Thích tử đang sống đam mê bốn loại hỷ lạc này.’<br>
+<span lang="pi" class="pali">
+‘ime cattāro sukhallikānuyoge anuyuttā samaṇā sakyaputtiyā viharantī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Họ cần phải được trả lời: “Nói như vậy là phải;<br>
+<span lang="pi" class="pali">
+Te vo ‘evaṃ’ tissu vacanīyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các ông nói như vậy là nói đúng đắn. Nói như vậy là các ông không xuyên tạc, đúng sự thật, và thực có.<br>
+<span lang="pi" class="pali">
+Sammā te vo vadamānā vadeyyuṃ, na te vo abbhācikkheyyuṃ asatā abhūtena.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, những ai sống đam mê theo bốn loại hỷ lạc ấy có thể mong đợi kết quả gì, lợi ích gì?’<br>
+<span lang="pi" class="pali">
+‘ime panāvuso, cattāro sukhallikānuyoge anuyuttānaṃ viharataṃ kati phalāni katānisaṃsā pāṭikaṅkhā’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược nói vậy, phải trả lời cho các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, những ai sống đam mê bốn loại hỷ lạc ấy, có thể mong đợi bốn kết quả, bốn sự lợi ích.<br>
+<span lang="pi" class="pali">
+‘ime kho, āvuso, cattāro sukhallikānuyoge anuyuttānaṃ viharataṃ cattāri phalāni cattāro ānisaṃsā pāṭikaṅkhā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Katame cattāro?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, ở đây, vị Tỷ-kheo diệt trừ ba kiết sử, được nhập vào dòng Thánh, không còn bị đọa lạc, nhất định sẽ được giác ngộ.<br>
+<span lang="pi" class="pali">
+Idhāvuso, bhikkhu tiṇṇaṃ saṃyojanānaṃ parikkhayā sotāpanno hoti avinipātadhammo niyato sambodhiparāyaṇo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðó là kết quả thứ nhất.<br>
+<span lang="pi" class="pali">
+Idaṃ paṭhamaṃ phalaṃ, paṭhamo ānisaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa này Hiền giả, vị Tỷ-kheo diệt trừ ba kiết sử, làm muội lược tham, sân, si, chứng bậc Nhất lai, chỉ còn trở lại đời này một lần nữa trước khi diệt tận khổ đau.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, āvuso, bhikkhu tiṇṇaṃ saṃyojanānaṃ parikkhayā rāgadosamohānaṃ tanuttā sakadāgāmī hoti, sakideva imaṃ lokaṃ āgantvā dukkhassantaṃ karoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðó là kết quả thứ hai, lợi ích thứ hai.<br>
+<span lang="pi" class="pali">
+Idaṃ dutiyaṃ phalaṃ, dutiyo ānisaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Hiền giả, vị Tỷ-kheo diệt trừ năm hạ phần kiết sử, được hóa sanh ở tại chỗ ấy mà nhập Niết-bàn, không còn phải trở lại đời này nữa.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, āvuso, bhikkhu pañcannaṃ orambhāgiyānaṃ saṃyojanānaṃ parikkhayā opapātiko hoti, tattha parinibbāyī anāvattidhammo tasmā lokā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là kết quả thứ ba, lợi ích thứ ba.<br>
+<span lang="pi" class="pali">
+Idaṃ tatiyaṃ phalaṃ, tatiyo ānisaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa, này Hiền giả, vị Tỷ-kheo diệt trừ các lậu hoặc, tự mình chứng tri, chứng ngộ và an trú ngay trong hiện tại vô lậu Tâm giải thoát, Tuệ giải thoát.<br>
+<span lang="pi" class="pali">
+Puna caparaṃ, āvuso, bhikkhu āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja viharati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là kết quả thứ tư.<br>
+<span lang="pi" class="pali">
+Idaṃ catutthaṃ phalaṃ catuttho ānisaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, vị nào sống đam mê bốn loại hỷ lạc này, có thể mong đợi bốn kết quả, bốn lợi ích như vậy.’<br>
+<span lang="pi" class="pali">
+Ime kho, āvuso, cattāro sukhallikānuyoge anuyuttānaṃ viharataṃ imāni cattāri phalāni, cattāro ānisaṃsā pāṭikaṅkhā’ti.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Các Sa-môn Thích tử sống không giữ vững lập trường.’<br>
+<span lang="pi" class="pali">
+‘aṭṭhitadhammā samaṇā sakyaputtiyā viharantī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, các vị du sĩ ngoại đạo nói vậy cần phải được trả lời như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, Thế Tôn, vị đã biết, đã thấy, là bậc A-la-hán, Chánh Ðẳng Giác đã thuyết, đã trình bày những pháp cho các đệ tử cho đến trọn đời.<br>
+<span lang="pi" class="pali">
+‘atthi kho, āvuso, tena bhagavatā jānatā passatā arahatā sammāsambuddhena sāvakānaṃ dhammā desitā paññattā yāvajīvaṃ anatikkamanīyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, giống như cột trụ bằng đá hay bằng sắt, chân cột được khéo chôn sâu vào đất, không lắc qua lại, không có rung động.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, āvuso, indakhīlo vā ayokhīlo vā gambhīran emo sunikhāto acalo asampavedhī;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Cũng vậy này Hiền giả, Thế Tôn, vị đã biết, đã thấy là bậc A-la-hán, Chánh Ðẳng Giác đã thuyết, đã trình bày những pháp cho các đệ tử cho đến trọn đời.<br>
+<span lang="pi" class="pali">
+evameva kho, āvuso, tena bhagavatā jānatā passatā arahatā sammāsambuddhena sāvakānaṃ dhammā desitā paññattā yāvajīvaṃ anatikkamanīyā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, vị Tỷ-kheo là bậc A-la-hán, đã diệt trừ các lậu hoặc, phạm hạnh đã thành, các việc phải làm đã làm, đã đặt gánh nặng xuống, mục tiêu đã đạt, hữu kiết sử đã diệt trừ, chánh trí giải thoát, không thể làm chín việc sau đây:<br>
+<span lang="pi" class="pali">
+Yo so, āvuso, bhikkhu arahaṃ khīṇāsavo vusitavā katakaraṇīyo ohitabhāro anuppattasadattho parikkhīṇabhavasaṃyojano sammadaññāvimutto, abhabbo so nava ṭhānāni ajjhācarituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, vị Tỷ-kheo đã diệt trừ các lậu hoặc, không thể cố ý tước đoạt sanh mạng của loài hữu tình; vị Tỷ-kheo đã diệt trừ các lậu hoặc không thể lấy của không cho, tức là ăn trộm; vị Tỷ kheo đã diệt trừ các lậu hoặc không thể hành dâm; vị Tỷ-kheo đã diệt trừ các lậu hoặc, không thể biết mà nói láo; vị Tỷ-kheo đã diệt trừ các lậu hoặc không thể cất chứa tiền của để hưởng thọ dục lạc, như khi còn tại gia; vị Tỷ-kheo đã diệt tận các lậu hoặc không thể đi con đường hành tham; vị Tỷ-kheo đã diệt tận các lậu hoặc không thể đi con đường hành sân; vị Tỷ-kheo đã diệt tận các lậu hoặc, không thể đi con đường hành si; vị Tỷ-kheo đã diệt tận các lậu hoặc, không thể đi con đường hành theo sợ hãi.<br>
+<span lang="pi" class="pali">
+Abhabbo, āvuso, khīṇāsavo bhikkhu sañcicca pāṇaṃ jīvitā voropetuṃ; abhabbo khīṇāsavo bhikkhu adinnaṃ theyyasaṅkhātaṃ ādiyituṃ; abhabbo khīṇāsavo bhikkhu methunaṃ dhammaṃ paṭisevituṃ; abhabbo khīṇāsavo bhikkhu sampajānamusā bhāsituṃ; abhabbo khīṇāsavo bhikkhu sannidhikārakaṃ kāme paribhuñjituṃ, seyyathāpi pubbe āgārikabhūto; abhabbo khīṇāsavo bhikkhu chandāgatiṃ gantuṃ; abhabbo khīṇāsavo bhikkhu dosāgatiṃ gantuṃ; abhabbo khīṇāsavo bhikkhu mohāgatiṃ gantuṃ; abhabbo khīṇāsavo bhikkhu bhayāgatiṃ gantuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, một vị Tỷ-kheo, là bậc A-la-hán, Chánh Ðẳng Giác, đã diệt tận các lậu hoặc, phạm hạnh đã thành, các việc phải làm đã làm, đã đặt gánh nặng xuống, mục tiêu đã đạt, hữu kiết sử đã diệt trừ, chánh trí giải thoát, không thể làm chín việc như vậy.’<br>
+<span lang="pi" class="pali">
+Yo so, āvuso, bhikkhu arahaṃ khīṇāsavo vusitavā katakaraṇīyo ohitabhāro anuppattasadattho parikkhīṇabhavasaṃyojano sammadaññāvimutto, abhabbo so imāni nava ṭhānāni ajjhācaritun’ti.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói như sau:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðối với quá khứ, Sa-môn Gotama có tri kiến siêu việt. Nhưng đối với tương lai, Sa-môn Gotama không có tri kiến siêu việt; như sự việc xảy ra như thế nào và vì sao lại xảy ra như vậy?’<br>
+<span lang="pi" class="pali">
+‘atītaṃ kho addhānaṃ ārabbha samaṇo gotamo atīrakaṃ ñāṇadassanaṃ paññapeti, no ca kho anāgataṃ addhānaṃ ārabbha atīrakaṃ ñāṇadassanaṃ paññapeti, tayidaṃ kiṃsu tayidaṃ kathaṃsū’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, các vị du sĩ ngoại đạo này chủ trương rằng tri kiến về vấn đề này có thể được trình bày nêu rõ bởi tri kiến một vấn đề khác, như những kẻ ngu si, không thông minh khác.<br>
+<span lang="pi" class="pali">
+Te ca aññatitthiyā paribbājakā aññavihitakena ñāṇadassanena aññavihitakaṃ ñāṇadassanaṃ paññapetabbaṃ maññanti yathariva bālā abyattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, về vấn đề quá khứ, Như Lai có thể nhớ đến đời sống quá khứ.<br>
+<span lang="pi" class="pali">
+Atītaṃ kho, cunda, addhānaṃ ārabbha tathāgatassa satānusāriñāṇaṃ hoti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ngài muốn như thế nào, Ngài có thể nhớ xa được như vậy.<br>
+<span lang="pi" class="pali">
+so yāvatakaṃ ākaṅkhati tāvatakaṃ anussarati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Về vấn đề vị lai, Như Lai có trí do tuệ sanh:<br>
+<span lang="pi" class="pali">
+Anāgatañca kho addhānaṃ ārabbha tathāgatassa bodhijaṃ ñāṇaṃ uppajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là đời sống cuối cùng, nay không còn đời sống nào khác nữa.’<br>
+<span lang="pi" class="pali">
+‘ayamantimā jāti, natthi dāni punabbhavo’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những gì thuộc quá khứ là hư vọng, không thật, không lợi ích, Như Lai không trả lời.<br>
+<span lang="pi" class="pali">
+Atītañcepi, cunda, hoti abhūtaṃ atacchaṃ anatthasaṃhitaṃ, na taṃ tathāgato byākaroti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những gì thuộc quá khứ là chơn chánh, như thật, nhưng không lợi ích, Như Lai cũng không trả lời.<br>
+<span lang="pi" class="pali">
+Atītañcepi, cunda, hoti bhūtaṃ tacchaṃ anatthasaṃhitaṃ, tampi tathāgato na byākaroti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những gì thuộc quá khứ là chơn chánh, như thật, có lợi ích, Như Lai biết thời trả lời câu hỏi ấy.<br>
+<span lang="pi" class="pali">
+Atītañcepi, cunda, hoti bhūtaṃ tacchaṃ atthasaṃhitaṃ, tatra kālaññū tathāgato hoti tassa pañhassa veyyākaraṇāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những gì thuộc vị lai là hy vọng, không thật, không lợi ích, Như Lai không trả lời. Này Cunda, nếu những gì thuộc vị lai là chơn chánh, như thật, nhưng không lợi ích, Như Lai cũng không trả lời. Này Cunda, nếu những gì thuộc vị lai là chơn chánh, như thật, có lợi ích, Như Lai biết thời trả lời câu hỏi ấy một cách vắn tắt.<br>
+<span lang="pi" class="pali">
+Anāgatañcepi, cunda, hoti abhūtaṃ atacchaṃ anatthasaṃhitaṃ, na taṃ tathāgato byākaroti ...pe... tassa pañhassa veyyākaraṇāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những gì thuộc hiện tại là hư vọng, không thật, không lợi ích, Như Lai không trả lời.<br>
+<span lang="pi" class="pali">
+Paccuppannañcepi, cunda, hoti abhūtaṃ atacchaṃ anatthasaṃhitaṃ, na taṃ tathāgato byākaroti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những gì thuộc hiện tại và chơn chánh, như thật, nhưng không lợi ích, Như Lai cũng không trả lời.<br>
+<span lang="pi" class="pali">
+Paccuppannañcepi, cunda, hoti bhūtaṃ tacchaṃ anatthasaṃhitaṃ, tampi tathāgato na byākaroti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những gì thuộc hiện tại là chơn chánh, như thật, có lợi ích, Như Lai biết thời trả lời câu hỏi ấy.<br>
+<span lang="pi" class="pali">
+Paccuppannañcepi, cunda, hoti bhūtaṃ tacchaṃ atthasaṃhitaṃ, tatra kālaññū tathāgato hoti tassa pañhassa veyyākaraṇāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, này Cunda, đối với các pháp quá khứ, vị lai, hiện tại, Như Lai là vị nói phải thời nói chơn chánh, nói như thật, nói có lợi ích, nói đúng Pháp, nói đúng Luật. Do vậy mới gọi là Như Lai.<br>
+<span lang="pi" class="pali">
+Iti kho, cunda, atītānāgatapaccuppannesu dhammesu tathāgato kālavādī bhūtavādī atthavādī dhammavādī vinayavādī, tasmā ‘tathāgato’ti vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, trong thế giới này với chư Thiên, Ma vương, Phạm thiên, với chúng Sa-môn và Bà-la-môn, với chư Thiên và loài Người, những gì được thấy, được nghe, được cảm giác, được phân biệt, được đạt đến, được tìm cầu, được suy đạt với ý, tất cả đều được Như Lai biết rõ.<br>
+<span lang="pi" class="pali">
+Yañca kho, cunda, sadevakassa lokassa samārakassa sabrahmakassa sassamaṇabrāhmaṇiyā pajāya sadevamanussāya diṭṭhaṃ sutaṃ mutaṃ viññātaṃ pattaṃ pariyesitaṃ anuvicaritaṃ manasā, sabbaṃ tathāgatena abhisambuddhaṃ,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy mới gọi là Như Lai.<br>
+<span lang="pi" class="pali">
+tasmā ‘tathāgato’ti vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, trong thời gian giữa đêm Như Lai chứng ngộ Vô thượng Chánh Ðẳng Giác và đêm Như Lai nhập Vô dư y Niết-bàn giới, trong thời gian ấy, những gì Như Lai nói trong khi thuyết giảng, nói chuyện hay trình bày, tất cả là như vậy, chớ không gì khác.<br>
+<span lang="pi" class="pali">
+Yañca, cunda, rattiṃ tathāgato anuttaraṃ sammāsambodhiṃ abhisambujjhati, yañca rattiṃ anupādisesāya nibbānadhātuyā parinibbāyati, yaṃ etasmiṃ antare bhāsati lapati niddisati. Sabbaṃ taṃ tatheva hoti no aññathā,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vậy mới gọi là Như Lai.<br>
+<span lang="pi" class="pali">
+tasmā ‘tathāgato’ti vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, Như Lai nói gì thời làm vậy, làm gì thời nói vậy.<br>
+<span lang="pi" class="pali">
+Yathāvādī, cunda, tathāgato tathākārī, yathākārī tathāvādī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói gì thời làm vậy, làm gì thời nói vậy nên được gọi là Như Lai.<br>
+<span lang="pi" class="pali">
+Iti yathāvādī tathākārī, yathākārī tathāvādī, tasmā ‘tathāgato’ti vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, đối với thế giới với chư Thiên, Ma vương, Phạm thiên, với chúng Sa-môn và Bà-la-môn, với chư Thiên và loài Người, Như Lai là bậc Toàn Thắng, không ai có thể thắng nổi, bậc Toàn kiến, bậc Tự Tại.<br>
+<span lang="pi" class="pali">
+Sadevake loke, cunda, samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya tathāgato abhibhū anabhibhūto aññadatthudaso vasavattī, tasmā ‘tathāgato’ti vuccati.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thế nào Hiền giả, Như Lai có tồn tại sau khi chết không. Như vậy là đúng sự thực, ngoài ra là sai lầm?’<br>
+<span lang="pi" class="pali">
+‘kiṃ nu kho, āvuso, hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, được nói vậy, Ngươi phải trả lời các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này hiền giả, Như Lai không có nói: “Như Lai có tồn tại sau khi chết. Như vậy là đúng sự thật, ngoài ra là sai lầm!’<br>
+<span lang="pi" class="pali">
+‘abyākataṃ kho etaṃ, āvuso, bhagavatā: “hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan”’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thế nào Hiền giả, Như Lai không có tồn tại sau khi chết, có phải không? Như vậy là đúng sự thật, ngoài ra là sai lầm?’<br>
+<span lang="pi" class="pali">
+‘kiṃ panāvuso, na hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, được nói vậy, Ngươi phải trả lời các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này hiền giả, Như Lai không có nói: “Như Lai không có tồn tại sau khi chết. Như vậy là đúng sự thực, ngoài ra là sai lầm!’<br>
+<span lang="pi" class="pali">
+‘etampi kho, āvuso, bhagavatā abyākataṃ: “na hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan”’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thế nào Hiền giả, Như Lai có tồn tại và không tồn tại sau khi chết. Như vậy là đúng sự thực, ngoài ra là sai lầm!’<br>
+<span lang="pi" class="pali">
+‘kiṃ panāvuso, hoti ca na ca hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, được nói vậy, Ngươi phải trả lời các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này hiền giả, Như Lai không có nói: “Như Lai có tồn tại và không tồn tại sau khi chết. Như vậy là đúng sự thực, ngoài ra là sai lầm!’<br>
+<span lang="pi" class="pali">
+‘abyākataṃ kho etaṃ, āvuso, bhagavatā: “hoti ca na ca hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan”’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thế nào Hiền giả, Như lai không tồn tại và không không tồn tại sau khi chết? Như vậy là đúng sự thực, ngoài ra là sai lầm!’<br>
+<span lang="pi" class="pali">
+‘kiṃ panāvuso, neva hoti na na hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, được nói vậy, Ngươi phải trả lời các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này hiền giả, Như Lai không có nói: “Như Lai không có tồn tại và không không tồn tại sau khi chết. Như vậy là đúng sự thực, ngoài ra là sai lầm!”‘<br>
+<span lang="pi" class="pali">
+‘etampi kho, āvuso, bhagavatā abyākataṃ: “neva hoti na na hoti tathāgato paraṃ maraṇā, idameva saccaṃ moghamaññan”’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, vì sao Sa môn Gotama lại không nói?’<br>
+<span lang="pi" class="pali">
+‘kasmā panetaṃ, āvuso, samaṇena gotamena abyākatan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, được nói vậy, Ngươi phải trả lời các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, vì không liên hệ đến lợi ích, không liên hệ đến Pháp, không liên hệ đến căn bản phạm hạnh, không hướng đến yểm ly, vô tham, đoạn diệt, an tịnh, thắng trí, giác ngộ và Niết bàn. Do vậy Thế Tôn không trả lời.’<br>
+<span lang="pi" class="pali">
+‘na hetaṃ, āvuso, atthasaṃhitaṃ na dhammasaṃhitaṃ na ādibrahmacariyakaṃ na nibbidāya na virāgāya na nirodhāya na upasamāya na abhiññāya na sambodhāya na nibbānāya saṃvattati, tasmā taṃ bhagavatā abyākatan’ti.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, Sa môn Gotama nói điều gì?’<br>
+<span lang="pi" class="pali">
+‘kiṃ panāvuso, samaṇena gotamena byākatan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, được nói vậy, Ngươi phải trả lời các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ðây là Khổ, này Hiền giả, đó là điều Thế Tôn nói. Ðây là Khổ tập, này Hiền giả, đó là điều Thế Tôn nói. Ðây là Khổ diệt, này Hiền giả, đó là điều Thế Tôn nói. Ðây là con đường đưa đến Khổ diệt, này Hiền giả, đó là điều Thế Tôn nói.’<br>
+<span lang="pi" class="pali">
+‘idaṃ dukkhanti kho, āvuso, bhagavatā byākataṃ, ayaṃ dukkhasamudayoti kho, āvuso, bhagavatā byākataṃ, ayaṃ dukkhanirodhoti kho, āvuso, bhagavatā byākataṃ, ayaṃ dukkhanirodhagāminī paṭipadāti kho, āvuso, bhagavatā byākatan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, sự kiện này có thể xảy ra. Các du sĩ ngoại đạo có thể nói:<br>
+<span lang="pi" class="pali">
+Ṭhānaṃ kho panetaṃ, cunda, vijjati, yaṃ aññatitthiyā paribbājakā evaṃ vadeyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, vì sao Thế Tôn lại nói vậy?’<br>
+<span lang="pi" class="pali">
+‘kasmā panetaṃ, āvuso, samaṇena gotamena byākatan’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, được nói như vậy, Ngươi phải trả lời cho các du sĩ ngoại đạo như sau:<br>
+<span lang="pi" class="pali">
+Evaṃvādino, cunda, aññatitthiyā paribbājakā evamassu vacanīyā:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, vì liên hệ đến lợi ích, liên hệ đến Pháp, liên hệ đến căn bản phạm hạnh, vì nhất định hướng đến yểm ly, vô tham, đoạn diệt, an tịnh, thắng trí, giác ngộ và Niết bàn. Do vậy, Thế Tôn mới nói.’<br>
+<span lang="pi" class="pali">
+‘etañhi, āvuso, atthasaṃhitaṃ, etaṃ dhammasaṃhitaṃ, etaṃ ādibrahmacariyakaṃ ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṃvattati. Tasmā taṃ bhagavatā byākatan’ti.<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, mọi biện luận về các tà kiến liên hệ đến quá khứ tối sơ, những biện luận nào đáng nói cho các Ngươi, Ta đã nói cho các Ngươi.<br>
+<span lang="pi" class="pali">
+Yepi te, cunda, pubbantasahagatā diṭṭhinissayā, tepi vo mayā byākatā, yathā te byākātabbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn những biện luận nào không đáng nói cho các Ngươi, sao Ta lại sẽ nói cho các Ngươi?<br>
+<span lang="pi" class="pali">
+Yathā ca te na byākātabbā, kiṃ vo ahaṃ te tathā byākarissāmi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, mọi biện luận về các tà kiến liên hệ đến tương lai, những biện luận nào đáng nói cho các Ngươi, Ta đã nói cho các Ngươi.<br>
+<span lang="pi" class="pali">
+Yepi te, cunda, aparantasahagatā diṭṭhinissayā, tepi vo mayā byākatā, yathā te byākātabbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn những biện nào không đáng nói cho các Ngươi, sao Ta lại sẽ nói cho các Ngươi?<br>
+<span lang="pi" class="pali">
+Yathā ca te na byākātabbā, kiṃ vo ahaṃ te tathā byākarissāmi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, thế nào là những biện luận về tà kiến liên hệ đến quá khứ tối sơ, những biện luận nào đáng nói cho các Ngươi, Ta đã nói cho các Ngươi, và những biện luận không đáng nói cho các Ngươi?<br>
+<span lang="pi" class="pali">
+Katame ca te, cunda, pubbantasahagatā diṭṭhinissayā, ye vo mayā byākatā, yathā te byākātabbā. Yathā ca te na byākātabbā, kiṃ vo ahaṃ te tathā byākarissāmi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có một số Sa-môn, Bà-la-môn có những quan điểm như sau, có những tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Santi kho, cunda, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bản ngã và thế giới là thường còn, như vậy là đúng sự thực, ngoài ra là sai lầm.’<br>
+<span lang="pi" class="pali">
+‘sassato attā ca loko ca, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có một số Sa-môn, Bà-la-môn có những quan điểm như sau, có những tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Santi pana, cunda, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bản ngã và thế giới là không thường còn...<br>
+<span lang="pi" class="pali">
+‘asassato attā ca loko ca ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là thường còn và không thường còn...<br>
+<span lang="pi" class="pali">
+sassato ca asassato ca attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là không thường còn và không không thường còn...<br>
+<span lang="pi" class="pali">
+neva sassato nāsassato attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là do mình tự tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkato attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là do người khác tạo ra...<br>
+<span lang="pi" class="pali">
+paraṅkato attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là do mình tạo ra và do người khác tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkato ca paraṅkato ca attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là tự nhiên sanh, không do mình tự tạo ra, không do người khác tạo ra. Như vậy là đúng sự thực, ngoài ra sai lầm.<br>
+<span lang="pi" class="pali">
+asayaṅkāro aparaṅkāro adhiccasamuppanno attā ca loko ca, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là thường còn...<br>
+<span lang="pi" class="pali">
+‘Sassataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là vô thường...<br>
+<span lang="pi" class="pali">
+asassataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là thường còn và vô thường...<br>
+<span lang="pi" class="pali">
+sassatañca asassatañca sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là không thường còn và không vô thường<br>
+<span lang="pi" class="pali">
+nevasassataṃ nāsassataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là do tự mình tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là do người khác tạo ra...<br>
+<span lang="pi" class="pali">
+paraṅkataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là do tự mình tạo ra và do người khác tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkatañca paraṅkatañca sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là do tự nhiên sanh, không do mình tự tạo ra, không do người khác tạo ra. Như vậy là đúng sự thực, ngoài ra đều là sai lầm.’<br>
+<span lang="pi" class="pali">
+asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ sukhadukkhaṃ, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, những vị Sa-môn, Bà-la-môn nào có quan điểm như sau, có tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Tatra, cunda, ye te samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bản ngã và thế giới là thường còn, như vậy là đúng sự thật, ngoài ra đều là sai lầm’<br>
+<span lang="pi" class="pali">
+‘sassato attā ca loko ca, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta đến những vị ấy và nói:<br>
+<span lang="pi" class="pali">
+Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả có phải Hiền giả nói rằng:<br>
+<span lang="pi" class="pali">
+‘atthi nu kho idaṃ, āvuso, vuccati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bản ngã và thế giới là thường còn không?’<br>
+<span lang="pi" class="pali">
+“sassato attā ca loko cā”’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu các vị ấy trả lời:<br>
+<span lang="pi" class="pali">
+Yañca kho te evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy là đúng sự thật, ngoài ra đều là sai lầm,’<br>
+<span lang="pi" class="pali">
+‘idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thì Ta không chấp nhận như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ tesaṃ nānujānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có một số hữu tình có những tư tưởng sai khác.<br>
+<span lang="pi" class="pali">
+Aññathāsaññinopi hettha, cunda, santeke sattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ta cũng không xem quan điểm ấy ngang bằng quan điểm của Ta, chớ đừng nói cao hơn.<br>
+<span lang="pi" class="pali">
+Imāyapi kho ahaṃ, cunda, paññattiyā neva attanā samasamaṃ samanupassāmi kuto bhiyyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy ở đây Ta cao hơn về thượng trí.<br>
+<span lang="pi" class="pali">
+Atha kho ahameva tattha bhiyyo yadidaṃ adhipaññatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, những Sa-môn, Bà-la-môn nào có quan điểm như sau, có tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Tatra, cunda, ye te samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bản ngã và thế giới là không thường còn...<br>
+<span lang="pi" class="pali">
+‘asassato attā ca loko ca ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là thường còn và không thường còn...<br>
+<span lang="pi" class="pali">
+sassato ca asassato ca attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là không thường còn và không không thường còn...<br>
+<span lang="pi" class="pali">
+neva sassato nāsassato attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là do mình tự tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkato attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là do người khác tạo ra...<br>
+<span lang="pi" class="pali">
+paraṅkato attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là do mình tạo ra và do người khác tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkato ca paraṅkato ca attā ca loko ca ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã và thế giới là tự nhiên sanh, không do mình tự tạo ra, không do người khác tạo ra. Như vậy là đúng sự thực, ngoài ra sai lầm.<br>
+<span lang="pi" class="pali">
+asayaṅkāro aparaṅkāro adhiccasamuppanno attā ca loko ca, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là thường còn...<br>
+<span lang="pi" class="pali">
+sassataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là vô thường...<br>
+<span lang="pi" class="pali">
+asassataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là thường còn và vô thường...<br>
+<span lang="pi" class="pali">
+sassatañca asassatañca sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ không thường còn và không vô thường...<br>
+<span lang="pi" class="pali">
+nevasassataṃ nāsassataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là tự mình tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là tự người khác tạo ra...<br>
+<span lang="pi" class="pali">
+paraṅkataṃ sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là tự mình tạo ra và tự người khác tạo ra...<br>
+<span lang="pi" class="pali">
+sayaṅkatañca paraṅkatañca sukhadukkhaṃ ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là tự nhiên sanh, không tự mình tạo ra và không do người khác tạo ra. Như vậy là đúng sự thực, ngoài ra đều là sai lầm.<br>
+<span lang="pi" class="pali">
+asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ sukhadukkhaṃ, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta đến những vị ấy và nói:<br>
+<span lang="pi" class="pali">
+Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Hiền giả, có phải Hiền giả nói rằng:<br>
+<span lang="pi" class="pali">
+‘atthi nu kho idaṃ, āvuso, vuccati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lạc, khổ là tự nhiên sanh, không tự mình tạo ra và không do người khác tạo ra?<br>
+<span lang="pi" class="pali">
+“asayaṅkāraṃ aparaṅkāraṃ adhiccasamuppannaṃ sukhadukkhan”’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu các vị ấy trả lời:<br>
+<span lang="pi" class="pali">
+Yañca kho te evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Như vậy là đúng sự thực, ngoài ra đều là sai lầm!’<br>
+<span lang="pi" class="pali">
+‘idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thì Ta không chấp nhận như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ tesaṃ nānujānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có một số hữu tình có những ý tưởng sai khác.<br>
+<span lang="pi" class="pali">
+Aññathāsaññinopi hettha, cunda, santeke sattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda Ta cũng không xem quan điểm ấy ngang bằng quan điểm của Ta, chớ đừng nói cao hơn.<br>
+<span lang="pi" class="pali">
+Imāyapi kho ahaṃ, cunda, paññattiyā neva attanā samasamaṃ samanupassāmi kuto bhiyyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy ở đây Ta cao hơn về thượng trí.<br>
+<span lang="pi" class="pali">
+Atha kho ahameva tattha bhiyyo yadidaṃ adhipaññatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, những biện luận về các tà kiến liên hệ đến quá khứ tối sơ này, biện luận nào đáng nói cho các Ngươi, Ta đã nói cho các Ngươi.<br>
+<span lang="pi" class="pali">
+Ime kho te, cunda, pubbantasahagatā diṭṭhinissayā, ye vo mayā byākatā, yathā te byākātabbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn những biện luận nào không đáng nói cho các Ngươi, sao Ta lại sẽ nói cho các Ngươi?<br>
+<span lang="pi" class="pali">
+Yathā ca te na byākātabbā, kiṃ vo ahaṃ te tathā byākarissāmi?<br>
+</span>
+</p>
+
+
+
+<p lang="vi" class="vi">
+Này Cunda, thế nào là những biện luận về tà kiến liên hệ đến tương lai, những biện luận nào đáng nói cho các Ngươi, Ta đã nói cho các Ngươi; và những biện luận không đáng nói cho các Ngươi?<br>
+<span lang="pi" class="pali">
+Katame ca te, cunda, aparantasahagatā diṭṭhinissayā, ye vo mayā byākatā, yathā te byākātabbā. Yathā ca te na byākātabbā, kiṃ vo ahaṃ te tathā byākarissāmi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có một số Sa-môn, Bà-la-môn có những quan điểm như sau, có những tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Santi, cunda, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Bản ngã là có sắc, không bệnh, sau khi chết. Như vậy là đúng sự thật, ngoài ra là sai lầm!’<br>
+<span lang="pi" class="pali">
+‘rūpī attā hoti arogo paraṃ maraṇā, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lại nữa này Cunda, có một số Sa-môn, Bà-la-môn có những quan điểm như sau, có những tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Santi pana, cunda, eke samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là vô sắc...<br>
+<span lang="pi" class="pali">
+‘arūpī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là không có sắc và không vô sắc...<br>
+<span lang="pi" class="pali">
+rūpī ca arūpī ca attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là có tưởng...<br>
+<span lang="pi" class="pali">
+nevarūpī nārūpī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là vô tưởng...<br>
+<span lang="pi" class="pali">
+saññī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là có tưởng và vô tưởng...<br>
+<span lang="pi" class="pali">
+asaññī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là không có tưởng và không vô tưởng...<br>
+<span lang="pi" class="pali">
+nevasaññīnāsaññī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là đoạn diệt, biến hoại, sau khi chết không có tồn tại. Như vậy là đúng sự thật ngoài ra là sai lầm.’<br>
+<span lang="pi" class="pali">
+attā ucchijjati vinassati na hoti paraṃ maraṇā, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, những vị Sa-môn, Bà-la-môn nào có quan điểm như sau, có tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Tatra, cunda, ye te samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là có sắc, không bệnh sau khi chết. Như vậy là đúng sự thật, ngoài ra là sai lầm<br>
+<span lang="pi" class="pali">
+‘rūpī attā hoti arogo paraṃ maraṇā, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta đến những vị ấy và nói:<br>
+<span lang="pi" class="pali">
+Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả có phải Hiền giả có nói:<br>
+<span lang="pi" class="pali">
+‘atthi nu kho idaṃ, āvuso, vuccati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bản ngã là có sắc, không có bệnh sau khi chết”?’<br>
+<span lang="pi" class="pali">
+“rūpī attā hoti arogo paraṃ maraṇā”’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu các vị ấy trả lời: “Như vậy là đúng sự thật, ngoài ra là sai lầm”<br>
+<span lang="pi" class="pali">
+Yañca kho te evamāhaṃsu: ‘idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thì Ta không chấp nhận như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ tesaṃ nānujānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, vì có một số hữu tình có những tư tưởng sai khác.<br>
+<span lang="pi" class="pali">
+Aññathāsaññinopi hettha, cunda, santeke sattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, Ta cũng không xem quan điểm ấy ngang bằng quan điểm của Ta, chớ đừng nói cao hơn.<br>
+<span lang="pi" class="pali">
+Imāyapi kho ahaṃ, cunda, paññattiyā neva attanā samasamaṃ samanupassāmi kuto bhiyyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy ở đây, Ta cao hơn về thượng trí.<br>
+<span lang="pi" class="pali">
+Atha kho ahameva tattha bhiyyo yadidaṃ adhipaññatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, có những Sa-môn, Bà-la-môn có những quan điểm như sau, có những tri kiến như sau:<br>
+<span lang="pi" class="pali">
+Tatra, cunda, ye te samaṇabrāhmaṇā evaṃvādino evaṃdiṭṭhino:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là vô sắc...<br>
+<span lang="pi" class="pali">
+‘arūpī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là không có sắc và không vô sắc...<br>
+<span lang="pi" class="pali">
+rūpī ca arūpī ca attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là có tưởng...<br>
+<span lang="pi" class="pali">
+nevarūpī nārūpī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là vô tưởng...<br>
+<span lang="pi" class="pali">
+saññī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là có tưởng và vô tưởng...<br>
+<span lang="pi" class="pali">
+asaññī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là không có tưởng và không vô tưởng...<br>
+<span lang="pi" class="pali">
+nevasaññīnāsaññī attā hoti ...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bản ngã là đoạn diệt, biến hoại, sau khi chết không có tồn tại. Như vậy là đúng sự thật ngoài ra là sai lầm.’<br>
+<span lang="pi" class="pali">
+attā ucchijjati vinassati na hoti paraṃ maraṇā, idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta đến những vị ấy và nói:<br>
+<span lang="pi" class="pali">
+Tyāhaṃ upasaṅkamitvā evaṃ vadāmi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Hiền giả, có phải Hiền giả nói rằng:<br>
+<span lang="pi" class="pali">
+‘atthi nu kho idaṃ, āvuso, vuccati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bản ngã là đoạn diệt biến hoại, sau khi chết không có tồn tại”?’<br>
+<span lang="pi" class="pali">
+“attā ucchijjati vinassati na hoti paraṃ maraṇā”’ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, nếu những vị ấy nói: “Như vậy là đúng sự thật, ngoài ra là sai lầm!”<br>
+<span lang="pi" class="pali">
+Yañca kho te, cunda, evamāhaṃsu: ‘idameva saccaṃ moghamaññan’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thì Ta không chấp nhận như vậy.<br>
+<span lang="pi" class="pali">
+Taṃ tesaṃ nānujānāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tại sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì có một số hữu tình có những tư tưởng sai khác.<br>
+<span lang="pi" class="pali">
+Aññathāsaññinopi hettha, cunda, santeke sattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, Ta cũng không xem quan điểm ấy ngang bằng quan điểm của Ta chớ đừng nói cao hơn.<br>
+<span lang="pi" class="pali">
+Imāyapi kho ahaṃ, cunda, paññattiyā neva attanā samasamaṃ samanupassāmi, kuto bhiyyo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy ở đây, Ta cao hơn về thượng trí.<br>
+<span lang="pi" class="pali">
+Atha kho ahameva tattha bhiyyo yadidaṃ adhipaññatti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, những biện luận về những tà kiến liên hệ đến tương lai, những biện luận nào đáng nói cho các Ngươi, Ta đã nói cho các Ngươi.<br>
+<span lang="pi" class="pali">
+Ime kho te, cunda, aparantasahagatā diṭṭhinissayā, ye vo mayā byākatā, yathā te byākātabbā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Còn những biện luận nào không đáng nói cho các Ngươi, sao Ta lại sẽ nói cho các Ngươi?<br>
+<span lang="pi" class="pali">
+Yathā ca te na byākātabbā, kiṃ vo ahaṃ te tathā byākarissāmi?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, với mục đích đoạn trừ và vượt qua những biện luận về các tà kiến liên hệ đến quá khứ tối sơ này và các biện luận về các tà kiến liên hệ đến tương lai này, mà bốn pháp Niệm xứ được ta tuyên thuyết, trình bày.<br>
+<span lang="pi" class="pali">
+Imesañca, cunda, pubbantasahagatānaṃ diṭṭhinissayānaṃ imesañca aparantasahagatānaṃ diṭṭhinissayānaṃ pahānāya samatikkamāya evaṃ mayā cattāro satipaṭṭhānā desitā paññattā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế nào là bốn?<br>
+<span lang="pi" class="pali">
+Katame cattāro?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, ở đây vị Tỷ kheo sống quán thân trên thân, nhiệt tâm, tỉnh giác, chánh niệm, với mục đích nhiếp phục tham, sân ở đời.<br>
+<span lang="pi" class="pali">
+Idha, cunda, bhikkhu kāye kāyānupassī viharati ātāpī sampajāno satimā vineyya loke abhijjhādomanassaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sống quán thọ trên các cảm thọ...<br>
+<span lang="pi" class="pali">
+Vedanāsu vedanānupassī ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong các tâm...<br>
+<span lang="pi" class="pali">
+citte cittānupassī ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Quán pháp trên các pháp, nhiệt tâm, tỉnh giác, chánh niệm, với mục đích nhiệp phục tham ưu ở đời.<br>
+<span lang="pi" class="pali">
+dhammesu dhammānupassī viharati ātāpī sampajāno satimā, vineyya loke abhijjhādomanassaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này Cunda, với mục đích đoạn trừ và vượt qua các biện luận về các tà kiến liên hệ đến quá khứ tối sơ này và các biện luận về các tà kiến liên hệ đến tương lai này mà bốn Niệm xứ được Ta truyền thuyết trình bày.”<br>
+<span lang="pi" class="pali">
+Imesañca, cunda, pubbantasahagatānaṃ diṭṭhinissayānaṃ imesañca aparantasahagatānaṃ diṭṭhinissayānaṃ pahānāya samatikkamāya. Evaṃ mayā ime cattāro satipaṭṭhānā desitā paññattā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Tôn giả Upavāṇa đang đứng sau lưng hầu quạt Thế Tôn.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena āyasmā upavāṇo bhagavato piṭṭhito ṭhito hoti bhagavantaṃ bījayamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Upavāṇa bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā upavāṇo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật hy hữu thay, bạch Thế Tôn! Thật kỳ diệu thay, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">
+“acchariyaṃ, bhante, abbhutaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, pháp thoại này thật là thanh tịnh! Bạch Thế Tôn, pháp thoại này thật là tuyệt đối thanh tịnh! Bạch Thế Tôn, pháp thoại này tên là gì?”<br>
+<span lang="pi" class="pali">
+Pāsādiko vatāyaṃ, bhante, dhammapariyāyo; supāsādiko vatāyaṃ, bhante, dhammapariyāyo, ko nāmāyaṃ, bhante, dhammapariyāyo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Upavāṇa, pháp thoại này là Thanh tịnh (Pāsādika), hãy như vậy mà phụng trì.”<br>
+<span lang="pi" class="pali">
+“Tasmātiha tvaṃ, upavāṇa, imaṃ dhammapariyāyaṃ ‘pāsādiko’ tveva naṃ dhārehī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết dạy như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Upavāṇa hoan hỷ, tín thọ lời dạy của Thế Tôn.<br>
+<span lang="pi" class="pali">
+Attamano āyasmā upavāṇo bhagavato bhāsitaṃ abhinandīti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Dứt Kinh Thanh Tịnh.<br>
+<span lang="pi" class="pali">
+Pāsādikasuttaṃ niṭṭhitaṃ chaṭṭhaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./dn28.html#content"></a><a id="next-sutta" href="./dn30.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

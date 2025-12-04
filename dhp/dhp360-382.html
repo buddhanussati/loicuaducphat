@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Khuddaka Nikāya - Tiểu Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Dhammapada 360-382 </title>
+
+<p lang="vi" class="vi" style="text-align: center">
+Tiểu Bộ Kinh<br>
+<span lang="pi" class="pali">
+Khuddaka Nikāya<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Kinh Pháp Cú<br>
+<span lang="pi" class="pali">
+Dhammapada<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+XXV. Phẩm Tỷ Kheo<br>
+<span lang="pi" class="pali">
+25. Bhikkhuvaggo<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+360. "Lành thay, phòng hộ mắt!<br>
+Lành thay, phòng hộ tai.<br>
+Lành thay, phòng hộ mũi,<br>
+Lành thay, phòng hộ lưỡi."<br>
+<span lang="pi" class="pali">
+360. Cakkhunā saṃvaro sādhu,<br>
+sādhu sotena saṃvaro;<br>
+Ghānena saṃvaro sādhu,<br>
+sādhu jivhāya saṃvaro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+361. "Lành thay,phòng hộ thân!<br>
+Lành thay, phòng hộ lời,<br>
+Lành thay, phòng hộ ý.<br>
+Lành thay, phòng tất cả.<br>
+Tỷ kheo phòng tất cả.<br>
+Thoát được mọi khổ đau."<br>
+<span lang="pi" class="pali">
+361. Kāyena saṃvaro sādhu,<br>
+sādhu vācāya saṃvaro;<br>
+Manasā saṃvaro sādhu,<br>
+sādhu sabbattha saṃvaro;<br>
+Sabbattha saṃvuto bhikkhu,<br>
+sabbadukkhā pamuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+362. "Người chế ngự tay chân,<br>
+Chế ngự lời và đầu,<br>
+Vui thích nội thiền định.<br>
+Ðộc thân, biết vừa đủ,<br>
+Thật xứng gọi tỷ kheo."<br>
+<span lang="pi" class="pali">
+362. Hatthasaṃyato pādasaṃyato,<br>
+Vācāsaṃyato saṃyatuttamo;<br>
+Ajjhattarato samāhito,<br>
+Eko santusito tamāhu bhikkhuṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+363. "Tỷ kheo chế ngự miệng,<br>
+Vừa lời, không cống cao,<br>
+Khi trình bày pháp nghĩa,<br>
+Lời lẽ dịu ngọt ngào."<br>
+<span lang="pi" class="pali">
+363. Yo mukhasaṃyato bhikkhu,<br>
+mantabhāṇī anuddhato;<br>
+Atthaṃ dhammañca dīpeti,<br>
+madhuraṃ tassa bhāsitaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+364. "Vị tỷ kheo thích pháp,<br>
+Mến pháp, suy tư Pháp.<br>
+Tâm tư niệm chánh Pháp,<br>
+Không rời bỏ chánh Pháp."<br>
+<span lang="pi" class="pali">
+364. Dhammārāmo dhammarato,<br>
+dhammaṃ anuvicintayaṃ;<br>
+Dhammaṃ anussaraṃ bhikkhu,<br>
+saddhammā na parihāyati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+365. "Không khinh điều mình được,<br>
+Không ganh người khác được<br>
+Tỷ kheo ganh tị người,<br>
+Không sao chứng Thiền Ðịnh."<br>
+<span lang="pi" class="pali">
+365. Salābhaṃ nātimaññeyya,<br>
+nāññesaṃ pihayaṃ care;<br>
+Aññesaṃ pihayaṃ bhikkhu,<br>
+samādhiṃ nādhigacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+366. "Tỷ kheo dầu được ít,<br>
+Không khinh điều mình được,<br>
+Sống thanh tịnh không nhác,<br>
+Chư thiên khen vị này."<br>
+<span lang="pi" class="pali">
+366. Appalābhopi ce bhikkhu,<br>
+salābhaṃ nātimaññati;<br>
+Taṃ ve devā pasaṃsanti,<br>
+suddhājīviṃ atanditaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+367. "Hoàn toàn, đối danh sắc,<br>
+Không chấp Ta, của Ta.<br>
+Không chấp, không sầu não.<br>
+Thật xứng danh Tỷ kheo."<br>
+<span lang="pi" class="pali">
+367. Sabbaso nāmarūpasmiṃ,<br>
+yassa natthi mamāyitaṃ;<br>
+Asatā ca na socati,<br>
+sa ve "bhikkhū"ti vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+368. "Tỷ kheo trú từ bi,<br>
+Tín thành giáo Pháp Phật,<br>
+Chứng cảnh giới tịch tỉnh.<br>
+Các hạnh an tịnh lạc."<br>
+<span lang="pi" class="pali">
+368. Mettāvihārī yo bhikkhu,<br>
+pasanno buddhasāsane;<br>
+Adhigacche padaṃ santaṃ,<br>
+saṅkhārūpasamaṃ sukhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+369. "Tỷkheo, tát thuyền này,<br>
+Thuyền không, nhẹ đi mau.<br>
+Trừ tham, diệt sân hận,<br>
+Tất chứng đạt Niết-Bàn."<br>
+<span lang="pi" class="pali">
+369. Siñca bhikkhu imaṃ nāvaṃ,<br>
+sittā te lahumessati;<br>
+Chetvā rāgañca dosañca,<br>
+tato nibbānamehisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+370. "Ðoạn năm, từ bỏ năm<br>
+Tụ tập năm tối thượng<br>
+Tỷ kheo vượt năm ái<br>
+Xứng danh "Vượt bộc lưu"<br>
+<span lang="pi" class="pali">
+370. Pañca chinde pañca jahe,<br>
+pañca cuttari bhāvaye;<br>
+Pañca saṅgātigo bhikkhu,<br>
+"oghatiṇṇo"ti vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+371. "Tỷ kheo, hãy tu thiền,<br>
+Chớ buông lung phóng dật,<br>
+Tâm chớ đắm say dục,<br>
+Phóng dật, nuốt sắt nóng<br>
+Bị đốt, chớ than khổ!"<br>
+<span lang="pi" class="pali">
+371. Jhāya bhikkhu mā pamādo,<br>
+Mā te kāmaguṇe ramessu cittaṃ;<br>
+Mā lohaguḷaṃ gilī pamatto,<br>
+Mā kandi "dukkhamidan"ti dayhamāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+372. "Không trí tuệ, không thiền,<br>
+Không thiền, không trí tuệ.<br>
+Người có thiền có tuệ,<br>
+Nhất định gần Niết-Bàn."<br>
+<span lang="pi" class="pali">
+372. Natthi jhānaṃ apaññassa,<br>
+paññā natthi ajhāyato;<br>
+Yamhi jhānañca paññā ca,<br>
+sa ve nibbānasantike.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+373. "Bước vào ngôi nhà trống,<br>
+Tỷ kheo tâm an tịnh,<br>
+Thọ hưởng vui siêu nhân<br>
+Tịnh quán theo chánh pháp."<br>
+<span lang="pi" class="pali">
+373. Suññāgāraṃ paviṭṭhassa,<br>
+santacittassa bhikkhuno;<br>
+Amānusī rati hoti,<br>
+sammā dhammaṃ vipassato.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+374. "Người luôn luôn chánh niệm,<br>
+Sự sanh diệt các uẩn,<br>
+Ðược hoan hỷ, hân hoan,<br>
+Chỉ bậc bất tử biết."<br>
+<span lang="pi" class="pali">
+374. Yato yato sammasati,<br>
+khandhānaṃ udayabbayaṃ;<br>
+Labhatī pītipāmojjaṃ,<br>
+amataṃ taṃ vijānataṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+375. "Ðây Tỷ kheo có trí,<br>
+Tụ tập pháp căn bản<br>
+Hộ căn, biết vừa đủ,<br>
+Giữ gìn căn bản giới,<br>
+Thường gần gũi bạn lành,<br>
+Sống thanh tịnh tinh cần."<br>
+<span lang="pi" class="pali">
+375. Tatrāyamādi bhavati,<br>
+idha paññassa bhikkhuno;<br>
+Indriyagutti santuṭṭhi,<br>
+pātimokkhe ca saṃvaro.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+376. "Giao thiệp khéo thân thiện,<br>
+Cử chỉ mực đoan trang.<br>
+Do vậy hưởng vui nhiều,<br>
+Sẽ dứt mọi khổ đau."<br>
+<span lang="pi" class="pali">
+376. Mitte bhajassu kalyāṇe,<br>
+suddhājīve atandite;<br>
+Paṭisanthāravutyassa,<br>
+ācārakusalo siyā;<br>
+Tato pāmojjabahulo,<br>
+dukkhassantaṃ karissati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+377. "Như hoa Vassikà,<br>
+Quăng bỏ cánh úa tàn,<br>
+Cũng vậy vị Tỷ kheo,<br>
+Hãy giải thoát tham sân."<br>
+<span lang="pi" class="pali">
+377. Vassikā viya pupphāni,<br>
+maddavāni pamuñcati;<br>
+Evaṃ rāgañca dosañca,<br>
+vippamuñcetha bhikkhavo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+378. "Thân tịnh, lời an tịnh,<br>
+An tịnh, khéo thiền tịnh.<br>
+Tỷ kheo bỏ thế vật,<br>
+Xứng danh "bậc tịch tịnh ".<br>
+<span lang="pi" class="pali">
+378. Santakāyo santavāco,<br>
+santavā susamāhito;<br>
+Vantalokāmiso bhikkhu,<br>
+"upasanto"ti vuccati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+379. "Tự mình chỉ trích mình,<br>
+Tự mình dò xét mình,<br>
+Tỷ kheo tự phòng hộ<br>
+Chánh niệm, trú an lạc."<br>
+<span lang="pi" class="pali">
+379. Attanā codayattānaṃ,<br>
+paṭimaṃsetha attanā;<br>
+So attagutto satimā,<br>
+sukhaṃ bhikkhu vihāhisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+380. "Tự mình y chỉ mình,<br>
+Tự mình đi đến mình,<br>
+Vậy hãy tự điều phục,<br>
+Như khách buôn ngựa hiền."<br>
+<span lang="pi" class="pali">
+380. Attā hi attano nātho,<br>
+ko hi nātho paro siyā;<br>
+Attā hi attano gati,<br>
+tasmā saṃyamamattānaṃ;<br>
+Assaṃ bhadraṃva vāṇijo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+381. "Tỷ kheo nhiều hân hoan,<br>
+Tịnh tín giáo pháp Phật,<br>
+Chứng cảnh giới tịch tịnh,<br>
+Các hạnh an tịnh lạc."<br>
+<span lang="pi" class="pali">
+381. Pāmojjabahulo bhikkhu,<br>
+pasanno buddhasāsane;<br>
+Adhigacche padaṃ santaṃ,<br>
+saṅkhārūpasamaṃ sukhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+382. "Tỷ kheo tuy tuổi nhỏ<br>
+Siêng tu giáo pháp Phật,<br>
+Soi sáng thế gian này,<br>
+Như trăng thoát khỏi mây."<br>
+<span lang="pi" class="pali">
+382. Yo have daharo bhikkhu,<br>
+yuñjati buddhasāsane;<br>
+Somaṃ lokaṃ pabhāseti,<br>
+abbhā muttova candimā.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./dhp334-359.html#content"></a><a id="next-sutta" href="./dhp383-423.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 84          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 84<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 84<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Madhurā<br>
+<span lang="pi" class="pali">
+Madhurāsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Tôn giả Mahākaccāna (Ðại Ca-chiên-diên) trú ở Madhurā, tại rừng Gunda.<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ āyasmā mahākaccāno madhurāyaṃ viharati gundāvane.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vua Madhurā Avantiputta được nghe như sau:<br>
+<span lang="pi" class="pali">
+Assosi kho rājā mādhuro avantiputto:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sa-môn Mahākaccāna trú ở Madhurā, tại rừng Gunda.<br>
+<span lang="pi" class="pali">
+“samaṇo khalu, bho, kaccāno madhurāyaṃ viharati gundāvane.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tiếng đồn tốt đẹp sau đây được khởi lên về Tôn giả Kaccāna:<br>
+<span lang="pi" class="pali">
+Taṃ kho pana bhavantaṃ kaccānaṃ evaṃ kalyāṇo kittisaddo abbhuggato:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tôn giả là bậc Hiền giả, bậc Trí giả, thông minh, đa văn, nói năng lưu loát, nhà biện tài lão luyện, bậc trưởng thượng, bậc A-la-hán. ‘<br>
+<span lang="pi" class="pali">
+‘paṇḍito viyatto medhāvī bahussuto cittakathī kalyāṇapaṭibhāno vuddho ceva arahā ca’.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thật tốt lành thay được yết kiến một vị A-la-hán như vậy”.<br>
+<span lang="pi" class="pali">
+Sādhu kho pana tathārūpānaṃ arahataṃ dassanaṃ hotī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Madhurā Avantiputta cho thắng nhiều cỗ xe thù thắng, leo lên một cỗ xe thù thắng và đi ra khỏi Madhurā với uy vệ của bậc đại vương để yết kiến Tôn giả Mahākaccāna.<br>
+<span lang="pi" class="pali">
+Atha kho rājā mādhuro avantiputto bhadrāni bhadrāni yānāni yojāpetvā bhadraṃ yānaṃ abhiruhitvā bhadrehi bhadrehi yānehi madhurāya niyyāsi mahaccarājānubhāvena āyasmantaṃ mahākaccānaṃ dassanāya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vua đi xe cho đến chỗ còn có thể đi xe được, rồi xuống xe đi bộ đi đến chỗ Tôn giả Mahākaccāna, sau khi đến, nói lên những lời chào đón hỏi thăm với Tôn giả Mahākaccāna, sau khi nói lên những lời chào đón hỏi thăm thân hữu, rồi ngồi xuống một bên. Ngồi xuống một bên, vua Madhurā Avantiputta thưa với Tôn giả Mahākaccāna:<br>
+<span lang="pi" class="pali">
+Yāvatikā yānassa bhūmi yānena gantvā yānā paccorohitvā pattikova yenāyasmā mahākaccāno tenupasaṅkami; upasaṅkamitvā āyasmatā mahākaccānena saddhiṃ sammodi. Sammodanīyaṃ kathaṃ sāraṇīyaṃ vītisāretvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho rājā mādhuro avantiputto āyasmantaṃ mahākaccānaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, các vị Bà-la-môn đã nói như sau:<br>
+<span lang="pi" class="pali">
+“brāhmaṇā, bho kaccāna, evamāhaṃsu:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là chủng tánh tối thượng, các chủng tánh khác là hạ liệt;<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là bạch chủng, các chủng tánh khác là hắc chủng;<br>
+<span lang="pi" class="pali">
+brāhmaṇova sukko vaṇṇo, kaṇho añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là thanh tịnh, các chủng tánh phi Bà-la-môn không như vậy;<br>
+<span lang="pi" class="pali">
+brāhmaṇāva sujjhanti, no abrāhmaṇā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+các Bà-la-môn là con Phạm thiên. Các Bà-la-môn là con chính tông của Phạm thiên, sanh ra từ miệng, sanh ra từ Phạm thiên, tạo tác bởi Phạm thiên, thừa tự Phạm thiên.’<br>
+<span lang="pi" class="pali">
+brāhmaṇāva brahmuno puttā orasā mukhato jātā brahmajā brahmanimmitā brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Tôn giả Kaccāna đã nói gì?”<br>
+<span lang="pi" class="pali">
+Idha bhavaṃ kaccāno kimakkhāyī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, đây chỉ là một âm thanh ở đời (câu nói):<br>
+<span lang="pi" class="pali">
+“Ghosoyeva kho eso, mahārāja, lokasmiṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là chủng tánh tối thượng, chủng tánh khác là hạ liệt;<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là bạch chủng, các chủng tánh khác là hắc chủng;<br>
+<span lang="pi" class="pali">
+brāhmaṇova sukko vaṇṇo, kaṇho añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là thanh tịnh, các chủng tánh phi Bà-la-môn không như vậy.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva sujjhanti, no abrāhmaṇā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Bà-la-môn là con Phạm thiên. Các Bà-la-môn là con chính tông của Phạm thiên sanh ra từ miệng, sanh ra từ Phạm thiên, tạo tác bởi Phạm thiên, thừa tự Phạm thiên”.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva brahmuno puttā orasā mukhato jātā brahmajā brahmanimmitā brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðây chỉ là một pháp môn, với pháp môn này cần được hiểu như là một âm thanh ở đời. (Câu nói):<br>
+<span lang="pi" class="pali">
+Tadamināpetaṃ, mahārāja, pariyāyena veditabbaṃ yathā ghosoyeveso lokasmiṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là chủng tánh tối thượng, các chủng tánh khác là hạ liệt… thừa tự Phạm thiên’.<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có người Khattiya (Sát-đế-lị) sống sung túc với tài sản, ngũ cốc, vàng hay bạc, người ấy có thể có một người Khattiya khác là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái;<br>
+<span lang="pi" class="pali">
+khattiyassa cepi ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā khattiyopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một vị Bà-la-môn,<br>
+<span lang="pi" class="pali">
+brāhmaṇopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một vị Vessa (Tỳ-xá, Phệ-xá)<br>
+<span lang="pi" class="pali">
+vessopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một Sudda (Thủ-đà) là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái?”<br>
+<span lang="pi" class="pali">
+suddopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, nếu có người Khattiya sống sung túc với tài sản, ngũ cốc, vàng hay bạc, người ấy có thể có một người Khattiya khác là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái; …<br>
+<span lang="pi" class="pali">
+“Khattiyassa cepi, bho kaccāna, ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā khattiyopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+người ấy cũng có thể có một người Bà-la-môn, …<br>
+<span lang="pi" class="pali">
+brāhmaṇopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một Vessa, …<br>
+<span lang="pi" class="pali">
+vessopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một người Sudda là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái.<br>
+<span lang="pi" class="pali">
+suddopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu có một Bà-la-môn sống sung túc với tài sản, ngũ cốc, vàng hay bạc, người ấy có thể có một người Bà-la-môn khác là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái;  …<br>
+<span lang="pi" class="pali">
+brāhmaṇassa cepi ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā brāhmaṇopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một vị Vessa, …<br>
+<span lang="pi" class="pali">
+vessopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một người Sudda …<br>
+<span lang="pi" class="pali">
+suddopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một vị Khattiya, là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái?<br>
+<span lang="pi" class="pali">
+khattiyopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, nếu có người Bà-la-môn sống sung túc với tài sản, ngũ cốc, vàng hay bạc, người ấy có thể có một người Bà-la-môn khác là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái;<br>
+<span lang="pi" class="pali">
+“Brāhmaṇassa cepi, bho kaccāna, ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā brāhmaṇopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một vị Vessa, …<br>
+<span lang="pi" class="pali">
+vessopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một vị Sudda …<br>
+<span lang="pi" class="pali">
+suddopissāssa …<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+hay người ấy có thể có một vị Khattiya, là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái.<br>
+<span lang="pi" class="pali">
+khattiyopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào? Nếu có một Vessa sống sung túc với tài sản, ngũ cốc, vàng hay bạc, người ấy có thể có một người Vessa khác là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng người, lời nói kính ái; hay người ấy có thể có một Khattiya hay người ấy có thể có một Bà-la-môn, hay người ấy có thể có một Sudda là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja, vessassa cepi ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā vessopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī … suddopissāssa … khattiyopissāssa … brāhmaṇopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, nếu có người Vessa sống sung túc với tài sản, ngũ cốc, vàng hay bạc; người ấy có thể có một người Vessa khác là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái; hay người ấy có thể có một người Khattiya, hay người ấy có thể có một người Bà-la-môn, hay người ấy có thể có một người Sudda là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái.”<br>
+<span lang="pi" class="pali">
+“Vessassa cepi, bho kaccāna, ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā vessopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī … suddopissāssa … khattiyopissāssa …<br>
+brāhmaṇopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào? Nếu có người Sudda sống sung túc với tài sản, ngũ cốc, vàng hay bạc, người ấy có thể có một người Sudda khác, là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái; hay người ấy có thể có một Khattiya, hay người ấy có thể có một người Bà-la-môn, hay người ấy có thể có một người Vessa là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái?”<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja, suddassa cepi ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā suddopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī … khattiyopissāssa … brāhmaṇopissāssa … vessopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, nếu có người Sudda sống sung túc với tài sản, ngũ cốc, vàng hay bạc, người ấy có thể có một người Sudda khác là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái; hay người ấy có thể có một Khattiya, hay người ấy có thể có một Bà-la-môn, hay người ấy có thể có một người Vessa là người hầu hạ trung thành, dậy sớm, thức khuya, thi hành mọi mệnh lệnh của chủ, làm đẹp lòng mọi người, lời nói kính ái.”<br>
+<span lang="pi" class="pali">
+“Suddassa cepi, bho kaccāna, ijjheyya dhanena vā dhaññena vā rajatena vā jātarūpena vā suddopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādīti … khattiyopissāssa … brāhmaṇopissāssa … vessopissāssa pubbuṭṭhāyī pacchānipātī kiṅkārapaṭissāvī manāpacārī piyavādī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự tình là như vậy, thời bốn chủng tánh này là đồng đẳng, hay không đồng đẳng? V<br>
+<span lang="pi" class="pali">
+yadi evaṃ sante, ime cattāro vaṇṇā samasamā honti no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và ở đây Ðại vương có ý nghĩ như thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vậy, thưa Tôn giả Kaccāna, nếu sự tình là như vậy thời bốn chủng tánh này là đồng đẳng.<br>
+<span lang="pi" class="pali">
+“Addhā kho, bho kaccāna, evaṃ sante, ime cattāro vaṇṇā samasamā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, tôi không thấy có sự sai biệt gì.”<br>
+<span lang="pi" class="pali">
+Nesaṃ ettha kiñci nānākaraṇaṃ samanupassāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do pháp môn này, thưa Ðại vương, vấn đề này cần phải được hiểu như âm thanh ở trên đời (câu nói):<br>
+<span lang="pi" class="pali">
+“Imināpi kho etaṃ, mahārāja, pariyāyena veditabbaṃ yathā ghosoyeveso lokasmiṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là chủng tánh tối thượng, các chủng tánh khác là hạ liệt… thừa tự Phạm thiên.’<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, có người Khattiya sát sanh, lấy của không cho, tà hạnh trong dâm dục, nói láo, nói hai lưỡi, nói lời độc ác, nói lời phù phiếm, tham dục, sân hận, tà kiến, sau khi thân hoại mạng chung, người ấy có sanh vào cõi dữ, ác thú, đọa xứ, địa ngục không, hay không phải thác sanh?<br>
+<span lang="pi" class="pali">
+idhassa khattiyo pāṇātipātī adinnādāyī kāmesumicchācārī musāvādī pisuṇavāco pharusavāco samphappalāpī abhijjhālu byāpannacitto micchādiṭṭhi kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyya no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay ở đây Ðại vương nghĩ thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Người Khattiya, thưa Tôn giả Kaccāna, sát sanh, lấy của không cho, tà hạnh trong dâm dục, nói láo, nói hai lưỡi, nói lời độc ác, nói lời phù phiếm, tham dục, sân hận, tà kiến, sau khi thân hoại mạng chung, người ấy có thể sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+“Khattiyopi hi, bho kaccāna, pāṇātipātī adinnādāyī kāmesumicchācārī musāvādī pisuṇavāco pharusavāco samphappalāpī abhijjhālu byāpannacitto micchādiṭṭhi kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, đối với tôi là vậy, và như vậy là điều tôi đã nghe từ các vị A-la-hán.”<br>
+<span lang="pi" class="pali">
+Evaṃ me ettha hoti, evañca pana me etaṃ arahataṃ sutan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay! lành thay, thưa Ðại vương! Lành thay Ðại vương!<br>
+<span lang="pi" class="pali">
+“Sādhu sādhu, mahārāja.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, đối với Ðại vương là vậy, và lành thay như vậy là điều Ðại vương đã được nghe từ các vị A-la-hán.<br>
+<span lang="pi" class="pali">
+Sādhu kho te etaṃ, mahārāja, evaṃ hoti, sādhu ca pana te etaṃ arahataṃ sutaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, có người Bà-la-môn; …<br>
+<span lang="pi" class="pali">
+idhassa brāhmaṇo ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ở đây, có người Vessa; …<br>
+<span lang="pi" class="pali">
+idhassa vesso ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+ở đây, có người Sudda sát sanh, lấy của không cho, tà hạnh trong dâm dục, nói láo, nói hai lưỡi, nói lời độc ác, nói lời phù phiếm, tham dục, sân hận, tà kiến sau khi thân hoại mạng chung, có sanh vào cõi dữ, ác thú, đọa xứ, địa ngục không, hay không phải thác sanh?<br>
+<span lang="pi" class="pali">
+idhassa suddo pāṇātipātī adinnādāyī ...pe... micchādiṭṭhi kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyya no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay ở đây, Ðại vương nghĩ thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Người Sudda, thưa Tôn giả Kaccāna, sát sanh, lấy của không cho, tà hạnh trong các dục, nói láo, nói hai lưỡi, nói lời ác ngữ, nói lời phù phiếm, tham dục, sân hận, tà kiến, sau khi thân hoại mạng chung, có thể sanh vào cõi dữ, ác thú, đọa xứ, địa ngục.<br>
+<span lang="pi" class="pali">
+“Suddopi hi, bho kaccāna, pāṇātipātī adinnādāyī ...pe... micchādiṭṭhi kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, đối với tôi là vậy, và như vậy là điều tôi đã nghe từ các vị A-la-hán.”<br>
+<span lang="pi" class="pali">
+Evaṃ me ettha hoti, evañca pana me etaṃ arahataṃ sutan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, lành thay, thưa Ðại vương! Lành thay, Ðại vương!<br>
+<span lang="pi" class="pali">
+“Sādhu sādhu, mahārāja.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, đối với Ðại vương là vậy, và lành thay như vậy là điều Ðại vương đã được nghe từ các vị A-la-hán.<br>
+<span lang="pi" class="pali">
+Sādhu kho te etaṃ, mahārāja, evaṃ hoti, sādhu ca pana te etaṃ arahataṃ sutaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự tình là như vậy, thời bốn chủng tánh này là đồng đẳng, hay không đồng đẳng?<br>
+<span lang="pi" class="pali">
+yadi evaṃ sante, ime cattāro vaṇṇā samasamā honti no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và ở đây, Ðại vương có ý nghĩ như thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vậy, thưa Tôn giả Kaccāna, nếu sự tình là như vậy thời bốn chủng tánh này là đồng đẳng.<br>
+<span lang="pi" class="pali">
+“Addhā kho, bho kaccāna, evaṃ sante, ime cattāro vaṇṇā samasamā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, tôi không thấy có sự sai biệt gì.”<br>
+<span lang="pi" class="pali">
+Nesaṃ ettha kiñci nānākaraṇaṃ samanupassāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do pháp môn này, thưa Ðại vương, vấn đề này cần phải được hiểu như âm thanh ở trên đời, (câu nói): “Chỉ có Bà-la-môn là chủng tánh tối thượng, các chủng tánh khác là hạ liệt… thừa tự Phạm thiên.”<br>
+<span lang="pi" class="pali">
+“Imināpi kho etaṃ, mahārāja, pariyāyena veditabbaṃ yathā ghosoyeveso lokasmiṃ: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, có người Khattiya từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ tà hạnh trong các dục, từ bỏ nói láo, từ bỏ nói hai lưỡi, từ bỏ nói lời độc ác, từ bỏ nói lời phù phiếm, từ bỏ tham dục, từ bỏ sân hận, có chánh kiến, sau khi thân hoại mạng chung, người ấy có thể sanh lên thiện thú, Thiên giới, cõi đời này không, hay không thể thác sanh?<br>
+<span lang="pi" class="pali">
+idhassa khattiyo pāṇātipātā paṭivirato, adinnādānā paṭivirato, kāmesumicchācārā paṭivirato, musāvādā paṭivirato, pisuṇāya vācāya paṭivirato, pharusāya vācāya paṭivirato, samphappalāpā paṭivirato, anabhijjhālu abyāpannacitto sammādiṭṭhi kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjeyya no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay ở đây, Ðại vương nghĩ thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Người Khattiya, thưa Tôn giả Kaccāna, từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ tà hạnh trong các dục, từ bỏ nói láo, từ bỏ nói hai lưỡi, từ bỏ nói lời độc ác, từ bỏ nói lời phù phiếm, từ bỏ tham dục, từ bỏ sân hận, theo chánh kiến, sau khi thân hoại mang chung, người ấy có thể sanh lên thiện thú, Thiên giới, cõi đời này.<br>
+<span lang="pi" class="pali">
+“Khattiyopi hi, bho kaccāna, pāṇātipātā paṭivirato, adinnādānā paṭivirato, kāmesumicchācārā paṭivirato, musāvādā paṭivirato, pisuṇāya vācāya paṭivirato, pharusāya vācāya paṭivirato, samphappalāpā paṭivirato, anabhijjhālu abyāpannacitto sammādiṭṭhi kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, đối với tôi là vậy và như vậy là điều tôi đã nghe từ các vị A-la-hán.”<br>
+<span lang="pi" class="pali">
+Evaṃ me ettha hoti, evañca pana me etaṃ arahataṃ sutan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, lành thay, thưa Ðại vương!<br>
+<span lang="pi" class="pali">
+“Sādhu sādhu, mahārāja.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lành thay, Ðại vương. Ở đây, đối với Ðại vương là vậy, và lành thay như vậy là điều Ðại vương đã được nghe từ các vị A-la-hán.<br>
+<span lang="pi" class="pali">
+Sādhu kho te etaṃ, mahārāja, evaṃ hoti, sādhu ca pana te etaṃ arahataṃ sutaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, nếu có vị Bà-la-môn, ở đây nếu có vị Vessa, ở đây nếu có vị Sudda từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ tà hạnh trong các dục, từ bỏ nói láo, từ bỏ nói hai lưỡi, từ bỏ nói lời độc ác, từ bỏ nói lời phù phiếm, từ bỏ tham dục, từ bỏ sân hận, theo chánh kiến, sau khi thân hoại mạng chung, người ấy có thể sanh thiện thú, Thiên giới, cõi đời này hay không, hay không thể thác sanh?<br>
+<span lang="pi" class="pali">
+idhassa brāhmaṇo, idhassa vesso, idhassa suddo pāṇātipātā paṭivirato adinnādānā paṭivirato ...pe... sammādiṭṭhi kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjeyya no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay ở đây, Ðại vương nghĩ thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Người Sudda, thưa Tôn giả Kaccāna, từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ tà hạnh trong các dục, từ bỏ nói láo, từ bỏ nói hai lưỡi, từ bỏ nói lời độc ác, từ bỏ nói lời phù phiếm, từ bỏ tham dục, từ bỏ sân hận, theo chánh kiến, sau khi thân hoại mạng chung, người ấy có thể sanh lên thiện thú, Thiên giới, cõi đời này.<br>
+<span lang="pi" class="pali">
+“Suddopi hi, bho kaccāna, pāṇātipātā paṭivirato, adinnādānā paṭivirato ...pe... sammādiṭṭhi kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapajjeyya.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, đối với tôi là vậy; và như vậy là điều tôi đã nghe từ các vị A-la-hán.”<br>
+<span lang="pi" class="pali">
+Evaṃ me ettha hoti, evañca pana me etaṃ arahataṃ sutan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Lành thay, lành thay, thưa Ðại vương!<br>
+<span lang="pi" class="pali">
+“Sādhu sādhu, mahārāja.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lành thay, Ðại vương! Ở đây, đối với Ðại vương là vậy, và lành thay như vậy là điều Ðại vương đã được nghe từ các vị A-la-hán.<br>
+<span lang="pi" class="pali">
+Sādhu kho te etaṃ, mahārāja, evaṃ hoti, sādhu ca pana te etaṃ arahataṃ sutaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự tình là như vậy, thời bốn chủng tánh này là đồng đẳng hay không đồng đẳng?<br>
+<span lang="pi" class="pali">
+yadi evaṃ sante, ime cattāro vaṇṇā samasamā honti no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và ở đây, Ðại vương có ý nghĩ thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vậy thưa Tôn giả Kaccāna, nếu sự tình là như vậy, thời bốn chủng tánh này là đồng đẳng.<br>
+<span lang="pi" class="pali">
+“Addhā kho, bho kaccāna, evaṃ sante, ime cattāro vaṇṇā samasamā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, tôi không thấy có sự sai biệt gì.”<br>
+<span lang="pi" class="pali">
+Nesaṃ ettha kiñci nānākaraṇaṃ samanupassāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do pháp môn này, thưa Ðại vương, vấn đề này cần phải được hiểu như âm thanh ở trên đời, (câu nói): ‘Chỉ có Bà-la-môn là chủng tánh tối thượng, các chủng tánh khác là hạ liệt… là thừa tự Phạm thiên.’”<br>
+<span lang="pi" class="pali">
+“Imināpi kho etaṃ, mahārāja, pariyāyena veditabbaṃ yathā ghosoyeveso lokasmiṃ: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, vị Khattiya đột nhập nhà cửa, cướp giật đồ đạc, hành động như kẻ cướp, phục kích các đường lớn hay tư thông vợ người. Và nếu có người bắt người ấy và dẫn người ấy đến trước mặt Ðại vương và thưa:<br>
+<span lang="pi" class="pali">
+idha khattiyo sandhiṃ vā chindeyya, nillopaṃ vā hareyya, ekāgārikaṃ vā kareyya, paripanthe vā tiṭṭheyya, paradāraṃ vā gaccheyya, tañce te purisā gahetvā dasseyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, đây là kẻ ăn trộm đã làm hại đến Ðại vương.<br>
+<span lang="pi" class="pali">
+‘ayaṃ te, deva, coro āgucārī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Ðại vương muốn, hãy hình phạt nó’.<br>
+<span lang="pi" class="pali">
+Imassa yaṃ icchasi taṃ daṇḍaṃ paṇehī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay Ðại vương đối xử người ấy như thế nào?”<br>
+<span lang="pi" class="pali">
+Kinti naṃ kareyyāsī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, chúng tôi sẽ chém giết người ấy, hay chúng tôi sẽ tra tấn người ấy, chúng tôi sẽ tẩn xuất người ấy hay chúng tôi sẽ áp dụng hình phạt tùy theo tội trạng.<br>
+<span lang="pi" class="pali">
+“Ghāteyyāma vā, bho kaccāna, jāpeyyāma vā pabbājeyyāma vā yathāpaccayaṃ vā kareyyāma.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, danh xưng Khattiya mà xưa kia người ấy được gọi đã biến mất. Nay người ấy chỉ được gọi là tên ăn trộm.”<br>
+<span lang="pi" class="pali">
+Yā hissa, bho kaccāna, pubbe ‘khattiyo’ti samaññā sāssa antarahitā; corotveva saṅkhyaṃ gacchatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, người Bà-la-môn; ở đây, người Vessa; ở đây, người Sudda đột nhập nhà cửa, hay cướp giật đồ đạc, hay hành động kẻ cướp, hay phục kích các đường lớn, hay tư thông vợ người. Và nếu có người bắt người ấy, dẫn người ấy đến trước mặt Ðại vương và thưa:<br>
+<span lang="pi" class="pali">
+idha brāhmaṇo, idha vesso, idha suddo sandhiṃ vā chindeyya, nillopaṃ vā hareyya, ekāgārikaṃ vā kareyya, paripanthe vā tiṭṭheyya, paradāraṃ vā gaccheyya, tañce te purisā gahetvā dasseyyuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Tâu Ðại vương, đây là kẻ ăn trộm đã làm hại đến Ðại vương.<br>
+<span lang="pi" class="pali">
+‘ayaṃ te, deva, coro āgucārī.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu Ðại vương muốn, hãy hình phạt nó’.<br>
+<span lang="pi" class="pali">
+Imassa yaṃ icchasi taṃ daṇḍaṃ paṇehī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Hay Ðại vương đối xử với nó như thế nào?”<br>
+<span lang="pi" class="pali">
+Kinti naṃ kareyyāsī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, chúng tôi sẽ chém giết người ấy hay chúng tôi sẽ tra tấn người ấy, hay chúng tôi sẽ tẩn xuất người ấy, hay chúng tôi sẽ áp dụng hình phạt tùy theo tội trạng.<br>
+<span lang="pi" class="pali">
+“Ghāteyyāma vā, bho kaccāna, jāpeyyāma vā pabbājeyyāma vā yathāpaccayaṃ vā kareyyāma.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, danh xưng Sudda mà xưa kia người ấy được gọi đã biến mất. Nay người ấy chỉ được gọi là tên ăn trộm.”<br>
+<span lang="pi" class="pali">
+Yā hissa, bho kaccāna, pubbe ‘suddo’ti samaññā sāssa antarahitā; corotveva saṅkhyaṃ gacchatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự tình là như vậy, thời bốn chủng tánh này là đồng đẳng hay không đồng đẳng?<br>
+<span lang="pi" class="pali">
+yadi evaṃ sante, ime cattāro vaṇṇā samasamā honti no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và ở đây, Ðại vương có ý nghĩ gì?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vậy, thưa Tôn giả Kaccāna, nếu sự tình là như vậy, thời bốn chủng tánh này là đồng đẳng.<br>
+<span lang="pi" class="pali">
+“Addhā kho, bho kaccāna, evaṃ sante, ime cattāro vaṇṇā samasamā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, tôi không thấy có sự sai biệt gì.”<br>
+<span lang="pi" class="pali">
+Nesaṃ ettha kiñci nānākaraṇaṃ samanupassāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do pháp môn này, thưa Ðại vương, vấn đề này cần phải được hiểu như âm thanh ở trên đời, (câu nói): ‘Chỉ có Bà-la-môn là chủng tánh tối thượng, các chủng tánh khác là hạ liệt… là thừa tự Phạm thiên’”.<br>
+<span lang="pi" class="pali">
+“Imināpi kho etaṃ, mahārāja, pariyāyena veditabbaṃ yathā ghosoyeveso lokasmiṃ: ‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo ...pe... brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, vị Khattiya, sau khi cạo bỏ râu tóc, đắp áo cà-sa, xuất gia từ bỏ gia đình, sống không gia đình, từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ nói láo, chỉ ăn một bữa, sống Phạm hạnh, trì giới luật, trì thiện pháp;<br>
+<span lang="pi" class="pali">
+idha khattiyo kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajito assa virato pāṇātipātā, virato adinnādānā, virato musāvādā, rattūparato, ekabhattiko, brahmacārī, sīlavā, kalyāṇadhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương đối xử với vị ấy như thế nào?”<br>
+<span lang="pi" class="pali">
+Kinti naṃ kareyyāsī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, tôi sẽ đảnh lễ hay đứng dậy, hay mời chỗ ngồi, hay cúng dường vị ấy bốn loại đồ dùng như y phục, ẩm thực, sàng tọa, y dược trị bệnh, hay chúng tôi sắp đặt sự bảo vệ hộ trì, che chở đúng pháp.<br>
+<span lang="pi" class="pali">
+“Abhivādeyyāma vā, bho kaccāna, paccuṭṭheyyāma vā āsanena vā nimanteyyāma abhinimanteyyāma vā naṃ cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārehi dhammikaṃ vā assa rakkhāvaraṇaguttiṃ saṃvidaheyyāma.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, danh xưng Sudda mà xưa kia vị ấy được gọi đã biến mất. Nay vị ấy chỉ được gọi là một vị Sa-môn.”<br>
+<span lang="pi" class="pali">
+Yā hissa, bho kaccāna, pubbe ‘khattiyo’ti samaññā sāssa antarahitā; samaṇotveva saṅkhyaṃ gacchatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, người Bà-la-môn, ở đây người Vessa, ở đây người Sudda sau khi cạo bỏ râu tóc, đắp áo cà-sa, xuất gia từ bỏ gia đình, sống không gia đình, từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ nói láo, ăn một ngày một bữa, sống Phạm hạnh, trì giới luật, trì thiện pháp;<br>
+<span lang="pi" class="pali">
+idha brāhmaṇo, idha vesso, idha suddo kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajito assa virato pāṇātipātā, virato adinnādānā virato musāvādā, rattūparato, ekabhattiko, brahmacārī, sīlavā, kalyāṇadhammo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương đối xử với vị ấy như thế nào?”<br>
+<span lang="pi" class="pali">
+Kinti naṃ kareyyāsī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, tôi sẽ đảnh lễ, hay đứng dậy, hay mời chỗ ngồi, hay cúng dường vị ấy bốn loại đồ dùng, như y phục, ẩm thực, sàng tọa, y dược trị bệnh, hay chúng tôi sắp đặt sự bảo vệ, hộ trì, che chở đúng pháp.<br>
+<span lang="pi" class="pali">
+“Abhivādeyyāma vā, bho kaccāna, paccuṭṭheyyāma vā āsanena vā nimanteyyāma abhinimanteyyāma vā naṃ cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārehi dhammikaṃ vā assa rakkhāvaraṇaguttiṃ saṃvidaheyyāma.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì sao vậy?<br>
+<span lang="pi" class="pali">
+Taṃ kissa hetu?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, danh xưng Sudda mà xưa kia vị ấy được gọi đã biến mất. Nay vị ấy chỉ được gọi là một vị Sa-môn.”<br>
+<span lang="pi" class="pali">
+Yā hissa, bho kaccāna, pubbe ‘suddo’ti samaññā sāssa antarahitā; samaṇotveva saṅkhyaṃ gacchatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương nghĩ thế nào?<br>
+<span lang="pi" class="pali">
+“Taṃ kiṃ maññasi, mahārāja,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nếu sự tình là như vậy, thời bốn chủng tánh này là đổng đẳng hay không đồng đẳng?<br>
+<span lang="pi" class="pali">
+yadi evaṃ sante, ime cattāro vaṇṇā samasamā honti no vā?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Ðại vương, ở đây, Ðại vương có ý nghĩ thế nào?”<br>
+<span lang="pi" class="pali">
+Kathaṃ vā te ettha hotī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vậy, thưa Tôn giả Kaccāna, nếu sự tình là như vậy, thời bốn chủng tánh này là đồng đẳng.<br>
+<span lang="pi" class="pali">
+“Addhā kho, bho kaccāna, evaṃ sante, ime cattāro vaṇṇā samasamā honti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, tôi không thấy có sự sai biệt gì.”<br>
+<span lang="pi" class="pali">
+Nesaṃ ettha kiñci nānākaraṇaṃ samanupassāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do pháp môn này, thưa Ðại vương, vấn đề này cần phải hiểu như âm thanh ở trên đời, (câu nói):<br>
+<span lang="pi" class="pali">
+“Imināpi kho etaṃ, mahārāja, pariyāyena veditabbaṃ yathā ghosoyeveso lokasmiṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Chỉ có Bà-la-môn là chủng tánh tối thượng, các chủng tánh khác là hạ liệt;<br>
+<span lang="pi" class="pali">
+‘brāhmaṇova seṭṭho vaṇṇo, hīno añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là bạch chủng, các chủng tánh khác là hắc chủng,<br>
+<span lang="pi" class="pali">
+brāhmaṇova sukko vaṇṇo, kaṇho añño vaṇṇo;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+chỉ có Bà-la-môn là thanh tịnh, các chủng tánh phi Bà-la-môn không phải như vậy.<br>
+<span lang="pi" class="pali">
+brāhmaṇāva sujjhanti, no abrāhmaṇā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Bà-la-môn là con Phạm thiên. Các Bà-la-môn là con chính tông của Phạm thiên, sanh ra từ miệng, sanh ra từ Phạm thiên, thừa tự Phạm thiên.’”<br>
+<span lang="pi" class="pali">
+brāhmaṇāva brahmuno puttā orasā mukhato jātā brahmajā brahmanimmitā brahmadāyādā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi được nói vậy, vua Madhurā Avantiputta thưa với Tôn giả Mahākaccāna:<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, rājā mādhuro avantiputto āyasmantaṃ mahākaccānaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, Tôn giả Kaccāna! Thật vi diệu thay, Tôn giả Kaccāna!<br>
+<span lang="pi" class="pali">
+“abhikkantaṃ, bho kaccāna, abhikkantaṃ, bho kaccāna.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như người dựng đứng lại những gì bị quăng ngã xuống, phơi bày ra những gì bị che kín, chỉ đường cho những người đi lạc hướng, đem đèn sáng vào trong bóng tối để những ai có mắt có thể thấy sắc; cũng vậy, Chánh pháp đã được Tôn giả Kaccāna dùng nhiều phương tiện trình bày, giải thích.<br>
+<span lang="pi" class="pali">
+Seyyathāpi, bho kaccāna, nikkujjitaṃ vā ukkujjeyya, paṭicchannaṃ vā vivareyya, mūḷhassa vā maggaṃ ācikkheyya, andhakāre vā telapajjotaṃ dhāreyya ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṃ bhotā kaccānena anekapariyāyena dhammo pakāsito.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con xin quy y Tôn giả Kaccāna, quy y Pháp, quy y Tỷ-kheo Tăng.<br>
+<span lang="pi" class="pali">
+Esāhaṃ bhavantaṃ kaccānaṃ saraṇaṃ gacchāmi dhammañca bhikkhusaṅghañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong Tôn giả Kaccāna nhận con làm cư sĩ, từ nay cho đến mạng chung, con trọn đời quy ngưỡng.”<br>
+<span lang="pi" class="pali">
+Upāsakaṃ maṃ bhavaṃ kaccāno dhāretu ajjatagge pāṇupetaṃ saraṇaṃ gatan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, Ðại vương chớ có quy y tôi,<br>
+<span lang="pi" class="pali">
+“Mā kho maṃ tvaṃ, mahārāja, saraṇaṃ agamāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương hãy quy y Thế Tôn, chính tôi đã quy y Thế Tôn.”<br>
+<span lang="pi" class="pali">
+Tameva tvaṃ bhagavantaṃ saraṇaṃ gaccha yamahaṃ saraṇaṃ gato”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, nay bậc Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác ấy trú ở đâu?”<br>
+<span lang="pi" class="pali">
+“Kahaṃ pana, bho kaccāna, etarahi so bhagavā viharati arahaṃ sammāsambuddho”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bậc Thế Tôn ấy, bậc A-la-hán, Chánh Ðẳng Giác, nay đã nhập Niết-bàn rồi, thưa Ðại vương.”<br>
+<span lang="pi" class="pali">
+“Parinibbuto kho, mahārāja, etarahi so bhagavā arahaṃ sammāsambuddho”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả Kaccāna, nếu chúng tôi được nghe Thế Tôn ở xa 10 yojana (do tuần), chúng tôi sẽ đi 10 yojana để yết kiến Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác.<br>
+<span lang="pi" class="pali">
+“Sacepi mayaṃ, bho kaccāna, suṇeyyāma taṃ bhagavantaṃ dasasu yojanesu, dasapi mayaṃ yojanāni gaccheyyāma taṃ bhagavantaṃ dassanāya arahantaṃ sammāsambuddhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, nếu chúng tôi được nghe Thế Tôn ở xa 20 yojana, 30 yojana, 40 yojana, 50 yojana, chúng tôi sẽ đi 50 yojana, để yết kiến Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác.<br>
+<span lang="pi" class="pali">
+Sacepi mayaṃ, bho kaccāna, suṇeyyāma taṃ bhagavantaṃ vīsatiyā yojanesu, tiṃsāya yojanesu, cattārīsāya yojanesu, paññāsāya yojanesu, paññāsampi mayaṃ yojanāni gaccheyyāma taṃ bhagavantaṃ dassanāya arahantaṃ sammāsambuddhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, nếu chúng tôi được nghe Thế Tôn ở xa 100 yojana (do tuần), chúng tôi sẽ đi 100 yojana để yết kiến Thế Tôn, bậc A-la-hán, Chánh Ðẳng Giác.<br>
+<span lang="pi" class="pali">
+Yojanasate cepi mayaṃ bho kaccāna, suṇeyyāma taṃ bhagavantaṃ, yojanasatampi mayaṃ gaccheyyāma taṃ bhagavantaṃ dassanāya arahantaṃ sammāsambuddhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Tôn giả Kaccāna, vì rằng Thế Tôn đã nhập Niết-bàn rồi, chúng tôi xin quy y Thế Tôn đã nhập Niết-bàn ấy, quy y Pháp, quy y Tỷ-kheo Tăng.<br>
+<span lang="pi" class="pali">
+Yato ca, bho kaccāna, parinibbuto so bhagavā, parinibbutampi mayaṃ bhagavantaṃ saraṇaṃ gacchāma dhammañca bhikkhusaṅghañca.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong Tôn giả Kaccāna nhận con làm Cư sĩ, từ nay cho đến mạng chung, con trọn đời quy ngưỡng.”<br>
+<span lang="pi" class="pali">
+Upāsakaṃ maṃ bhavaṃ kaccāno dhāretu ajjatagge pāṇupetaṃ saraṇaṃ gatan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Madhurāsuttaṃ niṭṭhitaṃ catutthaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn83.html#content"></a><a id="next-sutta" href="./mn85.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

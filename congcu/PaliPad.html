@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gõ Tiếng Pali</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script src="../js/jquery-1.10.2.min.js"></script>
+  <script src="../js/palipad.js"></script>
+
+  <style>
+    /* --- Cài đặt biến màu sắc (Palette Trang Nghiêm) --- */
+    :root {
+      --bg-color: #f4f1ea;        /* Màu giấy cũ / Parchment */
+      --card-bg: #ffffff;         /* Màu nền khung */
+      --primary-color: #8a3324;   /* Màu đỏ nâu (Màu y) */
+      --primary-hover: #a64d3d;   /* Màu đỏ nâu sáng hơn khi hover */
+      --accent-color: #c5a059;    /* Màu vàng đồng */
+      --text-color: #333333;      /* Màu chữ đen xám dịu */
+      --border-radius: 8px;
+      --shadow: 0 10px 30px rgba(138, 51, 36, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-color);
+      font-family: 'Lato', sans-serif;
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* --- Khung chính (Container) --- */
+    .container {
+      background-color: var(--card-bg);
+      width: 100%;
+      max-width: 700px;
+      padding: 40px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      border-top: 5px solid var(--primary-color);
+      position: relative;
+    }
+
+    /* --- Tiêu đề --- */
+    h1 {
+      font-family: 'Merriweather', serif;
+      color: var(--primary-color);
+      font-size: 2rem;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* --- Ô nhập liệu (Textarea) --- */
+    textarea.form-control {
+      width: 100%;
+      min-height: 200px;
+      padding: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      font-family: 'Merriweather', serif;
+      border: 1px solid #e0e0e0;
+      border-radius: var(--border-radius);
+      background-color: #fafafa;
+      color: #2c3e50;
+      transition: all 0.3s ease;
+      resize: vertical;
+      outline: none;
+      margin-bottom: 10px; /* Tạo khoảng cách cho thanh công cụ */
+    }
+
+    textarea.form-control:focus {
+      background-color: #fff;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2);
+    }
+
+    textarea::placeholder {
+      color: #aaa;
+      font-style: italic;
+      font-family: 'Lato', sans-serif;
+    }
+
+    /* --- Thanh công cụ (Copy Button) --- */
+    .toolbar {
+      display: flex;
+      justify-content: flex-end; /* Căn phải */
+      align-items: center;
+      margin-bottom: 20px;
+      height: 30px; /* Chiều cao cố định để không bị nhảy layout */
+    }
+
+    .copy-msg {
+      font-size: 0.9rem;
+      color: var(--primary-color);
+      margin-right: 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-style: italic;
+      font-family: 'Merriweather', serif;
+    }
+
+    .copy-msg.show {
+      opacity: 1;
+    }
+
+    .btn-copy {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-copy:hover {
+      background-color: var(--accent-color); /* Đổi sang màu vàng đồng khi hover */
+    }
+
+    .btn-copy svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+   /* --- Bảng hướng dẫn phím tắt (Key Map) --- */
+    .key-map-container {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px dashed #ddd;
+    }
+
+    .key-map-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 10px;
+    }
+
+    .key-item {
+      background: #fdfdfd;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    .key-item strong {
+      color: var(--primary-color);
+      font-family: 'Merriweather', serif;
+      font-size: 1.1rem;
+    }
+    
+    .key-item span {
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    /* Trang trí nhỏ */
+    .decoration-icon {
+      color: var(--accent-color);
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>
+      <div class="decoration-icon">
+        <svg viewBox="0 0 100 100" style="width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 4.5;">
+          <circle cx="50" cy="50" r="40"/>
+          <circle cx="50" cy="50" r="12"/>
+          <line x1="50" y1="10" x2="50" y2="90"/>
+          <line x1="10" y1="50" x2="90" y2="50"/>
+          <line x1="22" y1="22" x2="78" y2="78"/>
+          <line x1="22" y1="78" x2="78" y2="22"/>
+          <circle cx="50" cy="5" r="3" fill="currentColor"/>
+          <circle cx="50" cy="95" r="3" fill="currentColor"/>
+          <circle cx="5" cy="50" r="3" fill="currentColor"/>
+          <circle cx="95" cy="50" r="3" fill="currentColor"/>
+          <circle cx="18" cy="18" r="3" fill="currentColor"/>
+          <circle cx="82" cy="18" r="3" fill="currentColor"/>
+          <circle cx="18" cy="82" r="3" fill="currentColor"/>
+          <circle cx="82" cy="82" r="3" fill="currentColor"/>
+        </svg>
+      </div> 
+      &nbsp;Bảng Gõ Tiếng Pali
+    </h1>
+
+    <textarea id="pad" class="form-control" 
+      placeholder="Nhập văn bản Pali tại đây... (Ví dụ: Namo tassa...)"></textarea>
+
+    <div class="toolbar">
+      <span class="copy-msg" id="copyMsg">Đã sao chép!</span>
+      <button class="btn-copy" id="btnCopy">
+        <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        Sao chép
+      </button>
+    </div>
+
+        <div class="key-map-container">
+      <div class="key-map-title">Hướng dẫn gõ </div>
+      <div class="key-grid">
+        <div class="key-item"><strong>ā</strong> <span>= aa</span></div>
+        <div class="key-item"><strong>ī</strong> <span>= ii</span></div>
+        <div class="key-item"><strong>ū</strong> <span>= uu</span></div>
+        <div class="key-item"><strong>ṇ</strong> <span>= .n</span></div>
+        <div class="key-item"><strong>ṅ</strong> <span>= "n</span></div>
+        <div class="key-item"><strong>ñ</strong> <span>= ~n</span></div>
+        <div class="key-item"><strong>ṭ</strong> <span>= .t</span></div>
+        <div class="key-item"><strong>ḍ</strong> <span>= .d</span></div>
+        <div class="key-item"><strong>ḷ</strong> <span>= .l</span></div>
+        <div class="key-item"><strong>ṃ</strong> <span>= .m</span></div>
+        <div class="key-item"><strong>ṁ</strong> <span>= "m</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(function() {
+      // 1. Khởi tạo palipad
+      if (typeof palipad !== 'undefined') {
+        window.pad = new palipad.Pad('#pad');
+        $('.palipad-status').hide();
+      } else {
+        console.warn("Không tìm thấy thư viện palipad.js");
+      }
+
+      // 2. Xử lý nút Copy
+      $('#btnCopy').on('click', function() {
+        var copyText = document.getElementById("pad");
+        
+        // Chọn nội dung
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* Cho thiết bị di động */
+
+        // Thực hiện lệnh copy
+        try {
+          navigator.clipboard.writeText(copyText.value).then(function() {
+            showCopySuccess();
+          }, function(err) {
+             // Fallback nếu browser cũ không hỗ trợ navigator.clipboard
+            document.execCommand("copy");
+            showCopySuccess();
+          });
+        } catch (err) {
+           // Fallback cơ bản nhất
+           document.execCommand("copy");
+           showCopySuccess();
+        }
+      });
+
+      function showCopySuccess() {
+        var msg = $('#copyMsg');
+        msg.addClass('show');
+        
+        // Ẩn thông báo sau 2 giây
+        setTimeout(function(){
+          msg.removeClass('show');
+        }, 2000);
+      }
+    });
+  </script>
+
+</body>
+</html>

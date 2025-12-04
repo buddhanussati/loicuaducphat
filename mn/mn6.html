@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>       Trung Bộ 6
+            </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 6<br>
+<span lang="pi" class="pali"; style="text-align: center">
+Majjhima Nikāya 6<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Ước Nguyện<br>
+<span lang="pi" class="pali">
+Ākaṅkheyyasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời, Thế Tôn ở Sāvatthī (Xá-vệ), tại Jetavana (Kỳ-đà Lâm), vườn ông Anāthapiṇḍika (Cấp Cô Ðộc).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Thế Tôn gọi các Tỷ-kheo: “Này các Tỷ-kheo”.<br>
+<span lang="pi" class="pali">
+Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn”, những Tỷ-kheo ấy vâng đáp Thế Tôn. Thế Tôn giảng như sau:<br>
+<span lang="pi" class="pali">
+“Bhadante”ti te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Các Tỷ-kheo, hãy sống đầy đủ giới hạnh, đầy đủ giới bổn, sống phòng hộ với sự phòng hộ của giới bổn, đầy đủ uy nghi chánh hạnh, thấy sự nguy hiểm trong các lỗi nhỏ nhặt, chơn chánh lãnh thọ và học tập các học giới.<br>
+<span lang="pi" class="pali">
+“Sampannasīlā, bhikkhave, viharatha sampannapātimokkhā; pātimokkhasaṃvarasaṃvutā viharatha ācāragocarasampannā aṇumattesu vajjesu bhayadassāvino; samādāya sikkhatha sikkhāpadesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng ta được các đồng phạm hạnh thương mến, yêu quý, cung kính và tôn trọng!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật, kiên trì, nội tâm tịch tĩnh, không gián đoạn Thiền định, thành tựu quán hạnh, thích sống tại các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘sabrahmacārīnaṃ piyo ca assaṃ manāpo ca garu ca bhāvanīyo cā’ti, sīlesvevassa paripūrakārī ajjhattaṃ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng ta được các vật dụng như y phục, các món ăn khất thực, sàng tọa và các dược phẩm trị bệnh!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật, kiên trì, nội tâm tịch tĩnh, không gián đoạn Thiền định, thành tựu quán hạnh, thích sống tại các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘lābhī assaṃ cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārānan’ti, sīlesvevassa paripūrakārī ajjhattaṃ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu có Tỷ-kheo có ước nguyện: “Mong rằng ta nay hưởng thọ các vật dụng như y phục, các món ăn khất thực, sàng tọa và các dược phẩm trị bệnh! Mong rằng hành động của những vị tạo ra các vật dụng ấy được quả báo lớn, được lợi ích lớn!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘yesāhaṃ cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhāraṃ paribhuñjāmi tesaṃ te kārā mahapphalā assu mahānisaṃsā’ti, sīlesvevassa paripūrakārī ajjhattaṃ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng những bà con huyết thống với ta, khi họ chết và mệnh chung, nghĩ (đến ta) với tâm hoan hỷ (và nhờ vậy) được quả báo lớn, lợi ích lớn!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘ye maṃ ñātī sālohitā petā kālaṅkatā pasannacittā anussaranti tesaṃ taṃ mahapphalaṃ assa mahānisaṃsan’ti, sīlesvevassa paripūrakārī ajjhattaṃ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng ta nhiếp phục lạc và bất lạc, chớ không phải bất lạc nhiếp phục ta. Mong rằng ta sống luôn luôn nhiếp phục bất lạc được khởi lên!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘aratiratisaho assaṃ, na ca maṃ arati saheyya, uppannaṃ aratiṃ abhibhuyya abhibhuyya vihareyyan’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng ta nhiếp phục khiếp đảm và sợ hãi, chớ không phải khiếp đảm và sợ hãi nhiếp phục ta! Mong rằng ta sống luôn luôn nhiếp phục khiếp đảm và sợ hãi được khởi lên!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘bhayabheravasaho assaṃ, na ca maṃ bhayabheravaṃ saheyya, uppannaṃ bhayabheravaṃ abhibhuyya abhibhuyya vihareyyan’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng, tùy theo ý muốn, không có khó khăn, không có mệt nhọc, không có phí sức, ta chứng được bốn Thiền, thuộc tăng thượng tâm, hiện tại lạc trú!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘catunnaṃ jhānānaṃ ābhicetasikānaṃ diṭṭhadhammasukhavihārānaṃ nikāmalābhī assaṃ akicchalābhī akasiralābhī’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Có những giải thoát tịch tĩnh, siêu thoát Sắc giới, thuộc Vô sắc giới. Mong rằng ta có thể cảm xúc với thân và sống an trú trong cảnh giới ấy!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘ye te santā vimokkhā atikkamma rūpe āruppā, te kāyena phusitvā vihareyyan’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng ta trừ diệt ba kiết sử, chứng quả Dự lưu, không còn bị đọa lạc, chắc chắn hướng đến Chánh giác!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘tiṇṇaṃ saṃyojanānaṃ parikkhayā sotāpanno assaṃ avinipātadhammo niyato sambodhiparāyaṇo’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng trừ diệt ba kiết sử, làm cho muội lược tham, sân, si, ta chứng được Nhứt Lai, chỉ phải trở lại đời một lần nữa để đoạn tận khổ đau!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘tiṇṇaṃ saṃyojanānaṃ parikkhayā rāgadosamohānaṃ tanuttā sakadāgāmī assaṃ sakideva imaṃ lokaṃ āgantvā dukkhassantaṃ kareyyan’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng, trừ diệt năm hạ phần kiết sử, ta được hóa sanh, chứng được Niết-bàn ngay tại cảnh giới ấy, không còn trở lui thế giới này nữa!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘pañcannaṃ orambhāgiyānaṃ saṃyojanānaṃ parikkhayā opapātiko assaṃ tattha parinibbāyī anāvattidhammo tasmā lokā’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng ta chứng được các loại thần thông! Một thân ta hiện ra nhiều thân, nhiều thân ta hiện ra một thân; ta hiện hình, biến hình đi ngang qua vách, qua thành, qua núi như đi ngang hư không, ta độn thổ trồi lên ngang qua đất liền như ở trong nước; ta đi trên nước không chìm như trên đất liền; ta ngồi kiết già đi trên hư không như con chim; với bàn tay, ta chạm và rờ mặt trăng và mặt trời, những vật có đại oai lực, đại oai thần như vậy; ta có thể, thân ta có thần thông bay cho đến Phạm Thiên!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)…các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘anekavihitaṃ iddhividhaṃ paccanubhaveyyaṃ—ekopi hutvā bahudhā assaṃ, bahudhāpi hutvā eko assaṃ; āvibhāvaṃ tirobhāvaṃ; tirokuṭṭaṃ tiropākāraṃ tiropabbataṃ asajjamāno gaccheyyaṃ, seyyathāpi ākāse; pathaviyāpi ummujjanimujjaṃ kareyyaṃ, seyyathāpi udake; udakepi abhijjamāne gaccheyyaṃ, seyyathāpi pathaviyaṃ; ākāsepi pallaṅkena kameyyaṃ, seyyathāpi pakkhī sakuṇo; imepi candimasūriye evaṃmahiddhike evaṃmahānubhāve pāṇinā parāmaseyyaṃ parimajjeyyaṃ; yāva brahmalokāpi kāyena vasaṃ vatteyyan’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng, với thiên nhĩ thanh tịnh siêu nhân, ta có thể nghe hai loại tiếng, chư Thiên và loài Người, ở xa hay ở gần!”, Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘dibbāya sotadhātuyā visuddhāya atikkantamānusikāya ubho sadde suṇeyyaṃ—dibbe ca mānuse ca ye dūre santike cā’ti, sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng với tâm của ta, ta biết được tâm của các chúng sanh và loài Người.<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘parasattānaṃ parapuggalānaṃ cetasā ceto paricca pajāneyyaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có tham, ta biết tâm có tham. Tâm không tham, ta biết tâm không tham.<br>
+<span lang="pi" class="pali">
+sarāgaṃ vā cittaṃ sarāgaṃ cittanti pajāneyyaṃ, vītarāgaṃ vā cittaṃ vītarāgaṃ cittanti pajāneyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có sân, ta biết tâm có sân. Tâm không sân, ta biết tâm không sân.<br>
+<span lang="pi" class="pali">
+sadosaṃ vā cittaṃ sadosaṃ cittanti pajāneyyaṃ, vītadosaṃ vā cittaṃ vītadosaṃ cittanti pajāneyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm có si, ta biết tâm có si. Tâm không si, ta biết tâm không si.<br>
+<span lang="pi" class="pali">
+samohaṃ vā cittaṃ samohaṃ cittanti pajāneyyaṃ, vītamohaṃ vā cittaṃ vītamohaṃ cittanti pajāneyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm chuyên chú, ta biết tâm chuyên chú. Tâm tán loạn, ta biết tâm tán loạn.<br>
+<span lang="pi" class="pali">
+saṅkhittaṃ vā cittaṃ saṅkhittaṃ cittanti pajāneyyaṃ, vikkhittaṃ vā cittaṃ vikkhittaṃ cittanti pajāneyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm đại hành, ta biết tâm đại hành. Tâm không đại hành, ta biết tâm không đại hành.<br>
+<span lang="pi" class="pali">
+mahaggataṃ vā cittaṃ mahaggataṃ cittanti pajāneyyaṃ, amahaggataṃ vā cittaṃ amahaggataṃ cittanti pajāneyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm chưa vô thượng, ta biết tâm chưa vô thượng. Tâm vô thượng, ta biết tâm vô thượng.<br>
+<span lang="pi" class="pali">
+sauttaraṃ vā cittaṃ sauttaraṃ cittanti pajāneyyaṃ, anuttaraṃ vā cittaṃ anuttaraṃ cittanti pajāneyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm Thiền định, ta biết tâm Thiền định. Tâm không Thiền định, ta biết tâm không Thiền định.<br>
+<span lang="pi" class="pali">
+samāhitaṃ vā cittaṃ samāhitaṃ cittanti pajāneyyaṃ, asamāhitaṃ vā cittaṃ asamāhitaṃ cittanti pajāneyyaṃ;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tâm giải thoát, ta biết tâm giải thoát. Tâm không giải thoát, ta biết tâm không giải thoát!<br>
+<span lang="pi" class="pali">
+vimuttaṃ vā cittaṃ vimuttaṃ cittanti pajāneyyaṃ, avimuttaṃ vā cittaṃ avimuttaṃ cittanti pajāneyyan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng ta nhớ đến các đời sống quá khứ, như một đời, hai đời, ba đời, bốn đời, năm đời, mười đời, hai mươi đời, ba mươi đời, bốn mươi đời, năm mươi đời, một trăm đời, một ngàn đời, một trăm ngàn đời, nhiều hoại kiếp, nhiều thành kiếp, nhiều hoại và thành kiếp, ta nhớ rằng: “Tại chỗ kia, ta có tên như thế này, dòng họ như thế này, giai cấp như thế này, ăn uống như thế này, thọ khổ lạc như thế này, thọ mạng đến mức như thế này, Sau khi chết tại chỗ kia, ta được sanh chỗ nọ. Tại chỗ ấy, ta có tên như thế này, dòng họ như thế này, giai cấp như thế này, ăn uống như thế này, thọ khổ lạc như thế này, thọ mạng đến mức như thế này. Sau khi chết tại chỗ nọ, ta được sanh ra ở đây!’<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘anekavihitaṃ pubbenivāsaṃ anussareyyaṃ, seyyathidaṃ—ekampi jātiṃ dvepi jātiyo tissopi jātiyo catassopi jātiyo pañcapi jātiyo dasapi jātiyo vīsampi jātiyo tiṃsampi jātiyo cattālīsampi jātiyo paññāsampi jātiyo jātisatampi jātisahassampi jāti satasahassampi anekepi saṃvaṭṭakappe anekepi vivaṭṭakappe anekepi saṃvaṭṭavivaṭṭakappe—amutrāsiṃ evaṃnāmo evaṅgotto evaṃvaṇṇo evamāhāro evaṃsukhadukkhappaṭisaṃvedī evamāyupariyanto, so tato cuto amutra udapādiṃ; tatrāpāsiṃ evaṃnāmo evaṅgotto evaṃvaṇṇo evamāhāro evaṃsukhadukkhappaṭisaṃvedī evamāyupariyanto, so tato cuto idhūpapannoti. Iti sākāraṃ sauddesaṃ anekavihitaṃ pubbenivāsaṃ anussareyyan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tỷ-kheo ấy phải thành tựu viên mãn giới luật… (như trên)… các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+sīlesvevassa paripūrakārī ...pe... brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Mong rằng với thiên nhãn thuần tịnh, siêu nhân, ta thấy sự sống và sự chết của chúng sanh. Ta biết rõ rằng, chúng sanh người hạ liệt, kẻ cao sang, người đẹp đẽ, kẻ thô xấu, người may mắn, kẻ bất hạnh đều do hạnh nghiệp của chúng. Các Tôn giả, chúng sanh nào làm những ác hạnh về thân, về lời và về ý, phỉ báng các bậc Thánh, theo tà kiến, tạo các nghiệp theo tà kiến. Những người này sau khi thân hoại mạng chung, phải sanh vào cõi dữ, ác thú, đọa xứ, địa ngục. Còn các Tôn giả, chúng sanh nào làm những thiện hạnh về thân, về lời và về ý, không phỉ báng các bậc Thánh, theo chánh kiến, tạo các nghiệp theo chánh kiến. Những người này, sau khi thân hoại mạng chung, được sanh lên các thiện thú, cõi Trời, trên đời này. Như vậy, ta với thiên nhãn thuần tịnh siêu nhân, thấy sự sống chết của chúng sanh, ta biết rõ rằng chúng sanh, người hạ liệt, kẻ cao sang, người đẹp đẽ, kẻ thô xấu, người may mắn, kẻ bất hạnh, đều do hạnh nghiệp của họ!’<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘dibbena cakkhunā visuddhena atikkantamānusakena satte passeyyaṃ cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe sugate duggate yathākammūpage satte pajāneyyaṃ—ime vata bhonto sattā kāyaduccaritena samannāgatā vacīduccaritena samannāgatā manoduccaritena samannāgatā ariyānaṃ upavādakā micchādiṭṭhikā micchādiṭṭhikammasamādānā, te kāyassa bhedā paraṃ maraṇā apāyaṃ duggatiṃ vinipātaṃ nirayaṃ upapannā; ime vā pana bhonto sattā kāyasucaritena samannāgatā vacīsucaritena samannāgatā manosucaritena samannāgatā ariyānaṃ anupavādakā sammādiṭṭhikā sammādiṭṭhikammasamādānā, te kāyassa bhedā paraṃ maraṇā sugatiṃ saggaṃ lokaṃ upapannāti, iti dibbena cakkhunā visuddhena atikkantamānusakena satte passeyyaṃ cavamāne upapajjamāne hīne paṇīte suvaṇṇe dubbaṇṇe sugate duggate yathākammūpage satte pajāneyyan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tỷ-kheo ấy phải thành tựu viên mãn giới luật, kiên trì, nội tâm tịch tĩnh, không gián đoạn Thiền định, thành tựu quán hạnh, thích sống tại các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+sīlesvevassa paripūrakārī ajjhattaṃ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Này các Tỷ-kheo, nếu Tỷ-kheo có ước nguyện: “Với sự diệt trừ các lậu hoặc, sau khi tự tri tự chứng, ta chứng đạt và an trú ngay trong hiện tại, tâm giải thoát, tuệ giải thoát không có lậu hoặc!”<br>
+<span lang="pi" class="pali">
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘āsavānaṃ khayā anāsavaṃ cetovimuttiṃ paññāvimuttiṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihareyyan’ti,<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tỷ-kheo ấy phải thành tựu viên mãn giới luật, kiên trì, nội tâm tịch tĩnh, không gián đoạn Thiền định, thành tựu quán hạnh, thích sống tại các trú xứ không tịnh.<br>
+<span lang="pi" class="pali">
+sīlesvevassa paripūrakārī ajjhattaṃ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này các Tỷ-kheo, hãy sống đầy đủ giới hạnh, đầy đủ giới bổn, sống phòng hộ với sự phòng hộ của giới bổn, đầy đủ uy nghi chánh hạnh, thấy sự nguy hiểm trong các lỗi nhỏ nhặt, chơn chánh lãnh thọ và tu học các học giới.’<br>
+<span lang="pi" class="pali">
+‘Sampannasīlā, bhikkhave, viharatha sampannapātimokkhā; pātimokkhasaṃvarasaṃvutā viharatha ācāragocarasampannā aṇumattesu vajjesu bhayadassāvino; samādāya sikkhatha sikkhāpadesū’ti—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vậy, phàm đã nói gì, chính duyên ở đây mà nói vậy.”<br>
+<span lang="pi" class="pali">
+iti yaṃ taṃ vuttaṃ idametaṃ paṭicca vuttan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thuyết giảng như vậy.<br>
+<span lang="pi" class="pali">
+Idamavoca bhagavā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Tỷ-kheo ấy hoan hỷ tín thọ lời dạy của Thế Tôn.<br>
+<span lang="pi" class="pali">
+Attamanā te bhikkhū bhagavato bhāsitaṃ abhinandunti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Ākaṅkheyyasuttaṃ niṭṭhitaṃ chaṭṭhaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn5.html#content"></a><a id="next-sutta" href="./mn7.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

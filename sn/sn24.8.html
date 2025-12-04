@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Saṃyutta Nikāya - Tương Ưng Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Tương Ưng Bộ 24.8 </title>
+<p lang="vi" class="vi" style="text-align: center">
+Tương Ưng Bộ 24.8<br>
+<span lang="pi" class="pali">
+Saṃyutta Nikāya 24.8<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Phẩm Dự Lưu<br>
+<span lang="pi" class="pali">
+1. Sotāpattivagga<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Ðạt Tà Kiến<br>
+<span lang="pi" class="pali">
+Mahādiṭṭhisutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhân duyên ở Sāvatthī.<br>
+<span lang="pi" class="pali">
+Sāvatthinidānaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do có cái gì, này các Tỷ-kheo, do chấp thủ cái gì, do thiên chấp cái gì, (tà) kiến này khởi lên:<br>
+<span lang="pi" class="pali">
+“Kismiṃ nu kho, bhikkhave, sati, kiṃ upādāya, kiṃ abhinivissa evaṃ diṭṭhi uppajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có bảy thân không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau. Chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+‘sattime kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā, esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân ấy là gì?<br>
+<span lang="pi" class="pali">
+Katame satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðịa thân, thủy thân, hỏa thân, phong thân, khổ, lạc và thứ bảy là mạng.<br>
+<span lang="pi" class="pali">
+Pathavīkāyo, āpokāyo, tejokāyo, vāyokāyo, sukhe, dukkhe, jīve sattame.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân này không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau, chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+Ime satta kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi một ai dùng lưỡi kiếm sắc bén chém đầu, thời không có ai tước đoạt sanh mạng của ai cả, lưỡi kiếm chỉ rơi vào giữa bảy thân mà thôi.<br>
+<span lang="pi" class="pali">
+Yopi tiṇhena satthena sīsaṃ chindati, na sopi kañci jīvitā voropeti; sattannaṃ tveva kāyānamantarena satthaṃ vivaramanupavisati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có tất cả là 1.400.000 chủng loại thác sanh, lại có thêm 6.000 và có thêm 600 nữa. Có 500 loại nghiệp và năm nghiệp (theo 5 căn), lại có ba nghiệp (về thân, khẩu, ý), lại có toàn nghiệp (thân và khẩu), và bán nghiệp (ý), có 62 đạo, 62 trung kiếp, sáu giai cấp, tám nhân địa, 4.900 sanh nghiệp, 4.900 kẻ du hành, 4.900 chỗ ở của loài Nàga, 2.000 căn, 3.000 cảnh địa ngục, 36 trần giới, 7 tưởng thai, 7 vô tưởng thai, 7 tiết thai, 7 loài Thiên, 7 loài Người, 7 loài quỷ, 7 hồ nước, 7 pavutas (rừng hay hồ nhỏ), 7 papàta (vực thẳm), 700 papàta (vực thẳm), 7 mộng, 700 mộng, có 8 trăm 40 vạn đại kiếp, trong thời gian ấy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ trừ tận khổ đau.<br>
+<span lang="pi" class="pali">
+Cuddasa kho panimāni yonipamukhasatasahassāni saṭṭhi ca satāni cha ca satāni pañca ca kammuno satāni pañca ca kammāni, tīṇi ca kammāni, kamme ca aḍḍhakamme ca dvaṭṭhipaṭipadā, dvaṭṭhantarakappā, chaḷābhijātiyo, aṭṭha purisabhūmiyo, ekūnapaññāsa ājīvakasate, ekūnapaññāsa paribbājakasate, ekūnapaññāsa nāgavāsasate, vīse indriyasate, tiṃse nirayasate, chattiṃsarajodhātuyo, satta saññīgabbhā, satta asaññīgabbhā, satta nigaṇṭhigabbhā, satta devā, satta mānusā, satta pesācā, satta sarā, satta pavuṭā, satta papātā, satta ca papātasatāni, satta supinā, satta supinasatāni, cullāsīti mahākappino satasahassāni, yāni bāle ca paṇḍite ca sandhāvitvā saṃsaritvā dukkhassantaṃ karissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không có lời nguyền: Với giới hạnh này, với kỷ luật này, với khổ hạnh này hay với Phạm hạnh này, tôi sẽ làm cho chín muồi những nghiệp chưa được thuần thục, hoặc trừ diệt những nghiệp đã thuần thục bởi những nhẫn thọ liên tục, không thể đo lường khổ và lạc với những vật đo lường, trong khi luân hồi không có giảm tăng, không có thặng dư, thiếu thốn.<br>
+<span lang="pi" class="pali">
+Tattha natthi imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā aparipakkaṃ vā kammaṃ paripācessāmi; paripakkaṃ vā kammaṃ phussa phussa byantīkarissāmīti hevaṃ natthi doṇamite sukhadukkhe pariyantakate saṃsāre, natthi hāyanavaḍḍhane, natthi ukkaṃsāvakaṃse.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như một cuộn chỉ được tung ra sẽ được kéo dài đến một mức độ nào đó. Cũng như vậy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ đoạn tận khổ đau’?”<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma suttaguḷe khitte nibbeṭhiyamānameva paleti; evameva bāle ca paṇḍite ca nibbeṭhiyamānā sukhadukkhaṃ palentī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ðối với chúng con, bạch Thế Tôn, các pháp lấy Thế Tôn làm căn bản ...<br>
+<span lang="pi" class="pali">
+“Bhagavaṃmūlakā no, bhante, dhammā ...pe....<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Do có sắc, này các Tỷ-kheo, do chấp thủ sắc, do thiên chấp sắc, (tà) kiến này khởi lên:<br>
+<span lang="pi" class="pali">
+“Rūpe kho, bhikkhave, sati, rūpaṃ upādāya, rūpaṃ abhinivissa evaṃ diṭṭhi uppajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có bảy thân không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau. Chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+‘sattime kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā, esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân ấy là gì?<br>
+<span lang="pi" class="pali">
+Katame satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðịa thân, thủy thân, hỏa thân, phong thân, khổ, lạc và thứ bảy là mạng.<br>
+<span lang="pi" class="pali">
+Pathavīkāyo, āpokāyo, tejokāyo, vāyokāyo, sukhe, dukkhe, jīve sattame.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân này không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau, chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+Ime satta kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi một ai dùng lưỡi kiếm sắc bén chém đầu, thời không có ai tước đoạt sanh mạng của ai cả, lưỡi kiếm chỉ rơi vào giữa bảy thân mà thôi.<br>
+<span lang="pi" class="pali">
+Yopi tiṇhena satthena sīsaṃ chindati, na sopi kañci jīvitā voropeti; sattannaṃ tveva kāyānamantarena satthaṃ vivaramanupavisati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có tất cả là 1.400.000 chủng loại thác sanh, lại có thêm 6.000 và có thêm 600 nữa. Có 500 loại nghiệp và năm nghiệp (theo 5 căn), lại có ba nghiệp (về thân, khẩu, ý), lại có toàn nghiệp (thân và khẩu), và bán nghiệp (ý), có 62 đạo, 62 trung kiếp, sáu giai cấp, tám nhân địa, 4.900 sanh nghiệp, 4.900 kẻ du hành, 4.900 chỗ ở của loài Nàga, 2.000 căn, 3.000 cảnh địa ngục, 36 trần giới, 7 tưởng thai, 7 vô tưởng thai, 7 tiết thai, 7 loài Thiên, 7 loài Người, 7 loài quỷ, 7 hồ nước, 7 pavutas (rừng hay hồ nhỏ), 7 papàta (vực thẳm), 700 papàta (vực thẳm), 7 mộng, 700 mộng, có 8 trăm 40 vạn đại kiếp, trong thời gian ấy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ trừ tận khổ đau.<br>
+<span lang="pi" class="pali">
+Cuddasa kho panimāni yonipamukhasatasahassāni saṭṭhi ca satāni cha ca satāni pañca ca kammuno satāni pañca ca kammāni, tīṇi ca kammāni, kamme ca aḍḍhakamme ca dvaṭṭhipaṭipadā, dvaṭṭhantarakappā, chaḷābhijātiyo, aṭṭha purisabhūmiyo, ekūnapaññāsa ājīvakasate, ekūnapaññāsa paribbājakasate, ekūnapaññāsa nāgavāsasate, vīse indriyasate, tiṃse nirayasate, chattiṃsarajodhātuyo, satta saññīgabbhā, satta asaññīgabbhā, satta nigaṇṭhigabbhā, satta devā, satta mānusā, satta pesācā, satta sarā, satta pavuṭā, satta papātā, satta ca papātasatāni, satta supinā, satta supinasatāni, cullāsīti mahākappino satasahassāni, yāni bāle ca paṇḍite ca sandhāvitvā saṃsaritvā dukkhassantaṃ karissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không có lời nguyền: “Với giới hạnh này, với kỷ luật này, với khổ hạnh này hay với Phạm hạnh này, tôi sẽ làm cho chín muồi những nghiệp chưa được thuần thục, hoặc trừ diệt những nghiệp đã thuần thục bởi những nhẫn thọ liên tục, không thể đo lường khổ và lạc với những vật đo lường, trong khi luân hồi không có giảm tăng, không có thặng dư, thiếu thốn.<br>
+<span lang="pi" class="pali">
+Tattha natthi imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā aparipakkaṃ vā kammaṃ paripācessāmi; paripakkaṃ vā kammaṃ phussa phussa byantīkarissāmīti hevaṃ natthi doṇamite sukhadukkhe pariyantakate saṃsāre, natthi hāyanavaḍḍhane, natthi ukkaṃsāvakaṃse.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như một cuộn chỉ được tung ra sẽ được kéo dài đến một mức độ nào đó. Cũng như vậy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ đoạn tận khổ đau’?”<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma suttaguḷe khitte nibbeṭhiyamānameva paleti; evameva bāle ca paṇḍite ca nibbeṭhiyamānā sukhadukkhaṃ palentī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thọ ... tưởng ... các hành ... Do có thức, do chấp thủ thức, do thiên chấp thức, (tà) kiến này khởi lên:<br>
+<span lang="pi" class="pali">
+Vedanāya sati ... saññāya sati ... saṅkhāresu sati ... viññāṇe sati, viññāṇaṃ upādāya, viññāṇaṃ abhinivissa evaṃ diṭṭhi uppajjati:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có bảy thân không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau. Chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+‘sattime kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā, esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân ấy là gì?<br>
+<span lang="pi" class="pali">
+Katame satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðịa thân, thủy thân, hỏa thân, phong thân, khổ, lạc và thứ bảy là mạng.<br>
+<span lang="pi" class="pali">
+Pathavīkāyo, āpokāyo, tejokāyo, vāyokāyo, sukhe, dukkhe, jīve sattame.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân này không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau, chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+Ime satta kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi một ai dùng lưỡi kiếm sắc bén chém đầu, thời không có ai tước đoạt sanh mạng của ai cả, lưỡi kiếm chỉ rơi vào giữa bảy thân mà thôi.<br>
+<span lang="pi" class="pali">
+Yopi tiṇhena satthena sīsaṃ chindati, na sopi kañci jīvitā voropeti; sattannaṃ tveva kāyānamantarena satthaṃ vivaramanupavisati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có tất cả là 1.400.000 chủng loại thác sanh, lại có thêm 6.000 và có thêm 600 nữa. Có 500 loại nghiệp và năm nghiệp (theo 5 căn), lại có ba nghiệp (về thân, khẩu, ý), lại có toàn nghiệp (thân và khẩu), và bán nghiệp (ý), có 62 đạo, 62 trung kiếp, sáu giai cấp, tám nhân địa, 4.900 sanh nghiệp, 4.900 kẻ du hành, 4.900 chỗ ở của loài Nàga, 2.000 căn, 3.000 cảnh địa ngục, 36 trần giới, 7 tưởng thai, 7 vô tưởng thai, 7 tiết thai, 7 loài Thiên, 7 loài Người, 7 loài quỷ, 7 hồ nước, 7 pavutas (rừng hay hồ nhỏ), 7 papàta (vực thẳm), 700 papàta (vực thẳm), 7 mộng, 700 mộng, có 8 trăm 40 vạn đại kiếp, trong thời gian ấy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ trừ tận khổ đau.<br>
+<span lang="pi" class="pali">
+Cuddasa kho panimāni yonipamukhasatasahassāni saṭṭhi ca satāni cha ca satāni pañca ca kammuno satāni pañca ca kammāni, tīṇi ca kammāni, kamme ca aḍḍhakamme ca dvaṭṭhipaṭipadā, dvaṭṭhantarakappā, chaḷābhijātiyo, aṭṭha purisabhūmiyo, ekūnapaññāsa ājīvakasate, ekūnapaññāsa paribbājakasate, ekūnapaññāsa nāgavāsasate, vīse indriyasate, tiṃse nirayasate, chattiṃsarajodhātuyo, satta saññīgabbhā, satta asaññīgabbhā, satta nigaṇṭhigabbhā, satta devā, satta mānusā, satta pesācā, satta sarā, satta pavuṭā, satta papātā, satta ca papātasatāni, satta supinā, satta supinasatāni, cullāsīti mahākappino satasahassāni, yāni bāle ca paṇḍite ca sandhāvitvā saṃsaritvā dukkhassantaṃ karissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không có lời nguyền: “Với giới hạnh này, với kỷ luật này, với khổ hạnh này hay với Phạm hạnh này, tôi sẽ làm cho chín muồi những nghiệp chưa được thuần thục, hoặc trừ diệt những nghiệp đã thuần thục bởi những nhẫn thọ liên tục, không thể đo lường khổ và lạc với những vật đo lường, trong khi luân hồi không có giảm tăng, không có thặng dư, thiếu thốn.<br>
+<span lang="pi" class="pali">
+Tattha natthi imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā aparipakkaṃ vā kammaṃ paripācessāmi; paripakkaṃ vā kammaṃ phussa phussa byantīkarissāmīti hevaṃ natthi doṇamite sukhadukkhe pariyantakate saṃsāre, natthi hāyanavaḍḍhane, natthi ukkaṃsāvakaṃse.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như một cuộn chỉ được tung ra sẽ được kéo dài đến một mức độ nào đó. Cũng như vậy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ đoạn tận khổ đau’?”<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma suttaguḷe khitte nibbeṭhiyamānameva paleti; evameva bāle ca paṇḍite ca nibbeṭhiyamānā sukhadukkhaṃ palentī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các Ông nghĩ thế nào, này các Tỷ-kheo, sắc là thường hay vô thường?”<br>
+<span lang="pi" class="pali">
+Taṃ kiṃ maññatha, bhikkhave, rūpaṃ niccaṃ vā aniccaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là vô thường, bạch Thế Tôn” ...<br>
+<span lang="pi" class="pali">
+“Aniccaṃ, bhante” ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu không có chấp thủ cái ấy, thời có thể khởi lên (tà) kiến này:<br>
+<span lang="pi" class="pali">
+api nu taṃ anupādāya evaṃ diṭṭhi uppajjeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có bảy thân không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau. Chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+‘sattime kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā, esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân ấy là gì?<br>
+<span lang="pi" class="pali">
+Katame satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðịa thân, thủy thân, hỏa thân, phong thân, khổ, lạc và thứ bảy là mạng.<br>
+<span lang="pi" class="pali">
+Pathavīkāyo, āpokāyo, tejokāyo, vāyokāyo, sukhe, dukkhe, jīve sattame.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân này không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau, chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+Ime satta kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi một ai dùng lưỡi kiếm sắc bén chém đầu, thời không có ai tước đoạt sanh mạng của ai cả, lưỡi kiếm chỉ rơi vào giữa bảy thân mà thôi.<br>
+<span lang="pi" class="pali">
+Yopi tiṇhena satthena sīsaṃ chindati, na sopi kañci jīvitā voropeti; sattannaṃ tveva kāyānamantarena satthaṃ vivaramanupavisati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có tất cả là 1.400.000 chủng loại thác sanh, lại có thêm 6.000 và có thêm 600 nữa. Có 500 loại nghiệp và năm nghiệp (theo 5 căn), lại có ba nghiệp (về thân, khẩu, ý), lại có toàn nghiệp (thân và khẩu), và bán nghiệp (ý), có 62 đạo, 62 trung kiếp, sáu giai cấp, tám nhân địa, 4.900 sanh nghiệp, 4.900 kẻ du hành, 4.900 chỗ ở của loài Nàga, 2.000 căn, 3.000 cảnh địa ngục, 36 trần giới, 7 tưởng thai, 7 vô tưởng thai, 7 tiết thai, 7 loài Thiên, 7 loài Người, 7 loài quỷ, 7 hồ nước, 7 pavutas (rừng hay hồ nhỏ), 7 papàta (vực thẳm), 700 papàta (vực thẳm), 7 mộng, 700 mộng, có 8 trăm 40 vạn đại kiếp, trong thời gian ấy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ trừ tận khổ đau.<br>
+<span lang="pi" class="pali">
+Cuddasa kho panimāni yonipamukhasatasahassāni saṭṭhi ca satāni cha ca satāni pañca ca kammuno satāni pañca ca kammāni, tīṇi ca kammāni, kamme ca aḍḍhakamme ca dvaṭṭhipaṭipadā, dvaṭṭhantarakappā, chaḷābhijātiyo, aṭṭha purisabhūmiyo, ekūnapaññāsa ājīvakasate, ekūnapaññāsa paribbājakasate, ekūnapaññāsa nāgavāsasate, vīse indriyasate, tiṃse nirayasate, chattiṃsarajodhātuyo, satta saññīgabbhā, satta asaññīgabbhā, satta nigaṇṭhigabbhā, satta devā, satta mānusā, satta pesācā, satta sarā, satta pavuṭā, satta papātā, satta ca papātasatāni, satta supinā, satta supinasatāni, cullāsīti mahākappino satasahassāni, yāni bāle ca paṇḍite ca sandhāvitvā saṃsaritvā dukkhassantaṃ karissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không có lời nguyền: “Với giới hạnh này, với kỷ luật này, với khổ hạnh này hay với Phạm hạnh này, tôi sẽ làm cho chín muồi những nghiệp chưa được thuần thục, hoặc trừ diệt những nghiệp đã thuần thục bởi những nhẫn thọ liên tục, không thể đo lường khổ và lạc với những vật đo lường, trong khi luân hồi không có giảm tăng, không có thặng dư, thiếu thốn.<br>
+<span lang="pi" class="pali">
+Tattha natthi imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā aparipakkaṃ vā kammaṃ paripācessāmi; paripakkaṃ vā kammaṃ phussa phussa byantīkarissāmīti hevaṃ natthi doṇamite sukhadukkhe pariyantakate saṃsāre, natthi hāyanavaḍḍhane, natthi ukkaṃsāvakaṃse.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như một cuộn chỉ được tung ra sẽ được kéo dài đến một mức độ nào đó. Cũng như vậy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ đoạn tận khổ đau’?”<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma suttaguḷe khitte nibbeṭhiyamānameva paleti; evameva bāle ca paṇḍite ca nibbeṭhiyamānā sukhadukkhaṃ palentī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thọ ... Tưởng ... Các hành ... Thức là thường hay vô thường?”<br>
+<span lang="pi" class="pali">
+“Vedanā ... saññā ... saṅkhārā ... viññāṇaṃ niccaṃ vā aniccaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là vô thường, bạch Thế Tôn ...<br>
+<span lang="pi" class="pali">
+“Aniccaṃ, bhante ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu không chấp thủ cái ấy, thời có thể khởi lên (tà) kiến này:<br>
+<span lang="pi" class="pali">
+api nu taṃ anupādāya evaṃ diṭṭhi uppajjeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có bảy thân không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau. Chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+‘sattime kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā, esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân ấy là gì?<br>
+<span lang="pi" class="pali">
+Katame satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðịa thân, thủy thân, hỏa thân, phong thân, khổ, lạc và thứ bảy là mạng.<br>
+<span lang="pi" class="pali">
+Pathavīkāyo, āpokāyo, tejokāyo, vāyokāyo, sukhe, dukkhe, jīve sattame.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân này không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau, chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+Ime satta kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi một ai dùng lưỡi kiếm sắc bén chém đầu, thời không có ai tước đoạt sanh mạng của ai cả, lưỡi kiếm chỉ rơi vào giữa bảy thân mà thôi.<br>
+<span lang="pi" class="pali">
+Yopi tiṇhena satthena sīsaṃ chindati, na sopi kañci jīvitā voropeti; sattannaṃ tveva kāyānamantarena satthaṃ vivaramanupavisati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có tất cả là 1.400.000 chủng loại thác sanh, lại có thêm 6.000 và có thêm 600 nữa. Có 500 loại nghiệp và năm nghiệp (theo 5 căn), lại có ba nghiệp (về thân, khẩu, ý), lại có toàn nghiệp (thân và khẩu), và bán nghiệp (ý), có 62 đạo, 62 trung kiếp, sáu giai cấp, tám nhân địa, 4.900 sanh nghiệp, 4.900 kẻ du hành, 4.900 chỗ ở của loài Nàga, 2.000 căn, 3.000 cảnh địa ngục, 36 trần giới, 7 tưởng thai, 7 vô tưởng thai, 7 tiết thai, 7 loài Thiên, 7 loài Người, 7 loài quỷ, 7 hồ nước, 7 pavutas (rừng hay hồ nhỏ), 7 papàta (vực thẳm), 700 papàta (vực thẳm), 7 mộng, 700 mộng, có 8 trăm 40 vạn đại kiếp, trong thời gian ấy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ trừ tận khổ đau.<br>
+<span lang="pi" class="pali">
+Cuddasa kho panimāni yonipamukhasatasahassāni saṭṭhi ca satāni cha ca satāni pañca ca kammuno satāni pañca ca kammāni, tīṇi ca kammāni, kamme ca aḍḍhakamme ca dvaṭṭhipaṭipadā, dvaṭṭhantarakappā, chaḷābhijātiyo, aṭṭha purisabhūmiyo, ekūnapaññāsa ājīvakasate, ekūnapaññāsa paribbājakasate, ekūnapaññāsa nāgavāsasate, vīse indriyasate, tiṃse nirayasate, chattiṃsarajodhātuyo, satta saññīgabbhā, satta asaññīgabbhā, satta nigaṇṭhigabbhā, satta devā, satta mānusā, satta pesācā, satta sarā, satta pavuṭā, satta papātā, satta ca papātasatāni, satta supinā, satta supinasatāni, cullāsīti mahākappino satasahassāni, yāni bāle ca paṇḍite ca sandhāvitvā saṃsaritvā dukkhassantaṃ karissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không có lời nguyền: “Với giới hạnh này, với kỷ luật này, với khổ hạnh này hay với Phạm hạnh này, tôi sẽ làm cho chín muồi những nghiệp chưa được thuần thục, hoặc trừ diệt những nghiệp đã thuần thục bởi những nhẫn thọ liên tục, không thể đo lường khổ và lạc với những vật đo lường, trong khi luân hồi không có giảm tăng, không có thặng dư, thiếu thốn.<br>
+<span lang="pi" class="pali">
+Tattha natthi imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā aparipakkaṃ vā kammaṃ paripācessāmi; paripakkaṃ vā kammaṃ phussa phussa byantīkarissāmīti hevaṃ natthi doṇamite sukhadukkhe pariyantakate saṃsāre, natthi hāyanavaḍḍhane, natthi ukkaṃsāvakaṃse.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như một cuộn chỉ được tung ra sẽ được kéo dài đến một mức độ nào đó. Cũng như vậy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ đoạn tận khổ đau’?”<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma suttaguḷe khitte nibbeṭhiyamānameva paleti; evameva bāle ca paṇḍite ca nibbeṭhiyamānā sukhadukkhaṃ palentī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Cái gì được thấy, được nghe, được nghĩ đến, được biết, được đạt tới, được tìm cầu, được ý tư duy, cái ấy là thường hay vô thường?”<br>
+<span lang="pi" class="pali">
+“Yampidaṃ diṭṭhaṃ sutaṃ mutaṃ viññātaṃ pattaṃ pariyesitaṃ anuvicaritaṃ manasā tampi niccaṃ vā aniccaṃ vā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Là vô thường, bạch Thế Tôn ...<br>
+<span lang="pi" class="pali">
+“Aniccaṃ, bhante ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+nếu không có chấp thủ cái ấy, thời có thể khởi lên (tà) kiến này:<br>
+<span lang="pi" class="pali">
+api nu taṃ anupādāya evaṃ diṭṭhi uppajjeyya:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Có bảy thân không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau. Chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+‘sattime kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā, esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân ấy là gì?<br>
+<span lang="pi" class="pali">
+Katame satta?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðịa thân, thủy thân, hỏa thân, phong thân, khổ, lạc và thứ bảy là mạng.<br>
+<span lang="pi" class="pali">
+Pathavīkāyo, āpokāyo, tejokāyo, vāyokāyo, sukhe, dukkhe, jīve sattame.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bảy thân này không bị làm ra, không làm ra, không bị sáng tạo, không sáng tạo, không sanh sản, thường tại như đỉnh núi, đứng thẳng như trụ đá. Chúng bất động, không chuyển biến, không xâm lăng nhau, chúng không ảnh hưởng đến lạc hay khổ với nhau, hoặc cả khổ và lạc.<br>
+<span lang="pi" class="pali">
+Ime satta kāyā akaṭā, akaṭavidhā, animmitā, animmātā, vañjhā, kūṭaṭṭhā esikaṭṭhāyiṭṭhitā; te na iñjanti, na vipariṇamanti, na aññamaññaṃ byābādhenti; nālaṃ aññamaññassa sukhāya vā dukkhāya vā sukhadukkhāya vā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Khi một ai dùng lưỡi kiếm sắc bén chém đầu, thời không có ai tước đoạt sanh mạng của ai cả, lưỡi kiếm chỉ rơi vào giữa bảy thân mà thôi.<br>
+<span lang="pi" class="pali">
+Yopi tiṇhena satthena sīsaṃ chindati, na sopi kañci jīvitā voropeti; sattannaṃ tveva kāyānamantarena satthaṃ vivaramanupavisati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có tất cả là 1.400.000 chủng loại thác sanh, lại có thêm 6.000 và có thêm 600 nữa. Có 500 loại nghiệp và năm nghiệp (theo 5 căn), lại có ba nghiệp (về thân, khẩu, ý), lại có toàn nghiệp (thân và khẩu), và bán nghiệp (ý), có 62 đạo, 62 trung kiếp, sáu giai cấp, tám nhân địa, 4.900 sanh nghiệp, 4.900 kẻ du hành, 4.900 chỗ ở của loài Nàga, 2.000 căn, 3.000 cảnh địa ngục, 36 trần giới, 7 tưởng thai, 7 vô tưởng thai, 7 tiết thai, 7 loài Thiên, 7 loài Người, 7 loài quỷ, 7 hồ nước, 7 pavutas (rừng hay hồ nhỏ), 7 papàta (vực thẳm), 700 papàta (vực thẳm), 7 mộng, 700 mộng, có 8 trăm 40 vạn đại kiếp, trong thời gian ấy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ trừ tận khổ đau.<br>
+<span lang="pi" class="pali">
+Cuddasa kho panimāni yonipamukhasatasahassāni saṭṭhi ca satāni cha ca satāni pañca ca kammuno satāni pañca ca kammāni, tīṇi ca kammāni, kamme ca aḍḍhakamme ca dvaṭṭhipaṭipadā, dvaṭṭhantarakappā, chaḷābhijātiyo, aṭṭha purisabhūmiyo, ekūnapaññāsa ājīvakasate, ekūnapaññāsa paribbājakasate, ekūnapaññāsa nāgavāsasate, vīse indriyasate, tiṃse nirayasate, chattiṃsarajodhātuyo, satta saññīgabbhā, satta asaññīgabbhā, satta nigaṇṭhigabbhā, satta devā, satta mānusā, satta pesācā, satta sarā, satta pavuṭā, satta papātā, satta ca papātasatāni, satta supinā, satta supinasatāni, cullāsīti mahākappino satasahassāni, yāni bāle ca paṇḍite ca sandhāvitvā saṃsaritvā dukkhassantaṃ karissanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Không có lời nguyền: “Với giới hạnh này, với kỷ luật này, với khổ hạnh này hay với Phạm hạnh này, tôi sẽ làm cho chín muồi những nghiệp chưa được thuần thục, hoặc trừ diệt những nghiệp đã thuần thục bởi những nhẫn thọ liên tục, không thể đo lường khổ và lạc với những vật đo lường, trong khi luân hồi không có giảm tăng, không có thặng dư, thiếu thốn.<br>
+<span lang="pi" class="pali">
+Tattha natthi imināhaṃ sīlena vā vatena vā tapena vā brahmacariyena vā aparipakkaṃ vā kammaṃ paripācessāmi; paripakkaṃ vā kammaṃ phussa phussa byantīkarissāmīti hevaṃ natthi doṇamite sukhadukkhe pariyantakate saṃsāre, natthi hāyanavaḍḍhane, natthi ukkaṃsāvakaṃse.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ví như một cuộn chỉ được tung ra sẽ được kéo dài đến một mức độ nào đó. Cũng như vậy, kẻ ngu và người hiền sau khi lưu chuyển luân hồi sẽ đoạn tận khổ đau’?”<br>
+<span lang="pi" class="pali">
+Seyyathāpi nāma suttaguḷe khitte nibbeṭhiyamānameva paleti; evameva bāle ca paṇḍite ca nibbeṭhiyamānā sukhadukkhaṃ palentī’”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa không, bạch Thế Tôn”.<br>
+<span lang="pi" class="pali">
+“No hetaṃ, bhante”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Khi nào, này các Tỷ-kheo, vị Thánh đệ tử đối với sáu xứ này, nghi hoặc được đoạn trừ; đối với khổ, nghi hoặc được đoạn trừ; ... đối với con đường đưa đến khổ đoạn diệt, nghi hoặc được đoạn trừ; như vậy, này các Tỷ-kheo, được gọi là vị Thánh đệ tử chứng được Dự lưu, không còn thối đọa, quyết chắc hướng đến giác ngộ”.<br>
+<span lang="pi" class="pali">
+“Yato kho, bhikkhave, ariyasāvakassa imesu ca ṭhānesu kaṅkhā pahīnā hoti, dukkhepissa kaṅkhā pahīnā hoti ...pe... dukkhanirodhagāminiyā paṭipadāyapissa kaṅkhā pahīnā hoti— ayaṃ vuccati, bhikkhave, ariyasāvako sotāpanno avinipātadhammo niyato sambodhiparāyano”ti.<br>
+</span>
+</p>
+
+
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./sn24.7.html#content"></a><a id="next-sutta" href="./sn24.9.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="pressed w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Khuddaka Nikāya - Tiểu Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title> Udāna 2.8 </title>
+
+<p lang="vi" class="vi" style="text-align: center">
+Tiểu Bộ Kinh<br>
+<span lang="pi" class="pali">
+Khuddaka Nikāya<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Kinh Phật Tự Thuyết<br>
+<span lang="pi" class="pali">
+Udāna<br>
+</span>
+</p>
+
+<p lang="vi" class="vi" style="text-align: center">
+Ud 2.8<br>
+<span lang="pi" class="pali">
+Suppavāsāsutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe. Một thời Thế Tôn trú ở Kundiyàya, trong rừng Kunditthàna.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ - ekaṃ samayaṃ bhagavā kuṇḍikāyaṃ viharati kuṇḍadhānavane.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Suppavàsà, con gái của vua xứ Koliya có thai đến bảy năm và nay bị đau đẻ đến ngày thứ bảy. Dầu nàng cảm giác những cảm thọ khổ đau, nhức nhối, khốc liệt, thống khổ, nàng vẫn duy trì ba niệm:<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena suppavāsā koliyadhītā satta vassāni gabbhaṃ dhāreti. Sattāhaṃ mūḷhagabbhā sā dukkhāhi tibbāhi kharāhi kaṭukāhi vedanāhi phuṭṭhā tīhi vitakkehi adhivāseti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"Thế Tôn thật là bậc Chánh Ðẳng Giác, Ngài thuyết pháp để đoạn tận đau khổ này. Chúng đệ tử của bậc Thế Tôn ấy là khéo hành trì. Chúng hành trì để đoạn tận đau khổ này. Thật sự an lạc là Niết-bàn, tại đây khổ đau này không có mặt ".<br>
+<span lang="pi" class="pali">
+“sammāsambuddho vata so bhagavā yo imassa evarūpassa dukkhassa pahānāya dhammaṃ deseti; suppaṭipanno vata tassa bhagavato sāvakasaṃgho yo imassa evarūpassa dukkhassa pahānāya paṭipanno; susukhaṃ vata taṃ nibbānaṃ yatthidaṃ evarūpaṃ dukkhaṃ na saṃvijjatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Suppavàsà, con vua Koliya gọi ngưòi chồng của mình:<br>
+<span lang="pi" class="pali">
+Atha kho suppavāsā koliyadhītā sāmikaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Phu quân, hãy đi đến Thế Tôn, sau khi đến nhân danh tôi, cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm có ít bệnh ít não, khinh an khỏe mạnh, lạc trú và thưa:<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, ayyaputta, yena bhagavā tenupasaṅkama; upasaṅkamitvā mama vacanena bhagavato pāde sirasā vandāhi; appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ puccha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"-Bạch Thế Tôn, Suppavàsà con gái vua Koliya cúi đầu đảnh lễ chân Thế Tôn, hỏi thăm có ít bệnh ít não, khinh an khỏe mạnh, lạc trú ".<br>
+<span lang="pi" class="pali">
+‘suppavāsā, bhante, koliyadhītā bhagavato pāde sirasā vandati; appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ pucchatī’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi hãy nói như sau: "Bạch Thế Tôn, Suppavàsà, con gái vua Koliya, có thai đến bảy năm và nay bị đau đẻ đến ngày thứ bảy. Dầu nàng cảm giác những cảm thọ.... tại đấy khổ đau này không có mặt! "<br>
+<span lang="pi" class="pali">
+Evañca vadehi: ‘suppavāsā, bhante, koliyadhītā satta vassāni gabbhaṃ dhāreti. Sattāhaṃ mūḷhagabbhā sā dukkhāhi tibbāhi kharāhi kaṭukāhi vedanāhi phuṭṭhā tīhi vitakkehi adhivāseti—sammāsambuddho vata so bhagavā yo imassa evarūpassa dukkhassa pahānāya dhammaṃ deseti; suppaṭipanno vata tassa bhagavato sāvakasaṅgho yo imassa evarūpassa dukkhassa pahānāya paṭipanno; susukhaṃ vata taṃ nibbānaṃ yatthidaṃ evarūpaṃ dukkhaṃ na saṃvijjatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"- Thật là tốt lành." Koliyaputta đáp lại Suppavàsà, con gái vua Koliya, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, Koliyaputta bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+“Paraman”ti kho so koliyaputto suppavāsāya koliyadhītāya paṭissutvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho koliyaputto bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn, Suppavàsà, con vua Koliya, cúi đầu đảnh lễ chân Thế Tôn,.... lạc trú.... tại đấy khổ đau này không có mặt.<br>
+<span lang="pi" class="pali">
+“suppavāsā, bhante, koliyadhītā bhagavato pāde sirasā vandati, appābādhaṃ appātaṅkaṃ lahuṭṭhānaṃ balaṃ phāsuvihāraṃ pucchati; evañca vadeti: ‘suppavāsā, bhante, koliyadhītā satta vassāni gabbhaṃ dhāreti. Sattāhaṃ mūḷhagabbhā sā dukkhāhi tibbāhi kharāhi kaṭukāhi vedanāhi phuṭṭhā tīhi vitakkehi adhivāseti—sammāsambuddho vata so bhagavā yo imassa evarūpassa dukkhassa pahānāya dhammaṃ deseti; suppaṭipanno vata tassa bhagavato sāvakasaṅgho yo imassa evarūpassa dukkhassa pahānāya paṭipanno; susukhaṃ vata nibbānaṃ yatthidaṃ evarūpaṃ dukkhaṃ na saṃvijjatī’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Mong rằng Suppavàsà, con gái vua Koliya được an lạc, không bệnh, sanh đứa con không có bệnh hoạn. Với lời nói này của Thế Tôn, Suppavàsà, con gái Koliya, được an lạc không bệnh, đẻ đứa con trai không bệnh.<br>
+<span lang="pi" class="pali">
+“Sukhinī hotu suppavāsā koliyadhītā; arogā arogaṃ puttaṃ vijāyatū”ti. Saha vacanā ca pana bhagavato suppavāsā koliyadhītā sukhinī arogā arogaṃ puttaṃ vijāyi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Thưa vâng, bạch Thế Tôn.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Koliyaputta hoan hỷ tín thọ lời Thế Tôn dạy, từ chỗ ngồi đứng dậy, đảnh lễ Thế Tôn, thân bên hữu hướng về Ngài rồi trở về nhà của mình.<br>
+<span lang="pi" class="pali">
+Kho so koliyaputto bhagavato bhāsitaṃ abhinanditvā anumoditvā uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā yena sakaṃ gharaṃ tena paccāyāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Koliyaputta thấy Suppavàsà, con gái vua Koliya, được an lạc, không bệnh, sanh đứa con trai không bệnh, thấy vậy liền suy nghĩ như sau: "<br>
+<span lang="pi" class="pali">
+Addasā kho so koliyaputto suppavāsaṃ koliyadhītaraṃ sukhiniṃ arogaṃ arogaṃ puttaṃ vijātaṃ. Disvānassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thật vi diệu thay! Thật hy hữu thay, thần lực và đại uy lực của Thế Tôn, khiến cho Suppavàsà con gái vua Koliya này, với lời nói của Thế Tôn được an lạc, không bệnh, sanh con trai không bệnh!". Nghĩ vậy, Koliyaputta hoan hỷ, thích thú, tâm sanh hỷ lạc.<br>
+<span lang="pi" class="pali">
+“acchariyaṃ vata bho, abbhutaṃ vata bho, tathāgatassa mahiddhikatā mahānubhāvatā, yatra hi nāmāyaṃ suppavāsā koliyadhītā saha vacanā ca pana bhagavato sukhinī arogā arogaṃ puttaṃ vijāyissatī”ti. Attamano pamudito pītisomanassajāto ahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Suppavàsà, con gái vua Koliya, bảo người chồng mình:<br>
+<span lang="pi" class="pali">
+Atha kho suppavāsā koliyadhītā sāmikaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Hãy đi, này Phu quân, hãy đi đến Thế Tôn, sau khi đến nhân danh tôi, cúi đầu đảnh lễ chân Thế Tôn và thưa: " - Bạch Thế Tôn, Suppavàsà, con vua Koliya, cúi đầu đảnh lễ chân Thế Tôn.<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, ayyaputta, yena bhagavā tenupasaṅkama; upasaṅkamitvā mama vacanena bhagavato pāde sirasā vandāhi: ‘suppavāsā, bhante, koliyadhītā bhagavato pāde sirasā vandatī’ti;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi hãy nói như sau: "Bạch Thế Tôn, Suppavàsà, con vua Koliya, có thai đến bảy năm và bị đau đẻ đến ngày thứ bảy.<br>
+<span lang="pi" class="pali">
+evañca vadehi: ‘suppavāsā, bhante, koliyadhītā satta vassāni gabbhaṃ dhāreti. Sattāhaṃ mūḷhagabbhā sā etarahi sukhinī arogā arogaṃ puttaṃ vijātā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nàng được an lạc, không bệnh và sanh đứa con trai không bệnh. Nay nàng muốn mời chúng Tỳ-kheo dùng cơm trong bảy ngày. Mong Thế Tôn hãy nhận lời thọ bảy bữa cơm của Suppavàsà với chúng Tỷ-kheo".<br>
+<span lang="pi" class="pali">
+Sā sattāhaṃ buddhappamukhaṃ bhikkhusaṅghaṃ bhattena nimanteti. Adhivāsetu kira, bhante, bhagavā suppavāsāya koliyadhītāya satta bhattāni saddhiṃ bhikkhusaṅghenā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Thật là tốt lành.<br>
+<span lang="pi" class="pali">
+“Paraman”ti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Koliyaputta đáp lại Suppavàsà, con gái vua Koliya, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, Koliyaputta bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Kho so koliyaputto suppavāsāya koliyadhītāya paṭissutvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho so koliyaputto bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn, Suppavàsà, con gái vua Koliya, cúi đầu đảnh lễ chân Thế Tôn và nói như sau: Suppavàsà, có thai đến bảy năm... đau đẻ đến ngày thứ bảy. Nay nàng được an lạc, không bệnh và sanh đứa con trai không bệnh.<br>
+<span lang="pi" class="pali">
+“Suppavāsā, bhante, koliyadhītā bhagavato pāde sirasā vandati; evañca vadeti: ‘suppavāsā, bhante, koliyadhītā satta vassāni gabbhaṃ dhāreti. Sattāhaṃ mūḷhagabbhā sā etarahi sukhinī arogā arogaṃ puttaṃ vijātā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay nàng muốn mời chúng Tỳ-kheo dùng cơm trong bảy ngày. Mong Thế Tôn hãy nhận lời thọ bảy bữa cơm của Suppavàsà với chúng Tỷ-kheo!<br>
+<span lang="pi" class="pali">
+Sā sattāhaṃ buddhappamukhaṃ bhikkhusaṅghaṃ bhattena nimanteti. Adhivāsetu kira, bhante, bhagavā suppavāsāya koliyadhītāya satta bhattāni saddhiṃ bhikkhusaṅghenā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ một nam cư sĩ khác đã mời chúng Tỷ-kheo với Thế Tôn là vị cầm đầu, ngày mai dùng cơm người cư sĩ ấy là người hộ trì cho Tôn giả Moggallàna. Rồi Thế Tôn nói với Tôn giả Mahà Mogallàna:<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena aññatarena upāsakena buddhappamukho bhikkhusaṃgho svātanāya bhattena nimantito hoti. So ca upāsako āyasmato mahāmoggallānassa upaṭṭhāko hoti. Atha kho bhagavā āyasmantaṃ mahāmoggallānaṃ āmantesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Moggallàna, hãy đến người cư sĩ, sau khi đến, nói với người cư sĩ ấy như sau:<br>
+<span lang="pi" class="pali">
+“ehi tvaṃ, moggallāna, yena so upāsako tenupasaṅkama; upasaṅkamitvā taṃ upāsakaṃ evaṃ vadehi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"Này Hiền giả, Suppavàsà con của vua Koliya.. có thai đến bảy năm... đến ngày thứ bảy. Nay nàng được an lạc.. Nay nàng muốn mời chúng Tỷ-kheo... với chúng Tỷ-kheo. Hãy để cho Suppavàsà tổ chức bảy ngày cơm trước. Sau sẽ đến lượt người hộ trì cho người".<br>
+<span lang="pi" class="pali">
+‘suppavāsā, āvuso, koliyadhītā satta vassāni gabbhaṃ dhāresi. Sattāhaṃ mūḷhagabbhā sā etarahi sukhinī arogā arogaṃ puttaṃ vijātā. Sā sattāhaṃ buddhappamukhaṃ bhikkhusaṃghaṃ bhattena nimanteti. Karotu suppavāsā koliyadhītā satta bhattāni, pacchā tvaṃ karissasī’ti. Tuyheso upaṭṭhāko”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Thưa vâng, bạch Thế Tôn!.<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôn giả Mahà Moggallàna vâng đáp Thế Tôn rồi đi đến người cư sĩ ấy, sau khi đến nói với người cư sĩ:<br>
+<span lang="pi" class="pali">
+Kho āyasmā mahāmoggallāno bhagavato paṭissutvā yena so upāsako tenupasaṅkami; upasaṅkamitvā taṃ upāsakaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Hiền giả Suppavàsà... Hãy để cho Suppavàsà con của Koliya tổ chức bảy ngày cơm trước, sau sẽ đến phiên Ông.<br>
+<span lang="pi" class="pali">
+“suppavāsā, āvuso, koliyadhītā satta vassāni gabbhaṃ dhāreti. Sattāhaṃ mūḷhagabbhā sā etarahi sukhinī arogā arogaṃ puttaṃ vijātā. Sā sattāhaṃ buddhappamukhaṃ bhikkhusaṅghaṃ bhattena nimanteti. Karotu suppavāsā koliyadhītā satta bhattāni, pacchā tvaṃ karissasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Thưa Tôn giả, nếu Tôn giả bảo đảm cho con ba pháp về tài sản, về thọ mạng, về lòng tin, hãy để cho Suppavàsà, con gái của vua Koliya, tổ chức trước, rồi sau đến phiên con.<br>
+<span lang="pi" class="pali">
+“Sace me, bhante, ayyo mahāmoggallāno tiṇṇaṃ dhammānaṃ pāṭibhogo—bhogānañca jīvitassa ca saddhāya ca, karotu suppavāsā koliyadhītā satta bhattāni, pacchāhaṃ karissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Hiền giả, về hai pháp ta sẽ bảo đảm cho ông, về tài sản và về thọ mạng. Còn về lòng tin, thời ông phải tự bảo đảm!.<br>
+<span lang="pi" class="pali">
+“Dvinnaṃ kho te ahaṃ, āvuso, dhammānaṃ pāṭibhogo—bhogānañca jīvitassa ca. Saddhāya pana tvaṃyeva pāṭibhogo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Thưa Tôn giả, nếu Tôn giả bảo đảm cho con hai pháp, về tài sản và về thọ mạng, hãy để cho Suppavàsà, con gái vua Koliya, tổ chức bảy ngày con trước. Rồi sẽ đến phiên con.<br>
+<span lang="pi" class="pali">
+“Sace me, bhante, ayyo mahāmoggallāno dvinnaṃ dhammānaṃ pāṭibhogo—bhogānañca jīvitassa ca, karotu suppavāsā koliyadhītā satta bhattāni, pacchāhaṃ karissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Mahà Moggallàna, sau khi thuyết phục được người cư sĩ ấy, đi đến Thế Tôn, sau khi đến, bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā mahāmoggallāno taṃ upāsakaṃ saññāpetvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn, cư sĩ ấy đã được con thuyết phục. Hãy để cho Suppavàsà, con gái vua Koliya, tổ chức bảy ngày cơm trước, sau sẽ đến phiên người cư sĩ ấy.<br>
+<span lang="pi" class="pali">
+“saññatto, bhante, so upāsako mayā; karotu suppavāsā koliyadhītā satta bhattāni, pacchā so karissatī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Suppavàsà, con gái vua Koliya, trong bảy ngày mời chúng Tỷ-kheo với Thế Tôn là bậc dẫn đầu, tự tay mời và làm cho thỏa mãn với những món ăn thượng vị, loại cứng và loại mềm và khiến cho đứa trẻ đảnh lễ Thế Tôn và toàn thể chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">
+Atha kho suppavāsā koliyadhītā sattāhaṃ buddhappamukhaṃ bhikkhusaṅghaṃ paṇītena khādanīyena bhojanīyena sahatthā santappesi sampavāresi, tañca dārakaṃ bhagavantaṃ vandāpesi sabbañca bhikkhusaṅghaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Sàriputta nói với đứa trẻ: "- Này Con, Con có kham nhẫn được không? Con có nuôi sống được không? Con có đau khổ gì không?"<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā sāriputto taṃ dārakaṃ etadavoca: “kacci te, dāraka, khamanīyaṃ, kacci yāpanīyaṃ, kacci na kiñci dukkhan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Thưa Tôn giả, từ đâu con có thể kham nhẫn? Từ đâu con có thể nuôi sống? Từ đâu con không có đau khổ? Con đã sống bảy năm trong các ghè đầy máu!<br>
+<span lang="pi" class="pali">
+“Kuto me, bhante sāriputta, khamanīyaṃ, kuto yāpanīyaṃ. Satta me vassāni lohitakumbhiyaṃ vutthānī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Suppavàsà, con gái vua Koliya, nghĩ rằng: "Con ta đang nói chuyện với vị tướng quân về Pháp!" Liền hoan hỷ, tín thọ, với tâm hỷ lạc."<br>
+<span lang="pi" class="pali">
+Atha kho suppavāsā koliyadhītā: “putto me dhammasenāpatinā saddhiṃ mantetī”ti attamanā pamuditā pītisomanassajātā ahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn thấy Suppavàsà, con gái vua Koliya hoan hỷ, tín thọ, với tâm hỷ lạc, liền nói với Suppavàsà, con gái vua Koliya:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā suppavāsaṃ koliyadhītaraṃ attamanaṃ pamuditaṃ pītisomanassajātaṃ viditvā suppavāsaṃ koliyadhītaraṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Này Suppavàsà. Con có muốn một người con trai khác như vậy không?<br>
+<span lang="pi" class="pali">
+“iccheyyāsi tvaṃ, suppavāse, aññampi evarūpaṃ puttan”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+- Bạch Thế Tôn, con muốn có bảy người con trai như vậy!<br>
+<span lang="pi" class="pali">
+“Iccheyyāmahaṃ, bhagavā, aññānipi evarūpāni satta puttānī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn sau khi hiểu biết ý nghĩa này,ngay trong lúc ấy, nói lên lời cảm hứng này:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā etamatthaṃ viditvā tāyaṃ velāyaṃ imaṃ udānaṃ udānesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+8. Không vui, giả dạng vui,<br>
+Không ái, giả dạng ái,<br>
+Khổ đau, giả dạng lạc,<br>
+Nhiếp phục kẻ phóng dật.<br>
+<span lang="pi" class="pali">
+“Asātaṃ sātarūpena,<br>
+piyarūpena appiyaṃ;<br>
+Dukkhaṃ sukhassa rūpena,<br>
+pamattamativattatī”ti.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./ud2.7.html#content"></a><a id="next-sutta" href="./ud2.9.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

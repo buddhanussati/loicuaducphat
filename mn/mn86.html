@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="pressed w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Majjhima Nikāya - Trung Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trung Bộ 86          </title>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Trung Bộ 86<br>
+<span lang="pi" class="pali">
+Majjhima Nikāya 86<br>
+</span>
+</p>
+
+<p lang="vi" class="vi"; style="text-align: center">
+Kinh Aṅgulimāla<br>
+<span lang="pi" class="pali">
+Aṅgulimālasutta<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như vầy tôi nghe.<br>
+<span lang="pi" class="pali">
+Evaṃ me sutaṃ—<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một thời Thế Tôn trú tại Sāvatthī, Jetavana, ở tinh xá ông Anāthapiṇḍika (Cấp cô độc).<br>
+<span lang="pi" class="pali">
+ekaṃ samayaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, trong lãnh thổ của quốc vương Pasenadi (Ba-tư-nặc), nước Kosala, có tên cướp Aṅgulimāla một thợ săn, tay vấy máu, sát hại, bạo tàn, không có lòng từ mẫn đối với chúng sanh.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena rañño pasenadissa kosalassa vijite coro aṅgulimālo nāma hoti luddo lohitapāṇi hatapahate niviṭṭho adayāpanno pāṇabhūtesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì nó, các làng trở thành không làng, các thị trấn trở thành không thị trấn, quốc độ trở thành không quốc độ.<br>
+<span lang="pi" class="pali">
+Tena gāmāpi agāmā katā, nigamāpi anigamā katā, janapadāpi ajanapadā katā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nó luôn luôn giết người, nó mang một vòng hoa làm bằng ngón tay người.<br>
+<span lang="pi" class="pali">
+So manusse vadhitvā vadhitvā aṅgulīnaṃ mālaṃ dhāreti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn vào buổi sáng đắp y, cầm y bát, vào Sāvatthī để khất thực.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiṃ piṇḍāya pāvisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi khất thực ở Sāvatthī, ăn xong, dọn dẹp sàng tọa, cầm y bát, Ngài quay trở về và đi trên con đường dẫn đến tên cướp Aṅgulimāla.<br>
+<span lang="pi" class="pali">
+Sāvatthiyaṃ piṇḍāya caritvā pacchābhattaṃ piṇḍapātapaṭikkanto senāsanaṃ saṃsāmetvā pattacīvaramādāya yena coro aṅgulimālo tenaddhānamaggaṃ paṭipajji.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Các người chăn bò, các người chăn thú, các người làm ruộng, các người bộ hành thấy Thế Tôn đang đi trên con đường dẫn đến tên cướp Aṅgulimāla.<br>
+<span lang="pi" class="pali">
+Addasāsuṃ kho gopālakā pasupālakā kassakā pathāvino bhagavantaṃ yena coro aṅgulimālo tenaddhānamaggapaṭipannaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy vậy liền bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Disvāna bhagavantaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Sa-môn, chớ có đi trên con đường này.<br>
+<span lang="pi" class="pali">
+“mā, samaṇa, etaṃ maggaṃ paṭipajji.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Sa-môn, trên con đường này có tên cướp Aṅgulimāla, là một thợ săn, tay vấy máu, sát hại, bạo tàn, không có lòng từ mẫn đối với chúng sanh.<br>
+<span lang="pi" class="pali">
+Etasmiṃ, samaṇa, magge coro aṅgulimālo nāma luddo lohitapāṇi hatapahate niviṭṭho adayāpanno pāṇabhūtesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì nó, các làng trở thành không làng, các thị trấn trở thành không thị trấn, các quốc độ trở thành không quốc độ.<br>
+<span lang="pi" class="pali">
+Tena gāmāpi agāmā katā, nigamāpi anigamā katā, janapadāpi ajanapadā katā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nó luôn luôn giết người, nó mang một vòng hoa làm bằng ngón tay người.<br>
+<span lang="pi" class="pali">
+So manusse vadhitvā vadhitvā aṅgulīnaṃ mālaṃ dhāreti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thưa Sa-môn, trên đường này, có mười người, hai mươi người, ba mươi người, bốn mươi người tụ họp lại, tụ họp lại rồi cùng đi.<br>
+<span lang="pi" class="pali">
+Etañhi, samaṇa, maggaṃ dasapi purisā vīsampi purisā tiṃsampi purisā cattārīsampi purisā paññāsampi purisā saṅkaritvā saṅkaritvā paṭipajjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tuy vậy, họ vẫn rơi vào tay của tên cướp Aṅgulimāla”.<br>
+<span lang="pi" class="pali">
+Tepi corassa aṅgulimālassa hatthatthaṃ gacchantī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðược nghe nói vậy, Thế Tôn giữ im lặng, vẫn tiếp tục đi.<br>
+<span lang="pi" class="pali">
+Evaṃ vutte, bhagavā tuṇhībhūto agamāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ hai, các người chăn bò, các người chăn thú, các người làm ruộng, các người đi đường bạch Thế Tôn: “Thưa Sa-môn, chớ có đi con đường ấy… rơi vào tay của tên cướp Aṅgulimāla”. Lần thứ hai, Thế Tôn giữ im lặng, vẫn tiếp tục đi.<br>
+<span lang="pi" class="pali">
+Dutiyampi kho gopālakā ...pe...<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lần thứ ba, các người chăn bò, các người chăn thú, các người làm ruộng, các người đi đường bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+tatiyampi kho gopālakā pasupālakā kassakā pathāvino bhagavantaṃ etadavocuṃ:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Sa-môn, chớ có đi con đường ấy… rơi vào tay của tên cướp Aṅgulimāla”.<br>
+<span lang="pi" class="pali">
+“mā, samaṇa, etaṃ maggaṃ paṭipajji, etasmiṃ samaṇa magge coro aṅgulimālo nāma luddo lohitapāṇi hatapahate niviṭṭho adayāpanno pāṇabhūtesu, tena gāmāpi agāmā katā, nigamāpi anigamā katā, janapadāpi ajanapadā katā. So manusse vadhitvā vadhitvā aṅgulīnaṃ mālaṃ dhāreti. Etañhi samaṇa maggaṃ dasapi purisā vīsampi purisā tiṃsampi purisā cattārīsampi purisā paññāsampi purisā saṅkaritvā saṅkaritvā paṭipajjanti. Tepi corassa aṅgulimālassa hatthatthaṃ gacchantī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn giữ im lặng, vẫn tiếp tục đi.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tuṇhībhūto agamāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tên cướp Aṅgulimāla thấy Thế Tôn từ xa đi lại.<br>
+<span lang="pi" class="pali">
+Addasā kho coro aṅgulimālo bhagavantaṃ dūratova āgacchantaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Sau khi thấy liền nghĩ:<br>
+<span lang="pi" class="pali">
+Disvānassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay! Thật hy hữu thay!<br>
+<span lang="pi" class="pali">
+“acchariyaṃ vata bho, abbhutaṃ vata bho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Con đường này, cho đến mười người, hai mươi người, ba mươi người, bốn mươi người, năm mươi người tụ họp lại, tụ họp lại rồi cùng đi;<br>
+<span lang="pi" class="pali">
+Imañhi maggaṃ dasapi purisā vīsampi purisā tiṃsampi purisā cattārīsampi purisā paññāsampi purisā saṅkaritvā saṅkaritvā paṭipajjanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+tuy vậy, chúng vẫn rơi vào tay của ta.<br>
+<span lang="pi" class="pali">
+Tepi mama hatthatthaṃ gacchanti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay người Sa-môn này, chỉ có một mình, không có người thứ hai, lại đi đến, hình như do một sức mạnh gì?<br>
+<span lang="pi" class="pali">
+Atha ca panāyaṃ samaṇo eko adutiyo pasayha maññe āgacchati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vậy ta giết hại mạng sống của người Sa-môn này!”<br>
+<span lang="pi" class="pali">
+Yannūnāhaṃ imaṃ samaṇaṃ jīvitā voropeyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi tên cướp Aṅgulimāla lấy kiếm và tấm khiên, đeo cung và tên vào, và đi theo sau lưng Thế Tôn.<br>
+<span lang="pi" class="pali">
+Atha kho coro aṅgulimālo asicammaṃ gahetvā dhanukalāpaṃ sannayhitvā bhagavantaṃ piṭṭhito piṭṭhito anubandhi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn hiện thần thông lực một cách làm cho tên cướp Aṅgulimāla, dầu cho đi với tất cả tốc lực của nó cũng không có thể bắt kịp Thế Tôn đang đi với tốc lực bình thường.<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā tathārūpaṃ iddhābhisaṅkhāraṃ abhisaṅkhāsi yathā coro aṅgulimālo bhagavantaṃ pakatiyā gacchantaṃ sabbathāmena gacchanto na sakkoti sampāpuṇituṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi tên cướp Aṅgulimāla suy nghĩ:<br>
+<span lang="pi" class="pali">
+Atha kho corassa aṅgulimālassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay! Thật hy hữu thay!<br>
+<span lang="pi" class="pali">
+“acchariyaṃ vata bho, abbhutaṃ vata bho.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta trước đây đuổi theo con voi đang chạy và bắt kịp nó, đuổi theo con ngựa đang chạy và bắt kịp nó, đuổi theo chiếc xe đang chạy và bắt kịp nó, đuổi theo con nai đang chạy và bắt kịp nó.<br>
+<span lang="pi" class="pali">
+Ahañhi pubbe hatthimpi dhāvantaṃ anupatitvā gaṇhāmi, assampi dhāvantaṃ anupatitvā gaṇhāmi, rathampi dhāvantaṃ anupatitvā gaṇhāmi, migampi dhāvantaṃ anupatitvā gaṇhāmi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nay dẫu ta đi với tất cả tốc lực của ta cũng không thể bắt kịp Sa-môn này đang đi với tốc lực bình thường”.<br>
+<span lang="pi" class="pali">
+atha ca panāhaṃ imaṃ samaṇaṃ pakatiyā gacchantaṃ sabbathāmena gacchanto na sakkomi sampāpuṇitun”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nó thưa với Thế Tôn:<br>
+<span lang="pi" class="pali">
+Ṭhitova bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy đứng lại, Sa-môn! Hãy đứng lại, Sa-môn!”<br>
+<span lang="pi" class="pali">
+“tiṭṭha, tiṭṭha, samaṇā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Ta đã đứng rồi, này Aṅgulimāla! Và ngươi hãy đứng lại!”<br>
+<span lang="pi" class="pali">
+“Ṭhito ahaṃ, aṅgulimāla, tvañca tiṭṭhā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi tên cướp Aṅgulimāla suy nghĩ:<br>
+<span lang="pi" class="pali">
+Atha kho corassa aṅgulimālassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Những Sa-môn Thích Tử này là những người nói sự thật và chấp nhận sự thật.<br>
+<span lang="pi" class="pali">
+“ime kho samaṇā sakyaputtiyā saccavādino saccapaṭiññā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và Sa-môn này dẫu cho đang đi lại nói:<br>
+<span lang="pi" class="pali">
+Atha panāyaṃ samaṇo gacchaṃ yevāha:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Ta đã đứng rồi, này Aṅgulimāla! Và ngươi hãy đứng lạ’.<br>
+<span lang="pi" class="pali">
+‘ṭhito ahaṃ, aṅgulimāla, tvañca tiṭṭhā’ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vậy ta hãy hỏi vị Sa-môn này”.<br>
+<span lang="pi" class="pali">
+Yannūnāhaṃ imaṃ samaṇaṃ puccheyyan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi tên cướp Aṅgulimāla với bài kệ nói với Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho coro aṅgulimālo bhagavantaṃ gāthāya ajjhabhāsi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Người đi lại nói: "Ta đã đứng rồi",<br>
+Ta đứng, Ngươi nói: "Sao ta không đứng?"<br>
+Sa-môn, ta hỏi về ý nghĩa này,<br>
+Sao Ngươi đứng lại, còn ta không đứng?<br>
+<span lang="pi" class="pali">
+“Gacchaṃ vadesi samaṇa ṭhitomhi,<br>
+Mamañca brūsi ṭhitamaṭṭhitoti;<br>
+Pucchāmi taṃ samaṇa etamatthaṃ,<br>
+Kathaṃ ṭhito tvaṃ ahamaṭṭhitomhī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Angulimala, Ta đã đứng rồi.<br>
+Với mọi chúng sanh, Ta bỏ trượng, kiếm,<br>
+Còn ngươi hữu tình, không tự kiềm chế,<br>
+Do vậy, Ta đứng, còn Ngươi chưa đứng.<br>
+<span lang="pi" class="pali">
+“Ṭhito ahaṃ aṅgulimāla sabbadā,<br>
+Sabbesu bhūtesu nidhāya daṇḍaṃ;<br>
+Tuvañca pāṇesu asaññatosi,<br>
+Tasmā ṭhitohaṃ tuvamaṭṭhitosī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðã lâu tôi kính, bậc Ðại Tiên Nhân,<br>
+Nay Sa-môn này bước vào Ðại Lâm.<br>
+Không lâu, tôi sẽ đoạn trừ ác pháp,<br>
+Sau khi được nghe pháp kệ của Ngài.<br>
+<span lang="pi" class="pali">
+“Cirassaṃ vata me mahito mahesī,<br>
+Mahāvanaṃ pāpuṇi saccavādī;<br>
+Sohaṃ carissāmi pahāya pāpaṃ,<br>
+Sutvāna gāthaṃ tava dhammayuttaṃ”.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nói xong tên cướp liền quăng bỏ kiếm,<br>
+Quăng bỏ khí giới xuống vực thâm sâu,<br>
+Tên cướp đảnh lễ dưới chân Thiện Thệ,<br>
+Ngay tại chỗ ấy, xin được xuất gia.<br>
+<span lang="pi" class="pali">
+Itveva coro asimāvudhañca,<br>
+Sobbhe papāte narake akiri;<br>
+Avandi coro sugatassa pāde,<br>
+Tattheva naṃ pabbajjaṃ ayāci.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðức Phật từ bi, bậc Ðại Tiên Nhân,<br>
+Ðạo Sư Nhân giới, cùng với Thiên giới,<br>
+Ngài đã trả lời: "Thiện lai Tỷ-kheo".<br>
+Uy đức Tỷ-kheo được Ngài xác chứng.<br>
+<span lang="pi" class="pali">
+Buddho ca kho kāruṇiko mahesi,<br>
+Yo satthā lokassa sadevakassa;<br>
+“Tamehi bhikkhū”ti tadā avoca,<br>
+Eseva tassa ahu bhikkhubhāvoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn cùng Tôn giả Aṅgulimāla là Sa-môn tùy tùng, bắt đầu du hành đi đến Sāvatthī,<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā āyasmatā aṅgulimālena pacchāsamaṇena yena sāvatthi tena cārikaṃ pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và tuần tự du hành, Thế Tôn đến Sāvatthī.<br>
+<span lang="pi" class="pali">
+Anupubbena cārikaṃ caramāno yena sāvatthi tadavasari.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ở đây, Thế Tôn trú tại Sāvatthī, Jetavana, tại tinh xá ông Anāthapiṇḍika.<br>
+<span lang="pi" class="pali">
+Tatra sudaṃ bhagavā sāvatthiyaṃ viharati jetavane anāthapiṇḍikassa ārāme.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, tại cửa nội cung vua Pasenadi nước Kosala, một số đông quần chúng tụ họp lại, cao tiếng, lớn tiếng nói lên:<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena rañño pasenadissa kosalassa antepuradvāre mahājanakāyo sannipatitvā uccāsaddo mahāsaddo hoti:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Tâu Ðại vương, trong lãnh thổ Ðại vương, có tên cướp tên Aṅgulimāla, là tên thợ săn, bàn tay vấy máu, sát hại, bạo tàn, không có lòng từ mẫn đối với chúng sanh.<br>
+<span lang="pi" class="pali">
+“coro te, deva, vijite aṅgulimālo nāma luddo lohitapāṇi hatapahate niviṭṭho adayāpanno pāṇabhūtesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do vì nó, các làng trở thành không làng, thị trấn trở thành không thị trấn, quốc độ trở thành không quốc độ.<br>
+<span lang="pi" class="pali">
+Tena gāmāpi agāmā katā, nigamāpi anigamā katā, janapadāpi ajanapadā katā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nó luôn luôn giết người, nó mang một vòng hoa làm bằng ngón tay người.<br>
+<span lang="pi" class="pali">
+So manusse vadhitvā vadhitvā aṅgulīnaṃ mālaṃ dhāreti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ðại vương hãy tẩn xuất nó”.<br>
+<span lang="pi" class="pali">
+Taṃ devo paṭisedhetū”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala, với khoảng năm trăm con ngựa, sáng sớm đi ra khỏi Sāvatthī.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo pañcamattehi assasatehi sāvatthiyā nikkhami divā divassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đi đến tinh xá.<br>
+<span lang="pi" class="pali">
+Yena ārāmo tena pāvisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Đi xe đến chỗ nào còn đi xe được, rồi vua xuống xe, đi bộ đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Thế Tôn nói với vua Pasenadi xứ Kosala đang ngồi một bên:<br>
+<span lang="pi" class="pali">
+Yāvatikā yānassa bhūmi yānena gantvā yānā paccorohitvā pattikova yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinnaṃ kho rājānaṃ pasenadiṃ kosalaṃ bhagavā etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, có phải vua Seniya Bimbisara nước Magadha tức giận với Ðại vương, hay các người Licchavi ở Vesali, hay một địch vương nào khác?”<br>
+<span lang="pi" class="pali">
+“kiṃ nu te, mahārāja, rājā vā māgadho seniyo bimbisāro kupito vesālikā vā licchavī aññe vā paṭirājāno”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, vua Seniya Bimbisara xứ Magadha không có tức giận với con, không phải các người Licchavi ở Vesali, cũng không phải có địch vương nào khác.<br>
+<span lang="pi" class="pali">
+“Na kho me, bhante, rājā māgadho seniyo bimbisāro kupito, nāpi vesālikā licchavī, nāpi aññe paṭirājāno.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, trong lãnh thổ của con, có tên cướp tên là Aṅgulimāla, một tên thợ săn, bàn tay vấy máu, sát hại, bạo tàn, không có lòng từ mẫn đối với chúng sanh.<br>
+<span lang="pi" class="pali">
+Coro me, bhante, vijite aṅgulimālo nāma luddo lohitapāṇi hatapahate niviṭṭho adayāpanno pāṇabhūtesu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vì nó, các làng trở thành không làng, các thị trấn trở thành không thị trấn, các quốc độ trở thành không quốc độ.<br>
+<span lang="pi" class="pali">
+Tena gāmāpi agāmā katā, nigamāpi anigamā katā, janapadāpi ajanapadā katā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Do nó luôn luôn giết người, nó mang một vòng hoa làm bằng ngón tay người.<br>
+<span lang="pi" class="pali">
+So manusse vadhitvā vadhitvā aṅgulīnaṃ mālaṃ dhāreti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, nhưng con không có thể tẩn xuất nó được (napatisedhissami).”<br>
+<span lang="pi" class="pali">
+Tāhaṃ, bhante, paṭisedhissāmī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, nếu Ðại vương được thấy Aṅgulimāla cạo bỏ râu tóc, đắp áo cà-sa, xuất gia, từ bỏ gia đình, sống không gia đình, từ bỏ sát sanh, từ bỏ lấy của không cho, từ bỏ nói láo, ăn một ngày một bữa, sống Phạm hạnh, giữ giới, hành trì thiện pháp. Ðại vương sẽ làm gì với Aṅgulimāla?”<br>
+<span lang="pi" class="pali">
+“Sace pana tvaṃ, mahārāja, aṅgulimālaṃ passeyyāsi kesamassuṃ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṃ pabbajitaṃ, virataṃ pāṇātipātā, virataṃ adinnādānā, virataṃ musāvādā, ekabhattikaṃ, brahmacāriṃ, sīlavantaṃ, kalyāṇadhammaṃ, kinti naṃ kareyyāsī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, con sẽ đảnh lễ, hay đứng dậy, hay đưa ghế mời ngồi, hay lo liệu bốn sự cúng dường Aṅgulimāla, tức là y phục, ẩm thực, sàng tọa và dược phẩm trị bệnh, hay chúng con bảo vệ, hộ trì đúng pháp.<br>
+<span lang="pi" class="pali">
+“Abhivādeyyāma vā, bhante, paccuṭṭheyyāma vā āsanena vā nimanteyyāma, abhinimanteyyāma vā naṃ cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārehi, dhammikaṃ vā assa rakkhāvaraṇaguttiṃ saṃvidaheyyāma.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Nhưng Bạch Thế Tôn, từ đâu một người phá giới, làm các ác pháp lại có thể trở thành giữ giới, biết chế ngự như vậy?”<br>
+<span lang="pi" class="pali">
+Kuto panassa, bhante, dussīlassa pāpadhammassa evarūpo sīlasaṃyamo bhavissatī”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ tôn giả Aṅgulimāla ngồi không xa Thế Tôn bao nhiêu.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena āyasmā aṅgulimālo bhagavato avidūre nisinno hoti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Thế Tôn duỗi cánh tay mặt và nói với vua Pasenadi:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā dakkhiṇaṃ bāhuṃ paggahetvā rājānaṃ pasenadiṃ kosalaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, đây là Aṅgulimāla.”<br>
+<span lang="pi" class="pali">
+“eso, mahārāja, aṅgulimālo”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Vua Pasenadi nước Kosala liền hoảng sợ, run sợ, lông tóc dựng ngược.<br>
+<span lang="pi" class="pali">
+Atha kho rañño pasenadissa kosalassa ahudeva bhayaṃ, ahu chambhitattaṃ, ahu lomahaṃso.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn biết được vua Pasenadi nước Kosala, hoảng sợ, khiếp sợ, lông tóc dựng ngược, bèn nói với vua Pasenadi, nước Kosala:<br>
+<span lang="pi" class="pali">
+Atha kho bhagavā rājānaṃ pasenadiṃ kosalaṃ bhītaṃ saṃviggaṃ lomahaṭṭhajātaṃ viditvā rājānaṃ pasenadiṃ kosalaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Chớ có sợ hãi, thưa Ðại vương! Chớ có sợ hãi, thưa Ðại vương. Ở đây, không có gì đáng sợ hãi cho Ðại vương.”<br>
+<span lang="pi" class="pali">
+“mā bhāyi, mahārāja, natthi te ito bhayan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi sự hoảng sợ, khiếp sợ, lông tóc dựng ngược của vua Pasenadi, nước Kosala, được tan biến.<br>
+<span lang="pi" class="pali">
+Atha kho rañño pasenadissa kosalassa yaṃ ahosi bhayaṃ vā chambhitattaṃ vā lomahaṃso vā so paṭippassambhi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala đến gần Tôn giả Aṅgulimāla, sau khi đến, thưa với Tôn giả Aṅgulimāla:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo yenāyasmā aṅgulimālo tenupasaṅkami; upasaṅkamitvā āyasmantaṃ aṅgulimālaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, có phải Tôn giả là Aṅgulimāla?”<br>
+<span lang="pi" class="pali">
+“ayyo no, bhante, aṅgulimālo”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa phải, Ðại vương.”<br>
+<span lang="pi" class="pali">
+“Evaṃ, mahārājā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, phụ thân Tôn giả thuộc dòng họ gì? Mẫu thân thuộc dòng họ gì?”<br>
+<span lang="pi" class="pali">
+“Kathaṅgotto ayyassa pitā, kathaṅgottā mātā”ti?<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, phụ thân tôi thuộc dòng họ Gagga, mẫu thân thuộc dòng họ Mantani.”<br>
+<span lang="pi" class="pali">
+“Gaggo kho, mahārāja, pitā, mantāṇī mātā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Tôn giả, mong Tôn giả Gagga con của Mantani được hoan hỷ.<br>
+<span lang="pi" class="pali">
+“Abhiramatu, bhante, ayyo gaggo mantāṇiputto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Tôi sẽ cố gắng lo bốn sự cúng dường là y phục, ẩm thực, sàng tọa, y dược trị bệnh cho tôn giả.”<br>
+<span lang="pi" class="pali">
+Ahamayyassa gaggassa mantāṇiputtassa ussukkaṃ karissāmi cīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārānan”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, Tôn giả Aṅgulimāla theo hạnh ở rừng núi, đi khất thực mà ăn, sống chỉ với ba y.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena āyasmā aṅgulimālo āraññiko hoti piṇḍapātiko paṃsukūliko tecīvariko.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Aṅgulimāla nói với vua Pasenadi nước Kosala:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā aṅgulimālo rājānaṃ pasenadiṃ kosalaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thôi vừa rồi, thưa Ðại vương, tôi đã đủ ba y.”<br>
+<span lang="pi" class="pali">
+“alaṃ, mahārāja, paripuṇṇaṃ me cīvaran”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi nước Kosala đi đến gần Thế Tôn, sau khi đến, đảnh lễ Thế Tôn và ngồi xuống một bên. Ngồi xuống một bên, vua Pasenadi nước Kosala bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho rājā pasenadi kosalo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật vi diệu thay, bạch Thế Tôn! Thật hy hữu thay, bạch Thế Tôn!<br>
+<span lang="pi" class="pali">
+“acchariyaṃ, bhante, abbhutaṃ, bhante.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Làm sao Thế Tôn lại nhiếp phục được người không thể nhiếp phục, làm cho an tịnh được người không thể an tịnh, làm cho tịch diệt được người không có thể tịch diệt.<br>
+<span lang="pi" class="pali">
+Yāvañcidaṃ, bhante, bhagavā adantānaṃ dametā, asantānaṃ sametā, aparinibbutānaṃ parinibbāpetā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, đối với người con không thể nhiếp phục với gậy, với kiếm, Thế Tôn đã có thể nhiếp phục được, với không gậy, không kiếm.<br>
+<span lang="pi" class="pali">
+Yañhi mayaṃ, bhante, nāsakkhimhā daṇḍenapi satthenapi dametuṃ so bhagavatā adaṇḍena asattheneva danto.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, nay chúng con phải đi.<br>
+<span lang="pi" class="pali">
+Handa ca dāni mayaṃ, bhante, gacchāma;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chúng con có nhiều công việc, có nhiều trách nhiệm phải làm.”<br>
+<span lang="pi" class="pali">
+bahukiccā mayaṃ bahukaraṇīyā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Ðại vương, nay Ðại vương hãy làm những gì Ðại vương nghĩ là hợp thời.”<br>
+<span lang="pi" class="pali">
+“Yassadāni, mahārāja, kālaṃ maññasī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi vua Pasenadi, nước Kosala, từ chỗ ngồi đứng dậy, đảnh lễ Thế Tôn, thân bên hữu hướng về Ngài và ra đi.<br>
+<span lang="pi" class="pali">
+Atha kho rājā pasenadi kosalo uṭṭhāyāsanā bhagavantaṃ abhivādetvā padakkhiṇaṃ katvā pakkāmi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Aṅgulimāla, vào buổi sáng đắp y, cầm y bát đi vào Sāvatthī để khất thực.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā aṅgulimālo pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiyaṃ piṇḍāya pāvisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trong khi đi khất thực từng nhà một ở Sāvatthī, Tôn giả Aṅgulimāla thấy một người đàn bà đang sanh đẻ, rất là nguy kịch và đau đớn.<br>
+<span lang="pi" class="pali">
+Addasā kho āyasmā aṅgulimālo sāvatthiyaṃ sapadānaṃ piṇḍāya caramāno aññataraṃ itthiṃ mūḷhagabbhaṃ vighātagabbhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy vậy, Tôn giả suy nghĩ:<br>
+<span lang="pi" class="pali">
+Disvānassa etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thật đau khổ thay các chúng sanh!<br>
+<span lang="pi" class="pali">
+“kilissanti vata, bho, sattā;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thật đau khổ thay các chúng sanh! “<br>
+<span lang="pi" class="pali">
+kilissanti vata, bho, sattā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Aṅgulimāla, sau khi đi khất thực ở Sāvatthī, sau buổi ăn, trên con đường đi khất thực trở về, đi đến Thế Tôn, sau khi đến, đảnh lễ Thế Tôn rồi ngồi xuống một bên. Ngồi xuống một bên, Tôn giả Aṅgulimāla bạch Thế Tôn:<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā aṅgulimālo sāvatthiyaṃ piṇḍāya caritvā pacchābhattaṃ piṇḍapātapaṭikkanto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṃ abhivādetvā ekamantaṃ nisīdi. Ekamantaṃ nisinno kho āyasmā aṅgulimālo bhagavantaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, ở đây, con vào buổi sáng đắp y, cầm y bát, đi vào thành Sāvatthī để khất thực. Bạch Thế Tôn, trong khi đi khất thực từng nhà một ở Sāvatthī, con thấy một người đàn bà đang sanh đẻ, rất là nguy kịch, đau đớn.<br>
+<span lang="pi" class="pali">
+“idhāhaṃ, bhante, pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiṃ piṇḍāya pāvisiṃ. Addasaṃ kho ahaṃ, bhante, sāvatthiyaṃ sapadānaṃ piṇḍāya caramāno aññataraṃ itthiṃ mūḷhagabbhaṃ vighātagabbhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thấy vậy, con suy nghĩ:<br>
+<span lang="pi" class="pali">
+Disvāna mayhaṃ etadahosi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Thật đau khổ thay các chúng sanh! Thật đau khổ thay các chúng sanh!’<br>
+<span lang="pi" class="pali">
+‘kilissanti vata bho sattā, kilissanti vata bho sattā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Này Aṅgulimāla, Ông hãy đi đến Sāvatthī, sau khi đến, nói với người đàn bà ấy như sau:<br>
+<span lang="pi" class="pali">
+“Tena hi tvaṃ, aṅgulimāla, yena sā itthī tenupasaṅkama; upasaṅkamitvā taṃ itthiṃ evaṃ vadehi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bà chị, vì rằng tôi từ khi sanh ra chưa bao giờ cố ý giết hại mạng sống của chúng sanh, mong rằng với sự thật ấy, bà được an toàn, và sanh đẻ được an toàn!’”<br>
+<span lang="pi" class="pali">
+‘yatohaṃ, bhagini, jāto nābhijānāmi sañcicca pāṇaṃ jīvitā voropetā, tena saccena sotthi te hotu, sotthi gabbhassā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Bạch Thế Tôn, nếu làm vậy, thời con là cố ý nói láo.<br>
+<span lang="pi" class="pali">
+“So hi nūna me, bhante, sampajānamusāvādo bhavissati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Bạch Thế Tôn, con đã cố ý giết hại mạng sống rất nhiều chúng sanh rồi.”<br>
+<span lang="pi" class="pali">
+Mayā hi, bhante, bahū sañcicca pāṇā jīvitā voropitā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Vậy thì, này Aṅgulimāla, Ông hãy đi đến Sāvatthī, sau khi đến hãy nói với người đàn bà ấy như sau:<br>
+<span lang="pi" class="pali">
+“Tena hi tvaṃ, aṅgulimāla, yena sā itthī tenupasaṅkama; upasaṅkamitvā taṃ itthiṃ evaṃ vadehi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+‘Này Bà chị, vì rằng tôi từ khi được Thánh sanh đến này chưa bao giờ cố ý giết hại mạng sống của chúng sanh, mong rằng với sự thật ấy, bà được an toàn và sanh đẻ được an toàn!’”<br>
+<span lang="pi" class="pali">
+‘yatohaṃ, bhagini, ariyāya jātiyā jāto, nābhijānāmi sañcicca pāṇaṃ jīvitā voropetā, tena saccena sotthi te hotu, sotthi gabbhassā’”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa vâng, bạch Thế Tôn,” Tôn giả Aṅgulimāla, sau khi vâng đáp Thế Tôn, đi đến Sāvatthī, sau khi đến nói với người đàn bà ấy như sau:<br>
+<span lang="pi" class="pali">
+“Evaṃ, bhante”ti kho āyasmā aṅgulimālo bhagavato paṭissutvā yena sā itthī tenupasaṅkami; upasaṅkamitvā taṃ itthiṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Thưa Bà chị, vì rằng tôi từ khi được Thánh sanh đến nay chưa bao giờ cố ý giết hại mạng sống của chúng sanh, mong rằng với sự thật ấy, bà được an toàn, và sanh đẻ được an toàn!”<br>
+<span lang="pi" class="pali">
+“yatohaṃ, bhagini, ariyāya jātiyā jāto, nābhijānāmi sañcicca pāṇaṃ jīvitā voropetā, tena saccena sotthi te hotu, sotthi gabbhassā”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và người đàn bà được an toàn, sanh đẻ được an toàn.<br>
+<span lang="pi" class="pali">
+Atha khvāssā itthiyā sotthi ahosi, sotthi gabbhassa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Aṅgulimāla, sống một mình, viễn ly, không phóng dật, nhiệt tâm, tinh cần, và không bao lâu sau, tự thân chứng ngộ với thắng trí, chứng đắc và an trú ngay trong hiện tại vô thượng cứu cánh Phạm hạnh mà vì mục đích này các Thiện nam tử xuất gia, từ bỏ gia đình, sống không gia đình.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā aṅgulimālo eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto nacirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṃ pabbajanti, tadanuttaraṃ—brahmacariyapariyosānaṃ diṭṭheva dhamme sayaṃ abhiññā sacchikatvā upasampajja vihāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Sanh đã tận, Phạm hạnh đã thành, những gì nên làm đã làm, từ nay không còn trở lui đời này nữa”.<br>
+<span lang="pi" class="pali">
+“Khīṇā jāti, vusitaṃ brahmacariyaṃ, kataṃ karaṇīyaṃ, nāparaṃ itthattāyā”ti abbhaññāsi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Và như vậy, Tôn giả Aṅgulimāla trở thành một vị A-la-hán nữa.<br>
+<span lang="pi" class="pali">
+Aññataro kho panāyasmā aṅgulimālo arahataṃ ahosi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Aṅgulimāla buổi sáng đắp y, cầm y bát, đi vào Sāvatthī để khất thực.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā aṅgulimālo pubbaṇhasamayaṃ nivāsetvā pattacīvaramādāya sāvatthiṃ piṇḍāya pāvisi.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Lúc bấy giờ, một cục đất do một người ném, rơi trên thân Tôn giả Aṅgulimāla, rồi một cây gậy do một người khác quăng, rơi trên thân Tôn giả Aṅgulimāla, rồi một hòn sỏi do một người khác quăng, rơi trên thân Tôn giả Aṅgulimāla.<br>
+<span lang="pi" class="pali">
+Tena kho pana samayena aññenapi leḍḍu khitto āyasmato aṅgulimālassa kāye nipatati, aññenapi daṇḍo khitto āyasmato aṅgulimālassa kāye nipatati, aññenapi sakkharā khittā āyasmato aṅgulimālassa kāye nipatati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Aṅgulimāla bị lỗ đầu, chảy máu, bình bát bị bể, ngoại y bị rách, đi đến Thế Tôn.<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā aṅgulimālo bhinnena sīsena, lohitena gaḷantena, bhinnena pattena, vipphālitāya saṅghāṭiyā yena bhagavā tenupasaṅkami.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thế Tôn thấy Tôn giả Aṅgulimāla từ xa đi đến,<br>
+<span lang="pi" class="pali">
+Addasā kho bhagavā āyasmantaṃ aṅgulimālaṃ dūratova āgacchantaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+thấy vậy, liền nói với Tôn giả Aṅgulimāla:<br>
+<span lang="pi" class="pali">
+Disvāna āyasmantaṃ aṅgulimālaṃ etadavoca:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+“Hãy kham nhẫn, này Bà-la-môn! Hãy kham nhẫn, này Bà-la-môn!<br>
+<span lang="pi" class="pali">
+“adhivāsehi tvaṃ, brāhmaṇa, adhivāsehi tvaṃ, brāhmaṇa.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ông đang gặt hái ngay trong hiện tại quả báo của nghiệp mà đáng lẽ Ông phải chịu nấu sôi ở địa ngục nhiều năm, nhiều trăm năm, nhiều ngàn năm”.<br>
+<span lang="pi" class="pali">
+Yassa kho tvaṃ, brāhmaṇa, kammassa vipākena bahūni vassāni bahūni vassasatāni bahūni vassasahassāni niraye pacceyyāsi tassa tvaṃ, brāhmaṇa, kammassa vipākaṃ diṭṭheva dhamme paṭisaṃvedesī”ti.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Rồi Tôn giả Aṅgulimāla sống độc cư, Thiền tịnh, cảm thọ được giải thoát lạc,<br>
+<span lang="pi" class="pali">
+Atha kho āyasmā aṅgulimālo rahogato paṭisallīno vimuttisukhaṃ paṭisaṃvedi;<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+và trong lúc ấy nói lên lời cảm khái sau đây:<br>
+<span lang="pi" class="pali">
+tāyaṃ velāyaṃ imaṃ udānaṃ udānesi:<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+"Ai trước phóng dật, sau không phóng dật,<br>
+Sáng chói đời này, như trăng thoát mây,<br>
+<span lang="pi" class="pali">
+“Yo pubbeva pamajjitvā,<br>
+pacchā so nappamajjati;<br>
+Somaṃ lokaṃ pabhāseti,<br>
+abbhā muttova candimā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ai làm ác nghiệp, nhờ thiện chặn lại,<br>
+Sáng chói đời này, như trăng thoát mây.<br>
+<span lang="pi" class="pali">
+Yassa pāpaṃ kataṃ kammaṃ,<br>
+kusalena pidhīyati;<br>
+Somaṃ lokaṃ pabhāseti,<br>
+abbhā muttova candimā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Niên thiếu Tỷ-kheo, trung thành Phật giáo,<br>
+Sáng chói đời này, như trăng thoát mây.<br>
+<span lang="pi" class="pali">
+Yo have daharo bhikkhu,<br>
+yuñjati buddhasāsane;<br>
+Somaṃ lokaṃ pabhāseti,<br>
+abbhā muttova candimā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong kẻ địch ta, nghe giảng Pháp thoại!<br>
+Mong kẻ địch ta, trung thành Phật giáo!<br>
+Mong kẻ địch ta, thọ lãnh chánh pháp,<br>
+Thân tâm an tịnh, san sẻ mọi người.<br>
+<span lang="pi" class="pali">
+Disā hi me dhammakathaṃ suṇantu,<br>
+Disā hi me yuñjantu buddhasāsane;<br>
+Disā hi me te manujā bhajantu,<br>
+Ye dhammamevādapayanti santo.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Mong kẻ địch ta, từ bậc Thuyết nhẫn,<br>
+Từ bậc Tán thán, vô oán hận tâm.<br>
+Thời thời nghe pháp, y pháp hành trì.<br>
+<span lang="pi" class="pali">
+Disā hi me khantivādānaṃ,<br>
+avirodhappasaṃsīnaṃ;<br>
+Suṇantu dhammaṃ kālena,<br>
+tañca anuvidhīyantu.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Một kẻ như vậy, không có hại ta,<br>
+Cũng không làm hại một người nào khác.<br>
+Vị ấy sẽ chứng tối thượng tịch tịnh.<br>
+Hộ trì mọi người, kẻ mạnh kẻ yếu,<br>
+<span lang="pi" class="pali">
+Na hi jātu so mamaṃ hiṃse,<br>
+aññaṃ vā pana kiñci naṃ;<br>
+Pappuyya paramaṃ santiṃ,<br>
+rakkheyya tasathāvare.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Như người dẫn nước, hướng dẫn nước chảy,<br>
+Như kẻ làm tên uốn cong thân tên,<br>
+Như người thợ mộc uốn nắn cây gỗ.<br>
+Kẻ trí tự mình, tự điều phục mình,<br>
+<span lang="pi" class="pali">
+Udakañhi nayanti nettikā,<br>
+Usukārā namayanti tejanaṃ;<br>
+Dāruṃ namayanti tacchakā,<br>
+Attānaṃ damayanti paṇḍitā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Có kẻ được điều bởi gậy, roi, móc,<br>
+Riêng Ta được điều không gậy, không kiếm.<br>
+(Bởi bậc như vậy).<br>
+<span lang="pi" class="pali">
+Daṇḍeneke damayanti,<br>
+aṅkusehi kasāhi ca;<br>
+Adaṇḍena asatthena,<br>
+ahaṃ dantomhi tādinā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Ta tên Vô Hại, trước ta sát hại,<br>
+Nay được chánh danh, vì chẳng hại ai.<br>
+<span lang="pi" class="pali">
+Ahiṃsakoti me nāmaṃ,<br>
+hiṃsakassa pure sato;<br>
+Ajjāhaṃ saccanāmomhi,<br>
+na naṃ hiṃsāmi kiñci naṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trước ta được tên Angulimala,<br>
+Bị nước thác cuốn, ta quy y Phật.<br>
+<span lang="pi" class="pali">
+Coro ahaṃ pure āsiṃ,<br>
+aṅgulimāloti vissuto;<br>
+Vuyhamāno mahoghena,<br>
+buddhaṃ saraṇamāgamaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Trước tay vấy máu, danh xưng Angulimala,<br>
+Xem ta quy y, đoạn dây sanh tử,<br>
+<span lang="pi" class="pali">
+Lohitapāṇi pure āsiṃ,<br>
+aṅgulimāloti vissuto;<br>
+Saraṇagamanaṃ passa,<br>
+bhavanetti samūhatā.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Làm nghiệp như vậy phải sanh ác thú,<br>
+Khi lãnh nghiệp báo, không nợ ta hưởng.<br>
+<span lang="pi" class="pali">
+Tādisaṃ kammaṃ katvāna,<br>
+bahuṃ duggatigāminaṃ;<br>
+Phuṭṭho kammavipākena,<br>
+aṇaṇo bhuñjāmi bhojanaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Kẻ ngu vô trí, đam mê phóng dật,<br>
+Còn người có trí, giữ không phóng dật,<br>
+Như giữ tài sản, tối thượng, tối quý,<br>
+<span lang="pi" class="pali">
+Pamādamanuyuñjanti,<br>
+bālā dummedhino janā;<br>
+Appamādañca medhāvī,<br>
+dhanaṃ seṭṭhaṃva rakkhati.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Chớ mê phóng dật, chớ mê dục lạc.<br>
+Giữ không phóng dật, luôn luôn Thiền định,<br>
+Chứng đắc đại lạc, quảng đại vô lượng,<br>
+<span lang="pi" class="pali">
+Mā pamādamanuyuñjetha,<br>
+mā kāmarati santhavaṃ;<br>
+Appamatto hi jhāyanto,<br>
+pappoti vipulaṃ sukhaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thiện lai, ta đến, không đi lạc hướng,<br>
+Không ai khuyên ta theo tư tưởng ác.<br>
+Giữa các chân lý được khéo giảng dạy,<br>
+Chân lý ta theo, chân lý tối thượng,<br>
+<span lang="pi" class="pali">
+Svāgataṃ nāpagataṃ,<br>
+nayidaṃ dummantitaṃ mama;<br>
+Saṃvibhattesu dhammesu,<br>
+yaṃ seṭṭhaṃ tadupāgamaṃ.<br>
+</span>
+</p>
+
+<p lang="vi" class="vi">
+Thiện lai ta đến, không đi lạc hướng,<br>
+Không ai khuyên ta theo tư tưởng ác,<br>
+Ba minh ta chứng, Phật lý viên thành.<br>
+<span lang="pi" class="pali">
+Svāgataṃ nāpagataṃ,<br>
+nayidaṃ dummantitaṃ mama;<br>
+Tisso vijjā anuppattā,<br>
+kataṃ buddhassa sāsanan”ti.<br>
+</span>
+</p>
+
+
+<p lang="vi" class="vi">
+<span lang="pi" class="vi">
+Aṅgulimālasuttaṃ niṭṭhitaṃ chaṭṭhaṃ.<br>
+</span>
+</p>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./mn85.html#content"></a><a id="next-sutta" href="./mn87.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>

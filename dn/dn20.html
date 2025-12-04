@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Loading manifest -->
+	<link rel="manifest" href="../manifest.json">
+ 	<!-- Loading main and menu stylesheets -->
+ 	<link rel="stylesheet" href="../css/w3.css">
+ 	<link rel="stylesheet" href="../css/css.css">
+ 	<link rel="stylesheet" href="../css/menu.css">
+ 	<script src="../js/jquery-1.10.2.min.js"></script>
+ 	<script src="../js/controlpanel.js"></script>
+ 	<script src="../js/mousetrap.min.js"></script>
+    <script src="../js/pali-lookup-standalone.js"></script>
+
+ <script src="../js/suttaFiles.js"></script>
+
+
+</head>
+ <body class="container">
+ <div class="header-background">
+ <!-- Header -->
+ <div class="w3-header w3-content w3-padding w3-left-align bwcontainer">
+ 	<div class="centered">
+ 		<button class="light-mode-button" aria-label="Bật Chế Độ Sáng" onclick="toggle_light_mode()">
+ 			<span></span>
+ 			<span></span>
+ 		</button>
+ 		<span class="box-lbl">Sáng/Tối</span>
+ 	</div> <!-- Centered -->
+ 		<a href="../home/index.html" id="bwlogo"><img src="../images/headerlogo.png" alt="Logo Lời Của Đức Phật" class="w3-image"></a> 
+
+ 		<div class="w3-bar bwcontainer">
+  <div style="display:flex; align-items:center; gap:4px;">
+    <form id="form" class="inline-search" style="display:flex; align-items:center; gap:2px; margin:0;">
+      <input id="searchpage" type="text" placeholder="Tìm trên trang"
+             style="width:100px; font-size:12px;" />
+      <input class="go-button" type="submit" style="font-size:13px;" value="🔍" />
+      <button type="button" id="prev-btn" style="font-size:15px;" title="Kết quả trước (↑)">↑</button>
+      <button type="button" id="next-btn" style="font-size:15px;" title="Kết quả tiếp (↓)">↓</button>
+      <span id="result-info" style="font-size:13px;"></span>
+      <button type="button" id="close-float" title="Đóng" style="display:none;">✕</button>
+    </form>
+  </div>
+
+  <button id="toggleViBtn" onclick="toggleVi()">Pali</button>
+<button id="togglePaliBtn" onclick="togglePali()">Việt</button>
+
+
+
+<!-- Empty button chứa switch -->
+<button style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; background: #aed0cd; height: 45px;">
+  <label class="switch" style="margin-bottom: 11px;">
+    <input type="checkbox" id="paliSwitch" checked onchange="togglePaliLookup(this.checked)">
+    <span class="slider round"></span>
+  </label>
+  <span style="font-size: 13px; color: black; line-height: 0.4;">Từ điển Pali</span>
+</button>
+<button id="randomSuttaBtn" class="sutta-button" onclick="openRandomSutta2()">
+  <span title="Bài Kinh Ngẫu Nhiên"> 📖 Ngẫu Nhiên</span>
+</button>
+
+<button id="dailySuttaBtn" class="sutta-button" style="background: #bb5d5d" onclick="SuttaQuotes()";>
+  <span title="Trích Dẫn Kinh Điển" style="color: #FFF8DC;">📖 Trích Dẫn</span>
+</button>
+
+<button id="SuttaTopicBtn" class="sutta-button" onclick="openSuttaTopic()" style=" background: #3566d0;">
+    <span title="Kinh Tuyển Chọn">📖 Tuyển Chọn</span>
+</button>
+<a href="../home/visearch.html" id="viSearchBtnOutline" class="search-outline">
+  🔍 Việt
+</a>
+
+<a href="../home/palisearch.html" id="paliSearchBtnOutline" class="search-outline">
+  🔍 Pali
+</a>
+<a href="../congcu/NikayaMp3.html" id="viSearchBtnOutline" class="search-outline" style="font-size:18px; text-decoration:none;" title="Nikaya Tuyển Chọn">
+ 🔊
+</a>
+<a href="../home/about.html" style="margin-left:4px;">
+  <img src="../images/help_icon.png" title="Thông Tin" alt="About">
+</a>
+</div>
+ 		</div> <!-- End w3-bar bwcontainer --> 	</div> <!-- End w3-header w3-content w3-padding w3-left-align bwcontainer -->
+ </div> <!-- End header-background -->
+ <!-- Top menu -->
+
+ <div class="w3-main w3-white bwcontainer2">
+ 	<div class="w3-button w3-padding-8 w3-left w3-hide-large" onclick="w3_open()">☰</div>
+ 		<div id="navbar" class="w3-hide-small w3-hide-medium bwcontainer3">
+ 			<ul id="css3menu0">
+ 				<li class="topfirst" id="home"><a href="../home/index.html" class="w3-hide-small">Trang Chủ</a></li>
+  				<li class="topmenu" id="dn"><a href="../dn/dn.html" class="pressed w3-hide-small">Trường Bộ Kinh</a></li>
+ 				<li class="topmenu" id="mn"><a href="../mn/mn.html" class="w3-hide-small">Trung Bộ Kinh</a></li>
+ 				<li class="topmenu" id="sn"><a href="../sn/sn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tương Ưng Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../sn/sn01.html" class="w3-hide-small">Tập I - Thiên Có Kệ (SN 1-11)</a></li>
+ 						<li><a href="../sn/sn02.html" class="w3-hide-small">Tập II - Thiên Nhân Duyên (SN 12-21)</a></li>
+ 						<li><a href="../sn/sn03.html" class="w3-hide-small">Tập III - Thiên Uẩn (SN 22-34)</a></li>
+ 						<li><a href="../sn/sn04.html" class="w3-hide-small">Tập IV - Thiên Sáu Xứ (SN 35-44)</a></li>
+ 						<li><a href="../sn/sn05.html" class="w3-hide-small">Tập V - Thiên Ðại Phẩm (SN 45-56)</a></li>
+ 					</ul>
+ 				<li class="topmenu" id="an"><a href="../an/an.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tăng Chi Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../an/an1.html" class="w3-hide-small">AN 1: Chương Một Pháp</a></li>
+ 						<li><a href="../an/an2.html" class="w3-hide-small">AN 2: Chương Hai Pháp</a></li>
+ 						<li><a href="../an/an3.html" class="w3-hide-small">AN 3: Chương Ba Pháp</a></li>
+ 						<li><a href="../an/an4.html" class="w3-hide-small">AN 4: Chương Bốn Pháp</a></li>
+ 						<li><a href="../an/an5.html" class="w3-hide-small">AN 5: Chương Năm Pháp</a></li>
+ 						<li><a href="../an/an6.html" class="w3-hide-small">AN 6: Chương Sáu Pháp</a></li>
+ 						<li><a href="../an/an7.html" class="w3-hide-small">AN 7: Chương Bảy Pháp</a></li>
+ 						<li><a href="../an/an8.html" class="w3-hide-small">AN 8: Chương Tám Pháp</a></li>
+ 						<li><a href="../an/an9.html" class="w3-hide-small">AN 9: Chương Chín Pháp</a></li>
+ 						<li><a href="../an/an10.html" class="w3-hide-small">AN 10: Chương Mười Pháp</a></li>
+ 						<li><a href="../an/an11.html" class="w3-hide-small">AN 11: Chương Mười Một Pháp</a></li>
+ 					</ul>
+ 				</li>
+ 				<li class="topmenu" id="kn"><a href="../kn/kn.html" class="w3-hide-small"><i class="fa fa-caret-down"></i>&nbsp;Tiểu Bộ Kinh</a>
+ 					<ul>
+ 						<li><a href="../kp/kp.html" class="w3-hide-small">Khuddakapāṭha - Kinh Tiểu Tụng</a></li>
+ 						<li><a href="../dhp/dhp.html" class="w3-hide-small">Dhammapada - Kinh Pháp Cú</a></li>
+ 						<li><a href="../snp/snp.html" class="w3-hide-small">Sutta Nipāta - Kinh Tập</a></li>
+ 						<li><a href="../ud/ud.html" class="w3-hide-small">Udāna - Kinh Phật Tự Thuyết</a></li>
+ 						<li><a href="../iti/iti.html" class="w3-hide-small">Itivuttaka - Kinh Phật Thuyết Như Vậy</a></li>
+ 						<li><a href="../thag/thag.html" class="w3-hide-small">Theragāthā - Trưởng Lão Tăng Kệ</a></li>
+ 						<li><a href="../thig/thig.html" class="w3-hide-small">Therīgāthā - Trưởng Lão Ni Kệ</a></li>
+</ul>
+  </li>
+<li class="topmenu" id="gioiluat"><a href="../gioiluat/gioiluat.html" class="w3-hide-small">Giới Luật</a></li>
+<li class="topmenu" id="thiendinh"><a href="../thiendinh/thiendinh.html" class="w3-hide-small"></i>Thiền Định</a></li>
+				<li class="toplast" id="khac"><a href="../congcu/congcukhac.html" class="w3-hide-small"></i>»</a>
+ 					</ul>
+ 				</li>
+ 			</ul>
+ 			</div>
+ 		</div> <!--navbar-->
+
+<!-- Sidebar (hidden by default) -->
+ <nav class="w3-sidebar w3-bar-block w3-card w3-border w3-top w3-animate-left w3-hide-large" id="mySidebar">
+ 	<a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-times fa-2x red-color"></i>&nbsp;&nbsp;&nbsp;Đóng</a><!-- Hides the sidebar when clicked -->
+ 		<div class="w3-bar-block w3-white">
+ 			<a href="../home/index.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;&nbsp;Trang Chủ</a>
+ 			
+ 			<a href="../dn/dn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trường Bộ Kinh</a>
+ 			<a href="../mn/mn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Trung Bộ Kinh</a>
+ 			<a href="../sn/sn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tương Ưng Bộ Kinh</a>
+ 			<a href="../an/an.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tăng Chi Bộ Kinh
+ 			<a href="../kn/kn.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Tiểu Bộ Kinh</a>
+
+			<a href="../gioiluat/gioiluat.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Giới Luật</a>
+			<a href="../thiendinh/thiendinh.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;Thiền Định</a>
+			<a href="../congcu/congcukhac.html#content" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-yellow"><i class="fa fa-book"></i>&nbsp;&nbsp;☸️Công Cụ Khác☸️</a>
+ 		</div>
+ </nav>
+ 
+ 
+ 
+   <!-- !PAGE CONTENT! --> 
+<div class="w3-main w3-content w3-padding w3-left-align bwcontainer4">
+<div id="content">
+<h2>Dīgha Nikāya – Trường Bộ Kinh</h2>
+<h5><span style="font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></h5>
+
+</div>
+
+<br>
+ 	<title>        Trường Bộ 20           </title>
+
+
+
+<!-- COPY CONTENT SUTTA Ở ĐÂY -->
+<p lang="vi" class="vi"; style="text-align: center">Trường Bộ 20<br>
+<span lang="pi" class="pali">Dīgha Nikāya 20</span></p>
+
+<p lang="vi" class="vi"; style="text-align: center">Kinh Đại Hội<br>
+<span lang="pi" class="pali">Mahāsamayasutta</span></p>
+
+<p lang="vi" class="vi">Như vậy tôi nghe.<br>
+<span lang="pi" class="pali">Evaṃ me sutaṃ—</span></p>
+
+<p lang="vi" class="vi">Một thời, Thế Tôn trú tại bộ lạc Sakka (Thích-ca), thành Kapilavatthu (Ca-tỳ-la-vệ), ở Mahāvana (Ðại Lâm), cùng với đại chúng Tỷ-kheo khoảng 500 vị, tất cả đều là bậc A-la-hán.<br>
+<span lang="pi" class="pali">ekaṃ samayaṃ bhagavā sakkesu viharati kapilavatthusmiṃ mahāvane mahatā bhikkhusaṅghena saddhiṃ pañcamattehi bhikkhusatehi sabbeheva arahantehi;</span></p>
+
+<p lang="vi" class="vi">Và chư Thiên ở mười phương thế giới phần lớn cũng thường tập hội để chiêm ngưỡng Thế Tôn và chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">dasahi ca lokadhātūhi devatā yebhuyyena sannipatitā honti bhagavantaṃ dassanāya bhikkhusaṅghañca.</span></p>
+
+<p lang="vi" class="vi">Lúc bấy giờ, bốn vị Tịnh Cư thiên (Suddhāvāsa) suy nghĩ như sau:<br>
+<span lang="pi" class="pali">Atha kho catunnaṃ suddhāvāsakāyikānaṃ devatānaṃ etadahosi:</span></p>
+
+<p lang="vi" class="vi">“Thế Tôn nay trú tại bộ lạc Sakka, thành Kapilavatthu, ở Ðại Lâm, cùng với Ðại chúng Tỷ-kheo khoảng 500 vị, tất cả đều là bậc A-la-hán. Và chư Thiên ở mười phương thế giới phần lớn cũng thường tập hội để chiêm ngưỡng Thế Tôn và chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">“ayaṃ kho bhagavā sakkesu viharati kapilavatthusmiṃ mahāvane mahatā bhikkhusaṅghena saddhiṃ pañcamattehi bhikkhusatehi sabbeheva arahantehi; dasahi ca lokadhātūhi devatā yebhuyyena sannipatitā honti bhagavantaṃ dassanāya bhikkhusaṅghañca.</span></p>
+
+<p lang="vi" class="vi">Vậy chúng ta hãy đến tại chỗ Thế Tôn ở, khi đến xong mỗi chúng ta sẽ đọc một bài kệ dâng lên Thế Tôn”.<br>
+<span lang="pi" class="pali">Yannūna mayampi yena bhagavā tenupasaṅkameyyāma; upasaṅkamitvā bhagavato santike paccekaṃ gāthaṃ bhāseyyāmā”ti.</span></p>
+
+<p lang="vi" class="vi">Rồi chư Thiên ấy, nhanh như nhà lực sĩ duỗi cánh tay co lại, hay co cánh tay duỗi ra, biến mất từ Tịnh Cư thiên và hiện ra trước mặt Thế Tôn.<br>
+<span lang="pi" class="pali">Atha kho tā devatā seyyathāpi nāma balavā puriso samiñjitaṃ vā bāhaṃ pasāreyya pasāritaṃ vā bāhaṃ samiñjeyya; evameva—suddhāvāsesu devesu antarahitā bhagavato purato pāturahesuṃ.</span></p>
+
+<p lang="vi" class="vi">Chư Thiên ấy đảnh lễ Thế Tôn và đứng một bên.<br>
+<span lang="pi" class="pali">Atha kho tā devatā bhagavantaṃ abhivādetvā ekamantaṃ aṭṭhaṃsu.</span></p>
+
+<p lang="vi" class="vi">Sau khi đứng một bên, một vị Thiên đọc bài kệ trước Thế Tôn:<br>
+<span lang="pi" class="pali">Ekamantaṃ ṭhitā kho ekā devatā bhagavato santike imaṃ gāthaṃ abhāsi:</span></p>
+
+<p lang="vi" class="vi">“Ðại hội tại Ðại Lâm<br>
+<span lang="pi" class="pali">“Mahāsamayo pavanasmiṃ,</span></p>
+
+<p lang="vi" class="vi">Chư Thiên đồng tụ tập.<br>
+<span lang="pi" class="pali">Devakāyā samāgatā;</span></p>
+
+<p lang="vi" class="vi">Chúng con đến Pháp hội<br>
+<span lang="pi" class="pali">Āgatamha imaṃ dhammasamayaṃ,</span></p>
+
+<p lang="vi" class="vi">Ðảnh lễ chúng Bất Thắng.”<br>
+<span lang="pi" class="pali">Dakkhitāye aparājitasaṅghan”ti.</span></p>
+
+<p lang="vi" class="vi">Rồi một vị Thiên khác cũng đọc lên một bài kệ trước Thế Tôn:<br>
+<span lang="pi" class="pali">Atha kho aparā devatā bhagavato santike imaṃ gāthaṃ abhāsi:</span></p>
+
+<p lang="vi" class="vi">Tại đây chúng Tỷ-kheo thiền định<br>
+<span lang="pi" class="pali">“Tatra bhikkhavo samādahaṃsu,</span></p>
+
+<p lang="vi" class="vi">Thiền định, tâm chánh trực.<br>
+<span lang="pi" class="pali">Cittamattano ujukaṃ akaṃsu;</span></p>
+
+<p lang="vi" class="vi">Như chủ xe nắm cương,<br>
+<span lang="pi" class="pali">Sārathīva nettāni gahetvā,</span></p>
+
+<p lang="vi" class="vi">Bậc trí hộ các căn.”<br>
+<span lang="pi" class="pali">Indriyāni rakkhanti paṇḍitā”ti.</span></p>
+
+<p lang="vi" class="vi">Lại một vị Thiên khác cũng đọc lên một bài kệ trước Thế Tôn:<br>
+<span lang="pi" class="pali">Atha kho aparā devatā bhagavato santike imaṃ gāthaṃ abhāsi:</span></p>
+
+<p lang="vi" class="vi">“Như khóa gãy, chốt tháo,<br>
+<span lang="pi" class="pali">“Chetvā khīlaṃ chetvā palighaṃ,</span></p>
+
+<p lang="vi" class="vi">Cửa trụ bị đào lên.<br>
+<span lang="pi" class="pali">Indakhīlaṃ ūhacca manejā;</span></p>
+
+<p lang="vi" class="vi">Sống thanh tịnh, vô nhiễm,<br>
+<span lang="pi" class="pali">Te caranti suddhā vimalā,</span></p>
+
+<p lang="vi" class="vi">Như voi khéo điều phục.”<br>
+<span lang="pi" class="pali">Cakkhumatā sudantā susunāgā”ti.</span></p>
+
+<p lang="vi" class="vi">Lại một vị Thiên khác cũng đọc lên một bài kệ trước Thế Tôn:<br>
+<span lang="pi" class="pali">Atha kho aparā devatā bhagavato santike imaṃ gāthaṃ abhāsi:</span></p>
+
+<p lang="vi" class="vi">“Những ai quy y Phật,<br>
+<span lang="pi" class="pali">“Ye keci buddhaṃ saraṇaṃ gatāse,</span></p>
+
+<p lang="vi" class="vi">Sẽ không đọa ác thú,<br>
+<span lang="pi" class="pali">Na te gamissanti apāyabhūmiṃ;</span></p>
+
+<p lang="vi" class="vi">Sau khi bỏ thân người,<br>
+<span lang="pi" class="pali">Pahāya mānusaṃ dehaṃ,</span></p>
+
+<p lang="vi" class="vi">Sẽ sanh làm chư Thiên.”<br>
+<span lang="pi" class="pali">Devakāyaṃ paripūressantī”ti.</span></p>
+
+
+
+<p lang="vi" class="vi">Rồi Thế Tôn nói với các vị Tỷ-kheo:<br>
+<span lang="pi" class="pali">Atha kho bhagavā bhikkhū āmantesi:</span></p>
+
+<p lang="vi" class="vi">Này các Tỷ-kheo, phần lớn chư Thiên mười phương thế giới tụ họp để chiêm ngưỡng Thế Tôn và chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">“yebhuyyena, bhikkhave, dasasu lokadhātūsu devatā sannipatitā honti, tathāgataṃ dassanāya bhikkhusaṅghañca.</span></p>
+
+<p lang="vi" class="vi">Này các Tỷ-kheo, những vị nào trong thời quá khứ đã là bậc A-la-hán, Chánh Ðẳng Giác, những vị này được một Thiên chúng tối thắng tụ hội xung quanh, như Ta hiện nay vậy.<br>
+<span lang="pi" class="pali">Yepi te, bhikkhave, ahesuṃ atītamaddhānaṃ arahanto sammāsambuddhā, tesampi bhagavantānaṃ etapparamāyeva devatā sannipatitā ahesuṃ seyyathāpi mayhaṃ etarahi.</span></p>
+
+<p lang="vi" class="vi">Này các Tỷ-kheo, những vị nào trong thời vị lai sẽ là bậc A-la-hán, Chánh Ðẳng Giác, những vị này cũng sẽ được một Thiên chúng tối thắng tụ hội xung quanh, như Ta hiện nay vậy.<br>
+<span lang="pi" class="pali">Yepi te, bhikkhave, bhavissanti anāgatamaddhānaṃ arahanto sammāsambuddhā, tesampi bhagavantānaṃ etapparamāyeva devatā sannipatitā bhavissanti seyyathāpi mayhaṃ etarahi.</span></p>
+
+<p lang="vi" class="vi">Này các Tỷ-kheo, Ta sẽ tuyên bố danh tánh của chư Thiên.<br>
+<span lang="pi" class="pali">Ācikkhissāmi, bhikkhave, devakāyānaṃ nāmāni;</span></p>
+
+<p lang="vi" class="vi">Này các Tỷ-kheo, Ta sẽ cáo tri danh tánh của chư Thiên.<br>
+<span lang="pi" class="pali">kittayissāmi, bhikkhave, devakāyānaṃ nāmāni;</span></p>
+
+<p lang="vi" class="vi">Này các Tỷ-kheo, Ta sẽ thuyết giảng danh tánh của chư Thiên.<br>
+<span lang="pi" class="pali">desessāmi, bhikkhave, devakāyānaṃ nāmāni.</span></p>
+
+<p lang="vi" class="vi">Hãy nghe và khéo tác ý, Ta sẽ giảng.”<br>
+<span lang="pi" class="pali">Taṃ suṇātha, sādhukaṃ manasikarotha, bhāsissāmī”ti.</span></p>
+
+<p lang="vi" class="vi">“Xin vâng, bạch Thế Tôn! Tỷ-kheo ấy vâng lời Thế Tôn.<br>
+<span lang="pi" class="pali">“Evaṃ, bhante”ti kho te bhikkhū bhagavato paccassosuṃ.</span></p>
+
+<p lang="vi" class="vi">Thế Tôn giảng như sau:<br>
+<span lang="pi" class="pali">Bhagavā etadavoca:</span></p>
+
+<p lang="vi" class="vi">“Bài kệ Ta sẽ giảng,<br>
+<span lang="pi" class="pali">“Silokamanukassāmi,</span></p>
+
+<p lang="vi" class="vi">Chư thiên trú địa cầu.<br>
+<span lang="pi" class="pali">yattha bhummā tadassitā;</span></p>
+
+<p lang="vi" class="vi">Những vị trú hang núi,<br>
+<span lang="pi" class="pali">Ye sitā girigabbharaṃ,</span></p>
+
+<p lang="vi" class="vi">Tâm tịnh, an thiền định.<br>
+<span lang="pi" class="pali">pahitattā samāhitā.</span></p>
+
+<p lang="vi" class="vi">Như sư tử một mình,<br>
+<span lang="pi" class="pali">Puthūsīhāva sallīnā,</span></p>
+
+<p lang="vi" class="vi">Làm hoảng sợ quần sanh,<br>
+<span lang="pi" class="pali">lomahaṃsābhisambhuno;</span></p>
+
+<p lang="vi" class="vi">Tâm tư thuần tịnh bạch,<br>
+<span lang="pi" class="pali">Odātamanasā suddhā,</span></p>
+
+<p lang="vi" class="vi">Trong sáng, không cấu uế.<br>
+<span lang="pi" class="pali">vippasannamanāvilā.</span></p>
+
+<p lang="vi" class="vi">Biết hơn năm trăm vị,<br>
+<span lang="pi" class="pali">Bhiyyo pañcasate ñatvā,</span></p>
+
+<p lang="vi" class="vi">Họp tại Ca-tỳ-la<br>
+<span lang="pi" class="pali">vane kāpilavatthave;</span></p>
+
+<p lang="vi" class="vi">Bậc Ðạo Sư thuyết giảng<br>
+<span lang="pi" class="pali">Tato āmantayī satthā,</span></p>
+
+<p lang="vi" class="vi">Chúng đệ tử thích nghe:<br>
+<span lang="pi" class="pali">sāvake sāsane rate.</span></p>
+
+<p lang="vi" class="vi">Chư Thiên chúng đến gần<br>
+<span lang="pi" class="pali">‘Devakāyā abhikkantā,</span></p>
+
+<p lang="vi" class="vi">Các Tỷ-kheo hãy xem.”<br>
+<span lang="pi" class="pali">te vijānātha bhikkhavo’;</span></p>
+
+<p lang="vi" class="vi">Ðại chúng nhiệt tình xem.<br>
+<span lang="pi" class="pali">Te ca ātappamakaruṃ,</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Nghe lời dạy đức Phật<br>
+<span lang="pi" class="pali">sutvā buddhassa sāsanaṃ.</span></p>
+
+<p lang="vi" class="vi">Và hiện ra trước chúng<br>
+<span lang="pi" class="pali">Tesaṃ pāturahu ñāṇaṃ,</span></p>
+
+<p lang="vi" class="vi">Thấy rõ hàng phi nhân<br>
+<span lang="pi" class="pali">amanussānadassanaṃ;</span></p>
+
+<p lang="vi" class="vi">Kẻ thấy trăm thiên thần,<br>
+<span lang="pi" class="pali">Appeke satamaddakkhuṃ,</span></p>
+
+<p lang="vi" class="vi">Kẻ thấy bảy mươi ngàn<br>
+<span lang="pi" class="pali">sahassaṃ atha sattariṃ.</span></p>
+
+<p lang="vi" class="vi">Ngàn thần, và hơn nữa.<br>
+<span lang="pi" class="pali">Sataṃ eke sahassānaṃ,</span></p>
+
+<p lang="vi" class="vi">Toàn các bậc phi nhân.<br>
+<span lang="pi" class="pali">amanussānamaddasuṃ;</span></p>
+
+<p lang="vi" class="vi">Kẻ thấy vô lượng vị,<br>
+<span lang="pi" class="pali">Appekenantamaddakkhuṃ,</span></p>
+
+<p lang="vi" class="vi">Cùng khắp mọi phương hướng.<br>
+<span lang="pi" class="pali">disā sabbā phuṭā ahuṃ.</span></p>
+
+<p lang="vi" class="vi">Và phân biệt tất cả<br>
+<span lang="pi" class="pali">Tañca sabbaṃ abhiññāya,</span></p>
+
+<p lang="vi" class="vi">Với pháp nhãn thấy rõ<br>
+<span lang="pi" class="pali">vavatthitvāna cakkhumā;</span></p>
+
+<p lang="vi" class="vi">Bậc Ðạo Sư thuyết giảng,<br>
+<span lang="pi" class="pali">Tato āmantayī satthā,</span></p>
+
+<p lang="vi" class="vi">Chúng đệ tử thích nghe:<br>
+<span lang="pi" class="pali">sāvake sāsane rate.</span></p>
+
+<p lang="vi" class="vi">‘Chư Thiên chúng đến gần<br>
+<span lang="pi" class="pali">‘Devakāyā abhikkantā,</span></p>
+
+<p lang="vi" class="vi">Các Tỷ-kheo hãy xem,<br>
+<span lang="pi" class="pali">te vijānātha bhikkhavo;</span></p>
+
+<p lang="vi" class="vi">Ta sẽ theo thứ lớp<br>
+<span lang="pi" class="pali">Ye vohaṃ kittayissāmi,</span></p>
+
+<p lang="vi" class="vi">Thuyết kệ cho người nghe.’<br>
+<span lang="pi" class="pali">girāhi anupubbaso’.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Bảy ngàn loại Dạ-xoa<br>
+<span lang="pi" class="pali">Sattasahassā te yakkhā,</span></p>
+
+<p lang="vi" class="vi">Trú tại Ca-tỳ-la,<br>
+<span lang="pi" class="pali">bhummā kāpilavatthavā;</span></p>
+
+<p lang="vi" class="vi">Có thần lực hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<p lang="vi" class="vi">Sáu ngàn từ Tuyết Sơn<br>
+<span lang="pi" class="pali">Chasahassā hemavatā,</span></p>
+
+<p lang="vi" class="vi">Dạ-xoa đủ sắc mặt<br>
+<span lang="pi" class="pali">yakkhā nānattavaṇṇino;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Ba ngàn từ Sātā,<br>
+<span lang="pi" class="pali">Sātāgirā tisahassā,</span></p>
+
+<p lang="vi" class="vi">Dạ-xoa đủ sắc mặt,<br>
+<span lang="pi" class="pali">yakkhā nānattavaṇṇino;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<p lang="vi" class="vi">Như vậy mười sáu ngàn,<br>
+<span lang="pi" class="pali">Iccete soḷasasahassā,</span></p>
+
+<p lang="vi" class="vi">Dạ-xoa đủ sắc mặt,<br>
+<span lang="pi" class="pali">yakkhā nānattavaṇṇino;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Năm trăm từ Vessamittā,<br>
+<span lang="pi" class="pali">Vessāmittā pañcasatā,</span></p>
+
+<p lang="vi" class="vi">Dạ-xoa đủ sắc mặt,<br>
+<span lang="pi" class="pali">yakkhā nānattavaṇṇino;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Kumbhira, Vương Xá,<br>
+<span lang="pi" class="pali">Kumbhīro rājagahiko,</span></p>
+
+<p lang="vi" class="vi">Trú tại Vepulla,<br>
+<span lang="pi" class="pali">vepullassa nivesanaṃ;</span></p>
+
+<p lang="vi" class="vi">Đến tham dự đông đảo,<br>
+<span lang="pi" class="pali">Bhiyyo naṃ satasahassaṃ,</span></p>
+
+<p lang="vi" class="vi">Hơn trăm ngàn Dạ-xoa,<br>
+<span lang="pi" class="pali">yakkhānaṃ payirupāsati;</span></p>
+
+<p lang="vi" class="vi">Kumbhira, Vương Xá<br>
+<span lang="pi" class="pali">Kumbhīro rājagahiko,</span></p>
+
+<p lang="vi" class="vi">Cũng đến họp rừng này.<br>
+<span lang="pi" class="pali">sopāgā samitiṃ vanaṃ.</span></p>
+
+<p lang="vi" class="vi">Vua Dhataraṭṭha (Trì Quốc Thiên vương)<br>
+<span lang="pi" class="pali">Purimañca disaṃ rājā,</span></p>
+
+<p lang="vi" class="vi">Trị vì tại phương Ðông,<br>
+<span lang="pi" class="pali">dhataraṭṭho pasāsati;</span></p>
+
+<p lang="vi" class="vi">Chúa tể Càn-thát-bà,<br>
+<span lang="pi" class="pali">Gandhabbānaṃ adhipati,</span></p>
+
+<p lang="vi" class="vi">Bậc đại vương danh tiếng.<br>
+<span lang="pi" class="pali">mahārājā yasassiso.</span></p>
+
+<p lang="vi" class="vi">Vị này có nhiều con,<br>
+<span lang="pi" class="pali">Puttāpi tassa bahavo,</span></p>
+
+<p lang="vi" class="vi">Ðại lực, tên Indra,<br>
+<span lang="pi" class="pali">indanāmā mahabbalā;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Quốc vương Virūḷha (Tăng Trưởng Thiên vương).<br>
+<span lang="pi" class="pali">Dakkhiṇañca disaṃ rājā,</span></p>
+
+<p lang="vi" class="vi">Trị vì tại phương Nam,<br>
+<span lang="pi" class="pali">virūḷho taṃ pasāsati;</span></p>
+
+<p lang="vi" class="vi">Chúa tể Cưu-bàn-trà (Kumbhanda)<br>
+<span lang="pi" class="pali">Kumbhaṇḍānaṃ adhipati,</span></p>
+
+<p lang="vi" class="vi">Bậc đại vương danh tiếng,<br>
+<span lang="pi" class="pali">mahārājā yasassiso.</span></p>
+
+<p lang="vi" class="vi">Vị này có nhiều con,<br>
+<span lang="pi" class="pali">Puttāpi tassa bahavo,</span></p>
+
+<p lang="vi" class="vi">Ðại lực, tên Indra<br>
+<span lang="pi" class="pali">indanāmā mahabbalā;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang.<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Vua Virūpakkha, (Quảng Mục Thiên vương)<br>
+<span lang="pi" class="pali">Pacchimañca disaṃ rājā,</span></p>
+
+<p lang="vi" class="vi">Trị vì tại phương Tây,<br>
+<span lang="pi" class="pali">virūpakkho pasāsati;</span></p>
+
+<p lang="vi" class="vi">Chúa tể loài Nāgā,<br>
+<span lang="pi" class="pali">Nāgānañca adhipati,</span></p>
+
+<p lang="vi" class="vi">Bậc đại vương danh tiếng.<br>
+<span lang="pi" class="pali">mahārājā yasassiso.</span></p>
+
+<p lang="vi" class="vi">Vị này có nhiều con<br>
+<span lang="pi" class="pali">Puttāpi tassa bahavo,</span></p>
+
+<p lang="vi" class="vi">Ðại lực, tên Indra,<br>
+<span lang="pi" class="pali">indanāmā mahabbalā;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Quốc vương Kuvera, (Ða Văn Thiên vương)<br>
+<span lang="pi" class="pali">Uttarañca disaṃ rājā,</span></p>
+
+<p lang="vi" class="vi">Trị vì tại phương Bắc,<br>
+<span lang="pi" class="pali">kuvero taṃ pasāsati;</span></p>
+
+<p lang="vi" class="vi">Chúa tể, loài Dạ-xoa,<br>
+<span lang="pi" class="pali">Yakkhānañca adhipati,</span></p>
+
+<p lang="vi" class="vi">Bậc đại vương, danh tiếng.<br>
+<span lang="pi" class="pali">mahārājā yasassiso.</span></p>
+
+<p lang="vi" class="vi">Vị này có nhiều con,<br>
+<span lang="pi" class="pali">Puttāpi tassa bahavo,</span></p>
+
+<p lang="vi" class="vi">Ðại lực, tên Indra,<br>
+<span lang="pi" class="pali">indanāmā mahabbalā;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, hào quang,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Trì Quốc vương (Dhataraṭṭha), phương Ðông<br>
+<span lang="pi" class="pali">Purimaṃ disaṃ dhataraṭṭho,</span></p>
+
+<p lang="vi" class="vi">Tăng Trưởng vương (Virūḷhaka), phương Nam<br>
+<span lang="pi" class="pali">dakkhiṇena virūḷhako;</span></p>
+
+<p lang="vi" class="vi">Quảng Mục vương (Virūpakkha), phương Tây,<br>
+<span lang="pi" class="pali">Pacchimena virūpakkho,</span></p>
+
+<p lang="vi" class="vi">Ða Văn vương (Kuvera), phương Bắc,<br>
+<span lang="pi" class="pali">kuvero uttaraṃ disaṃ.</span></p>
+
+<p lang="vi" class="vi">Bốn bậc đại vương này,<br>
+<span lang="pi" class="pali">Cattāro te mahārājā,</span></p>
+
+<p lang="vi" class="vi">Khắp cả bốn phương trời,<br>
+<span lang="pi" class="pali">samantā caturo disā;</span></p>
+
+<p lang="vi" class="vi">Cùng đứng, chói hào quang,<br>
+<span lang="pi" class="pali">Daddallamānā aṭṭhaṃsu,</span></p>
+
+<p lang="vi" class="vi">Khắp rừng Ca-tỳ-la.<br>
+<span lang="pi" class="pali">vane kāpilavatthave.</span></p>
+
+<p lang="vi" class="vi">Cùng đến các bộ hạ,<br>
+<span lang="pi" class="pali">Tesaṃ māyāvino dāsā,</span></p>
+
+<p lang="vi" class="vi">Phản bội và xảo quyệt,<br>
+<span lang="pi" class="pali">āguṃ vañcanikā saṭhā;</span></p>
+
+<p lang="vi" class="vi">Kẻ dối gạt Kuṭeṇḍu, Viṭeṇḍu,<br>
+<span lang="pi" class="pali">Māyā kuṭeṇḍu viṭeṇḍu,</span></p>
+
+<p lang="vi" class="vi">Viṭucca và Viṭuḍa.<br>
+<span lang="pi" class="pali">viṭucca viṭuṭo saha.</span></p>
+
+<p lang="vi" class="vi">Candana và Kāmaseṭṭha,<br>
+<span lang="pi" class="pali">Candano kāmaseṭṭho ca,</span></p>
+
+<p lang="vi" class="vi">Kinnughaṇḍu và Nighaṇḍu,.<br>
+<span lang="pi" class="pali">kinnighaṇḍu nighaṇḍu ca;</span></p>
+
+<p lang="vi" class="vi">Panāda và Opamañña,<br>
+<span lang="pi" class="pali">Panādo opamañño ca,</span></p>
+
+<p lang="vi" class="vi">Mātali (người đánh xe chư Thiên).<br>
+<span lang="pi" class="pali">devasūto ca mātali.</span></p>
+
+<p lang="vi" class="vi">Càn-thát-bà Cittasena;<br>
+<span lang="pi" class="pali">Cittaseno ca gandhabbo,</span></p>
+
+<p lang="vi" class="vi">Vua Nala, Janesabha<br>
+<span lang="pi" class="pali">naḷorājā janesabho;</span></p>
+
+<p lang="vi" class="vi">Cũng như Pañcasikha,<br>
+<span lang="pi" class="pali">Āgā pañcasikho ceva,</span></p>
+
+<p lang="vi" class="vi">Timbarū, và Sūriyavacchasā.<br>
+<span lang="pi" class="pali">timbarū sūriyavacchasā.</span></p>
+
+<p lang="vi" class="vi">Như vậy cả vua chúa,<br>
+<span lang="pi" class="pali">Ete caññe ca rājāno,</span></p>
+
+<p lang="vi" class="vi">Cùng với Càn-thát-bà,<br>
+<span lang="pi" class="pali">gandhabbā saha rājubhi;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo!<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Các Nāgā từ Nābhasa,<br>
+<span lang="pi" class="pali">Athāguṃ nāgasā nāgā,</span></p>
+
+<p lang="vi" class="vi">Vesālī, và Tacchakas.<br>
+<span lang="pi" class="pali">vesālā sahatacchakā;</span></p>
+
+<p lang="vi" class="vi">Kambalas và Assataras cũng đến<br>
+<span lang="pi" class="pali">Kambalassatarā āguṃ,</span></p>
+
+<p lang="vi" class="vi">Pāyāga cùng quyến thuộc.<br>
+<span lang="pi" class="pali">pāyāgā saha ñātibhi.</span></p>
+
+<p lang="vi" class="vi">Từ Yamunā Dhataraṭṭha,<br>
+<span lang="pi" class="pali">Yāmunā dhataraṭṭhā ca,</span></p>
+
+<p lang="vi" class="vi">Các Nāgā danh tiếng cũng đến.<br>
+<span lang="pi" class="pali">āgū nāgā yasassino;</span></p>
+
+<p lang="vi" class="vi">Long vương Erāvaṇa,<br>
+<span lang="pi" class="pali">Erāvaṇo mahānāgo,</span></p>
+
+<p lang="vi" class="vi">Cũng đến tại khu rừng.<br>
+<span lang="pi" class="pali">sopāgā samitiṃ vanaṃ.</span></p>
+
+<p lang="vi" class="vi">Những thiên điểu nhị sanh với mắt thanh tịnh,<br>
+<span lang="pi" class="pali">Dibbā dijā pakkhi visuddhacakkhū;</span></p>
+
+<p lang="vi" class="vi">Mãnh liệt chống Long vương,<br>
+<span lang="pi" class="pali">Ye nāgarāje sahasā haranti,</span></p>
+
+<p lang="vi" class="vi">Đáp xuống khu rừng.<br>
+<span lang="pi" class="pali">Vehāyasā te vanamajjhapattā,</span></p>
+
+<p lang="vi" class="vi">Tên chúng là Kim Sí Điểu Citrā,<br>
+<span lang="pi" class="pali">Citrā supaṇṇā iti tesa nāmaṃ.</span></p>
+
+<p lang="vi" class="vi">Long vương không sợ hãi,<br>
+<span lang="pi" class="pali">Abhayaṃ tadā nāgarājānamāsi,</span></p>
+
+<p lang="vi" class="vi">Nhờ ơn Phật an toàn,<br>
+<span lang="pi" class="pali">Supaṇṇato khemamakāsi buddho;</span></p>
+
+<p lang="vi" class="vi">Với những lời nhẹ nhàng,<br>
+<span lang="pi" class="pali">Saṇhāhi vācāhi upavhayantā,</span></p>
+
+<p lang="vi" class="vi">Đều đến quy y Phật,<br>
+<span lang="pi" class="pali">Nāgā supaṇṇā saraṇamakaṃsu buddhaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Đánh bại bởi Kim Cang Thủ,<br>
+<span lang="pi" class="pali">Jitā vajirahatthena,</span></p>
+
+<p lang="vi" class="vi">Asura ở biển,<br>
+<span lang="pi" class="pali">samuddaṃ asurāsitā;</span></p>
+
+<p lang="vi" class="vi">Anh của Vāsava,<br>
+<span lang="pi" class="pali">Bhātaro vāsavassete,</span></p>
+
+<p lang="vi" class="vi">Có thần lực danh xưng.<br>
+<span lang="pi" class="pali">iddhimanto yasassino.</span></p>
+
+<p lang="vi" class="vi">Kālakañjas, dị hình, (Tu-la)<br>
+<span lang="pi" class="pali">Kālakañcā mahābhismā,</span></p>
+
+<p lang="vi" class="vi">Asura Dānaveghasa<br>
+<span lang="pi" class="pali">asurā dānaveghasā;</span></p>
+
+<p lang="vi" class="vi">Vepacitti và Sucitti,<br>
+<span lang="pi" class="pali">Vepacitti sucitti ca,</span></p>
+
+<p lang="vi" class="vi">Pahārāda với Namuci.<br>
+<span lang="pi" class="pali">pahārādo namucī saha.</span></p>
+
+<p lang="vi" class="vi">Và 100 con trai của Bali,<br>
+<span lang="pi" class="pali">Satañca baliputtānaṃ,</span></p>
+
+<p lang="vi" class="vi">Đặt tên Veroca;<br>
+<span lang="pi" class="pali">sabbe verocanāmakā;</span></p>
+
+<p lang="vi" class="vi">Cùng đội quân Bali,<br>
+<span lang="pi" class="pali">Sannayhitvā balisenaṃ,</span></p>
+
+<p lang="vi" class="vi">Đến Rāhu và nói:<br>
+<span lang="pi" class="pali">rāhubhaddamupāgamuṃ;</span></p>
+
+<p lang="vi" class="vi">“Nay phải thời, bạch ngài;<br>
+<span lang="pi" class="pali">‘Samayo dāni bhaddante,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo!<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ’.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Thần nước, đất,<br>
+<span lang="pi" class="pali">Āpo ca devā pathavī,</span></p>
+
+<p lang="vi" class="vi">Thần lửa và gió cũng đến<br>
+<span lang="pi" class="pali">tejo vāyo tadāgamuṃ;</span></p>
+
+<p lang="vi" class="vi">Thần Varuṇa và Vāruṇa,<br>
+<span lang="pi" class="pali">Varuṇā vāraṇā devā,</span></p>
+
+<p lang="vi" class="vi">Soma cùng với Yasa<br>
+<span lang="pi" class="pali">somo ca yasasā saha.</span></p>
+
+<p lang="vi" class="vi">Chư Thiên Từ Bi sanh<br>
+<span lang="pi" class="pali">Mettā karuṇā kāyikā,</span></p>
+
+<p lang="vi" class="vi">Có danh xưng cũng đến<br>
+<span lang="pi" class="pali">āguṃ devā yasassino;</span></p>
+
+<p lang="vi" class="vi">Mười vị thiên tộc này<br>
+<span lang="pi" class="pali">Dasete dasadhā kāyā,</span></p>
+
+<p lang="vi" class="vi">Hào quang thật dị biệt,<br>
+<span lang="pi" class="pali">sabbe nānattavaṇṇino.</span></p>
+
+<p lang="vi" class="vi">Có thần lực, sáng chói,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Thiên chúng Veṇhu và Sahali,<br>
+<span lang="pi" class="pali">Veṇḍudevā sahali ca,</span></p>
+
+<p lang="vi" class="vi">Asama, và Yamas đến<br>
+<span lang="pi" class="pali">asamā ca duve yamā;</span></p>
+
+<p lang="vi" class="vi">Chư Thiên thuộc Nguyệt tộc,<br>
+<span lang="pi" class="pali">Candassūpanisā devā,</span></p>
+
+<p lang="vi" class="vi">Vị thủ lãnh đi trước.<br>
+<span lang="pi" class="pali">candamāguṃ purakkhatvā.</span></p>
+
+<p lang="vi" class="vi">Chư Thiên thuộc Nhật tộc.<br>
+<span lang="pi" class="pali">Sūriyassūpanisā devā,</span></p>
+
+<p lang="vi" class="vi">Vị thủ lãnh đi trước,<br>
+<span lang="pi" class="pali">sūriyamāguṃ purakkhatvā;</span></p>
+
+<p lang="vi" class="vi">Đi cùng thần mây.<br>
+<span lang="pi" class="pali">āguṃ mandavalāhakā.</span></p>
+
+<p lang="vi" class="vi">Quần tinh vị thủ lãnh,<br>
+<span lang="pi" class="pali">Nakkhattāni purakkhatvā,</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Vua Sakka purindado đã đến<br>
+<span lang="pi" class="pali">Sakkopāgā purindado;</span></p>
+
+<p lang="vi" class="vi">Gọi là Vāsava,<br>
+<span lang="pi" class="pali">Vasūnaṃ vāsavo seṭṭho,</span></p>
+
+<p lang="vi" class="vi">Mười vị Thiên tộc này,<br>
+<span lang="pi" class="pali">Dasete dasadhā kāyā,</span></p>
+
+<p lang="vi" class="vi">Hào quang thật dị biệt,<br>
+<span lang="pi" class="pali">sabbe nānattavaṇṇino.</span></p>
+
+<p lang="vi" class="vi">Có thần lực, sáng chói,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng.<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Sahabhū cũng đến,<br>
+<span lang="pi" class="pali">Athāguṃ sahabhū devā,</span></p>
+
+<p lang="vi" class="vi">Với đầu lửa đỏ rực,<br>
+<span lang="pi" class="pali">jalamaggi sikhāriva;</span></p>
+
+<p lang="vi" class="vi">Ariṭṭhakas và Rojas cũng thế<br>
+<span lang="pi" class="pali">Ariṭṭhakā ca rojā ca,</span></p>
+
+<p lang="vi" class="vi">Thần màu (lam) tựa hoa gai;<br>
+<span lang="pi" class="pali">umāpupphanibhāsino.</span></p>
+
+<p lang="vi" class="vi">Varuṇas và Sahadhammas,<br>
+<span lang="pi" class="pali">Varuṇā sahadhammā ca,</span></p>
+
+<p lang="vi" class="vi">Accutas và Anejakas<br>
+<span lang="pi" class="pali">accutā ca anejakā;</span></p>
+
+<p lang="vi" class="vi">Sūleyyas và Ruciras cũng đến<br>
+<span lang="pi" class="pali">Sūleyyarucirā āguṃ,</span></p>
+
+<p lang="vi" class="vi">Cũng như thiên chúng Vāsavanesi.<br>
+<span lang="pi" class="pali">āguṃ vāsavanesino;</span></p>
+
+<p lang="vi" class="vi">Mười vị Thiên tộc này,<br>
+<span lang="pi" class="pali">Dasete dasadhā kāyā,</span></p>
+
+<p lang="vi" class="vi">Hào quang thật dị biệt<br>
+<span lang="pi" class="pali">sabbe nānattavaṇṇino.</span></p>
+
+<p lang="vi" class="vi">Có thần lực, sáng chói,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Samānas, Mahāsamānas,<br>
+<span lang="pi" class="pali">Samānā mahāsamanā,</span></p>
+
+<p lang="vi" class="vi">Mānusas, Mānusuttamas cùng đến<br>
+<span lang="pi" class="pali">mānusā mānusuttamā;</span></p>
+
+<p lang="vi" class="vi">Và Thiên Chúng sa đoạ,<br>
+<span lang="pi" class="pali">Khiḍḍāpadosikā āguṃ,</span></p>
+
+<p lang="vi" class="vi">Cùng những vị ác tâm<br>
+<span lang="pi" class="pali">āguṃ manopadosikā.</span></p>
+
+<p lang="vi" class="vi">Rồi đến Thiên Chúng Hari Athāguṃ harayo devā,<br>
+<span lang="pi" class="pali">Lohitavāsīsye ca lohitavāsino;</span></p>
+
+<p lang="vi" class="vi">Pāragas, Mahāpāragas cũng đến<br>
+<span lang="pi" class="pali">Pāragā mahāpāragā,</span></p>
+
+<p lang="vi" class="vi">Có danh xưng cũng đến.<br>
+<span lang="pi" class="pali">āguṃ devā yasassino;</span></p>
+
+<p lang="vi" class="vi">Mười vị Thiên tộc này,<br>
+<span lang="pi" class="pali">Dasete dasadhā kāyā,</span></p>
+
+<p lang="vi" class="vi">Với hào quang dị biệt<br>
+<span lang="pi" class="pali">sabbe nānattavaṇṇino.</span></p>
+
+<p lang="vi" class="vi">Có thần lực, sáng chói,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng,<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Sukkas, Karumhas, và Aruṇas<br>
+<span lang="pi" class="pali">Sukkā karambhā aruṇā,</span></p>
+
+<p lang="vi" class="vi">Đi cùng Veghanasas<br>
+<span lang="pi" class="pali">āguṃ veghanasā saha;</span></p>
+
+<p lang="vi" class="vi">Odātagayhas dẫn đầu,<br>
+<span lang="pi" class="pali">Odātagayhā pāmokkhā,</span></p>
+
+<p lang="vi" class="vi">Vicakkhaṇa cũng đến,<br>
+<span lang="pi" class="pali">āguṃ devā vicakkhaṇā.</span></p>
+
+<p lang="vi" class="vi">Sadāmattas và Hāragajas,<br>
+<span lang="pi" class="pali">Sadāmattā hāragajā,</span></p>
+
+<p lang="vi" class="vi">Missakā có danh xưng cũng đến.<br>
+<span lang="pi" class="pali">missakā ca yasassino;</span></p>
+
+<p lang="vi" class="vi">Pajjunna thần sét,<br>
+<span lang="pi" class="pali">Thanayaṃ āga pajjunno,</span></p>
+
+<p lang="vi" class="vi">Làm mưa khắp mọi phương.<br>
+<span lang="pi" class="pali">yo disā abhivassati.</span></p>
+
+<p lang="vi" class="vi">Mười vị Thiên tộc này,<br>
+<span lang="pi" class="pali">Dasete dasadhā kāyā,</span></p>
+
+<p lang="vi" class="vi">Với hào quang dị biệt,<br>
+<span lang="pi" class="pali">sabbe nānattavaṇṇino;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, sáng chói,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng;<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<p lang="vi" class="vi">Khemiyā, Tusitā, Yamā,<br>
+<span lang="pi" class="pali">Khemiyā tusitā yāmā,</span></p>
+
+<p lang="vi" class="vi">Danh xưng Kaṭṭhakas;<br>
+<span lang="pi" class="pali">kaṭṭhakā ca yasassino;</span></p>
+
+<p lang="vi" class="vi">Lambītakas, Lāmaseṭṭhas,<br>
+<span lang="pi" class="pali">Lambītakā lāmaseṭṭhā,</span></p>
+
+<p lang="vi" class="vi">Tên gọi Jotināmā, Asava,<br>
+<span lang="pi" class="pali">jotināmā ca āsavā;</span></p>
+
+<p lang="vi" class="vi">Tha Hóa Tự Tại thiên,<br>
+<span lang="pi" class="pali">Nimmānaratino āguṃ,</span></p>
+
+<p lang="vi" class="vi">Hóa Lạc thiên cũng đến.<br>
+<span lang="pi" class="pali">athāguṃ paranimmitā.</span></p>
+
+<p lang="vi" class="vi">Mười vị thiên tộc này,<br>
+<span lang="pi" class="pali">Dasete dasadhā kāyā,</span></p>
+
+<p lang="vi" class="vi">Với hào quang dị biệt,<br>
+<span lang="pi" class="pali">sabbe nānattavaṇṇino;</span></p>
+
+<p lang="vi" class="vi">Có thần lực, sáng chói,<br>
+<span lang="pi" class="pali">Iddhimanto jutimanto,</span></p>
+
+<p lang="vi" class="vi">Có sắc tướng, danh xưng<br>
+<span lang="pi" class="pali">vaṇṇavanto yasassino;</span></p>
+
+<p lang="vi" class="vi">Hoan hỷ đến rừng này,<br>
+<span lang="pi" class="pali">Modamānā abhikkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Chiêm ngưỡng chúng Tỷ-kheo.<br>
+<span lang="pi" class="pali">bhikkhūnaṃ samitiṃ vanaṃ.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Sáu mươi Thiên chúng này,<br>
+<span lang="pi" class="pali">Saṭṭhete devanikāyā,</span></p>
+
+<p lang="vi" class="vi">Với hào quang dị biệt,<br>
+<span lang="pi" class="pali">Saṭṭhete devanikāyā,</span></p>
+
+<p lang="vi" class="vi">Theo danh tộc chúng đến,<br>
+<span lang="pi" class="pali">Nāmanvayena āgacchuṃ,</span></p>
+
+<p lang="vi" class="vi">Cùng nhiều vị, nghĩ rằng:<br>
+<span lang="pi" class="pali">ye caññe sadisā saha.</span></p>
+
+<p lang="vi" class="vi">Chúng con thấy vị ấy,<br>
+<span lang="pi" class="pali">oghatiṇṇamanāsavaṃ;</span></p>
+
+<p lang="vi" class="vi">Ðã thành bậc Vô Lậu.<br>
+<span lang="pi" class="pali">‘Pavuṭṭhajātimakhilaṃ,</span></p>
+
+<p lang="vi" class="vi">Như rồng vượt bộc lưu,<br>
+<span lang="pi" class="pali">Dakkhemoghataraṃ nāgaṃ,</span></p>
+
+<p lang="vi" class="vi">Như trăng thoát mây tối”.<br>
+<span lang="pi" class="pali">candaṃva asitātigaṃ’.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Subrahmā, Paramatta,<br>
+<span lang="pi" class="pali">Subrahmā paramatto ca,</span></p>
+
+<p lang="vi" class="vi">Con các vị thần lực,<br>
+<span lang="pi" class="pali">puttā iddhimato saha;</span></p>
+
+<p lang="vi" class="vi">Sanamkumāra Tissa,<br>
+<span lang="pi" class="pali">Sanaṅkumāro tisso ca,</span></p>
+
+<p lang="vi" class="vi">Ðến hội tại ngôi rừng.<br>
+<span lang="pi" class="pali">sopāga samitiṃ vanaṃ.</span></p>
+
+<p lang="vi" class="vi">Ðại Phạm thiên, chúa tể,<br>
+<span lang="pi" class="pali">mahābrahmābhitiṭṭhati;</span></p>
+
+<p lang="vi" class="vi">Ngự trị ngàn Phạm giới,<br>
+<span lang="pi" class="pali">Sahassaṃ brahmalokānaṃ,</span></p>
+
+<p lang="vi" class="vi">Thác sanh có hào quang,<br>
+<span lang="pi" class="pali">Upapanno jutimanto,</span></p>
+
+<p lang="vi" class="vi">Dị hình có danh xưng.<br>
+<span lang="pi" class="pali">bhismākāyo yasassiso.</span></p>
+
+<p lang="vi" class="vi">Mười đấng Tự Tại (Issarās) đến,<br>
+<span lang="pi" class="pali">Dasettha issarā āguṃ,</span></p>
+
+<p lang="vi" class="vi">Mỗi vị ngự mỗi cõi,<br>
+<span lang="pi" class="pali">paccekavasavattino;</span></p>
+
+<p lang="vi" class="vi">Vị ở giữa cũng đến,<br>
+<span lang="pi" class="pali">Tesañca majjhato āga,</span></p>
+
+<p lang="vi" class="vi">Hārita cùng đồ chúng.<br>
+<span lang="pi" class="pali">hārito parivārito.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Tất cả đều cùng đến,<br>
+<span lang="pi" class="pali">Te ca sabbe abhikkante,</span></p>
+
+<p lang="vi" class="vi">Với Indra, Phạm thiên,<br>
+<span lang="pi" class="pali">sainde deve sabrahmake;</span></p>
+
+<p lang="vi" class="vi">Ma quân cũng tiến đến,<br>
+<span lang="pi" class="pali">Mārasenā abhikkāmi,</span></p>
+
+<p lang="vi" class="vi">Xem Hắc quỷ ngu si.<br>
+<span lang="pi" class="pali">passa kaṇhassa mandiyaṃ.</span></p>
+
+<p lang="vi" class="vi">“Hãy đến và bắt trói,<br>
+<span lang="pi" class="pali">‘Etha gaṇhatha bandhatha,</span></p>
+
+<p lang="vi" class="vi">Những ai bị tham triền,<br>
+<span lang="pi" class="pali">rāgena baddhamatthu vo;</span></p>
+
+<p lang="vi" class="vi">Hãy bao vây bốn phía,<br>
+<span lang="pi" class="pali">Samantā parivāretha,</span></p>
+
+<p lang="vi" class="vi">Chớ để ai thoát ly!”<br>
+<span lang="pi" class="pali">mā vo muñcittha koci naṃ’.</span></p>
+
+<p lang="vi" class="vi">Như vậy Ðại Tướng quân,<br>
+<span lang="pi" class="pali">Iti tattha mahāseno,</span></p>
+
+<p lang="vi" class="vi">Truyền lệnh đoàn Hắc quỷ,<br>
+<span lang="pi" class="pali">kaṇho senaṃ apesayi;</span></p>
+
+<p lang="vi" class="vi">Với bàn tay vỗ đất,<br>
+<span lang="pi" class="pali">Pāṇinā talamāhacca,</span></p>
+
+<p lang="vi" class="vi">Tiếng dội vang khiếp đảm.<br>
+<span lang="pi" class="pali">saraṃ katvāna bheravaṃ.</span></p>
+
+<p lang="vi" class="vi">Như trong cơn giông tố,<br>
+<span lang="pi" class="pali">Yathā pāvussako megho,</span></p>
+
+<p lang="vi" class="vi">Sấm chớp và mưa rào,<br>
+<span lang="pi" class="pali">thanayanto savijjuko;</span></p>
+
+<p lang="vi" class="vi">Nó liền thối quân lui,<br>
+<span lang="pi" class="pali">Tadā so paccudāvatti,</span></p>
+
+<p lang="vi" class="vi">Phẫn nộ nhưng bất lực.<br>
+<span lang="pi" class="pali">saṅkuddho asayaṃvase.</span></p>
+
+<br><br>
+<p lang="vi" class="vi">Với pháp nhãn thấy rõ,<br>
+<span lang="pi" class="pali">vavatthitvāna cakkhumā;</span></p>
+
+<p lang="vi" class="vi">Và phân biệt tất cả,<br>
+<span lang="pi" class="pali">Tañca sabbaṃ abhiññāya,</span></p>
+
+<p lang="vi" class="vi">Bậc Ðạo Sư thuyết giảng,<br>
+<span lang="pi" class="pali">Tato āmantayī satthā,</span></p>
+
+<p lang="vi" class="vi">Chúng đệ tử thích nghe:<br>
+<span lang="pi" class="pali">sāvake sāsane rate.</span></p>
+
+<p lang="vi" class="vi">“Ma quân đã tiến đến;<br>
+<span lang="pi" class="pali">‘Mārasenā abhikkantā,</span></p>
+
+<p lang="vi" class="vi">Tỷ-kheo hãy biết chúng”.<br>
+<span lang="pi" class="pali">te vijānātha bhikkhavo’;</span></p>
+
+<p lang="vi" class="vi">Đại chúng tâm nhiệt tình.<br>
+<span lang="pi" class="pali">Te ca ātappamakaruṃ,</span></p>
+
+<p lang="vi" class="vi">Nghe lời dạy đức Phật,<br>
+<span lang="pi" class="pali">sutvā buddhassa sāsanaṃ;</span></p>
+
+<p lang="vi" class="vi">Kẻ thù rời bỏ đi,<br>
+<span lang="pi" class="pali">Vītarāgehi pakkāmuṃ,</span></p>
+
+<p lang="vi" class="vi">Sợi tóc không lay động.<br>
+<span lang="pi" class="pali">nesaṃ lomāpi iñjayuṃ.</span></p>
+
+<p lang="vi" class="vi">‘Tất cả đều chiến thắng,<br>
+<span lang="pi" class="pali">‘Sabbe vijitasaṅgāmā,</span></p>
+
+<p lang="vi" class="vi">Vô úy và vô xưng;<br>
+<span lang="pi" class="pali">bhayātītā yasassino;</span></p>
+
+<p lang="vi" class="vi">Danh xưng, tâm hoan hỷ.<br>
+<span lang="pi" class="pali">Modanti saha bhūtehi,</span></p>
+
+<p lang="vi" class="vi">Ðệ tử những vị này.”<br>
+<span lang="pi" class="pali">sāvakā te janesutā’”ti.</span></p>
+
+<br>
+<span lang="pi" class="vi">Mahāsamayasuttaṃ niṭṭhitaṃ sattamaṃ.</p>
+
+
+
+<br>
+<p><p style="text-align: right;font-style: italic;">Hoà Thượng Thích Minh Châu dịch Việt</span></p>
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+
+
+
+
+
+</section>  <!-- End English and Pali -->
+<div id="nextprev"><a id="previous-sutta" href="./dn19.html#content"></a><a id="next-sutta" href="./dn21.html#content"></a></div>
+</div>  <!--End Content -->
+</div>  <!-- End Page -->
+
+
+
+
+
+
+<footer>
+					 <!-- End bottom links -->
+</footer>
+
+
+ 
+ <!-- Scripts -->
+
+ <script src="../js/footer.js"></script><script src="../js/dpd_deconstructor.js"></script><script src="../js/dpd_ebts.js"></script><script src="../js/dpd_i2h.js"></script>
+ <script src="/sw.js"></script>
+ </body>
+ </html>
