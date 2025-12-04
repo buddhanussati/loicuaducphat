@@ -1,7 +1,7 @@
-<h3>Về trang web này</h3>
+<h3>Giới thiệu</h3>
 
 <p lang="vi" class="vi">
-Trang web này được phát triển dành cho Cộng đồng dựa trên giấy phép 
+Công cụ web này được phát triển dành cho Cộng đồng dựa trên giấy phép 
 <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">
 Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0)
 </a>.
