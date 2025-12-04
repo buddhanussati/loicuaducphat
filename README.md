@@ -1,4 +1,4 @@
-<h3>Giới thiệu</h3>
+<h3>Giấy Phép</h3>
 
 <p lang="vi" class="vi">
 Công cụ web này được phát triển dành cho Cộng đồng dựa trên giấy phép 
