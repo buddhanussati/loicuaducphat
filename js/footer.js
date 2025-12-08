@@ -441,3 +441,60 @@ document.getElementById('close-float').addEventListener('click', () => {
 
     document.getElementById('close-float').style.display = 'none';
 });
+
+// Create the button
+const copyBtn = document.createElement("button");
+copyBtn.id = "copySuttaBtn";
+copyBtn.innerText = "📜";
+copyBtn.title = "Chép Kinh";
+copyBtn.type = "button";
+
+// Minimal inline styling
+copyBtn.style.position = "absolute";   // position relative to page
+copyBtn.style.left = "20px";           // stick to left margin
+copyBtn.style.padding = "2px 6px";     // smaller padding
+copyBtn.style.border = "none";
+copyBtn.style.borderRadius = "4px";
+copyBtn.style.cursor = "pointer";
+copyBtn.style.border = "1px solid currentColor";  // thin border in same color as text
+copyBtn.style.borderRadius = "4px";              // rounded corners
+// ✅ inherit background and text color from parent
+copyBtn.style.background = "inherit";
+copyBtn.style.color = "inherit";
+
+// ✅ make font smaller
+copyBtn.style.fontSize = "0.8em";
+
+// Attach click handler
+copyBtn.onclick = copySutta;
+
+// Find the first <p lang="vi" class="vi"> and align button with it
+const firstPara = document.querySelector("p.vi[lang='vi']");
+if (firstPara) {
+  const rect = firstPara.getBoundingClientRect();
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const topPos = rect.top + scrollTop;
+
+  copyBtn.style.top = topPos + "px";
+
+  document.body.appendChild(copyBtn);
+}
+
+// Copy function
+function copySutta() {
+  const paragraphs = document.querySelectorAll("p.vi, p[lang='vi'], p[lang='pi']");
+  let textToCopy = "";
+
+  paragraphs.forEach(p => {
+    if (p.style.textAlign === "right" && p.style.fontStyle === "italic") {
+      return;
+    }
+    textToCopy += p.innerText.trim() + "\n\n";
+  });
+
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    alert("Kinh đã được chép!");
+  }).catch(err => {
+    console.error("Copy failed:", err);
+  });
+}
