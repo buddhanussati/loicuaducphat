@@ -469,7 +469,7 @@ copyBtn.style.fontSize = "0.8em";
 copyBtn.onclick = copySutta;
 
 // Find the first <p lang="vi" class="vi"> and align button with it
-const firstPara = document.querySelector("p.vi[lang='vi']");
+const firstPara = document.querySelector("p[lang='vi']");
 if (firstPara) {
   const rect = firstPara.getBoundingClientRect();
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
