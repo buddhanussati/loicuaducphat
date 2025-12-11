@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Thuộc Patimokkha</title>
+<style>
+        /* --- CẤU HÌNH MÀU SẮC --- */
+        :root {
+            --primary-color: #8B4513;
+            --bg-color: #ffd;
+            --text-color: #333;
+            --box-bg: #e0e0e0;
+            --box-border: #999;
+            --footer-bg: #ffd;
+            --highlight-color: #d35400;
+            --karaoke-bg-active: #ffd;
+            --karaoke-text-active: #8B4513;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #d4a373;
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --box-bg: #333;
+            --box-border: #555;
+            --footer-bg: rgba(45, 45, 45, 0.95);
+            --highlight-color: #f39c12;
+            --karaoke-bg-active: #2d2d2d;
+            --karaoke-text-active: #f39c12;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+			background-image: url('imgbk.png');
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container { max-width: 800px; width: 100%; }
+
+        /* --- TOP NAV --- */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .nav-controls { display: flex; gap: 5px; flex-grow: 1; justify-content: center; }
+
+        select {
+            padding: 6px; font-size: 16px; border-radius: 5px;
+            border: 1px solid var(--box-border);
+            background-color: var(--bg-color); background-image: url('imgbk.png'); color: var(--text-color);
+            max-width: 200px;
+        }
+
+        .btn-nav, .btn-darkmode {
+            background: transparent; border: 1px solid var(--primary-color);
+            color: var(--primary-color); padding: 5px 10px; border-radius: 5px; cursor: pointer;
+        }
+        .btn-darkmode { background: #34495e; color: #fff; border: none; font-size: 18px; }
+
+        h2 { text-align: center; color: var(--primary-color); margin: 5px 0 15px 0; font-size: 20px; }
+
+        /* --- TEXT CONTENT --- */
+        .text-content {
+            font-size: 18px; text-align: center; line-height: 1.8; position: relative;
+        }
+        
+        /* Ẩn văn bản gốc khi Karaoke bật */
+        .text-content.karaoke-active > .line-break { display: none; }
+
+        /* Hiện dòng Karaoke */
+        .text-content.karaoke-active .line-karaoke-show {
+            display: block !important;
+            font-size: 22px; font-weight: bold;
+            color: var(--karaoke-text-active);
+            background-color: var(--karaoke-bg-active);
+			background-image: url('imgbk.png');
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.4s;
+            border: 2px solid var(--primary-color);
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .line-karaoke-show[data-has-custom-time="true"]::after {
+            position: absolute; top: 5px; right: 5px; font-size: 12px; opacity: 0.5;
+        }
+
+        .word { display: inline-block; margin: 0 2px; padding: 1px 2px; }
+        .word.hidden {
+            color: transparent; background-color: var(--box-bg);
+            border: 1px solid var(--box-border); cursor: pointer; min-width: 1.2em;
+        }
+        .word.revealed { color: var(--highlight-color); border-bottom: 1px dashed var(--highlight-color); }
+        .line-break { display: block; margin-bottom: 8px; }
+
+        /* --- BOTTOM BAR --- */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--footer-bg); background-image: url('imgbk.png'); color: var(--text-color);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2); z-index: 1000;
+            border-top: 2px solid var(--primary-color);
+            backdrop-filter: blur(5px);
+        }
+
+        .bar-main-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 10px; gap: 10px; max-width: 800px; margin: 0 auto;
+        }
+
+        audio { height: 32px; flex-grow: 1; max-width: 100%; border-radius: 15px; }
+
+        .controls-cluster { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+        .icon-btn {
+            background-color: var(--primary-color); color: #fff; border: none;
+            width: 36px; height: 36px; border-radius: 50%;
+            font-size: 16px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.1s;
+        }
+        .icon-btn:active { transform: scale(0.95); }
+        
+        /* Trạng thái nút Karaoke */
+        .btn-karaoke { background-color: #6a4c93; transition: all 0.3s ease; }
+        .btn-karaoke.active-auto { background-color: #27ae60; animation: pulse-green 2s infinite; }
+        .btn-karaoke.active-manual { background-color: #3566d0; }
+        
+        /* Nút Exit mới */
+        #btn-exit-karaoke {
+            background-color: #c0392b; /* Màu đỏ */
+            display: none; /* Mặc định ẩn */
+        }
+        /* Chỉ hiện nút Exit khi body/container có class karaoke-active */
+        .karaoke-active-mode #btn-exit-karaoke { display: flex; }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(39, 174, 96, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+        
+        .btn-settings { background-color: #7f8c8d; }
+        .settings-panel {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out;
+            background-color: rgba(0,0,0,0.03); border-top: 1px dashed var(--box-border);
+        }
+        .settings-panel.open { max-height: 200px; }
+        .settings-content { padding: 10px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;}
+        .setting-group { display: flex; align-items: center; gap: 8px; }
+
+        /* Nút nhỏ trong setting */
+        .btn-sm {
+            border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 13px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 600px) {
+            .bar-main-row { flex-direction: column; }
+            .controls-cluster { width: 100%; justify-content: center; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    <div class="top-nav">
+        <button class="btn-darkmode" onclick="toggleTheme()">🌙</button> 
+        <div class="nav-controls">
+            <button class="btn-nav" onclick="changeSection(-1)">❮</button>
+            <select id="section-select" onchange="selectSection()"></select>
+            <button class="btn-nav" onclick="changeSection(1)">❯</button>
+        </div>
+    </div>
+
+    <h2 id="section-title">Loading...</h2>
+    <div id="display-area" class="text-content"></div>
+</div>
+
+<div class="bottom-bar">
+    <div class="bar-main-row">
+        <audio id="audioPlayer" controls>Trình duyệt không hỗ trợ audio.</audio>
+
+        <div class="controls-cluster">
+			<button id="btn-exit-karaoke" class="icon-btn" onclick="exitKaraoke()" title="Thoát Tụng Đọc">✖</button>
+            <button class="icon-btn" onclick="navigateKaraoke(-1)" title="Lùi">«</button>
+            
+            <button id="karaoke-toggle-btn" class="icon-btn btn-karaoke" onclick="toggleKaraokeAction()" title="Tụng Đọc">🎤</button>
+            
+
+            <button class="icon-btn" onclick="navigateKaraoke(1)" title="Tới">»</button>
+            <button id="settings-btn" class="icon-btn btn-settings" onclick="toggleSettings()" title="Cài đặt">⚙️</button>
+
+        </div>
+    </div>
+
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-content">
+            <div class="setting-group">
+                <span style="font-size:13px; font-weight:600">Ẩn chữ:</span>
+                <input type="range" id="difficulty" min="10" max="90" value="40" oninput="updateLabel(this.value)" style="width:80px">
+                <span id="difficulty-label" style="font-size:12px">40%</span>
+                <button class="btn-sm" onclick="hideRandomWords()" style="background:#d35400; color:white;">Ẩn</button>
+                <button class="btn-sm" onclick="resetText(true)" style="background:#7f8c8d; color:white;">Hiện</button>
+            </div>
+
+            <div class="setting-group">
+                <span style="font-size:13px; font-weight:600">Tốc độ:</span>
+                
+                <button id="btn-show-speed" class="btn-sm" onclick="toggleSpeedControl()" style="background:#2980b9; color:white;">↪Tuỳ chỉnh</button>
+
+                <div id="speed-control-area" style="display:none; align-items:center; gap:5px;">
+                    <input type="range" id="karaoke-interval" min="1" max="10" step="0.5" value="3" oninput="updateKaraokeInterval(this.value)" style="width:80px">
+                    <span id="karaoke-interval-label" style="font-size:12px">3.0s</span>
+                    <button class="btn-sm" onclick="resetSpeedDefault()" style="background:#c0392b; color:white;" title="Huỷ tuỳ chỉnh, dùng thời gian gốc">↩Mặc định</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- DỮ LIỆU ---
+    const sections = [
+        {
+    id: 'Nidānuddeso', title: 'Nidānuddeso', audio: '0-Nidanuddeso.mp3',
+    text: `Namo tassa Bhagavato Arahato Sammāsambuddhassa. [5.0]
+Namo tassa Bhagavato Arahato Sammāsambuddhassa. [5.0]
+Namo tassa Bhagavato Arahato Sammāsambuddhassa. [6.5]
+Suṇātu me [bhante/āvuso] saṅgho. [3.2]
+Ajjuposatho paṇṇaraso, yadi saṅghassa pattakallaṃ, [4.8]
+saṅgho uposathaṃ kareyya, pātimokkhaṃ uddiseyya. [4.0]
+Kiṃ saṅghassa pubbakiccaṃ? [2.5]
+Pārisuddhiṃ āyasmanto ārocetha, [3.7]
+pātimokkhaṃ uddisissāmi, [2.2]
+taṃ sabbeva santā sādhukaṃ suṇoma manasi karoma. [4.0]
+Yassa siyā āpatti, so āvikareyya, asantiyā āpattiyā tuṇhī bhavitabbaṃ, [6.2]
+tuṇhībhāvena kho panāyasmante “parisuddhā”ti vedissāmi. [5.7]
+Yathā kho pana paccekapuṭṭhassa veyyākaraṇaṃ hoti, [4.0]
+evamevaṃ evarūpāya parisāya yāvatatiyaṃ anusāvitaṃ hoti. [5.5]
+Yo pana bhikkhu yāvatatiyaṃ anusāviyamāne saramāno santiṃ āpattiṃ nāvikareyya, [6.4]
+sampajānamusāvādassa hoti. [3.0]
+Sampajānamusāvādo kho panāyasmanto antarāyiko dhammo vutto bhagavatā, [5.5]
+tasmā saramānena bhikkhunā āpannena visuddhāpekkhena [4.3]
+santī āpatti āvikātabbā, āvikatā hissa phāsu hoti. [5.4]
+Uddiṭṭhaṃ kho āyasmanto nidānaṃ. [2.5]
+Tatthāyasmante pucchāmi, kaccittha parisuddhā, [3.2]
+dutiyampi pucchāmi, kaccittha parisuddhā, [2.6]
+tatiyampi pucchāmi, kaccittha parisuddhā, [2.6]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. [5.0]
+Nidānuddeso paṭhamo [2.5]`
+},
+
+ 
+
+
+{
+    id: 'Pr.1', title: 'Pārājika 1', audio: '1Pr-01.mp3',
+    text: `Tatrime cattāro pārājikā dhammā uddesaṃ āgacchanti. [5.0]
+Yo pana bhikkhu bhikkhūnaṃ sikkhāsājīvasamāpanno sikkhaṃ appaccakkhāya dubbalyaṃ anāvikatvā methunaṃ dhammaṃ paṭiseveyya, [8.56]
+antamaso tiracchānagatāyapi, pārājiko hoti asaṃvāso. [5.5]`
+},
+
+{
+    id: 'Pr.2', title: 'Pārājika 2', audio: '1Pr-02.mp3',
+    text: `Yo pana bhikkhu gāmā vā araññā vā adinnaṃ theyyasaṅkhātaṃ ādiyeyya, [5.2]
+yathārūpe adinnādāne rājāno coraṃ gahetvā haneyyuṃ vā bandheyyuṃ vā pabbājeyyuṃ vā [8.0]
+corosi bālosi mūḷhosi thenosīti, [3.6]
+tathārūpaṃ bhikkhu adinnaṃ ādiyamāno ayampi pārājiko hoti asaṃvāso. [5.6]`
+},
+
+{
+    id: 'Pr.3', title: 'Pārājika 3', audio: '1Pr-03.mp3',
+    text: `Yo pana bhikkhu sañcicca manussaviggahaṃ jīvitā voropeyya, satthahārakaṃ vāssa pariyeseyya, [6.2]
+maraṇavaṇṇaṃ vā saṃvaṇṇeyya, maraṇāya vā samādapeyya [3.85]
+"ambho purisa kiṃ tuyhiminā pāpakena dujjīvitena, mataṃ te jīvitā seyyo"ti, [5.5]
+iti cittamano cittasaṅkappo anekapariyāyena maraṇavaṇṇaṃ vā saṃvaṇṇeyya, maraṇāya vā samādapeyya, [6.7]
+ayampi pārājiko hoti asaṃvāso. [3.5]`
+},
+
+{
+    id: 'Pr.4', title: 'Pārājika 4', audio: '1Pr-04.mp3',
+    text: `Yo pana bhikkhu anabhijānaṃ uttarimanussadhammaṃ attupanāyikaṃ alamariyañāṇadassanaṃ samudācareyya [6.85]
+“iti jānāmi, iti passāmī”ti, tato aparena samayena samanuggāhīyamāno vā [5.35]
+asamanuggāhīyamāno vā āpanno visuddhāpekkho evaṃ vadeyya [4.65]
+“ajānamevaṃ āvuso avacaṃ jānāmi, apassaṃ passāmi, tucchaṃ musā vilapi”nti, [5.1]
+aññatra adhimānā, ayampi pārājiko hoti asaṃvāso. [5.0]`
+},
+
+{
+    id: 'Pr.U', title: 'Pārājika Uddiṭṭhā', audio: '1Pr-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto cattāro pārājikā dhammā. [3.91]
+Yesaṃ bhikkhu aññataraṃ vā aññataraṃ vā āpajjitvā na labhati bhikkhūhi saddhiṃ saṃvāsaṃ [5.9]
+yathā pure, tathā pacchā, pārājiko hoti asaṃvāso. [4.2]
+Tatthāyasmante pucchāmi, kaccittha parisuddhā, dutiyampi pucchāmi, kaccittha parisuddhā, [5.1]
+tatiyampi pucchāmi, kaccittha parisuddhā, parisuddhetthāyasmanto, tasmā tuṇhī, [5.2]
+evametaṃ dhārayāmīti. Pārājikuddeso dutiyo [5.5]`
+},
+
+ 
+ 
+{
+    id: 'Sg.1', title: 'Saṅghādisesa 1', audio: '2Sg-01.mp3',
+    text: `Ime kho panāyasmanto terasa saṅghādisesā Dhammā uddesaṃ āgacchanti. [5.6]
+Sañcetanikā sukkavissaṭṭhi aññatra supinantā saṅghādiseso. [5.0]`
+},
+
+{
+    id: 'Sg.2', title: 'Saṅghādisesa 2', audio: '2Sg-02.mp3',
+    text: `Yo pana bhikkhu otiṇṇo vipariṇatena cittena mātugāmena saddhiṃ kāyasaṃsaggaṃ samāpajjeyya [6.3]
+hatthaggāhaṃ vā veṇiggāhaṃ vā aññatarassa vā aññatarassa vā aṅgassa parāmasanaṃ, saṅghādiseso. [8.0]`
+},
+
+{
+    id: 'Sg.3', title: 'Saṅghādisesa 3', audio: '2Sg-03.mp3',
+    text: `Yo pana bhikkhu otiṇṇo vipariṇatena cittena mātugāmaṃ duṭṭhullāhi vācāhi obhāseyya [6.2]
+yathā taṃ yuvā yuvatiṃ methunupasaṃhitāhi, saṅghādiseso. [4.8]`
+},
+
+{
+    id: 'Sg.4', title: 'Saṅghādisesa 4', audio: '2Sg-04.mp3',
+    text: `Yo pana bhikkhu otiṇṇo vipariṇatena cittena mātugāmassa santike attakāmapāricariyāya vaṇṇaṃ bhāseyya [6.7]
+“etadaggaṃ bhagini pāricariyānaṃ yā mādisaṃ sīlavantaṃ kalyāṇadhammaṃ brahmacāriṃ [5.6]
+etena dhammena paricareyyā”ti methunupasaṃhitena, saṅghādiseso. [5.2]`
+},
+
+{
+    id: 'Sg.5', title: 'Saṅghādisesa 5', audio: '2Sg-05.mp3',
+    text: `Yo pana bhikkhu sañcarittaṃ samāpajjeyya itthiyā vā purisamatiṃ purisassa vā itthimatiṃ, [5.9]
+jāyattane vā jārattane vā, antamaso taṅkhaṇikāyapi, saṅghādiseso. [6.0]`
+},
+
+{
+    id: 'Sg.6', title: 'Saṅghādisesa 6', audio: '2Sg-06.mp3',
+    text: `Saññācikāya pana bhikkhunā kuṭiṃ kārayamānena assāmikaṃ attuddesaṃ pamāṇikā kāretabbā. [6.9]
+Tatridaṃ pamāṇaṃ: dīghaso dvādasa vidatthiyo sugatavidatthiyā tiriyaṃ sattantarā, [5.2]
+bhikkhū abhinetabbā vatthudesanāya. [2.9]
+Tehi bhikkhūhi vatthuṃ desetabbaṃ anārambhaṃ saparikkamanaṃ. Sārambhe ce bhikkhu vatthusmiṃ aparikkamane [6.9]
+saññācikāya kuṭiṃ kāreyya [2.2]
+bhikkhū vā anabhineyya vatthudesanāya pamāṇaṃ vā atikkāmeyya saṅghādiseso. [6.2]`
+},
+
+{
+    id: 'Sg.7', title: 'Saṅghādisesa 7', audio: '2Sg-07.mp3',
+    text: `Mahallakaṃ pana bhikkhunā vihāraṃ kārayamānena sassāmikaṃ attuddesaṃ, bhikkhū abhinetabbā vatthudesanāya. [7.7]
+Tehi bhikkhūhi vatthuṃ desetabbaṃ anārambhaṃ saparikkamanaṃ. Sārambhe ce bhikkhu vatthusmiṃ aparikkamane [6.6]
+mahallakaṃ vihāraṃ kāreyya, bhikkhū vā anabhineyya vatthudesanāya, saṅghādiseso. [5.6]`
+},
+
+{
+    id: 'Sg.8', title: 'Saṅghādisesa 8', audio: '2Sg-08.mp3',
+    text: `Yo pana bhikkhu bhikkhuṃ duṭṭho doso appatīto amūlakena pārājikena dhammena anuddhaṃseyya [6.3]
+“appeva nāma naṃ imamhā brahmacariyā cāveyyan”ti, tato aparena samayena samanuggāhīyamāno vā [6.3]
+asamanuggāhīyamāno vā amūlakañceva taṃ adhikaraṇaṃ hoti, [4.3]
+bhikkhu ca dosaṃ patiṭṭhāti, saṅghādiseso. [4.4]`
+},
+
+{
+    id: 'Sg.9', title: 'Saṅghādisesa 9', audio: '2Sg-09.mp3',
+    text: `Yo pana bhikkhu bhikkhuṃ duṭṭho doso appatīto aññabhāgiyassa adhikaraṇassa kiñcidesaṃ lesamattaṃ upādāya [7.05]
+pārājikena dhammena anuddhaṃseyya [2.6]
+“appeva nāma naṃ imamhā brahmacariyā cāveyyan”ti, tato aparena samayena [4.9]
+samanuggāhīyamāno vā asamanuggāhīyamāno vā [3.5]
+aññabhāgiyañceva taṃ adhikaraṇaṃ hoti [2.9]
+koci deso lesamatto upādinno, bhikkhu ca dosaṃ patiṭṭhāti, saṅghādiseso. [5.8]`
+},
+
+{
+    id: 'Sg.10', title: 'Saṅghādisesa 10', audio: '2Sg-10.mp3',
+    text: `Yo pana bhikkhu samaggassa saṅghassa bhedāya parakkameyya, [3.85]
+bhedanasaṃvattanikaṃ vā adhikaraṇaṃ samādāya paggayha tiṭṭheyya, [4.4]
+so bhikkhu bhikkhūhi evamassa vacanīyo [2.6]
+“mā āyasmā samaggassa saṅghassa bhedāya parakkami, [3.4]
+bhedanasaṃvattanikaṃ vā adhikaraṇaṃ samādāya paggayha aṭṭhāsi, [4.4]
+sametāyasmā saṅghena, samaggo hi saṅgho [3.4]
+sammodamāno avivadamāno ekuddeso phāsu viharatī”ti, [4.2]
+evañca so bhikkhu bhikkhūhi vuccamāno tatheva paggaṇheyya, [3.9]
+so bhikkhu bhikkhūhi yāvatatiyaṃ samanubhāsitabbo tassa paṭinissaggāya, [4.5]
+yāvatatiyañce samanubhāsiyamāno taṃ paṭinissajjeyya, iccetaṃ kusalaṃ, [4.45]
+no ce paṭinissajjeyya, saṅghādiseso. [3.8]`
+},
+
+{
+    id: 'Sg.11', title: 'Saṅghādisesa 11', audio: '2Sg-11.mp3',
+    text: `Tasseva kho pana bhikkhussa bhikkhū honti anuvattakā vaggavādakā eko vā dve vā tayo vā, te evaṃ vadeyyuṃ: [7.1]
+“mā āyasmanto etaṃ bhikkhuṃ kiñci avacuttha, [3.42]
+dhammavādī ceso bhikkhu, vinayavādī ceso bhikkhu, amhākañceso bhikkhu [5.2]
+chandañca ruciñca ādāya voharati, jānāti, no bhāsati, amhākampetaṃ khamatī”ti, [5.6]
+te bhikkhū bhikkhūhi evamassu vacanīyā [2.7]
+“mā āyasmanto evaṃ avacuttha, [2.5]
+na ceso bhikkhu dhammavādī, na ceso bhikkhu vinayavādī, [3.8]
+mā āyasmantānampi saṅghabhedo ruccittha, [3.2]
+sametāyasmantānaṃ saṅghena, [2.5]
+samaggo hi saṅgho sammodamāno avivadamāno [3.4]
+ekuddeso phāsu viharatī”ti, [2.6]
+evañca te bhikkhū bhikkhūhi vuccamānā tatheva paggaṇheyyuṃ, [3.9]
+te bhikkhū bhikkhūhi yāvatatiyaṃ samanubhāsitabbā tassa paṭinissaggāya, [4.7]
+yāvatatiyañce samanubhāsiyamānā taṃ paṭinissajjeyyuṃ, iccetaṃ kusalaṃ, [4.7]
+no ce paṭinissajjeyyuṃ , saṅghādiseso. [3.6]`
+},
+
+{
+    id: 'Sg.12', title: 'Saṅghādisesa 12', audio: '2Sg-12.mp3',
+    text: `Bhikkhu paneva dubbacajātiko hoti uddesapariyāpannesu [4.0]
+sikkhāpadesu bhikkhūhi sahadhammikaṃ vuccamāno [3.3]
+attānaṃ avacanīyaṃ karoti [2.4]
+“mā maṃ āyasmanto kiñci avacuttha [2.9]
+kalyāṇaṃ vā pāpakaṃ vā, ahampāyasmante na kiñci vakkhāmi kalyāṇaṃ vā pāpakaṃ vā, [5.9]
+viramathāyasmanto mama vacanāyā”ti, [3.1]
+so bhikkhu bhikkhūhi evamassa vacanīyo [2.7]
+“mā āyasmā attānaṃ avacanīyaṃ akāsi, vacanīyamevāyasmā attānaṃ karotu, [6.1]
+āyasmāpi bhikkhū vadatu sahadhammena, bhikkhūpi āyasmantaṃ vakkhanti sahadhammena, [5.6]
+evaṃ saṃvaddhā hi tassa bhagavato parisā [3.1]
+yadidaṃ aññamaññavacanena aññamaññavuṭṭhāpanenā”ti, [4.0]
+evañca so bhikkhu bhikkhūhi vuccamāno tatheva paggaṇheyya, [3.7]
+so bhikkhu bhikkhūhi yāvatatiyaṃ samanubhāsitabbo tassa paṭinissaggāya, [4.7]
+yāvatatiyañce samanubhāsiyamāno taṃ paṭinissajjeyya, iccetaṃ kusalaṃ, [4.6]
+no ce paṭinissajjeyya, saṅghādiseso. [4.0]`
+},
+
+{
+    id: 'Sg.13', title: 'Saṅghādisesa 13', audio: '2Sg-13.mp3',
+    text: `Bhikkhu paneva aññataraṃ gāmaṃ vā nigamaṃ vā upanissāya viharati [4.82]
+kuladūsako pāpasamācāro, [2.2]
+tassa kho pāpakā samācārā dissanti ceva suyyanti ca, [3.75]
+kulāni ca tena duṭṭhāni dissanti ceva suyyanti ca, [3.5]
+so bhikkhu bhikkhūhi evamassa vacanīyo [2.75]
+“āyasmā kho kuladūsako pāpasamācāro, [3.0]
+āyasmato kho pāpakā samācārā dissanti ceva suyyanti ca, [4.2]
+kulāni cāyasmatā duṭṭhāni dissanti ceva suyyanti ca, [3.5]
+pakkamatāyasmā imamhā āvāsā, alaṃ te idha vāsenā”ti, [4.6]
+evañca so bhikkhu bhikkhūhi vuccamāno te bhikkhū evaṃ vadeyya [4.2]
+“chandagāmino ca bhikkhū, dosagāmino ca bhikkhū, mohagāmino ca bhikkhū, bhayagāmino ca bhikkhū [5.5]
+tādisikāya āpattiyā ekaccaṃ pabbājenti, ekaccaṃ na pabbājentī”ti, [5.0]
+so bhikkhu bhikkhūhi evamassa vacanīyo [2.6]
+“mā āyasmā evaṃ avaca, na ca bhikkhū chandagāmino, na ca bhikkhū dosagāmino, [4.85]
+na ca bhikkhū mohagāmino, na ca bhikkhū bhayagāmino, āyasmā kho kuladūsako pāpasamācāro, [6.0]
+āyasmato kho pāpakā samācārā dissanti ceva suyyanti ca, [4.1]
+kulāni cāyasmatā duṭṭhāni dissanti ceva suyyanti ca, [3.5]
+pakkamatāyasmā imamhā āvāsā, alaṃ te idha vāsenā”ti, [4.8]
+evañca so bhikkhu bhikkhūhi vuccamāno tatheva paggaṇheyya, [3.9]
+so bhikkhu bhikkhūhi yāvatatiyaṃ samanubhāsitabbo tassa paṭinissaggāya, [4.5]
+yāvatatiyañce samanubhāsiyamāno taṃ paṭinissajjeyya, iccetaṃ kusalaṃ, [4.4]
+no ce paṭinissajjeyya, saṅghādiseso. [3.6]`
+},
+
+{
+    id: 'Sg.U', title: 'Saṅghādisesa Uddiṭṭhā', audio: '2Sg-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto terasa saṅghādisesā dhammā [3.7]
+nava paṭhamāpattikā, cattāro yāvatatiyakā. [3.1]
+Yesaṃ bhikkhu aññataraṃ vā aññataraṃ vā āpajjitvā [3.8]
+yāvatīhaṃ jānaṃ paṭicchādeti, [2.5]
+tāvatīhaṃ tena bhikkhunā akāmā parivatthabbaṃ. [3.4]
+Parivutthaparivāsena bhikkhunā uttariṃ chārattaṃ bhikkhumānattāya paṭipajjitabbaṃ, [5.4]
+ciṇṇamānatto bhikkhu yattha siyā vīsatigaṇo bhikkhusaṅgho, [3.9]
+tattha so bhikkhu abbhetabbo. [2.5]
+Ekenapi ce ūno vīsatigaṇo bhikkhusaṅgho taṃ bhikkhuṃ abbheyya, [4.2]
+so ca bhikkhu anabbhito, te ca bhikkhū gārayhā, ayaṃ tattha sāmīci. [4.8]
+Tatthāyasmante pucchāmi, kaccittha parisuddhā, dutiyampi pucchāmi, kaccittha parisuddhā, [5.5]
+tatiyampi pucchāmi, kaccittha parisuddhā, [2.6]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. [4.9]
+Saṅghādisesuddeso tatiyo [3.6]`
+},
+
+
+ 
+
+
+
+{
+    id: 'Ay.1', title: 'Aniyata 1', audio: '3Ay-01.mp3',
+    text: `Ime kho panāyasmanto dve aniyatā dhammā uddesaṃ āgacchanti. [5.1]
+Yo pana bhikkhu mātugāmena saddhiṃ eko ekāya raho paṭicchanne āsane alaṃkammaniye nisajjaṃ kappeyya, [6.7]
+tamenaṃ saddheyyavacasā upāsikā disvā tiṇṇaṃ dhammānaṃ aññatarena vadeyya [4.7]
+pārājikena vā saṅghādisesena vā pācittiyena vā, [3.4]
+nisajjaṃ bhikkhu paṭijānamāno tiṇṇaṃ dhammānaṃ aññatarena kāretabbo [4.6]
+pārājikena vā saṅghādisesena vā pācittiyena vā, [3.6]
+yena vā sā saddheyyavacasā upāsikā vadeyya, tena so bhikkhu kāretabbo, [4.8]
+ayaṃ dhammo aniyato. [2.7]`
+},
+
+{
+    id: 'Ay.2', title: 'Aniyata 2', audio: '3Ay-02.mp3',
+    text: `Na heva kho pana paṭicchannaṃ āsanaṃ hoti nālaṃkammaniyaṃ, [4.2]
+alañca kho hoti mātugāmaṃ duṭṭhullāhi vācāhi obhāsituṃ, [4.1]
+yo pana bhikkhu tathārūpe āsane mātugāmena saddhiṃ eko ekāya raho nisajjaṃ kappeyya, [5.9]
+tamenaṃ saddheyyavacasā upāsikā disvā dvinnaṃ dhammānaṃ aññatarena vadeyya [4.8]
+saṅghādisesena vā pācittiyena vā, [2.5] 
+nisajjaṃ bhikkhu paṭijānamāno dvinnaṃ dhammānaṃ aññatarena kāretabbo [4.5] 
+saṅghādisesena vā pācittiyena vā, [2.6]
+yena vā sā saddheyyavacasā upāsikā vadeyya, tena so bhikkhu kāretabbo, ayampi dhammo aniyato. [7.2]`
+},
+
+{
+    id: 'Ay.U', title: 'Aniyata Uddiṭṭhā', audio: '3Ay-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto dve aniyatā dhammā. Tatthāyasmante pucchāmi, kaccittha parisuddhā, [6.2]
+dutiyampi pucchāmi, kaccittha parisuddhā, tatiyampi pucchāmi, kaccittha parisuddhā, [4.5]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. [4.6]
+Aniyatuddeso catuttho [3.0]`
+},
+
+ 
+
+
+
+{
+    id: 'NP.1', title: 'Nissaggiya Pācittiya 1', audio: '4NP-01.mp3',
+    text: `Ime kho panāyasmanto tiṃsa nissaggiyā pācittiyā Dhammā uddesaṃ āgacchanti. [5.8]
+Niṭṭhitacīvarasmiṃ bhikkhunā ubbhatasmiṃ kaṭhine dasāhaparamaṃ atirekacīvaraṃ dhāretabbaṃ, [5.6]
+taṃ atikkāmayato nissaggiyaṃ pācittiyaṃ. [3.5]`
+},
+
+{
+    id: 'NP.2', title: 'Nissaggiya Pācittiya 2', audio: '4NP-02.mp3',
+    text: `Niṭṭhitacīvarasmiṃ bhikkhunā ubbhatasmiṃ kaṭhine ekarattampi ce bhikkhu ticīvarena vippavaseyya, aññatra bhikkhusammutiyā nissaggiyaṃ pācittiyaṃ. [9.0]`
+},
+
+{
+    id: 'NP.3', title: 'Nissaggiya Pācittiya 3', audio: '4NP-03.mp3',
+    text: `Niṭṭhitacīvarasmiṃ bhikkhunā ubbhatasmiṃ kaṭhine bhikkhuno paneva akālacīvaraṃ uppajjeyya, [5.6]
+ākaṅkhamānena bhikkhunā paṭiggahetabbaṃ, paṭiggahetvā khippameva kāretabbaṃ, [5.0]
+no cassa pāripūri, māsaparamaṃ tena bhikkhunā taṃ cīvaraṃ nikkhipitabbaṃ [4.7]
+ūnassa pāripūriyā satiyā paccāsāya. Tato ce uttariṃ nikkhipeyya satiyāpi paccāsāya, nissaggiyaṃ pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'NP.4', title: 'Nissaggiya Pācittiya 4', audio: '4NP-04.mp3',
+    text: `Yo pana bhikkhu aññātikāya bhikkhuniyā purāṇacīvaraṃ dhovāpeyya vā rajāpeyya vā ākoṭāpeyya vā, nissaggiyaṃ pācittiyaṃ. [8.0]`
+},
+
+{
+    id: 'NP.5', title: 'Nissaggiya Pācittiya 5', audio: '4NP-05.mp3',
+    text: `Yo pana bhikkhu aññātikāya bhikkhuniyā hatthato cīvaraṃ paṭiggaṇheyya aññatra pārivattakā, nissaggiyaṃ pācittiyaṃ. [8.0]`
+},
+
+{
+    id: 'NP.6', title: 'Nissaggiya Pācittiya 6', audio: '4NP-06.mp3',
+    text: `Yo pana bhikkhu aññātakaṃ gahapatiṃ vā gahapatāniṃ vā cīvaraṃ viññāpeyya [4.8]
+aññatra samayā, nissaggiyaṃ pācittiyaṃ. [2.6]
+Tatthāyaṃ samayo: acchinnacīvaro vā hoti bhikkhu, naṭṭhacīvaro vā, ayaṃ tattha samayo. [6.5]`
+},
+
+{
+    id: 'NP.7', title: 'Nissaggiya Pācittiya 7', audio: '4NP-07.mp3',
+    text: `Tañce aññātako gahapati vā gahapatānī vā bahūhi cīvarehi abhihaṭṭhuṃ pavāreyya, [5.9]
+santaruttaraparamaṃ tena bhikkhunā tato cīvaraṃ sāditabbaṃ. Tato ce uttariṃ sādiyeyya, nissaggiyaṃ pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'NP.8', title: 'Nissaggiya Pācittiya 8', audio: '4NP-08.mp3',
+    text: `Bhikkhuṃ paneva uddissa aññātakassa gahapatissa vā gahapatāniyā vā cīvaracetāpannaṃ upakkhaṭaṃ hoti [6.6]
+“iminā cīvaracetāpannena cīvaraṃ cetāpetvā itthannāmaṃ bhikkhuṃ cīvarena acchādessāmī”ti, [7.0]
+tatra ce so bhikkhu pubbe appavārito upasaṅkamitvā cīvare vikappaṃ āpajjeyya [5.5]
+“sādhu vata maṃ āyasmā iminā cīvaracetāpannena [3.4]
+evarūpaṃ vā evarūpaṃ vā cīvaraṃ cetāpetvā acchādehī”ti [4.6]
+kalyāṇakamyataṃ upādāya, nissaggiyaṃ pācittiyaṃ. [4.0]`
+},
+
+{
+    id: 'NP.9', title: 'Nissaggiya Pācittiya 9', audio: '4NP-09.mp3',
+    text: `Bhikkhuṃ paneva uddissa ubhinnaṃ aññātakānaṃ gahapatīnaṃ vā gahapatānīnaṃ vā paccekacīvaracetāpannāni upakkhaṭāni honti [8.2]
+“imehi mayaṃ paccekacīvaracetāpannehi paccekacīvarāni cetāpetvā itthannāmaṃ bhikkhuṃ [5.9]
+cīvarehi acchādessāmā”ti, [2.3]
+tatra ce so bhikkhu pubbe appavārito upasaṅkamitvā [3.8]
+cīvare vikappaṃ āpajjeyya [2.1]
+“sādhu vata maṃ āyasmanto imehi paccekacīvaracetāpannehi evarūpaṃ vā evarūpaṃ vā cīvaraṃ cetāpetvā [6.8]
+acchādetha ubhova santā ekenā”ti kalyāṇakamyataṃ upādāya, nissaggiyaṃ pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'NP.10', title: 'Nissaggiya Pācittiya 10', audio: '4NP-10.mp3',
+    text: `Bhikkhuṃ paneva uddissa rājā vā rājabhoggo vā brāhmaṇo vā gahapatiko vā dūtena cīvaracetāpannaṃ pahiṇeyya [7.1]
+“iminā cīvaracetāpannena cīvaraṃ cetāpetvā itthannāmaṃ bhikkhuṃ cīvarena acchādehī”ti. [6.1]
+So ce dūto taṃ bhikkhuṃ upasaṅkamitvā evaṃ vadeyya [3.8]
+“idaṃ kho, bhante, āyasmantaṃ uddissa cīvaracetāpannaṃ ābhataṃ, [4.6]
+paṭiggaṇhātu āyasmā cīvaracetāpanna”nti. [3.3]
+Tena bhikkhunā so dūto evamassa vacanīyo [2.9]
+“na kho mayaṃ, āvuso, cīvaracetāpannaṃ paṭiggaṇhāma, [3.6]
+cīvarañca kho mayaṃ paṭiggaṇhāma kālena kappiya”nti. [3.4]
+So ce dūto taṃ bhikkhuṃ evaṃ vadeyya “atthi panāyasmato koci veyyāvaccakaro”ti. [5.3]
+Cīvaratthikena, bhikkhave, bhikkhunā veyyāvaccakaro niddisitabbo [4.1]
+ārāmiko vā upāsako vā “eso kho, āvuso, bhikkhūnaṃ veyyāvaccakaro”ti. [5.2]
+So ce dūto taṃ veyyāvaccakaraṃ saññāpetvā taṃ bhikkhuṃ upasaṅkamitvā evaṃ vadeyya [5.4]
+“yaṃ kho, bhante, āyasmā veyyāvaccakaraṃ niddisi, saññatto so mayā, [4.8]
+upasaṅkamatāyasmā kālena, cīvarena taṃ acchādessatī”ti. [4.4]
+Cīvaratthikena, bhikkhave, bhikkhunā veyyāvaccakaro upasaṅkamitvā dvattikkhattuṃ codetabbo sāretabbo [6.5]
+“attho me, āvuso, cīvarenā”ti, [2.6]
+dvattikkhattuṃ codayamāno sārayamāno taṃ cīvaraṃ abhinipphādeyya, iccetaṃ kusalaṃ, [5.5]
+no ce abhinipphādeyya, catukkhattuṃ pañcakkhattuṃ chakkhattuparamaṃ tuṇhībhūtena uddissa ṭhātabbaṃ, [6.1]
+catukkhattuṃ pañcakkhattuṃ chakkhattuparamaṃ tuṇhībhūto uddissa tiṭṭhamāno taṃ cīvaraṃ abhinipphādeyya, [6.3]
+iccetaṃ kusalaṃ, [1.5]
+tato ce uttari vāyamamāno taṃ cīvaraṃ abhinipphādeyya, nissaggiyaṃ pācittiyaṃ. [5.2]
+No ce abhinipphādeyya, yatassa cīvaracetāpannaṃ ābhataṃ, tattha sāmaṃ vā gantabbaṃ, dūto vā pāhetabbo [7.1]
+“yaṃ kho tumhe āyasmanto bhikkhuṃ uddissa cīvaracetāpannaṃ pahiṇittha, [4.9]
+na taṃ tassa bhikkhuno kiñci atthaṃ anubhoti, [3.1]
+yuñjantāyasmanto sakaṃ, mā vo sakaṃ vinassā”ti, ayaṃ tattha sāmīci. [4.9]
+Cīvaravaggo paṭhamo [2.6]`
+},
+
+{
+    id: 'NP.11', title: 'Nissaggiya Pācittiya 11', audio: '4NP-11.mp3',
+    text: `Yo pana bhikkhu kosiyamissakaṃ santhataṃ kārāpeyya, nissaggiyaṃ pācittiyaṃ. [5.3]`
+},
+
+{
+    id: 'NP.12', title: 'Nissaggiya Pācittiya 12', audio: '4NP-12.mp3',
+    text: `Yo pana bhikkhu suddhakāḷakānaṃ eḷakalomānaṃ santhataṃ kārāpeyya, nissaggiyaṃ pācittiyaṃ. [6.0]`
+},
+
+{
+    id: 'NP.13', title: 'Nissaggiya Pācittiya 13', audio: '4NP-13.mp3',
+    text: `Navaṃ pana bhikkhunā santhataṃ kārayamānena dve bhāgā suddhakāḷakānaṃ eḷakalomānaṃ ādātabbā, [6.3]
+tatiyaṃ odātānaṃ, catutthaṃ gocariyānaṃ. [2.9]
+Anādā ce bhikkhu dve bhāge suddhakāḷakānaṃ eḷakalomānaṃ, tatiyaṃ odātānaṃ, catutthaṃ gocariyānaṃ, [6.4]
+navaṃ santhataṃ kārāpeyya, nissaggiyaṃ pācittiyaṃ. [3.8]`
+},
+
+{
+    id: 'NP.14', title: 'Nissaggiya Pācittiya 14', audio: '4NP-14.mp3',
+    text: `Navaṃ pana bhikkhunā santhataṃ kārāpetvā chabbassāni dhāretabbaṃ, [4.3]
+orena ce channaṃ vassānaṃ taṃ santhataṃ vissajjetvā vā avissajjetvā vā aññaṃ navaṃ santhataṃ kārāpeyya [6.5]
+aññatra bhikkhusammutiyā, nissaggiyaṃ pācittiyaṃ. [4.0]`
+},
+
+{
+    id: 'NP.15', title: 'Nissaggiya Pācittiya 15', audio: '4NP-15.mp3',
+    text: `Nisīdanasanthataṃ pana bhikkhunā kārayamānena purāṇasanthatassa sāmantā sugatavidatthi ādātabbā dubbaṇṇakaraṇāya. [7.1]
+Anādā ce bhikkhu purāṇasanthatassa sāmantā sugatavidatthiṃ, navaṃ nisīdanasanthataṃ kārāpeyya, nissaggiyaṃ pācittiyaṃ. [7.5]`
+},
+
+{
+    id: 'NP.16', title: 'Nissaggiya Pācittiya 16', audio: '4NP-16.mp3',
+    text: `Bhikkhuno paneva addhānamaggappaṭipannassa eḷakalomāni uppajjeyyuṃ, [4.2]
+ākaṅkhamānena bhikkhunā paṭiggahetabbāni, paṭiggahetvā tiyojanaparamaṃ sahatthā haritabbāni asante hārake. [6.6]
+Tato ce uttariṃ hareyya, asantepi hārake, nissaggiyaṃ pācittiyaṃ. [4.5]`
+},
+
+{
+    id: 'NP.17', title: 'Nissaggiya Pācittiya 17', audio: '4NP-17.mp3',
+    text: `Yo pana bhikkhu aññātikāya bhikkhuniyā eḷakalomāni dhovāpeyya vā rajāpeyya vā vijaṭāpeyya vā, nissaggiyaṃ pācittiyaṃ. [7.3]`
+},
+
+{
+    id: 'NP.18', title: 'Nissaggiya Pācittiya 18', audio: '4NP-18.mp3',
+    text: `Yo pana bhikkhu jātarūparajataṃ uggaṇheyya vā uggaṇhāpeyya vā upanikkhittaṃ vā sādiyeyya, nissaggiyaṃ pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'NP.19', title: 'Nissaggiya Pācittiya 19', audio: '4NP-19.mp3',
+    text: `Yo pana bhikkhu nānappakārakaṃ rūpiyasaṃvohāraṃ samāpajjeyya, nissaggiyaṃ pācittiyaṃ. [5.6]`
+},
+
+{
+    id: 'NP.20', title: 'Nissaggiya Pācittiya 20', audio: '4NP-20.mp3',
+    text: `Yo pana bhikkhu nānappakārakaṃ kayavikkayaṃ samāpajjeyya, nissaggiyaṃ pācittiyaṃ. Kosiyavaggo dutiyo. [7.0]`
+},
+
+{
+    id: 'NP.21', title: 'Nissaggiya Pācittiya 21', audio: '4NP-21.mp3',
+    text: `Dasāhaparamaṃ atirekapatto dhāretabbo, taṃ atikkāmayato nissaggiyaṃ pācittiyaṃ. [6.0]`
+},
+
+{
+    id: 'NP.22', title: 'Nissaggiya Pācittiya 22', audio: '4NP-22.mp3',
+    text: `Yo pana bhikkhu ūnapañcabandhanena pattena aññaṃ navaṃ pattaṃ cetāpeyya, nissaggiyaṃ pācittiyaṃ. [5.6]
+Tena bhikkhunā so patto bhikkhuparisāya nissajjitabbo, yo ca tassā bhikkhuparisāya pattapariyanto, [5.7]
+so tassa bhikkhuno padātabbo “ayaṃ te bhikkhu patto yāva bhedanāya dhāretabbo”ti, ayaṃ tattha sāmīci. [6.6]`
+},
+
+{
+    id: 'NP.23', title: 'Nissaggiya Pācittiya 23', audio: '4NP-23.mp3',
+    text: `Yāni kho pana tāni gilānānaṃ bhikkhūnaṃ paṭisāyanīyāni bhesajjāni, seyyathidaṃ – [5.8]
+sappi navanītaṃ telaṃ madhu phāṇitaṃ, tāni paṭiggahetvā sattāhaparamaṃ sannidhikārakaṃ paribhuñjitabbāni, [6.1]
+taṃ atikkāmayato nissaggiyaṃ pācittiyaṃ. [3.0]`
+},
+
+{
+    id: 'NP.24', title: 'Nissaggiya Pācittiya 24', audio: '4NP-24.mp3',
+    text: `“Māso seso gimhānan”ti bhikkhunā vassikasāṭikacīvaraṃ pariyesitabbaṃ, [4.45]
+“addhamāso seso gimhānan”ti katvā nivāsetabbaṃ. Orena ce “māso seso gimhānan”ti [5.2]
+vassikasāṭikacīvaraṃ pariyeseyya, orena“ddhamāso seso gimhānan”ti katvā nivāseyya, [4.9]
+nissaggiyaṃ pācittiyaṃ. [2.6]`
+},
+
+{
+    id: 'NP.25', title: 'Nissaggiya Pācittiya 25', audio: '4NP-25.mp3',
+    text: `Yo pana bhikkhu bhikkhussa sāmaṃ cīvaraṃ datvā kupito anattamano acchindeyya vā acchindāpeyya vā, nissaggiyaṃ pācittiyaṃ. [7.5]`
+},
+
+{
+    id: 'NP.26', title: 'Nissaggiya Pācittiya 26', audio: '4NP-26.mp3',
+    text: `Yo pana bhikkhu sāmaṃ suttaṃ viññāpetvā tantavāyehi cīvaraṃ vāyāpeyya, nissaggiyaṃ pācittiyaṃ. [6.0]`
+},
+
+{
+    id: 'NP.27', title: 'Nissaggiya Pācittiya 27', audio: '4NP-27.mp3',
+    text: `Bhikkhuṃ paneva uddissa aññātako gahapati vā gahapatānī vā tantavāyehi cīvaraṃ vāyāpeyya, [5.5]
+tatra ce so bhikkhu pubbe appavārito tantavāye upasaṅkamitvā cīvare vikappaṃ āpajjeyya [5.6]
+“idaṃ kho, āvuso, cīvaraṃ maṃ uddissa viyyati, [2.9]
+āyatañca karotha, vitthatañca, appitañca, suvītañca, suppavāyitañca, suvilekhitañca, suvitacchitañca karotha, [6.2]
+appeva nāma mayampi āyasmantānaṃ kiñcimattaṃ anupadajjeyyāmā”ti. [4.5]
+Evañca so bhikkhu vatvā kiñcimattaṃ anupadajjeyya antamaso piṇḍapātamattampi, nissaggiyaṃ pācittiyaṃ. [6.7]`
+},
+
+{
+    id: 'NP.28', title: 'Nissaggiya Pācittiya 28', audio: '4NP-28.mp3',
+    text: `Dasāhānāgataṃ kattikatemāsikapuṇṇamaṃ bhikkhuno paneva accekacīvaraṃ uppajjeyya, [5.9]
+accekaṃ maññamānena bhikkhunā paṭiggahetabbaṃ, paṭiggahetvā yāva cīvarakālasamayaṃ nikkhipitabbaṃ. [5.7]
+Tato ce uttari nikkhipeyya, nissaggiyaṃ pācittiyaṃ. [3.5]`
+},
+
+{
+    id: 'NP.29', title: 'Nissaggiya Pācittiya 29', audio: '4NP-29.mp3',
+    text: `Upavassaṃ kho pana kattikapuṇṇamaṃ yāni kho pana tāni āraññakāni senāsanāni sāsaṅkasammatāni sappaṭibhayāni, [6.7]
+tathārūpesu bhikkhu senāsanesu viharanto ākaṅkhamāno [3.8]
+tiṇṇaṃ cīvarānaṃ aññataraṃ cīvaraṃ antaraghare nikkhipeyya, [3.4]
+siyā ca tassa bhikkhuno kocideva paccayo tena cīvarena vippavāsāya, [4.1]
+chārattaparamaṃ tena bhikkhunā tena cīvarena vippavasitabbaṃ. [3.4]
+Tato ce uttariṃ vippavaseyya aññatra bhikkhusammutiyā, nissaggiyaṃ pācittiyaṃ. [4.9]`
+},
+
+{
+    id: 'NP.30', title: 'Nissaggiya Pācittiya 30', audio: '4NP-30.mp3',
+    text: `Yo pana bhikkhu jānaṃ saṅghikaṃ lābhaṃ pariṇataṃ attano pariṇāmeyya, nissaggiyaṃ pācittiyaṃ. [5.2]
+Pattavaggo tatiyo. [2.5]`
+},
+
+{
+    id: 'NP.U', title: 'Nissaggiya Uddiṭṭhā', audio: '4NP-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto tiṃsa nissaggiyā pācittiyā dhammā. Tatthāyasmante pucchāmi, kaccittha parisuddhā, [6.6]
+dutiyampi pucchāmi, kaccittha parisuddhā, tatiyampi pucchāmi, kaccittha parisuddhā, [4.0]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. [4.3]
+Nissaggiyapācittiyā niṭṭhitā [2.9]`
+},
+
+
+
+ 
+{
+    id: 'Pc.1-3', title: 'Pācittiya 1-3', audio: '5Pc-01-03.mp3',
+    text: `Ime kho panāyasmanto dvenavuti pācittiyā Dhammā uddesaṃ āgacchanti. [4.8]
+Sampajānamusāvāde pācittiyaṃ. Omasavāde pācittiyaṃ. Bhikkhupesuññe pācittiyaṃ. [5.5]`
+},
+
+{
+    id: 'Pc.4', title: 'Pācittiya 4', audio: '5Pc-04.mp3',
+    text: `Yo pana bhikkhu anupasampannaṃ padaso dhammaṃ vāceyya, pācittiyaṃ. [4.3]`
+},
+
+{
+    id: 'Pc.5', title: 'Pācittiya 5', audio: '5Pc-05.mp3',
+    text: `Yo pana bhikkhu anupasampannena uttariṃ dirattatirattaṃ sahaseyyaṃ kappeyya, pācittiyaṃ. [5.2]`
+},
+
+{
+    id: 'Pc.6', title: 'Pācittiya 6', audio: '5Pc-06.mp3',
+    text: `Yo pana bhikkhu mātugāmena sahaseyyaṃ kappeyya, pācittiyaṃ. [4.0]`
+},
+
+{
+    id: 'Pc.7', title: 'Pācittiya 7', audio: '5Pc-07.mp3',
+    text: `Yo pana bhikkhu mātugāmassa uttariṃ chappañcavācāhi dhammaṃ deseyya aññatra viññunā purisaviggahena, pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'Pc.8', title: 'Pācittiya 8', audio: '5Pc-08.mp3',
+    text: `Yo pana bhikkhu anupasampannassa uttarimanussadhammaṃ āroceyya, bhūtasmiṃ pācittiyaṃ. [5.5]`
+},
+
+{
+    id: 'Pc.9', title: 'Pācittiya 9', audio: '5Pc-09.mp3',
+    text: `Yo pana bhikkhu bhikkhussa duṭṭhullaṃ āpattiṃ anupasampannassa āroceyya aññatra bhikkhusammutiyā, pācittiyaṃ. [6.5]`
+},
+
+{
+    id: 'Pc.10', title: 'Pācittiya 10', audio: '5Pc-10.mp3',
+    text: `Yo pana bhikkhu pathaviṃ khaṇeyya vā khaṇāpeyya vā pācittiyaṃ. Musāvādavaggo paṭhamo. [5.8]`
+},
+
+{
+    id: 'Pc.11-13', title: 'Pācittiya 11-13', audio: '5Pc-11-13.mp3',
+    text: `Bhūtagāmapātabyatāya pācittiyaṃ. Aññavādake vihesake pācittiyaṃ. Ujjhāpanake khiyyanake pācittiyaṃ. [6.8]`
+},
+
+{
+    id: 'Pc.14', title: 'Pācittiya 14', audio: '5Pc-14.mp3',
+    text: `Yo pana bhikkhu saṅghikaṃ mañcaṃ vā pīṭhaṃ vā bhisiṃ vā kocchaṃ vā ajjhokāse santharitvā vā santharāpetvā vā [6.7]
+taṃ pakkamanto neva uddhareyya, na uddharāpeyya, anāpucchaṃ vā gaccheyya, pācittiyaṃ. [4.9]`
+},
+
+{
+    id: 'Pc.15', title: 'Pācittiya 15', audio: '5Pc-15.mp3',
+    text: `Yo pana bhikkhu saṅghike vihāre seyyaṃ santharitvā vā santharāpetvā vā [4.6]
+taṃ pakkamanto neva uddhareyya, na uddharāpeyya, anāpucchaṃ vā gaccheyya, pācittiyaṃ. [5.0]`
+},
+
+{
+    id: 'Pc.16', title: 'Pācittiya 16', audio: '5Pc-16.mp3',
+    text: `Yo pana bhikkhu saṅghike vihāre jānaṃ pubbupagataṃ bhikkhuṃ anupakhajja seyyaṃ kappeyya [4.9]
+“yassa sambādho bhavissati, so pakkamissatī”ti [2.9]
+etadeva paccayaṃ karitvā anaññaṃ, pācittiyaṃ. [3.6]`
+},
+
+{
+    id: 'Pc.17', title: 'Pācittiya 17', audio: '5Pc-17.mp3',
+    text: `Yo pana bhikkhu bhikkhuṃ kupito anattamano saṅghikā vihārā nikkaḍḍheyya vā nikkaḍḍhāpeyya vā, pācittiyaṃ. [6.5]`
+},
+
+{
+    id: 'Pc.18', title: 'Pācittiya 18', audio: '5Pc-18.mp3',
+    text: `Yo pana bhikkhu saṅghike vihāre uparivehāsakuṭiyā āhaccapādakaṃ [4.2]
+mañcaṃ vā pīṭhaṃ vā abhinisīdeyya vā abhinipajjeyya vā, pācittiyaṃ. [4.5]`
+},
+
+{
+    id: 'Pc.19', title: 'Pācittiya 19', audio: '5Pc-19.mp3',
+    text: `Mahallakaṃ pana bhikkhunā vihāraṃ kārayamānena yāva dvārakosā aggaḷaṭṭhapanāya [5.2]
+ālokasandhiparikammāya dvatticchadanassa pariyāyaṃ appaharite ṭhitena adhiṭṭhātabbaṃ, [5.1]
+tato ce uttariṃ appaharitepi ṭhito adhiṭṭhaheyya, pācittiyaṃ. [4.0]`
+},
+
+{
+    id: 'Pc.20', title: 'Pācittiya 20', audio: '5Pc-20.mp3',
+    text: `Yo pana bhikkhu jānaṃ sappāṇakaṃ udakaṃ tiṇaṃ vā mattikaṃ vā siñceyya vā siñcāpeyya vā, pācittiyaṃ. [5.8]
+Bhūtagāmavaggo dutiyo. [2.5]`
+},
+
+{
+    id: 'Pc.21', title: 'Pācittiya 21', audio: '5Pc-21.mp3',
+    text: `Yo pana bhikkhu asammato bhikkhuniyo ovadeyya, pācittiyaṃ. [4.5]`
+},
+
+{
+    id: 'Pc.22', title: 'Pācittiya 22', audio: '5Pc-22.mp3',
+    text: `Sammatopi ce bhikkhu atthaṅgate sūriye bhikkhuniyo ovadeyya, pācittiyaṃ. [4.7]`
+},
+
+{
+    id: 'Pc.23', title: 'Pācittiya 23', audio: '5Pc-23.mp3',
+    text: `Yo pana bhikkhu bhikkhūnupassayaṃ upasaṅkamitvā bhikkhuniyo ovadeyya [3.8]
+aññatra samayā, pācittiyaṃ. Tatthāyaṃ samayo, gilānā hoti bhikkhunī, ayaṃ tattha samayo. [5.5]`
+},
+
+{
+    id: 'Pc.24', title: 'Pācittiya 24', audio: '5Pc-24.mp3',
+    text: `Yo pana bhikkhu evaṃ vadeyya “āmisahetu bhikkhū bhikkhuniyo ovadantī”ti, pācittiyaṃ. [5.5]`
+},
+
+{
+    id: 'Pc.25', title: 'Pācittiya 25', audio: '5Pc-25.mp3',
+    text: `Yo pana bhikkhu aññātikāya bhikkhuniyā cīvaraṃ dadeyya aññatra pārivattakā, pācittiyaṃ. [5.7]`
+},
+
+{
+    id: 'Pc.26', title: 'Pācittiya 26', audio: '5Pc-26.mp3',
+    text: `Yo pana bhikkhu aññātikāya bhikkhuniyā cīvaraṃ sibbeyya vā sibbāpeyya vā, pācittiyaṃ. [5.7]`
+},
+
+{
+    id: 'Pc.27', title: 'Pācittiya 27', audio: '5Pc-27.mp3',
+    text: `Yo pana bhikkhu bhikkhuniyā saddhiṃ saṃvidhāya ekaddhānamaggaṃ paṭipajjeyya [4.4]
+antamaso gāmantarampi aññatra samayā, pācittiyaṃ. [3.3]
+Tatthāyaṃ samayo, satthagamanīyo hoti maggo, sāsaṅkasammato, sappaṭibhayo, [4.7]
+ayaṃ tattha samayo. [2.3]`
+},
+
+{
+    id: 'Pc.28', title: 'Pācittiya 28', audio: '5Pc-28.mp3',
+    text: `Yo pana bhikkhu bhikkhuniyā saddhiṃ saṃvidhāya ekaṃ nāvaṃ abhirūheyya [4.4]
+uddhaṃgāminiṃ vā adhogāminiṃ vā aññatra tiriyaṃ taraṇāya, pācittiyaṃ. [4.8]`
+},
+
+{
+    id: 'Pc.29', title: 'Pācittiya 29', audio: '5Pc-29.mp3',
+    text: `Yo pana bhikkhu jānaṃ bhikkhuniparipācitaṃ piṇḍapātaṃ bhuñjeyya aññatra pubbe gihīsamārambhā, pācittiyaṃ. [7.1]`
+},
+
+{
+    id: 'Pc.30', title: 'Pācittiya 30', audio: '5Pc-30.mp3',
+    text: `Yo pana bhikkhu bhikkhuniyā saddhiṃ eko ekāya raho nisajjaṃ kappeyya, pācittiyaṃ. [5.0]
+Bhikkhunovādavaggo tatiyo [2.5]`
+},
+
+{
+    id: 'Pc.31', title: 'Pācittiya 31', audio: '5Pc-31.mp3',
+    text: `Agilānena bhikkhunā eko āvasathapiṇḍo bhuñjitabbo. Tato ce uttariṃ bhuñjeyya, pācittiyaṃ. [6.0]`
+},
+
+{
+    id: 'Pc.32', title: 'Pācittiya 32', audio: '5Pc-32.mp3',
+    text: `Gaṇabhojane aññatra samayā pācittiyaṃ. Tatthāyaṃ samayo, gilānasamayo, cīvaradānasamayo, [5.1]
+cīvarakārasamayo, addhānagamanasamayo, nāvahirūhanasamayo, mahāsamayo, samaṇabhattasamayo, ayaṃ tattha samayo. [6.6]`
+},
+
+{
+    id: 'Pc.33', title: 'Pācittiya 33', audio: '5Pc-33.mp3',
+    text: `Paramparabhojane aññatra samayā pācittiyaṃ. [3.0]
+Tatthāyaṃ samayo, gilānasamayo, cīvaradānasamayo, cīvarakārasamayo, ayaṃ tattha samayo. [5.2]`
+},
+
+{
+    id: 'Pc.34', title: 'Pācittiya 34', audio: '5Pc-34.mp3',
+    text: `Bhikkhuṃ paneva kulaṃ upagataṃ pūvehi vā manthehi vā abhihaṭṭhuṃ pavāreyya, [4.8]
+ākaṅkhamānena bhikkhunā dvattipattapūrā paṭiggahetabbā. Tato ce uttariṃ paṭiggaṇheyya, pācittiyaṃ. [5.8]
+Dvattipattapūre paṭiggahetvā tato nīharitvā bhikkhūhi saddhiṃ saṃvibhajitabbaṃ, ayaṃ tattha sāmīci. [6.2]`
+},
+
+{
+    id: 'Pc.35', title: 'Pācittiya 35', audio: '5Pc-35.mp3',
+    text: `Yo pana bhikkhu bhuttāvī pavārito anatirittaṃ khādanīyaṃ vā bhojanīyaṃ vā khādeyya vā bhuñjeyya vā, pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'Pc.36', title: 'Pācittiya 36', audio: '5Pc-36.mp3',
+    text: `Yo pana bhikkhu bhikkhuṃ bhuttāviṃ pavāritaṃ anatirittena khādanīyena vā bhojanīyena vā abhihaṭṭhuṃ pavāreyya [6.1]
+“handa bhikkhu khāda vā bhuñja vā”ti jānaṃ āsādanāpekkho, bhuttasmiṃ pācittiyaṃ. [5.2]`
+},
+
+{
+    id: 'Pc.37', title: 'Pācittiya 37', audio: '5Pc-37.mp3',
+    text: `Yo pana bhikkhu vikāle khādanīyaṃ vā bhojanīyaṃ vā khādeyya vā bhuñjeyya vā, pācittiyaṃ. [5.7]`
+},
+
+{
+    id: 'Pc.38', title: 'Pācittiya 38', audio: '5Pc-38.mp3',
+    text: `Yo pana bhikkhu sannidhikārakaṃ khādanīyaṃ vā bhojanīyaṃ vā khādeyya vā bhuñjeyya vā, pācittiyaṃ. [5.9]`
+},
+
+{
+    id: 'Pc.39', title: 'Pācittiya 39', audio: '5Pc-39.mp3',
+    text: `Yāni kho pana tāni paṇītabhojanāni, seyyathīdaṃ – sappi, navanītaṃ, telaṃ, madhu, phāṇitaṃ, maccho, maṃsaṃ, khīraṃ, dadhi. [6.55]
+Yo pana bhikkhu evarūpāni paṇītabhojanāni agilāno attano atthāya viññāpetvā bhuñjeyya, pācittiyaṃ. [6.3]`
+},
+
+{
+    id: 'Pc.40', title: 'Pācittiya 40', audio: '5Pc-40.mp3',
+    text: `Yo pana bhikkhu adinnaṃ mukhadvāraṃ āhāraṃ āhareyya aññatra udakadantapoṇā, pācittiyaṃ. Bhojanavaggo catuttho. [7.5]`
+},
+
+{
+    id: 'Pc.41', title: 'Pācittiya 41', audio: '5Pc-41.mp3',
+    text: `Yo pana bhikkhu acelakassa vā paribbājakassa vā paribbājikāya vā sahatthā khādanīyaṃ vā bhojanīyaṃ vā dadeyya, pācittiyaṃ. [7.6]`
+},
+
+{
+    id: 'Pc.42', title: 'Pācittiya 42', audio: '5Pc-42.mp3',
+    text: `Yo pana bhikkhu bhikkhuṃ “ehāvuso, gāmaṃ vā nigamaṃ vā piṇḍāya pavisissāmā”ti [4.7]
+tassa dāpetvā vā adāpetvā vā uyyojeyya [3.0]
+“gacchāvuso, na me tayā saddhiṃ kathā vā nisajjā vā phāsu hoti, [4.1]
+ekakassa me kathā vā nisajjā vā phāsu hotī”ti [3.5]
+etadeva paccayaṃ karitvā anaññaṃ, pācittiyaṃ. [3.6]`
+},
+
+{
+    id: 'Pc.43', title: 'Pācittiya 43', audio: '5Pc-43.mp3',
+    text: `Yo pana bhikkhu sabhojane kule anupakhajja nisajjaṃ kappeyya, pācittiyaṃ. [4.8]`
+},
+
+{
+    id: 'Pc.44', title: 'Pācittiya 44', audio: '5Pc-44.mp3',
+    text: `Yo pana bhikkhu mātugāmena saddhiṃ raho paṭicchanne āsane nisajjaṃ kappeyya, pācittiyaṃ. [5.5]`
+},
+
+{
+    id: 'Pc.45', title: 'Pācittiya 45', audio: '5Pc-45.mp3',
+    text: `Yo pana bhikkhu mātugāmena saddhiṃ eko ekāya raho nisajjaṃ kappeyya, pācittiyaṃ. [5.3]`
+},
+
+{
+    id: 'Pc.46', title: 'Pācittiya 46', audio: '5Pc-46.mp3',
+    text: `Yo pana bhikkhu nimantito sabhatto samāno santaṃ bhikkhuṃ anāpucchā purebhattaṃ vā pacchābhattaṃ vā [5.9]
+kulesu cārittaṃ āpajjeyya aññatra samayā, pācittiyaṃ. [3.4]
+Tatthāyaṃ samayo, cīvaradānasamayo, cīvarakārasamayo, ayaṃ tattha samayo. [4.8]`
+},
+
+{
+    id: 'Pc.47', title: 'Pācittiya 47', audio: '5Pc-47.mp3',
+    text: `Agilānena bhikkhunā cātumāsappaccayapavāraṇā sāditabbā [3.8]
+aññatra punapavāraṇāya, aññatra niccapavāraṇāya. Tato ce uttariṃ sādiyeyya, pācittiyaṃ. [5.5]`
+},
+
+{
+    id: 'Pc.48', title: 'Pācittiya 48', audio: '5Pc-48.mp3',
+    text: `Yo pana bhikkhu uyyuttaṃ senaṃ dassanāya gaccheyya aññatra tathārūpappaccayā, pācittiyaṃ. [5.5]`
+},
+
+{
+    id: 'Pc.49', title: 'Pācittiya 49', audio: '5Pc-49.mp3',
+    text: `Siyā ca tassa bhikkhuno kocideva paccayo senaṃ gamanāya, dirattatirattaṃ tena bhikkhunā senāya vasitabbaṃ. [5.8]
+Tato ce uttariṃ vaseyya, pācittiyaṃ. [3.0]`
+},
+
+{
+    id: 'Pc.50', title: 'Pācittiya 50', audio: '5Pc-50.mp3',
+    text: `Dirattatirattaṃ ce bhikkhu senāya vasamāno uyyodhikaṃ vā balaggaṃ vā senābyūhaṃ vā anīkadassanaṃ vā gaccheyya, pācittiyaṃ. [7.3]
+Acelakavaggo pañcamo. [2.5]`
+},
+
+{
+    id: 'Pc.51-54', title: 'Pācittiya 51-54', audio: '5Pc-51-54.mp3',
+    text: `Surāmerayapāne pācittiyaṃ. Aṅgulipatodake pācittiyaṃ. Udake hassadhamme pācittiyaṃ. Anādariye pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'Pc.55-56', title: 'Pācittiya 55-56', audio: '5Pc-55-56.mp3',
+    text: `Yo pana bhikkhu bhikkhuṃ bhiṃsāpeyya, pācittiyaṃ. Yo pana bhikkhu agilāno visibbanāpekkho jotiṃ samādaheyya vā [6.4]
+samādahāpeyya vā aññatra tathārūpappaccayā, pācittiyaṃ. [4.1]`
+},
+
+{
+    id: 'Pc.57', title: 'Pācittiya 57', audio: '5Pc-57.mp3',
+    text: `Yo pana bhikkhu orenaddhamāsaṃ nahāyeyya aññatra samayā, pācittiyaṃ. Tatthāyaṃ samayo [4.8]
+“diyaḍḍho māso seso gimhāna”nti “vassānassa paṭhamo māso” [3.7]
+iccete aḍḍhateyyamāsā uṇhasamayo, pariḷāhasamayo, gilānasamayo, kammasamayo, addhānagamanasamayo, [5.8]
+vātavuṭṭhisamayo, ayaṃ tattha samayo. [3.0]`
+},
+
+{
+    id: 'Pc.58', title: 'Pācittiya 58', audio: '5Pc-58.mp3',
+    text: `Navaṃ pana bhikkhunā cīvaralābhena tiṇṇaṃ dubbaṇṇakaraṇānaṃ aññataraṃ dubbaṇṇakaraṇaṃ ādātabbaṃ [5.6]
+nīlaṃ vā kaddamaṃ vā kāḷasāmaṃ vā. Anādā ce bhikkhu tiṇṇaṃ dubbaṇṇakaraṇānaṃ aññataraṃ dubbaṇṇakaraṇaṃ [6.1]
+navaṃ cīvaraṃ paribhuñjeyya, pācittiyaṃ. [3.0]`
+},
+
+{
+    id: 'Pc.59', title: 'Pācittiya 59', audio: '5Pc-59.mp3',
+    text: `Yo pana bhikkhu bhikkhussa vā bhikkhuniyā vā sikkhamānāya vā sāmaṇerassa vā sāmaṇeriyā vā sāmaṃ cīvaraṃ vikappetvā [6.8]
+apaccuddhārakaṃ paribhuñjeyya, pācittiyaṃ. [3.0]`
+},
+
+{
+    id: 'Pc.60', title: 'Pācittiya 60', audio: '5Pc-60.mp3',
+    text: `Yo pana bhikkhu bhikkhussa pattaṃ vā cīvaraṃ vā nisīdanaṃ vā sūcigharaṃ vā kāyabandhanaṃ vā apanidheyya vā [5.6]
+apanidhāpeyya vā antamaso hassāpekkhopi, pācittiyaṃ. Surāpānavaggo chaṭṭho. [5.5]`
+},
+
+{
+    id: 'Pc.61-62', title: 'Pācittiya 61-62', audio: '5Pc-61-62.mp3',
+    text: `Yo pana bhikkhu sañcicca pāṇaṃ jīvitā voropeyya, pācittiyaṃ. Yo pana bhikkhu jānaṃ sappāṇakaṃ udakaṃ paribhuñjeyya, pācittiyaṃ. [7.5]`
+},
+
+{
+    id: 'Pc.63', title: 'Pācittiya 63', audio: '5Pc-63.mp3',
+    text: `Yo pana bhikkhu jānaṃ yathādhammaṃ nihatādhikaraṇaṃ punakammāya ukkoṭeyya, pācittiyaṃ. [5.5]`
+},
+
+{
+    id: 'Pc.64', title: 'Pācittiya 64', audio: '5Pc-64.mp3',
+    text: `Yo pana bhikkhu bhikkhussa jānaṃ duṭṭhullaṃ āpattiṃ paṭicchādeyya, pācittiyaṃ. [5.0]`
+},
+
+{
+    id: 'Pc.65', title: 'Pācittiya 65', audio: '5Pc-65.mp3',
+    text: `Yo pana bhikkhu jānaṃ ūnavīsativassaṃ puggalaṃ upasampādeyya, [4.0]
+so ca puggalo anupasampanno, te ca bhikkhū gārayhā, [3.2]
+idaṃ tasmiṃ pācittiyaṃ. [2.3]`
+},
+
+{
+    id: 'Pc.66', title: 'Pācittiya 66', audio: '5Pc-66.mp3',
+    text: `Yo pana bhikkhu jānaṃ theyyasatthena saddhiṃ saṃvidhāya ekaddhānamaggaṃ paṭipajjeyya [5.0]
+antamaso gāmantarampi, pācittiyaṃ. [3.0]`
+},
+
+{
+    id: 'Pc.67', title: 'Pācittiya 67', audio: '5Pc-67.mp3',
+    text: `Yo pana bhikkhu mātugāmena saddhiṃ saṃvidhāya ekaddhānamaggaṃ paṭipajjeyya [4.5]
+antamaso gāmantarampi, pācittiyaṃ. [2.8]`
+},
+
+{
+    id: 'Pc.68', title: 'Pācittiya 68', audio: '5Pc-68.mp3',
+    text: `Yo pana bhikkhu evaṃ vadeyya “tathāhaṃ bhagavatā dhammaṃ desitaṃ ājānāmi, [4.7]
+yathā yeme antarāyikā dhammā vuttā bhagavatā, [3.3]
+te paṭisevato nālaṃ antarāyāyā”ti, [2.9]
+so bhikkhu bhikkhūhi evamassa vacanīyo [2.4]
+“mā āyasmā evaṃ avaca, mā bhagavantaṃ abbhācikkhi, [3.4]
+na hi sādhu bhagavato abbhakkhānaṃ, na hi bhagavā evaṃ vadeyya, [3.8]
+anekapariyāyena āvuso antarāyikā dhammā antarāyikā vuttā bhagavatā, [4.7]
+alañca pana te paṭisevato antarāyāyā”ti. [3.1]
+Evañca so bhikkhu bhikkhūhi vuccamāno tatheva paggaṇheyya, [3.7]
+so bhikkhu bhikkhūhi yāvatatiyaṃ samanubhāsitabbo tassa paṭinissaggāya. [4.1]
+Yāvatatiyañce samanubhāsiyamāno taṃ paṭinissajjeyya, iccetaṃ kusalaṃ. [4.2]
+No ce paṭinissajjeyya, pācittiyaṃ. [3.3]`
+},
+
+{
+    id: 'Pc.69', title: 'Pācittiya 69', audio: '5Pc-69.mp3',
+    text: `Yo pana bhikkhu jānaṃ tathāvādinā bhikkhunā akaṭānudhammena taṃ diṭṭhiṃ appaṭinissaṭṭhena saddhiṃ sambhuñjeyya vā, saṃvaseyya vā, saha vā seyyaṃ kappeyya, pācittiyaṃ. [10.0]`
+},
+
+{
+    id: 'Pc.70', title: 'Pācittiya 70', audio: '5Pc-70.mp3',
+    text: `Samaṇuddesopi ce evaṃ vadeyya “tathāhaṃ bhagavatā dhammaṃ desitaṃ ājānāmi, [5.2]
+yathā yeme antarāyikā dhammā vuttā bhagavatā, [3.35]
+te paṭisevato nālaṃ antarāyāyā”ti, [3.1]
+so samaṇuddeso bhikkhūhi evamassa vacanīyo [2.9]
+“mā āvuso, samaṇuddesa evaṃ avaca, [2.8]
+mā bhagavantaṃ abbhācikkhi, [2.1]
+na hi sādhu bhagavato abbhakkhānaṃ, na hi bhagavā evaṃ vadeyya, [4.2]
+anekapariyāyena āvuso, samaṇuddesa antarāyikā dhammā antarāyikā vuttā bhagavatā, [5.2]
+alañca pana te paṭisevato antarāyāyā”ti, [3.3]
+evañca so samaṇuddeso bhikkhūhi vuccamāno tatheva paggaṇheyya, [4.2]
+so samaṇuddeso bhikkhūhi evamassa vacanīyo [2.8]
+“ajjatagge te, āvuso, samaṇuddesa na ceva so bhagavā satthā apadisitabbo, [4.5]
+yampi caññe samaṇuddesā labhanti bhikkhūhi saddhiṃ dirattatirattaṃ sahaseyyaṃ, [4.6]
+sāpi te natthi, cara pire, vinassā”ti. [2.4]
+Yo pana bhikkhu jānaṃ tathānāsitaṃ samaṇuddesaṃ upalāpeyya vā, upaṭṭhāpeyya vā, [4.9]
+sambhuñjeyya vā, saha vā seyyaṃ kappeyya, pācittiyaṃ. Sappāṇakavaggo sattamo. [5.8]`
+},
+
+{
+    id: 'Pc.71', title: 'Pācittiya 71', audio: '5Pc-71.mp3',
+    text: `Yo pana bhikkhu bhikkhūhi sahadhammikaṃ vuccamāno evaṃ vadeyya [4.3]
+“na tāvāhaṃ, āvuso, etasmiṃ sikkhāpade sikkhissāmi, [3.7]
+yāva na aññaṃ bhikkhuṃ byattaṃ vinayadharaṃ paripucchāmī”ti, pācittiyaṃ. [4.3]
+Sikkhamānena, bhikkhave, bhikkhunā aññātabbaṃ paripucchitabbaṃ paripañhitabbaṃ, ayaṃ tattha sāmīci. [6.0]`
+},
+
+{
+    id: 'Pc.72', title: 'Pācittiya 72', audio: '5Pc-72.mp3',
+    text: `Yo pana bhikkhu pātimokkhe uddissamāne evaṃ vadeyya [3.1]
+“kiṃ panimehi khuddānukhuddakehi sikkhāpadehi uddiṭṭhehi, [3.5]
+yāvadeva kukkuccāya vihesāya vilekhāya saṃvattantī”ti, sikkhāpadavivaṇṇake pācittiyaṃ. [6.0]`
+},
+
+{
+    id: 'Pc.73', title: 'Pācittiya 73', audio: '5Pc-73.mp3',
+    text: `Yo pana bhikkhu anvaddhamāsaṃ pātimokkhe uddissamāne evaṃ vadeyya [4.0]
+“idāneva kho ahaṃ jānāmi, ayampi kira dhammo suttāgato suttapariyāpanno anvaddhamāsaṃ uddesaṃ āgacchatī”ti. [6.6]
+Tañce bhikkhuṃ aññe bhikkhū jāneyyuṃ: “nisinnapubbaṁ iminā bhikkhunā [4.3]
+dvattikkhattuṁ pātimokkhe uddissamāne, ko pana vādo bhiyyo” ti, [3.9]
+na ca tassa bhikkhuno aññāṇakena mutti atthi, yañca tattha āpattiṃ āpanno, [4.4]
+tañca yathādhammo kāretabbo, uttariṃ cassa moho āropetabbo [4.3]
+“tassa te, āvuso, alābhā, tassa te dulladdhaṃ, [3.1]
+yaṃ tvaṃ pātimokkhe uddissamāne na sādhukaṃ aṭṭhikatvā manasi karosī”ti, [4.7]
+idaṃ tasmiṃ mohanake pācittiyaṃ. [2.7]`
+},
+
+{
+    id: 'Pc.74', title: 'Pācittiya 74', audio: '5Pc-74.mp3',
+    text: `Yo pana bhikkhu bhikkhussa kupito anattamano pahāraṃ dadeyya, pācittiyaṃ. [4.6]`
+},
+
+{
+    id: 'Pc.75', title: 'Pācittiya 75', audio: '5Pc-75.mp3',
+    text: `Yo pana bhikkhu bhikkhussa kupito anattamano talasattikaṃ uggireyya, pācittiyaṃ. [4.8]`
+},
+
+{
+    id: 'Pc.76', title: 'Pācittiya 76', audio: '5Pc-76.mp3',
+    text: `Yo pana bhikkhu bhikkhuṃ amūlakena saṅghādisesena anuddhaṃseyya, pācittiyaṃ. [4.8]`
+},
+
+{
+    id: 'Pc.77', title: 'Pācittiya 77', audio: '5Pc-77.mp3',
+    text: `Yo pana bhikkhu bhikkhussa sañcicca kukkuccaṃ upadaheyya “itissa muhuttampi aphāsu bhavissatī”ti [5.1]
+etadeva paccayaṃ karitvā anaññaṃ, pācittiyaṃ. [3.6]`
+},
+
+{
+    id: 'Pc.78', title: 'Pācittiya 78', audio: '5Pc-78.mp3',
+    text: `Yo pana bhikkhu bhikkhūnaṃ bhaṇḍanajātānaṃ kalahajātānaṃ vivādāpannānaṃ upassutiṃ tiṭṭheyya [6.3]
+“yaṃ ime bhaṇissanti, taṃ sossāmī”ti etadeva paccayaṃ karitvā anaññaṃ, pācittiyaṃ. [5.3]`
+},
+
+{
+    id: 'Pc.79', title: 'Pācittiya 79', audio: '5Pc-79.mp3',
+    text: `Yo pana bhikkhu dhammikānaṃ kammānaṃ chandaṃ datvā pacchā khīyanadhammaṃ āpajjeyya, pācittiyaṃ. [6.3]`
+},
+
+{
+    id: 'Pc.80', title: 'Pācittiya 80', audio: '5Pc-80.mp3',
+    text: `Yo pana bhikkhu saṅghe vinicchayakathāya vattamānāya chandaṃ adatvā uṭṭhāyāsanā pakkameyya, pācittiyaṃ. [6.5]`
+},
+
+{
+    id: 'Pc.81', title: 'Pācittiya 81', audio: '5Pc-81.mp3',
+    text: `Yo pana bhikkhu samaggena saṅghena cīvaraṃ datvā pacchā khīyanadhammaṃ āpajjeyya [5.0]
+“yathāsanthutaṃ bhikkhū saṅghikaṃ lābhaṃ pariṇāmentī”ti, pācittiyaṃ. [4.3]`
+},
+
+{
+    id: 'Pc.82', title: 'Pācittiya 82', audio: '5Pc-82.mp3',
+    text: `Yo pana bhikkhu jānaṃ saṅghikaṃ lābhaṃ pariṇataṃ puggalassa pariṇāmeyya, pācittiyaṃ. Sahadhammikavaggo aṭṭhamo. [6.6]`
+},
+
+{
+    id: 'Pc.83', title: 'Pācittiya 83', audio: '5Pc-83.mp3',
+    text: `Yo pana bhikkhu rañño khattiyassa muddhābhisittassa anikkhantarājake aniggataratanake [5.0]
+pubbe appaṭisaṃvidito indakhīlaṃ atikkāmeyya, pācittiyaṃ. [4.5]`
+},
+
+{
+    id: 'Pc.84', title: 'Pācittiya 84', audio: '5Pc-84.mp3',
+    text: `Yo pana bhikkhu ratanaṃ vā ratanasammataṃ vā aññatra ajjhārāmā vā ajjhāvasathā vā uggaṇheyya vā uggaṇhāpeyya vā, pācittiyaṃ. [7.8]
+Ratanaṃ vā pana bhikkhunā ratanasammataṃ vā ajjhārāme vā ajjhāvasathe vā uggahetvā vā uggahāpetvā vā nikkhipitabbaṃ [6.8]
+“yassa bhavissati, so harissatī”ti, ayaṃ tattha sāmīci. [3.7]`
+},
+
+{
+    id: 'Pc.85', title: 'Pācittiya 85', audio: '5Pc-85.mp3',
+    text: `Yo pana bhikkhu santaṃ bhikkhuṃ anāpucchā vikāle gāmaṃ paviseyya [4.0]
+aññatra tathārūpā accāyikā karaṇīyā, pācittiyaṃ. [4.0]`
+},
+
+{
+    id: 'Pc.86', title: 'Pācittiya 86', audio: '5Pc-86.mp3',
+    text: `Yo pana bhikkhu aṭṭhimayaṃ vā dantamayaṃ vā visāṇamayaṃ vā sūcigharaṃ kārāpeyya, bhedanakaṃ pācittiyaṃ. [6.2]`
+},
+
+{
+    id: 'Pc.87', title: 'Pācittiya 87', audio: '5Pc-87.mp3',
+    text: `Navaṃ pana bhikkhunā mañcaṃ vā pīṭhaṃ vā kārayamānena aṭṭhaṅgulapādakaṃ kāretabbaṃ [5.4]
+sugataṅgulena aññatra heṭṭhimāya aṭaniyā. Taṃ atikkāmayato chedanakaṃ pācittiyaṃ. [6.0]`
+},
+
+{
+    id: 'Pc.88', title: 'Pācittiya 88', audio: '5Pc-88.mp3',
+    text: `Yo pana bhikkhu mañcaṃ vā pīṭhaṃ vā tūlonaddhaṃ kārāpeyya, uddālanakaṃ pācittiyaṃ. [6.0]`
+},
+
+{
+    id: 'Pc.89', title: 'Pācittiya 89', audio: '5Pc-89.mp3',
+    text: `Nisīdanaṃ pana bhikkhunā kārayamānena pamāṇikaṃ kāretabbaṃ, [4.1]
+tatridaṃ pamāṇaṃ, dīghaso dve vidatthiyo sugatavidatthiyā, tiriyaṃ diyaḍḍhaṃ, dasā vidatthi. [5.3]
+Taṃ atikkāmayato chedanakaṃ pācittiyaṃ. [3.3]`
+},
+
+{
+    id: 'Pc.90', title: 'Pācittiya 90', audio: '5Pc-90.mp3',
+    text: `Kaṇḍuppaṭicchādiṃ pana bhikkhunā kārayamānena pamāṇikā kāretabbā, tatridaṃ pamāṇaṃ, [5.4]
+dīghaso catasso vidatthiyo sugatavidatthiyā, tiriyaṃ dve vidatthiyo. [3.8]
+Taṃ atikkāmayato chedanakaṃ pācittiyaṃ. [3.3]`
+},
+
+{
+    id: 'Pc.91', title: 'Pācittiya 91', audio: '5Pc-91.mp3',
+    text: `Vassikasāṭikaṃ pana bhikkhunā kārayamānena pamāṇikā kāretabbā, [4.45]
+tatridaṃ pamāṇaṃ, dīghaso cha vidatthiyo sugatavidatthiyā, tiriyaṃ aḍḍhateyyā. Taṃ atikkāmayato chedanakaṃ pācittiyaṃ. [7.0]`
+},
+
+{
+    id: 'Pc.92', title: 'Pācittiya 92', audio: '5Pc-92.mp3',
+    text: `Yo pana bhikkhu sugatacīvarappamāṇaṃ cīvaraṃ kārāpeyya, atirekaṃ vā, chedanakaṃ pācittiyaṃ. [5.4]
+Tatridaṃ sugatassa sugatacīvarappamāṇaṃ, [2.65]
+dīghaso nava vidatthiyo sugatavidatthiyā, tiriyaṃ cha vidatthiyo, idaṃ sugatassa sugatacīvarappamāṇaṃ. [5.4]
+Ratanavaggo navamo. [2.5]`
+},
+
+{
+    id: 'Pc.U', title: 'Pācittiya Uddiṭṭhā', audio: '5Pc-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto dvenavuti pācittiyā dhammā. Tatthāyasmante pucchāmi, kaccittha parisuddhā, [5.5]
+dutiyampi pucchāmi, kaccittha parisuddhā, tatiyampi pucchāmi, kaccittha parisuddhā, [4.0]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. [4.2]
+Pācittiyā dhammā niṭṭhitā. [3.0]`
+},
+
+ 
+
+
+{
+    id: 'Pd.1', title: 'Pāṭidesanīya 1', audio: '6Pd-01.mp3',
+    text: `Ime kho panāyasmanto cattāro pāṭidesanīyā Dhammā uddesaṃ āgacchanti. [5.4]
+Yo pana bhikkhu aññātikāya bhikkhuniyā antaragharaṃ paviṭṭhāya hatthato khādanīyaṃ vā bhojanīyaṃ vā [5.6]
+sahatthā paṭiggahetvā khādeyya vā bhuñjeyya vā, paṭidesetabbaṃ [4.0]
+tena bhikkhunā “gārayhaṃ, āvuso, dhammaṃ āpajjiṃ asappāyaṃ [3.9]
+pāṭidesanīyaṃ, taṃ paṭidesemī”ti. [3.0]`
+},
+
+{
+    id: 'Pd.2', title: 'Pāṭidesanīya 2', audio: '6Pd-02.mp3',
+    text: `Bhikkhū paneva kulesu nimantitā bhuñjanti, tatra ce sā bhikkhunī vosāsamānarūpā [5.1]
+ṭhitā hoti “idha sūpaṃ detha, idha odanaṃ dethā”ti. [3.5]
+Tehi bhikkhūhi sā bhikkhunī apasādetabbā “apasakka tāva bhagini, [4.0]
+yāva bhikkhū bhuñjantī”ti. Ekassapi ce bhikkhuno nappaṭibhāseyya taṃ bhikkhuniṃ apasādetuṃ [6.1]
+“apasakka tāva bhagini, yāva bhikkhū bhuñjantī”ti, paṭidesetabbaṃ [3.9]
+tehi bhikkhūhi “gārayhaṃ, āvuso, dhammaṃ āpajjimhā asappāyaṃ pāṭidesanīyaṃ, [5.0]
+taṃ paṭidesemā”ti. [2.1]`
+},
+
+{
+    id: 'Pd.3', title: 'Pāṭidesanīya 3', audio: '6Pd-03.mp3',
+    text: `Yāni kho pana tāni sekhasammatāni kulāni, yo pana bhikkhu tathārūpesu sekhasammatesukulesu pubbe animantito [6.85]
+agilāno khādanīyaṃ vā, bhojanīyaṃ vā sahatthā paṭiggahetvā [3.9]
+khādeyya vā, bhuñjeyya vā, paṭidesetabbaṃ [2.85]
+tena bhikkhunā “gārayhaṃ, āvuso, dhammaṃ āpajjiṃ asappāyaṃ pāṭidesanīyaṃ, taṃ paṭidesemī”ti. [6.4]`
+},
+
+{
+    id: 'Pd.4', title: 'Pāṭidesanīya 4', audio: '6Pd-04.mp3',
+    text: `Yāni kho pana tāni āraññakāni senāsanāni sāsaṅkasammatāni sappaṭibhayāni, [5.1]
+yo pana bhikkhu tathārūpesu senāsanesu viharanto [3.3]
+pubbe appaṭisaṃviditaṃ khādanīyaṃ vā, bhojanīyaṃ vā ajjhārāme sahatthā paṭiggahetvā [5.45]
+agilāno khādeyya vā, bhuñjeyya vā, paṭidesetabbaṃ [3.45]
+tena bhikkhunā “gārayhaṃ, āvuso, dhammaṃ āpajjiṃ asappāyaṃ pāṭidesanīyaṃ, taṃ paṭidesemī”ti. [6.5]`
+},
+
+{
+    id: 'Pd.U', title: 'Pāṭidesanīya Uddiṭṭhā', audio: '6Pd-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto cattāro pāṭidesanīyā dhammā. [3.7]
+Tatthāyasmante pucchāmi, kaccittha parisuddhā, dutiyampi pucchāmi, kaccittha parisuddhā, [4.4]
+tatiyampi pucchāmi, kaccittha parisuddhā, [2.3]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. [4.2]
+Pāṭidesanīyā Niṭṭhitā. [2.6]`
+},
+
+ 
+
+ 
+
+
+{
+    id: 'Sk.1-2', title: 'Sekhiya 1-2', audio: '7Sk-01-02.mp3',
+    text: `Ime kho panāyasmanto sekhiyā dhammā uddesaṃ āgacchanti. [4.1]
+Parimaṇḍalaṃ nivāsessāmīti sikkhā karaṇīyā. Parimaṇḍalaṃ pārupissāmīti sikkhā karaṇīyā. [5.3]`
+},
+
+{
+    id: 'Sk.3-4', title: 'Sekhiya 3-4', audio: '7Sk-03-04.mp3',
+    text: `Supaṭicchanno antaraghare gamissāmīti sikkhā karaṇīyā. Supaṭicchanno antaraghare nisīdissāmīti sikkhā karaṇīyā. [6.0]`
+},
+
+{
+    id: 'Sk.5-6', title: 'Sekhiya 5-6', audio: '7Sk-05-06.mp3',
+    text: `Susaṃvuto antaraghare gamissāmīti sikkhā karaṇīyā. Susaṃvuto antaraghare nisīdissāmīti sikkhā karaṇīyā. [5.8]`
+},
+
+{
+    id: 'Sk.7-8', title: 'Sekhiya 7-8', audio: '7Sk-07-08.mp3',
+    text: `Okkhittacakkhu antaraghare gamissāmīti sikkhā karaṇīyā. Okkhittacakkhu antaraghare nisīdissāmīti sikkhā karaṇīyā. [6.0]`
+},
+
+{
+    id: 'Sk.9-10', title: 'Sekhiya 9-10', audio: '7Sk-09-10.mp3',
+    text: `Na ukkhittakāya antaraghare gamissāmīti sikkhā karaṇīyā. Na ukkhittakāya antaraghare nisīdissāmīti sikkhā karaṇīyā. [5.6]
+Parimaṇḍalavaggo paṭhamo. [3.0]`
+},
+
+{
+    id: 'Sk.11-12', title: 'Sekhiya 11-12', audio: '7Sk-11-12.mp3',
+    text: `Na ujjagghikāya antaraghare gamissāmīti sikkhā karaṇīyā. Na ujjagghikāya antaraghare nisīdissāmīti sikkhā karaṇīyā. [6.3]`
+},
+
+{
+    id: 'Sk.13-14', title: 'Sekhiya 13-14', audio: '7Sk-13-14.mp3',
+    text: `Appasaddo antaraghare gamissāmīti sikkhā karaṇīyā. Appasaddo antaraghare nisīdissāmīti sikkhā karaṇīyā. [5.5]`
+},
+
+{
+    id: 'Sk.15-16', title: 'Sekhiya 15-16', audio: '7Sk-15-16.mp3',
+    text: `Na kāyappacālakaṃ antaraghare gamissāmīti sikkhā karaṇīyā. Na kāyappacālakaṃ antaraghare nisīdissāmīti sikkhā karaṇīyā. [6.0]`
+},
+
+{
+    id: 'Sk.17-18', title: 'Sekhiya 17-18', audio: '7Sk-17-18.mp3',
+    text: `Na bāhuppacālakaṃ antaraghare gamissāmīti sikkhā karaṇīyā. Na bāhuppacālakaṃ antaraghare nisīdissāmīti sikkhā karaṇīyā. [5.8]`
+},
+
+{
+    id: 'Sk.19-20', title: 'Sekhiya 19-20', audio: '7Sk-19-20.mp3',
+    text: `Na sīsappacālakaṃ antaraghare gamissāmīti sikkhā karaṇīyā. Na sīsappacālakaṃ antaraghare nisīdissāmīti sikkhā karaṇīyā. [5.5]
+Ujjagghikavaggo dutiyo. [2.4]`
+},
+
+{
+    id: 'Sk.21-22', title: 'Sekhiya 21-22', audio: '7Sk-21-22.mp3',
+    text: `Na khambhakato antaraghare gamissāmīti sikkhā karaṇīyā. [2.95]
+Na khambhakato antaraghare nisīdissāmīti sikkhā karaṇīyā. [3.4]`
+},
+
+{
+    id: 'Sk.23-24', title: 'Sekhiya 23-24', audio: '7Sk-23-24.mp3',
+    text: `Na oguṇṭhito antaraghare gamissāmīti sikkhā karaṇīyā. Na oguṇṭhito antaraghare nisīdissāmīti sikkhā karaṇīyā. [6.2]`
+},
+
+{
+    id: 'Sk.25-26', title: 'Sekhiya 25-26', audio: '7Sk-25-26.mp3',
+    text: `Na ukkuṭikāya antaraghare gamissāmīti sikkhā karaṇīyā. Na pallatthikāya antaraghare nisīdissāmīti sikkhā karaṇīyā. [6.0]`
+},
+
+{
+    id: 'Sk.27-28', title: 'Sekhiya 27-28', audio: '7Sk-27-28.mp3',
+    text: `Sakkaccaṃ piṇḍapātaṃ paṭiggahessāmīti sikkhā karaṇīyā. [2.9]
+Pattasaññī piṇḍapātaṃ paṭiggahessāmīti sikkhā karaṇīyā. [3.5]`
+},
+
+{
+    id: 'Sk.29-30', title: 'Sekhiya 29-30', audio: '7Sk-29-30.mp3',
+    text: `Samasūpakaṃ piṇḍapātaṃ paṭiggahessāmīti sikkhā karaṇīyā. Samatittikaṃ piṇḍapātaṃ paṭiggahessāmīti sikkhā karaṇīyā. [5.9]
+Khambhakatavaggo tatiyo. [2.5]`
+},
+
+{
+    id: 'Sk.31-32', title: 'Sekhiya 31-32', audio: '7Sk-31-32.mp3',
+    text: `Sakkaccaṃ piṇḍapātaṃ bhuñjissāmīti sikkhā karaṇīyā. Pattasaññī piṇḍapātaṃ bhuñjissāmīti sikkhā karaṇīyā. [5.8]`
+},
+
+{
+    id: 'Sk.33-34', title: 'Sekhiya 33-34', audio: '7Sk-33-34.mp3',
+    text: `Sapadānaṃ piṇḍapātaṃ bhuñjissāmīti sikkhā karaṇīyā. Samasūpakaṃ piṇḍapātaṃ bhuñjissāmīti sikkhā karaṇīyā. [5.8]`
+},
+
+{
+    id: 'Sk.35-36', title: 'Sekhiya 35-36', audio: '7Sk-35-36.mp3',
+    text: `Na thūpakato omadditvā piṇḍapātaṃ bhuñjissāmīti sikkhā karaṇīyā. Na sūpaṃ vā byañjanaṃ vā [5.0]
+odanena paṭicchādessāmi bhiyyokamyataṃ upādāyāti sikkhā karaṇīyā. [4.3]`
+},
+
+{
+    id: 'Sk.37', title: 'Sekhiya 37', audio: '7Sk-37.mp3',
+    text: `Na sūpaṃ vā odanaṃ vā agilāno attano atthāya viññāpetvā bhuñjissāmīti sikkhā karaṇīyā. [5.5]`
+},
+
+{
+    id: 'Sk.38', title: 'Sekhiya 38', audio: '7Sk-38.mp3',
+    text: `Na ujjhānasaññī paresaṃ pattaṃ olokessāmīti sikkhā karaṇīyā. [4.3]`
+},
+
+{
+    id: 'Sk.39-40', title: 'Sekhiya 39-40', audio: '7Sk-39-40.mp3',
+    text: `Nātimahantaṃ kabaḷaṃ karissāmīti sikkhā karaṇīyā. Parimaṇḍalaṃ ālopaṃ karissāmīti sikkhā karaṇīyā. Sakkaccavaggo catuttho. [7.5]`
+},
+
+{
+    id: 'Sk.41-42', title: 'Sekhiya 41-42', audio: '7Sk-41-42.mp3',
+    text: `Na anāhaṭe kabaḷe mukhadvāraṃ vivarissāmīti sikkhā karaṇīyā. Na bhuñjamāno sabbaṃ hatthaṃ mukhe pakkhipissāmīti sikkhā karaṇīyā. [7.5]`
+},
+
+{
+    id: 'Sk.43-44', title: 'Sekhiya 43-44', audio: '7Sk-43-44.mp3',
+    text: `Na sakabaḷena mukhena byāharissāmīti sikkhā karaṇīyā. [3.2]
+Na piṇḍukkhepakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.3]`
+},
+
+{
+    id: 'Sk.45-46', title: 'Sekhiya 45-46', audio: '7Sk-45-46.mp3',
+    text: `Na kabaḷāvacchedakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.05]
+Na avagaṇḍakārakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.3]`
+},
+
+{
+    id: 'Sk.47-48', title: 'Sekhiya 47-48', audio: '7Sk-47-48.mp3',
+    text: `Na hatthaniddhunakaṃ bhuñjissāmīti sikkhā karaṇīyā. [2.85]
+Na sitthāvakārakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.7]`
+},
+
+{
+    id: 'Sk.49-50', title: 'Sekhiya 49-50', audio: '7Sk-49-50.mp3',
+    text: `Na jivhānicchārakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.36]
+Na capucapukārakaṃ bhuñjissāmīti sikkhā karaṇīyā. Kabaḷavaggo pañcamo. [4.8]`
+},
+
+{
+    id: 'Sk.51-52', title: 'Sekhiya 51-52', audio: '7Sk-51-52.mp3',
+    text: `Na surusurukārakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.1]
+Na hatthanillehakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.5]`
+},
+
+{
+    id: 'Sk.53-54', title: 'Sekhiya 53-54', audio: '7Sk-53-54.mp3',
+    text: `Na pattanillehakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.05]
+Na oṭṭhanillehakaṃ bhuñjissāmīti sikkhā karaṇīyā. [3.6]`
+},
+
+{
+    id: 'Sk.55', title: 'Sekhiya 55', audio: '7Sk-55.mp3',
+    text: `Na sāmisena hatthena pānīyathālakaṃ paṭiggahessāmīti sikkhā karaṇīyā. [4.7]`
+},
+
+{
+    id: 'Sk.56', title: 'Sekhiya 56', audio: '7Sk-56.mp3',
+    text: `Na sasitthakaṃ pattadhovanaṃ antaraghare chaḍḍessāmīti sikkhā karaṇīyā. [4.5]`
+},
+
+{
+    id: 'Sk.57', title: 'Sekhiya 57', audio: '7Sk-57.mp3',
+    text: `Na chattapāṇissa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.1]`
+},
+
+{
+    id: 'Sk.58', title: 'Sekhiya 58', audio: '7Sk-58.mp3',
+    text: `Na daṇḍapāṇissa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.1]`
+},
+
+{
+    id: 'Sk.59', title: 'Sekhiya 59', audio: '7Sk-59.mp3',
+    text: `Na satthapāṇissa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.1]`
+},
+
+{
+    id: 'Sk.60', title: 'Sekhiya 60', audio: '7Sk-60.mp3',
+    text: `Na āvudhapāṇissa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. Surusuruvaggo chaṭṭho. [6.6]`
+},
+
+{
+    id: 'Sk.61', title: 'Sekhiya 61', audio: '7Sk-61.mp3',
+    text: `Na pādukārūḷhassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.8]`
+},
+
+{
+    id: 'Sk.62', title: 'Sekhiya 62', audio: '7Sk-62.mp3',
+    text: `Na upāhanārūḷhassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.2]`
+},
+
+{
+    id: 'Sk.63', title: 'Sekhiya 63', audio: '7Sk-63.mp3',
+    text: `Na yānagatassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.2]`
+},
+
+{
+    id: 'Sk.64', title: 'Sekhiya 64', audio: '7Sk-64.mp3',
+    text: `Na sayanagatassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.1]`
+},
+
+{
+    id: 'Sk.65', title: 'Sekhiya 65', audio: '7Sk-65.mp3',
+    text: `Na pallatthikāya nisinnassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.7]`
+},
+
+{
+    id: 'Sk.66', title: 'Sekhiya 66', audio: '7Sk-66.mp3',
+    text: `Na veṭhitasīsassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.5]`
+},
+
+{
+    id: 'Sk.67', title: 'Sekhiya 67', audio: '7Sk-67.mp3',
+    text: `Na oguṇṭhitasīsassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.5]`
+},
+
+{
+    id: 'Sk.68', title: 'Sekhiya 68', audio: '7Sk-68.mp3',
+    text: `Na chamāyaṃ nisīditvā āsane nisinnassa agilānassa [3.1]
+dhammaṃ desessāmīti sikkhā karaṇīyā. [3.0]`
+},
+
+{
+    id: 'Sk.69', title: 'Sekhiya 69', audio: '7Sk-69.mp3',
+    text: `Na nīce āsane nisīditvā ucce āsane nisinnassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [6.1]`
+},
+
+{
+    id: 'Sk.70', title: 'Sekhiya 70', audio: '7Sk-70.mp3',
+    text: `Na ṭhito nisinnassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [4.5]`
+},
+
+{
+    id: 'Sk.71', title: 'Sekhiya 71', audio: '7Sk-71.mp3',
+    text: `Na pacchato gacchanto purato gacchantassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [5.3]`
+},
+
+{
+    id: 'Sk.72', title: 'Sekhiya 72', audio: '7Sk-72.mp3',
+    text: `Na uppathena gacchanto pathena gacchantassa agilānassa dhammaṃ desessāmīti sikkhā karaṇīyā. [5.3]`
+},
+
+{
+    id: 'Sk.73', title: 'Sekhiya 73', audio: '7Sk-73.mp3',
+    text: `Na ṭhito agilāno uccāraṃ vā passāvaṃ vā karissāmīti sikkhā karaṇīyā. [5.1]`
+},
+
+{
+    id: 'Sk.74', title: 'Sekhiya 74', audio: '7Sk-74.mp3',
+    text: `Na harite agilāno uccāraṃ vā passāvaṃ vā kheḷaṃ vā karissāmīti sikkhā karaṇīyā. [5.5]`
+},
+
+{
+    id: 'Sk.75', title: 'Sekhiya 75', audio: '7Sk-75.mp3',
+    text: `Na udake agilāno uccāraṃ vā passāvaṃ vā kheḷaṃ vā karissāmīti sikkhā karaṇīyā. [4.9]
+Pādukavaggo sattamo. [2.8]`
+},
+
+{
+    id: 'Sk.U', title: 'Sekhiya Uddiṭṭhā', audio: '7Sk-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto sekhiyā dhammā. Tatthāyasmante pucchāmi, kaccittha parisuddhā, [5.3]
+dutiyampi pucchāmi, kaccittha parisuddhā, tatiyampi pucchāmi, kaccittha parisuddhā, [3.85]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. Sekhiyā Niṭṭhitā. [6.1]`
+},
+
+
+ 
+{
+    id: 'As', title: 'Adhikaraṇa-samatha', audio: '8As.mp3',
+    text: `Ime kho panāyasmanto satta adhikaraṇasamathā Dhammā uddesaṃ āgacchanti. [5.0]
+Uppannupannānaṃ adhikaraṇānaṃ samathāya vūpasamāya: Sammukhāvinayo dātabbo, Sativinayo dātabbo, [5.9]
+Amūḷhavinayo dātabbo, Paṭiññāya kāretabbaṃ, Yebhuyyasikā, Tassapāpiyyasikā, Tiṇavatthārako’ti. [6.9]`
+},
+
+{
+    id: 'As.U', title: 'Adhikaraṇa-samatha Uddiṭṭhā', audio: '8As-U.mp3',
+    text: `Uddiṭṭhā kho āyasmanto satta adhikaraṇasamathā dhammā. Tatthāyasmante, pucchāmi kaccittha parisuddhā, [5.6]
+dutiyampi pucchāmi, kaccittha parisuddhā, tatiyampi pucchāmi, kaccittha parisuddhā, [3.95]
+parisuddhetthāyasmanto, tasmā tuṇhī, evametaṃ dhārayāmīti. [4.5]
+Adhikaraṇasamathā Niṭṭhitā. [2.6]`
+},
+
+
+{
+    id: 'Niṭṭhita', title: 'Niṭṭhita', audio: '9-Nitthita.mp3',
+    text: `Uddiṭṭhaṃ kho āyasmanto nidānaṃ, Uddiṭṭhā cattāro pārājikā dhammā, Uddiṭṭhā terasa saṅghādisesā dhammā, Uddiṭṭhā dve aniyatā dhammā, [8.8]
+Uddiṭṭhā tiṃsa nissaggiyā pācittiyā dhammā, Uddiṭṭhā dvenavuti pācittiyā dhammā, [5.1]
+Uddiṭṭhā cattāro pāṭidesanīyā dhammā, Uddiṭṭhā sekhiyā dhammā, [4.3]
+Uddiṭṭhā satta adhikaraṇasamathā dhammā, [2.6]
+ettakaṃ tassa bhagavato suttāgataṃ suttapariyāpannaṃ anvaddhamāsaṃ uddesaṃ āgacchati, [5.3]
+tattha sabbeheva samaggehi sammodamānehi avivadamānehi sikkhitabbanti. [4.9]
+Bhikkhupātimokkhaṃ Niṭṭhitaṃ. [3.6]`
+},
+		
+    ];
+
+    // --- BIẾN ---
+    let globalInterval = 3000; 
+    let karaokeTimeout = null;
+    let currentKaraokeLine = 0;
+    let allLines = [];
+    let currentSectionIndex = 0;
+    
+    // Khai báo các phần tử DOM
+    const displayArea = document.getElementById('display-area');
+    const titleArea = document.getElementById('section-title');
+    const sectionSelect = document.getElementById('section-select');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const karaokeToggleBtn = document.getElementById('karaoke-toggle-btn');
+    const settingsPanel = document.getElementById('settings-panel');
+
+    // --- INIT ---
+    function init() {
+        
+        // --- 1. TẢI CÀI ĐẶT GIAO DIỆN VÀ TỐC ĐỘ BAN ĐẦU ---
+        const savedTheme = localStorage.getItem('themePreference');
+        const body = document.body;
+        const btn = document.querySelector('.btn-darkmode');
+
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            if (btn) btn.innerHTML = "☀️";
+        } else {
+             body.removeAttribute('data-theme');
+             if (btn) btn.innerHTML = "🌙";
+        }
+        
+        const savedInterval = localStorage.getItem('overrideInterval');
+        const intervalInput = document.getElementById('karaoke-interval');
+        const speedControlArea = document.getElementById('speed-control-area');
+        const btnShowSpeed = document.getElementById('btn-show-speed');
+
+        if (savedInterval !== null) {
+            const parsedInterval = parseFloat(savedInterval);
+            globalInterval = parsedInterval * 1000; 
+            intervalInput.value = parsedInterval.toFixed(1);
+            document.getElementById('karaoke-interval-label').innerText = parsedInterval.toFixed(1) + "s";
+            
+            speedControlArea.style.display = 'flex';
+            btnShowSpeed.style.display = 'none';
+        } else {
+            globalInterval = 3000;
+            intervalInput.value = 3;
+            speedControlArea.style.display = 'none';
+            btnShowSpeed.style.display = 'inline-block';
+        }
+
+        // --- 2. SETUP PHẦN CÒN LẠI ---
+        sections.forEach((sec, index) => {
+            let option = document.createElement("option");
+            option.value = index; option.text = sec.title;
+            sectionSelect.appendChild(option);
+        });
+        
+        // --- SỰ KIỆN AUDIO (ĐÃ SỬA) ---
+        audioPlayer.addEventListener('play', () => {
+            if (displayArea.classList.contains('karaoke-active') && !karaokeTimeout) runKaraokeStep();
+        });
+        
+        // CẬP NHẬT MỚI: Chỉ dừng timer nếu user bấm pause, không dừng nếu audio tự hết
+        audioPlayer.addEventListener('pause', () => {
+            if (displayArea.classList.contains('karaoke-active')) {
+                // Nếu audio dừng vì đã hết bài (ended), THOÁT NGAY, để timer tiếp tục chạy
+                if (audioPlayer.ended) return;
+
+                // Nếu audio dừng do người dùng bấm pause
+                if(karaokeTimeout) clearTimeout(karaokeTimeout); 
+                karaokeTimeout = null;
+                updateButtonVisuals('manual');
+            }
+        });
+// --- ADD THIS NEW CODE ---
+        // Sự kiện khi audio chạy hết bài: Reset về 0:00 và thoát chế độ Karaoke
+        audioPlayer.addEventListener('ended', () => {
+            audioPlayer.currentTime = 0; // Trả audio về 0:00
+        });
+        // -------------------------
+        let initialIndex = 0;
+        const savedIndex = localStorage.getItem('lastSectionIndex');
+        if (savedIndex !== null) {
+            const parsedIndex = parseInt(savedIndex);
+            if (parsedIndex >= 0 && parsedIndex < sections.length) {
+                initialIndex = parsedIndex;
+            }
+        }
+        
+        loadSection(initialIndex);
+    }
+
+    // --- LOGIC GIAO DIỆN & PERSISTENCE ---
+    function loadSection(index) {
+        exitKaraoke(); 
+        if (index < 0) index = sections.length - 1;
+        if (index >= sections.length) index = 0;
+        currentSectionIndex = index;
+        
+        localStorage.setItem('lastSectionIndex', index);
+
+        sectionSelect.value = index;
+        titleArea.innerText = sections[index].title;
+        audioPlayer.src = sections[index].audio;
+        renderText(sections[index].text);
+    }
+
+    function selectSection() { loadSection(parseInt(sectionSelect.value)); }
+    function changeSection(d) { loadSection(currentSectionIndex + d); }
+
+    function renderText(rawText) {
+        displayArea.innerHTML = '';
+        allLines = [];
+        const lines = rawText.split('\n').filter(line => line.trim() !== '');
+        
+        let cumulativeStartTimeMs = 0;
+        
+        const overrideIntervalMs = localStorage.getItem('overrideInterval') ? parseFloat(localStorage.getItem('overrideInterval')) * 1000 : null;
+
+        lines.forEach(line => {
+            let cleanLine = line.trim();
+            let customDuration = null; 
+
+            const timeMatch = cleanLine.match(/\s*\[(\d+(\.\d+)?)\]\s*$/);
+            if (timeMatch) {
+                customDuration = parseFloat(timeMatch[1]) * 1000;
+                cleanLine = cleanLine.replace(timeMatch[0], '');
+            }
+
+            const lineDiv = document.createElement('div');
+            lineDiv.className = 'line-break';
+            
+            let currentLineDuration; 
+
+            if (overrideIntervalMs !== null) {
+                currentLineDuration = overrideIntervalMs;
+            } else {
+                currentLineDuration = customDuration || 3000; 
+            }
+
+            lineDiv.dataset.startTime = cumulativeStartTimeMs / 1000;
+            lineDiv.dataset.duration = currentLineDuration;
+            
+            if (overrideIntervalMs === null && customDuration) {
+                lineDiv.dataset.hasCustomTime = "true";
+            } else if (overrideIntervalMs !== null) {
+                lineDiv.dataset.hasCustomTime = "false"; 
+            }
+
+            cumulativeStartTimeMs += currentLineDuration;
+
+            cleanLine.split(/\s+/).forEach(wordStr => {
+                if (wordStr.trim() === '') return;
+                const span = document.createElement('span');
+                span.className = 'word';
+                span.innerText = wordStr;
+                span.onclick = function() {
+                    if (this.classList.contains('hidden')) {
+                        this.classList.remove('hidden');
+                        this.classList.add('revealed');
+                    }
+                };
+                lineDiv.appendChild(span);
+            });
+            displayArea.appendChild(lineDiv);
+            allLines.push(lineDiv);
+        });
+    }
+
+    function updateButtonVisuals(state) {
+        karaokeToggleBtn.classList.remove('active-auto', 'active-manual');
+        if (state === 'auto') {
+            karaokeToggleBtn.classList.add('active-auto'); karaokeToggleBtn.innerHTML = "❚❚";
+        } else if (state === 'manual') {
+            karaokeToggleBtn.classList.add('active-manual'); karaokeToggleBtn.innerHTML = "▶";
+        } else {
+            karaokeToggleBtn.innerHTML = "🎤";
+        }
+    }
+
+    // --- LOGIC KARAOKE (ĐÃ SỬA) ---
+    
+    function toggleKaraokeAction() {
+        const isActive = displayArea.classList.contains('karaoke-active');
+        const isRunning = !!karaokeTimeout;
+
+        if (!isActive) {
+            startKaraokeMode();
+        } else {
+            // Nút này bây giờ thông minh hơn:
+            // 1. Nếu đang chạy (isRunning) HOẶC audio đang phát -> Bấm vào để PAUSE
+            if (isRunning || !audioPlayer.paused) {
+                if (!audioPlayer.paused) audioPlayer.pause();
+                
+                // Cần clear tay ở đây vì nếu audio đã ended thì sự kiện pause ở trên sẽ bỏ qua lệnh clear
+                if(karaokeTimeout) {
+                    clearTimeout(karaokeTimeout);
+                    karaokeTimeout = null;
+                }
+                updateButtonVisuals('manual');
+            } 
+            // 2. Nếu đang dừng -> Bấm vào để PLAY
+            else {
+                if (audioPlayer.ended) {
+                    // Nếu nhạc hết rồi thì chỉ chạy chữ
+                    runKaraokeStep();
+                } else {
+                    // Nếu nhạc chưa hết thì play nhạc (nhạc play sẽ kích hoạt chữ)
+                    audioPlayer.play();
+                }
+            }
+        }
+    }
+
+    function startKaraokeMode() {
+        resetText();
+        displayArea.classList.add('karaoke-active');
+        document.body.classList.add('karaoke-active-mode');
+        
+        currentKaraokeLine = 0;
+        showKaraokeLine(0);
+        updateButtonVisuals('manual');
+    }
+
+    function exitKaraoke() {
+        if(karaokeTimeout) clearTimeout(karaokeTimeout); karaokeTimeout = null;
+        if(!audioPlayer.paused) audioPlayer.pause();
+
+        displayArea.classList.remove('karaoke-active');
+        document.body.classList.remove('karaoke-active-mode');
+        document.querySelector('.line-karaoke-show')?.classList.remove('line-karaoke-show');
+        updateButtonVisuals('inactive');
+    }
+
+    function runKaraokeStep() {
+        if (karaokeTimeout) clearTimeout(karaokeTimeout);
+        if (currentKaraokeLine >= allLines.length) { exitKaraoke(); return; }
+
+        showKaraokeLine(currentKaraokeLine);
+        updateButtonVisuals('auto'); 
+
+        const el = allLines[currentKaraokeLine];
+        const dur = parseFloat(el.dataset.duration); 
+
+        const nextIdx = currentKaraokeLine + 1;
+        if (nextIdx < allLines.length) {
+            karaokeTimeout = setTimeout(() => {
+                currentKaraokeLine = nextIdx; runKaraokeStep();
+            }, dur);
+        } else {
+             karaokeTimeout = setTimeout(() => { exitKaraoke(); }, dur);
+        }
+    }
+
+    function showKaraokeLine(idx) {
+        document.querySelector('.line-karaoke-show')?.classList.remove('line-karaoke-show');
+        if (allLines[idx]) {
+            allLines[idx].classList.add('line-karaoke-show');
+            allLines[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function navigateKaraoke(d) {
+        if (!audioPlayer.paused) audioPlayer.pause();
+        
+        if (karaokeTimeout) { clearTimeout(karaokeTimeout); karaokeTimeout = null; }
+        
+        if (!displayArea.classList.contains('karaoke-active')) { 
+            startKaraokeMode();
+        }
+        
+        currentKaraokeLine += d;
+        if (currentKaraokeLine < 0) currentKaraokeLine = 0;
+        if (currentKaraokeLine >= allLines.length) currentKaraokeLine = allLines.length - 1;
+
+        showKaraokeLine(currentKaraokeLine);
+
+        const targetEl = allLines[currentKaraokeLine];
+        const startTimeSeconds = parseFloat(targetEl.dataset.startTime || 0);
+        
+        audioPlayer.currentTime = startTimeSeconds; 
+        
+        updateButtonVisuals('manual');
+    }
+
+    // --- CÁC HÀM PHỤ ---
+    function hideRandomWords() {
+        const wasActive = displayArea.classList.contains('karaoke-active');
+        resetText(true);
+        const words = document.querySelectorAll('.word');
+        const count = Math.floor(words.length * (document.getElementById('difficulty').value / 100));
+        Array.from({length: words.length}, (_, i) => i).sort(() => Math.random()-.5).slice(0, count).forEach(i => words[i].classList.add('hidden'));
+        
+        if (wasActive) {
+            displayArea.classList.add('karaoke-active');
+            updateButtonVisuals('manual');
+        }
+    }
+    
+    function resetText(keep = false) {
+        if (!keep) exitKaraoke();
+        document.querySelectorAll('.word').forEach(w => w.classList.remove('hidden', 'revealed'));
+    }
+
+    function toggleSettings() { settingsPanel.classList.toggle('open'); }
+    function updateLabel(v) { document.getElementById('difficulty-label').innerText = v + "%"; }
+    
+    // --- CÁC HÀM MỚI CHO TỐC ĐỘ ---
+
+    function toggleSpeedControl() {
+        document.getElementById('btn-show-speed').style.display = 'none';
+        document.getElementById('speed-control-area').style.display = 'flex';
+    }
+
+    function updateKaraokeInterval(v) { 
+        const newIntervalSeconds = parseFloat(v);
+        localStorage.setItem('overrideInterval', newIntervalSeconds.toFixed(1)); 
+        
+        document.getElementById('karaoke-interval-label').innerText = newIntervalSeconds.toFixed(1) + "s";
+        loadSection(currentSectionIndex); 
+        if(!audioPlayer.paused && displayArea.classList.contains('karaoke-active')) audioPlayer.pause();
+    }
+
+    function resetSpeedDefault() {
+        localStorage.removeItem('overrideInterval');
+        document.getElementById('karaoke-interval').value = 3;
+        document.getElementById('karaoke-interval-label').innerText = "3.0s";
+        document.getElementById('speed-control-area').style.display = 'none';
+        document.getElementById('btn-show-speed').style.display = 'inline-block';
+        loadSection(currentSectionIndex);
+    }
+    
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.querySelector('.btn-darkmode');
+        const isDark = body.getAttribute('data-theme') === 'dark';
+
+        if (isDark) {
+            body.removeAttribute('data-theme');
+            btn.innerHTML = "🌙";
+            localStorage.setItem('themePreference', 'light');
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerHTML = "☀️";
+            localStorage.setItem('themePreference', 'dark');
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>
