@@ -2011,27 +2011,42 @@ Bhikkhupātimokkhaṃ Niṭṭhitaṃ. [3.6]`
         }
     }
 
-    function navigateRecitation(d) {
-        if (!audioPlayer.paused) audioPlayer.pause();
+function navigateRecitation(d) {
+        // 1. Check if audio is currently playing before we do anything
+        const isPlaying = !audioPlayer.paused && !audioPlayer.ended;
         
+        // 2. Clear the existing timer so we don't have overlapping jumps
         if (recitationTimeout) { clearTimeout(recitationTimeout); recitationTimeout = null; }
         
+        // 3. Activate recitation mode if it wasn't already (Edge case)
         if (!displayArea.classList.contains('recitation-active')) { 
             startRecitationMode();
         }
         
+        // 4. Update the line index
         currentRecitationLine += d;
         if (currentRecitationLine < 0) currentRecitationLine = 0;
         if (currentRecitationLine >= allLines.length) currentRecitationLine = allLines.length - 1;
 
+        // 5. Show the new line visually
         showRecitationLine(currentRecitationLine);
 
+        // 6. Sync the audio to the start time of the new line
         const targetEl = allLines[currentRecitationLine];
         const startTimeSeconds = parseFloat(targetEl.dataset.startTime || 0);
-        
         audioPlayer.currentTime = startTimeSeconds; 
         
-        updateButtonVisuals('manual');
+        // 7. Decide logic based on previous state
+        if (isPlaying) {
+            // If it was playing:
+            // We do NOT pause. We just restart the sync timer (runRecitationStep)
+            // so it counts down the duration of this new line correctly.
+            runRecitationStep();
+        } else {
+            // If it was paused:
+            // Keep it paused and show the "Manual" (Play button) state.
+            updateButtonVisuals('manual');
+        }
     }
 
     // --- CÁC HÀM PHỤ ---
@@ -2102,6 +2117,7 @@ Bhikkhupātimokkhaṃ Niṭṭhitaṃ. [3.6]`
 </body>
 
 </html>
+
 
 
 
